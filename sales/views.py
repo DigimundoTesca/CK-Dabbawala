@@ -588,15 +588,8 @@ def new_sale(request):
         return JsonResponse({'status': 'error'})
 
     else:
-        path = request.get_full_path().split('/')[3]
-        if path == 'breakfast':
-            template = 'new/breakfast.html'
-            title = 'Vender Desayuno'
-
-        else:
-            template = 'new/food.html'
-            title = 'Vender Comida'
-
+        template = 'sales/new_sale.html'
+        title = 'Vender Desayuno'
         cartridges_list = Cartridge.objects.all().order_by('name')
         package_cartridges = PackageCartridge.objects.all().order_by('name')
         extra_ingredients = ExtraIngredient.objects.all().prefetch_related('ingredient');
