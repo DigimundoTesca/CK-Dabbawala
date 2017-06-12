@@ -353,6 +353,7 @@ small {
 }
 .container-web-logo .web-logo {
   max-height: 256px;
+  border-radius: 5px;
 }
 .container-web-logo .web-logo-register {
   max-height: 196px;
