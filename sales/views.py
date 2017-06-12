@@ -18,7 +18,7 @@ from products.models import Cartridge, PackageCartridge, PackageCartridgeRecipe,
                             ExtraIngredient
 from sales.models import Ticket, TicketDetail, TicketExtraIngredient
 from users.models import User as UserProfile
-
+from helpers import Helper
 """
 Start auxiliary functions
 """
@@ -497,42 +497,34 @@ def delete_sale(request):
 
 @login_required(login_url='users:login')
 def new_sale(request):
+    helper = Helper()
     if request.method == 'POST':
         if request.POST['ticket']:
-            username = request.user
-            user_profile_object = get_object_or_404(UserProfile, username=username)
-            cash_register = CashRegister.objects.first()
-            ticket_detail_json_object = json.loads(request.POST.get('ticket'))
-            payment_type = ticket_detail_json_object['payment_type']
-            order_number = 1
             """ 
             Gets the tickets in the week and returns n + 1 
             where n is the Ticket.order_number biggest for the current week
             TODO:
             1. Get tickets in the current week range
-            2. Search the ticket with the largest order_number atribute
-            3. save the 'new_ticket_object' with the new atribute (n + 1)
+            2. Search the ticket with the largest order_number attribute
+            3. save the 'new_ticket_object' with the new attribute (n + 1)
             4. Save the new object
             """
 
-            tickets = Ticket.objects.filter(created_at__gte=datetime.now() - timedelta(days=get_number_day(datetime.now())))
-
-            for ticket in tickets:
-                order_number_ticket = ticket.order_number
-                if order_number_ticket >= order_number:
-                    order_number = order_number_ticket + 1
-
+            username = request.user
+            user_profile_object = get_object_or_404(UserProfile, username=username)
+            cash_register = CashRegister.objects.first()
+            ticket_detail_json_object = json.loads(request.POST.get('ticket'))
+            payment_type = ticket_detail_json_object['payment_type']
             new_ticket_object = Ticket(
-                cash_register=cash_register, seller=user_profile_object, 
-                payment_type=payment_type, order_number=order_number)
+                cash_register=cash_register, seller=user_profile_object, payment_type=payment_type)
             new_ticket_object.save()
 
             """
             Saves the tickets details for cartridges
             """
-            for ticket_detail in ticket_detail_json_object['cartridges']:
+            for ticket_detail in ticket_detail_json_object['cartuchos']:
                 cartridge_object = get_object_or_404(Cartridge, id=ticket_detail['id'])
-                quantity = ticket_detail['quantity']
+                quantity = ticket_detail['cant']
                 price = ticket_detail['price']
                 new_ticket_detail_object = TicketDetail(
                     ticket=new_ticket_object,
@@ -542,42 +534,81 @@ def new_sale(request):
                 )
                 new_ticket_detail_object.save()
 
-            for ticket_detail in ticket_detail_json_object['extra_ingredients_cartridges']:
-                cartridge_object = get_object_or_404(Cartridge, id=ticket_detail['cartridge_id'])
-                quantity = ticket_detail['quantity']
-                price = ticket_detail['price']
-                new_ticket_detail_object = TicketDetail(
-                    ticket=new_ticket_object,
-                    cartridge=cartridge_object,
-                    quantity=quantity,
-                    price=price
-                )
-                new_ticket_detail_object.save()
-
-                for ingredient in ticket_detail['extra_ingredients']:
-                    extra_ingredient_object = ExtraIngredient.objects.get(id=ingredient['id'])
-                    new_extra_ingredient_object = TicketExtraIngredient(
-                        ticket_detail=new_ticket_detail_object,
-                        extra_ingredient=extra_ingredient_object,
-                        price=ingredient['cost']
-                        )
-                    new_extra_ingredient_object.save()
-
-            for ticket_detail_package in ticket_detail_json_object['packages']:               
+            for ticket_detail_packages in ticket_detail_json_object['paquetes']:
                 """
                 Saves the tickets details for package cartridges
+                    1. Iterates each package
+                    2. For each package, gets the list of cartridges tha make up each recipe
+                    3. Compares the cartridge's list obtained with the corresponding list in the JSON
+                    4. Depending on the result on th result creates a new item in the package table and the new
+                        ticket or just creates the new ticket
                 """
-                package_object = get_object_or_404(PackageCartridge, id=ticket_detail_package['id'])
-                quantity = ticket_detail_package['quantity']
-                price = ticket_detail_package['price']         
-                new_ticket_detail_object = TicketDetail(
-                    ticket=new_ticket_object,
-                    package_cartridge=package_object,
-                    quantity=quantity,
-                    price=price
-                )
-                new_ticket_detail_object.save()
+                quantity = ticket_detail_packages['quantity']
+                price = ticket_detail_packages['price']
+                packages_id_list = ticket_detail_packages['id_list']
+                package_id = None
+                is_new_package = True
+                packages_recipes = PackageCartridge.objects.all()
 
+                for package_recipe in packages_recipes:
+                    """
+                    Gets the cartridges for each package cartridge and compares
+                    each package recipe cartridges if is equal that packages_id_list
+                    """
+                    cartridges_per_recipe = PackageCartridgeRecipe.objects.select_related(
+                        'package_cartridge', 'cartridge').filter(package_cartridge=package_recipe)
+                    cartridges_in_package_recipe = []
+
+                    for cartridge_recipe in cartridges_per_recipe:
+                        cartridges_in_package_recipe.append(cartridge_recipe.cartridge.id)
+
+                    if helper.are_equal_lists(cartridges_in_package_recipe, packages_id_list):
+                        is_new_package = False
+                        package_id = package_recipe.id
+
+                if is_new_package:
+                    package_name = ticket_detail_packages['name']
+                    package_price = ticket_detail_packages['price']
+                    print(package_name)
+                    print(package_price)
+                    new_package_object = PackageCartridge(name=package_name, price=package_price, is_active=True)
+                    new_package_object.save()
+
+                    """
+                    Creates a new package
+                    """
+                    for id_cartridge in packages_id_list:
+                        cartridge_object = get_object_or_404(Cartridge, id=id_cartridge)
+                        new_package_recipe_object = PackageCartridgeRecipe(
+                            package_cartridge=new_package_object,
+                            cartridge=cartridge_object,
+                            quantity=1
+                        )
+                        new_package_recipe_object.save()
+
+                    """
+                    Creates the ticket detail
+                    """
+                    new_ticket_detail_object = TicketDetail(
+                        ticket=new_ticket_object,
+                        package_cartridge=new_package_object,
+                        quantity=quantity,
+                        price=price
+                    )
+                    new_ticket_detail_object.save()
+
+                else:
+                    """
+                    Uses an existent package
+                    """
+                    package_object = get_object_or_404(PackageCartridge, id=package_id)
+                    new_ticket_detail_object = TicketDetail(
+                        ticket=new_ticket_object,
+                        package_cartridge=package_object,
+                        quantity=quantity,
+                        price=price,
+                    )
+                    new_ticket_detail_object.save()
             json_response = {
                 'status': 'ready',
                 'ticket_id': new_ticket_object.id,
@@ -588,40 +619,15 @@ def new_sale(request):
         return JsonResponse({'status': 'error'})
 
     else:
+        cartridges_list = Cartridge.objects.all()
+        package_cartridges = PackageCartridge.objects.all()
         template = 'sales/new_sale.html'
-        title = 'Vender Desayuno'
-        cartridges_list = Cartridge.objects.all().order_by('name')
-        package_cartridges = PackageCartridge.objects.all().order_by('name')
-        extra_ingredients = ExtraIngredient.objects.all().prefetch_related('ingredient');
-        extra_ingredients_products_list = []
-
-        for cartridge in cartridges_list:
-            cartridge_object = {
-                'id': cartridge.id,
-                'name': cartridge.name,
-                'extra_ingredients': [],
-            }
-            for ingredient in extra_ingredients:
-                if cartridge == ingredient.cartridge:
-                    ingredient_object = {
-                        'id': ingredient.id,
-                        'name': ingredient.ingredient.name,
-                        'image': ingredient.image.url,
-                        'cost': str(ingredient.cost),
-                    }
-                    cartridge_object['extra_ingredients'].append(ingredient_object)
-            if len(cartridge_object['extra_ingredients']) > 0:
-                extra_ingredients_products_list.append(cartridge_object)
-
-
+        title = 'Nueva venta'
         context = {
-            'title': PAGE_TITLE + ' | ' + title,
-            'page_title': title,
+            'page_title': PAGE_TITLE,
+            'title': title,
             'cartridges': cartridges_list,
-            'package_cartridges': package_cartridges,
-            'extra_ingredients': extra_ingredients,
-            'extra_ingredients_products_list': extra_ingredients_products_list,
-            'extra_ingredients_products_list_json': json.dumps(extra_ingredients_products_list),
+            'package_cartridges': package_cartridges
         }
         return render(request, template, context)
 
