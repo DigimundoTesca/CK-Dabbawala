@@ -28,17 +28,17 @@
 }
 ::-webkit-scrollbar-track {
   /*background-color: rgba(91,192,222,0.1);*/
-  background-color: rgba(0, 76, 131,0.3);
+  background-color: rgba(255,87,34,0.3);
   border-radius: 0;
 }
 ::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 76, 131,0.5);
+  background-color: rgba(255,87,34,0.5);
   border-radius: 3px;
 }
 /* Sticky footer styles
 -------------------------------------------------- */
-a.link {
-  color: #fefefe;
+a.link 
+{  color: #fefefe;
   font-weight: 300;
   transition: all 0.3s ease;
 }
@@ -353,6 +353,7 @@ small {
 }
 .container-web-logo .web-logo {
   max-height: 256px;
+  border-radius: 5px;
 }
 .container-web-logo .web-logo-register {
   max-height: 196px;

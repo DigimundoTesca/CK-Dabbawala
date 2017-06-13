@@ -2,6 +2,8 @@ from django.conf import settings
 from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
+from . import views
+
 
 urlpatterns = [
     url(r'^jet/', include('jet.urls', 'jet')),  # Django JET URLS
@@ -13,6 +15,7 @@ urlpatterns = [
     url(r'^', include('orders.urls')),
     url(r'^', include('kitchen.urls')),
     url(r'^', include('diners.urls')),
+    url(r'^', include('customers.urls')),
 ]
 
 admin.site.site_header = 'Dabbanet'
@@ -24,5 +27,5 @@ if settings.DEBUG:
 
 urlpatterns += [
     # API Endpoints
-    # url(r'^api/', include('api.urls', namespace='api')),
+    url(r'^api/', include('api.urls', namespace='api')),
 ]
