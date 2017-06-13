@@ -141,6 +141,9 @@ sales/migrations/*
 users/migrations/*
 !users/migrations/__init__.py
 
+customers/migrations/*
+!customers/migrations/__init__.py
+
 # Django settings
 staticfiles/
 #Database
