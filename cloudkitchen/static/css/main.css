@@ -1,23 +1,23 @@
-@import url(font-awesome/font-awesome.min.css);
+@import url(font-awesome.min.css);
 @font-face {
   font-family: 'Conv_Futura';
   font-weight: normal;
   font-style: normal;
-  src: url('static/fonts/Futura.eot');
+  src: url('../fonts/Futura.eot');
   src: local('Futura'), 
-  url('static/fonts/Futura.woff') format('woff'),
-  url('static/fonts/Futura.ttf') format('truetype'), 
-  url('static/fonts/Futura.svg') format('svg');
+  url('../fonts/Futura.woff') format('woff'),
+  url('../fonts/Futura.ttf') format('truetype'), 
+  url('../fonts/Futura.svg') format('svg');
 }
 @font-face {
   font-family: 'Conv_FuturaBold';
   font-weight: 900;
   font-style: normal;
-  src: url('static/fonts/FuturaBold.eot');
+  src: url('../fonts/FuturaBold.eot');
   src: local('FuturaBold'), 
-  url('static/fonts/FuturaBold.woff') format('woff'), 
-  url('static/fonts/FuturaBold.ttf') format('truetype'), 
-  url('static/fonts/FuturaBold.svg') format('svg');
+  url('../fonts/FuturaBold.woff') format('woff'), 
+  url('../fonts/FuturaBold.ttf') format('truetype'), 
+  url('../fonts/FuturaBold.svg') format('svg');
 }
 /*
     Forty by HTML5 UP

@@ -2,17 +2,12 @@
 
 {% load static %}
 
-
-{% block link %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/sweetalert.css' %}">
-{% endblock link %}
-
 {% block content %}
 <div class="container">
   <h1 class="text-xs-center">Bienvenido a Dabbawala</h1>
   <figure>
-    <figure class="container-dabbawala-logo">
-      <img src="{% static 'images/LogoDabba_naranja.png' %}" alt="dabbawala_logo" class="dabbawala-logo-register">
+    <figure class="container-web-logo">
+      <img src="{% static 'images/LogoDabba_naranja.png' %}" alt="dabbawala_logo" class="web-logo-register">
     </figure>
   </figure>
   <div class="row">
@@ -114,8 +109,6 @@
 {% block javascript %}
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrITfQswCPmOPEBRM1Ufeiogh22FxQV5k" defer charset="utf-8"></script>
 
-<script src="{% static 'js/sweetalert.min.js' %}" charset="utf-8"></script>
-
 <script type="text/javascript">
   var map = null;
   var infoWindow = null;
@@ -178,6 +171,7 @@
 
     addMarkerLsteners(marker);
     openInfoWindow(marker);
+
   }
 
   $('#btn-search').on('click', function() {
@@ -243,12 +237,6 @@
   }
   $(function() {
     initMap();
-    // swal({
-    //   title: "+52 1 55 42 46 73 60",
-    //   text: "Estamos en Mantenimiento!. Péro aún puedes pedir tu primer dabba gratis en whatsapp",
-    //   type: "warning",
-    //   showConfirmButton: true
-    // }); 
   });
 </script>
 {% endblock %}

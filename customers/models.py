@@ -1,3 +1,8 @@
+from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.validators import UnicodeUsernameValidator, ASCIIUsernameValidator
+from django.db import models
+from django.utils import six
+
 from django.db import models
 
 
