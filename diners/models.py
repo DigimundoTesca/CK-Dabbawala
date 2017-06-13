@@ -1,3 +1,4 @@
+from django.core.validators import MaxValueValidator
 from django.db import models
 
 
@@ -29,6 +30,7 @@ class AccessLog(models.Model):
 
 class ElementToEvaluate(models.Model):
     element = models.CharField(max_length=48, default='', unique=True)
+    priority = models.IntegerField(default=1)
 
     class Meta:
         verbose_name = "Elemento a evaluar"
@@ -40,10 +42,9 @@ class ElementToEvaluate(models.Model):
 
 class SatisfactionRating(models.Model):
     elements = models.ManyToManyField(ElementToEvaluate)
-    satisfaction_rating = models.PositiveIntegerField(default=1)
+    satisfaction_rating = models.PositiveIntegerField(default=1, validators=[MaxValueValidator(4)])
     creation_date = models.DateTimeField(auto_now_add=True)
     suggestion = models.TextField(blank=True, null=True)
-
 
     class Meta:
         verbose_name = "Índice de Satisfacción"
@@ -56,4 +57,3 @@ class SatisfactionRating(models.Model):
         text = str(self.suggestion)
         text = (text[:48] + '...') if len(text) > 12 else text
         return text
-    

@@ -1,0 +1,62 @@
+{% load static %}
+<!-- Header -->
+<header id="header" class="alt">
+  <a href="{% url 'users:home' %}" class="logo">Dabbawalla</a>
+  <img src="{% static 'images/bici.png' %}" alt="Logo de Dabbawalla">
+
+  <nav id="flomen">
+    <a href="{% url 'users:home' %}" title=""></a>
+  </nav>
+
+  <!-- Menu -->
+  <nav id="menu">
+    <ul class="links">
+      <li><a href="{% url 'users:home' %}">Home</a></li>
+      <li><a href="{% url 'orders:new_order' %}">Escoge tu dabba</a></li>
+      <li><a href="plan.html">Planes</a></li>
+      <li><a href="menu.html">Menú</a></li>
+      <li><a href="contact.html">Contacto</a></li>
+      <li><a href="#" class="button nob" data-type="zoomin"><span>Inicia Sesión</span></a></li>
+      <li><a href="{% url 'customers:register' %}" class="button fit">Resgistrate</a></li>
+    </ul>
+  </nav>
+
+  <nav id="mainmenu">
+    <!-- <a href="#menu" title="">Home</a> -->
+    <a href="{% url 'users:home' %}" class="men"><span> Home </span></a>
+    <!-- <a href="about.html" class="men"><span> Acerca de </span></a> -->
+    <a href="{% url 'orders:new_order' %}" class="men"><span> Escoge tu dabba </span></a>
+    <a href="plan.html" class="men"><span> Planes </span></a>
+    <a href="menu.html" class="men"><span> Menú </span></a>
+    <a href="contact.html" class="men"><span> Contacto </span></a>
+    <a href="" title=""></a>
+    <a href="" title=""></a>
+    <div class="menres nob">
+      <a href="#" class="button nob" data-type="zoomin"><span>Inicia Sesión</span></a>
+    </div>
+    <a href="" title="">ó</a>
+    <div class="menres">
+      <a href="{% url 'customers:register' %}" class="button"><span>Resgistrate </span></a>
+    </div>
+    <a >   </a>
+  </nav>
+</header>
+
+<div class="overlay-container">
+  <div class="window-container zoomin">
+    <div class="colm">
+      <h1>LOGIN</h1>
+      <form class="logform" action="" method="post" accept-charset="utf-8">
+        <label>Usuario<input type="text" name="user" id="user" placeholder="Usuario"/></label>
+        <label>Contraseña<input type="text" name="pass" id="pass" placeholder="Contraseña" /></label>
+        <input type="submit" class="" name="submit" value="Login" />
+      </form>
+    </div>
+    <div class="colm2">
+      <h1>Registro</h1>
+      <p>Si aún no te has registrado, te invitamos a que visites nuestra sección de registro y disfrutes de todos los beneficios que tu cuenta te otorga.</p>
+      <a href="{% url 'customers:register' %}" class="button"><span>Resgistrate </span></a>
+    </div>
+    <span class="closeres">X</span>
+  </div>
+</div>

@@ -24,16 +24,17 @@ class AccessLogAdmin(admin.ModelAdmin):
 
 @admin.register(ElementToEvaluate)
 class ElementToEvaluateAdmin(admin.ModelAdmin):
-    list_display = ('id', 'element', )
-    ordering = ('id',) 
+    list_display = ('id', 'priority', 'element',)
+    ordering = ('priority',)
+    list_editable = ('priority', )
+
 
 @admin.register(SatisfactionRating)
 class SatisfactionRatingAdmin(admin.ModelAdmin):
     list_display = ('id', 'creation_date', 'satisfaction_rating', 'shortened_suggestion', 'selected_elements')
     ordering = ('-creation_date',) 
     list_display_links = ('id', 'creation_date',)
+    date_hierarchy = 'creation_date'
 
     def selected_elements(self, obj):
         return ",\n".join([p.element for p in obj.elements.all()])
-
-    
