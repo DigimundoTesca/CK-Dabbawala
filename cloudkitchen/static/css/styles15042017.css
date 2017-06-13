@@ -170,22 +170,66 @@ small {
 .analytics-container .suggestions-container .card {
   max-height: 40vh;
 }
+.analytics-container .week-suggestions-chart {
+  padding: 0;
+
+}
 .analytics-container .week-suggestions-chart .canvas-holder {
-  /*background: red;*/
-  /*width: 100% !important;*/
   min-height: 200px;
 }
 .analytics-container .week-suggestions-chart .canvas-holder canvas {
-  /*background: blue;*/
-  /*min-height: 20px !important;*/
   display: flex;
   height: 500px;
-  /*height: inherit;*/
+}
+.analytics-container .charts-container {
+  padding: 0;
+}
+.analytics-container .charts-container .elements-header {
+  margin: 0;
+}
+.analytics-container .charts-container .elements-header .element-name {
+  color: #fbfbfb;
+  font-weight: 600;
+  text-align: center;
+}
+.analytics-container .charts-container .element-name-cont {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.analytics-container .charts-container .element-name-cont .element-name {
+  padding: 0.2rem;
+  font-size: 0.9rem;
+  margin: 0.2rem;
+  width: 100%;
+  display: flex;
+  border-radius: 5px;
+  justify-content: center;
+}
+.analytics-container .charts-container .element-name.element-red {
+  background: #FF5252;
+}
+.analytics-container .charts-container .element-name.element-yellow {
+  background: #FFC400;
+}
+.analytics-container .charts-container .element-name.element-blue {
+  background: #2979FF;
+}
+.analytics-container .charts-container .element-name.element-green {
+  background: #00E676;
 }
 .analytics-container .charts-container .elements-analytics-container {
+  overflow: hidden;
   width: 100%;
   padding: 0;
   margin: 0;
+}
+.analytics-container .charts-container .elements-analytics-container .charts-container {
+  border: 1px rgba(0,0,0,0) solid;
+  display: flex;
+  justify-content: center;
+  height: 100%;
 }
 .analytics-container .charts-container .elements-analytics-container .doughnut-chart {
   margin: 0;
