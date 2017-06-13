@@ -10,8 +10,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as login_django
 from django.contrib.auth import logout as logout_django
 
-from users.forms import CustomerProfileForm, UserForm
-from users.models import CustomerProfile
+from users.forms import UserForm
 from users.models import UserMovements
 
 
