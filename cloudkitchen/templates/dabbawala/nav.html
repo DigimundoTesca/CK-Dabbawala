@@ -1,52 +1,44 @@
-<!--
-<nav class="navbar fixed-top navbar-light bg-faded msg-warning">
-  <marquee behavior="" direction="">
-    Su compañia tiene un adeudo con nosotros. Favor de ponerse al corriente :'v
-  </marquee>
-</nav>
--->
-<nav class="navbar navbar-full navbar-dark navbar-base">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'users:login' %}"><h3>{{ page_title }}</h3></a>
-    <ul class="nav navbar-nav float-xs-right">
-    <li class="nav-item dropdown" id="link-sales">
-        <a class="nav-link dropdown-toggle" href="#" id="supportedContentDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ventas</a>
-        <div class="dropdown-menu" aria-labelledby="supportedContentDropdown">
-          <a class="dropdown-item" href="{% url 'sales:new_sale' %}">POS</a>
-          <a class="dropdown-item" href="{% url 'sales:sales' %}">Analytics</a>
+    {% load static %}
+    <!-- Header -->
+    <header id="header" class="alt">
+      <a href="index.html" class="logo">Dabbawalla</a>
+      <img src="{% static 'images/bici.png' %}" alt="Logo de Dabbawalla">
+
+      <nav id="flomen">
+        <a href="#menu" title=""></a>
+      </nav>
+
+      <!-- Menu -->
+      <nav id="menu">
+        <ul class="links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="pick.html">Escoge tu dabba</a></li>
+          <li><a href="plan.html">Planes</a></li>
+          <li><a href="menu.html">Menú</a></li>
+          <li><a href="contact.html">Contacto</a></li>
+          <li><a href="#" class="button nob" data-type="zoomin"><span>Inicia Sesión</span></a></li>
+          <li><a href="register.html" class="button fit">Resgistrate</a></li>
+        </ul>
+      </nav>
+
+
+      <nav id="mainmenu">
+        <!-- <a href="#menu" title="">Home</a> -->
+        <a href="index.html" class="men"><span> Home </span></a>
+        <!-- <a href="about.html" class="men"><span> Acerca de </span></a> -->
+        <a href="pick.html" class="men"><span> Escoge tu dabba </span></a>
+        <a href="plan.html" class="men"><span> Planes </span></a>
+        <a href="menu.html" class="men"><span> Menú </span></a>
+        <a href="contact.html" class="men"><span> Contacto </span></a>
+        <a href="" title=""></a>
+        <a href="" title=""></a>
+        <div class="menres nob">
+          <a href="#" class="button nob" data-type="zoomin"><span>Inicia Sesión</span></a>
         </div>
-      </li>
-      <li class="nav-item dropdown" id="link-kitchen">
-        <a class="nav-link dropdown-toggle" href="#" id="supportedContentDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Cocina</a>
-        <div class="dropdown-menu" aria-labelledby="supportedContentDropdown">
-          <a class="dropdown-item" href="{% url 'kitchen:kitchen' %}">Cocina</a>
-          <a class="dropdown-item" href="{% url 'kitchen:assembly' %}">Ensamble</a>
+        <a href="" title="">ó</a>
+        <div class="menres">
+          <a href="register.html" class="button"><span>Resgistrate </span></a>
         </div>
-      </li>
-      <li class="nav-item dropdown" id="link-diners">
-        <a class="nav-link dropdown-toggle" href="#" id="supportedContentDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Comedor</a>
-        <div class="dropdown-menu" aria-labelledby="supportedContentDropdown">
-          <a class="dropdown-item" href="{% url 'diners:diners' %}">Accesos de hoy</a>
-          <a class="dropdown-item" href="{% url 'diners:diners_logs' %}">Historial de Accesos</a>
-        </div>
-      </li>
-      <li class="nav-item dropdown" id="link-diners">
-        <a class="nav-link dropdown-toggle" href="#" id="supportedContentDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Satisfacción</a>
-        <div class="dropdown-menu" aria-labelledby="supportedContentDropdown">
-          <a class="dropdown-item" href="{% url 'diners:satisfaction_rating' %}">Calificador</a>
-          <a class="dropdown-item" href="{% url 'diners:analytics' %}">Rating</a>
-        </div>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="supportedContentDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user.username }}</a>
-        <div class="dropdown-menu" aria-labelledby="supportedContentDropdown">
-          {% if user.is_superuser %}
-          <a class="dropdown-item" href="{% url 'admin:login' %}">Panel de Control</a>
-          {% endif %}
-          <a class="dropdown-item" href="#">Configuración</a>
-          <a class="dropdown-item" href="{% url 'users:logout' %}">Cerrar sesión</a>
-        </div>
-      </li>
-    </ul>
-  </div>
-</nav>
+        <a >   </a>
+      </nav>
+    </header>

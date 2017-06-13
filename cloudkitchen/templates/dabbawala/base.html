@@ -1,51 +1,58 @@
-<!DOCTYPE html PUBLIC>
+<!DOCTYPE html>
 <html lang="es">
 {% load static %}
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Dabbawalla | Comida a domicilio</title>
-    <!-- Settings -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <meta name="description" content="Dabbawalla es una empresa de desayunos rápidos entregados a domicilio; ofrecemos los mejores productos a un excelente precio." />
-    <meta name="keywords" content="Comida en linea, comida a domicilio, desayunos, desayunos a domicilio" />
-    <meta name="author" content="Digimundo Technologies" />
-    <link href="{% static "css/dabba_soon_styles.css" %}" rel="stylesheet" type="text/css" media="screen" />
-    <script type="text/javascript" src="{% static "js/jquery-3.1.1.min.js" %}"></script> 
-    <link href='http://fonts.googleapis.com/css?family=Josefin+Sans:600,700|Damion' rel='stylesheet' type='text/css'>
-    <meta name="viewport" content="width=device-width, initial-scale = 1.0, user-scalable = no">
-    <!-- Icons -->
-    <link rel="shortcut icon" href="favicon.ico" type="images/icon/x-icon" />
-    <link rel="apple-touch-icon" href="images/icon/apple-touch-icon.png" />
-    <link rel="apple-touch-icon" sizes="57x57" href="assets/images/icon/apple-touch-icon-57x57.png" />
-    <link rel="apple-touch-icon" sizes="72x72" href="assets/images/icon/apple-touch-icon-72x72.png" />
-    <link rel="apple-touch-icon" sizes="76x76" href="assets/images/icon/apple-touch-icon-76x76.png" />
-    <link rel="apple-touch-icon" sizes="114x114" href="assets/images/icon/apple-touch-icon-114x114.png" />
-    <link rel="apple-touch-icon" sizes="120x120" href="assets/images/icon/apple-touch-icon-120x120.png" />
-    <link rel="apple-touch-icon" sizes="144x144" href="assets/images/icon/apple-touch-icon-144x144.png" />
-    <link rel="apple-touch-icon" sizes="152x152" href="assets/images/icon/apple-touch-icon-152x152.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icon/apple-touch-icon-180x180.png" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Dabbawalla Compras | Comida en linea</title>
+  <!-- Icons -->
+  <link rel="shortcut icon" href="favicon.ico" type="icon/x-icon" />
+  <link rel="apple-touch-icon" href="images/icon/apple-touch-icon.png" />
+  <link rel="apple-touch-icon" sizes="57x57" href="{% static 'assets/images/icon/apple-touch-icon-57x57.png' %}" />
+  <link rel="apple-touch-icon" sizes="72x72" href="{% static 'assets/images/icon/apple-touch-icon-72x72.png' %}" />
+  <link rel="apple-touch-icon" sizes="76x76" href="{% static 'assets/images/icon/apple-touch-icon-76x76.png' %}" />
+  <link rel="apple-touch-icon" sizes="114x114" href="{% static 'assets/images/icon/apple-touch-icon-114x114.png' %}" />
+  <link rel="apple-touch-icon" sizes="120x120" href="{% static 'assets/images/icon/apple-touch-icon-120x120.png' %}" />
+  <link rel="apple-touch-icon" sizes="144x144" href="{% static 'assets/images/icon/apple-touch-icon-144x144.png' %}" />
+  <link rel="apple-touch-icon" sizes="152x152" href="{% static 'assets/images/icon/apple-touch-icon-152x152.png' %}" />
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/images/icon/apple-touch-icon-180x180.png' %}" />
+  <!-- Settings -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta name="description" content="Dabbawalla es una empresa de desayunos rápidos entregados a domicilio; ofrecemos los mejores productos a un excelente precio." />
+  <meta name="keywords" content="Comida en linea, comida a domicilio, desayunos, desayunos a domicilio" />
+  <meta name="author" content="Digimundo Technologies" />
 
-</head>
+  <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/font-awesome/font-awesome.min.css' %}">
+</head> 
 <body>
-    <div class="black"></div>
-    <div id="wrapper">
-        <div id="header">
-            <h1>Dabbawalla</h1>
-            <h2><strong class="sep-one"></strong>Desayunos ya<strong class="sep-two"></strong></h2>
-        </div>
-        <div id="middle">
-            <p><span>Esperanos. Abriremos muy pronto!!!<br></span>Desayunos a domicilio; ofrecemos los mejores productos a un excelente precio. </p>
-        </div>
-        <div id="footer">
-            <!-- <div>
-                <ul class="social">
-                    <li class="facebook"><a href="#"></li>
-                    <li class="twitter"><a href="#"></li>
-                    <li class="youtube"><a href="#"></li>
-                </ul>
-            </div> -->
-        </div>
+
+<div id="wrapper">
+
+    {% block header %}
+    {% endblock header %}
+
+    {% block content %}
+      
+    {% endblock content %}
+      {% block footer %}
+        
+      {% endblock footer %}
     </div>
+    <footer id="footer">
+      <img class="bord" src="{% static 'images/image/flechas.png' %}" alt="Borde de flechas">
+      <p><br>&copy; 2017 Dabbawalla. Todos los derechos reservados.</p>
+    </footer>
+  </div>
+  <!-- Scripts -->
+  <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+  <script src="{% static 'js/jquery.scrolly.min.js' %}"></script>
+  <script src="{% static 'js/jquery.scrollex.min.js' %}"></script>
+  <script src="{% static 'js/skel.min.js' %}"></script>
+  <script src="{% static 'js/util.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="static/js/jquery-1.7.1.min.js"%3E%3C/script%3E'))</script>
+  <script type="text/javascript" src="{% static 'js/demo.js' %}"></script>
 </body>
 </html>

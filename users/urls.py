@@ -7,7 +7,7 @@ app_name = 'users'
 
 urlpatterns = [
     # index
-    url(r'^$', views.index, name='index'),
+    url(r'^home/$', views.index, name='index'),
 
     # auth
     url(r'^auth/$', views.login, name='login'),

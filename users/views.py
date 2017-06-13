@@ -42,7 +42,9 @@ def test(request):
 
 # -------------------------------------  Index -------------------------------------
 def index(request):
-    return redirect('users:login')
+    template = 'index.html'
+    context = {}
+    return render(request, template, context)
 
 
 # -------------------------------------  Auth -------------------------------------

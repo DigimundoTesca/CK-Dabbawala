@@ -1,0 +1,123 @@
+{% extends "dabbawala/base_nav_footer.html" %}
+{% load static %}
+
+{% block content %}
+<div class="overlay-container">
+  <div class="window-container zoomin">
+    <div class="colm">
+      <h1>LOGIN</h1>
+      <form class="logform" action="" method="post" accept-charset="utf-8">
+        <label>Usuario</label>
+        <input type="text" name="user" id="user" placeholder="Usuario"/>
+        <label>Contraseña</label>
+        <input type="text" name="pass" id="pass" placeholder="Contraseña" />
+        <input type="submit" class="" name="submit" value="Login" />
+      </form>
+    </div>
+    <div class="colm2">
+      <h1>Registro</h1>
+      <p>Si aún no te has registrado, te invitamos a que visites nuestra sección de registro y disfrutes de todos los beneficios que tu cuenta te otorga.</p>
+      <a href="register.html" class="button"><span>Resgistrate </span></a>
+    </div>
+    <span class="closeres">X</span>
+  </div>
+</div>
+<div>
+  <section id="banner" class="main major style2">
+    <div class="inner">
+      <header class="major">
+        <img src="assets/images/logo.png" alt="Logo de Dabbawalla">
+        <h1>¡Registrate Ahora!</h1>
+        <h2>Y obtén muchos beneficios</h2>
+      </header>
+    </div>
+  </section>
+  <div id="main">
+    <img class="bord" src="assets/images/image/flechas.png" alt="Borde de flechas">
+    <h3>BIENVENIDO A</h3>
+    <h1>Dabbawalla</h1>
+    <div class="first">
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </p>
+    </div>
+  </div>
+  <div id="main" class="index">
+    <div class="cols">
+      <div class="col1">
+        <h2>Consigue un <strong class="menustrong">PLAN</strong></h2>
+        <h2>Y empieza a disfrutar</h2>
+        <p><br>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+          cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+          proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+        <a href="plan.html" class="button sec"><span>Planes</span></a>
+      </div>
+      <div class="col1">
+        <img src="{% static 'images/image/plan.png' %}" alt="Plan">
+      </div>
+    </div>
+  </div>
+  <div id="main" class="index">
+    <div class="cols">
+      <div class="col1">
+        <img src="{% static 'images/image/menu.png' %}" alt="Menu">
+      </div>
+      <div class="col2">
+        <h2>Conoce nuestro</h2>
+        <h2>Variado <strong class="menustrong">MENÚ</strong></h2>
+        <p><br>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+          cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+          proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+        <a href="menu.html" class="button sec"><span>Menú</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div id="main" class="index">
+    <div class="cols">
+      <div class="col1">
+        <h2>¿Tienes alguna duda?</h2>
+        <h2><strong class="menustrong">contáctanos</strong></h2>
+        <p><br>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+          cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+          proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+        <a href="contact.html" class="button sec"><span>Contacto</span></a>
+      </div>
+      <div class="col1">
+        <img src="{% static 'images/image/contacto.png' %}" alt="Contacto">
+      </div>
+    </div>
+  </div>
+  <div id="main">
+    <img class="arr" src="{% static 'images/image/arrow.png'%}" alt="Borde de flechas">
+    <div class="form">
+      <h2>¿TIENES ALGUNA DUDA O SUGERENCIA?</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
+      <form class="col sections" action="" method="post" accept-charset="utf-8">
+        <div class="col1">
+          <input class="inp1" type="text" name="email" id="email" placeholder="Email" />
+          <input type="submit" class="fit inp2" name="submit" value="Enviar" />
+        </div>
+        <div class="col2">
+          <textarea name="message" placeholder="Mensaje" id="message" rows="2"></textarea>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock content %}
