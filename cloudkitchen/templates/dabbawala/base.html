@@ -33,18 +33,17 @@
 
     {% block header %}
     {% endblock header %}
-
+  <div>
     {% block content %}
-      
     {% endblock content %}
-      {% block footer %}
-        
-      {% endblock footer %}
-    </div>
+    
+    {% block footer %}
+    {% endblock footer %}
     <footer id="footer">
       <img class="bord" src="{% static 'images/image/flechas.png' %}" alt="Borde de flechas">
       <p><br>&copy; 2017 Dabbawalla. Todos los derechos reservados.</p>
     </footer>
+  </div>
   </div>
   <!-- Scripts -->
   <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>

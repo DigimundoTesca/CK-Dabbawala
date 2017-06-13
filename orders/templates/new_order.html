@@ -151,7 +151,6 @@
     </header>
   </div>
 </section>
-</div>
 <div id="main">
   <img class="bord" src="{% static 'images/image/reverse.png' %}" alt="Borde de flechas">
   <div class="bcol">
@@ -166,12 +165,11 @@
           <!--<button class="show-bottom">Show 6</button>-->
         </p>
       </section>
-
       <section class="container">
         <div id="cube" class="show-front">
           <figure id="frontdisplay" class="front">
             {% for product in products %}
-            <div id='roti{{product.pk}}' class="product">
+            <div id='1roti{{product.pk}}' class="product">
               <img src="{{product.image.url}}" alt="Imagen para Roti">
               <p>{{ product.name }}</p>
               <p class="description">
@@ -182,7 +180,7 @@
           </figure>
           <figure class="back">
             {% for product in products %}
-            <div id='roti{{product.pk}}' class="product">
+            <div id='2roti{{product.pk}}' class="product">
               <img src="{{product.image.url}}" alt="Imagen para Ensalada">
               <p>{{ product.name }}</p>
               <p class="description">
@@ -193,7 +191,7 @@
           </figure>
           <figure class="right">
             {% for product in products %}
-            <div id='roti{{product.pk}}' class="product">
+            <div id='3roti{{product.pk}}' class="product">
             <img src="{{product.image.url}}" alt="Imagen para Licuado">
               <p>{{ product.name }}</p>
               <p class="description">
@@ -204,7 +202,7 @@
           </figure>
           <figure class="left">
             {% for product in products %}
-            <div id='roti{{product.pk}}' class="product">
+            <div id='4roti{{product.pk}}' class="product">
               <img src="{{product.image.url}}" alt="Imagen para Licuado">
               <p>{{ product.name }}</p>
               <p class="description">
