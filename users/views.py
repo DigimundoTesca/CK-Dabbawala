@@ -1,10 +1,6 @@
-import json
-
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.core.signals import request_finished
-from django.dispatch import receiver
 
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as login_django
@@ -13,35 +9,24 @@ from django.contrib.auth import logout as logout_django
 from users.forms import UserForm
 from users.models import UserMovements
 
-
 from cloudkitchen.settings.base import PAGE_TITLE
 
 
 # -------------------------------------  Index -------------------------------------
 
 def test(request):
-    form_customer = CustomerProfileForm(request.POST, request.FILES)
-    if request.method == 'POST':
-        if form_customer.is_valid():
-            customer = form_customer.save(commit=False)
-            customer.save()
-            return redirect('users:thanks')
-    else:
-        form_customer = CustomerProfileForm()
-    template = 'test/test.html'
-    title = 'Dabbawala - Registro de clientes'
-    form_user = UserForm()
-    context = {
-        'form_customer': form_customer,
-        'title': title,
-    }
-
-    return render(request, template, context)
+    return HttpResponse('Yours tests here')
 
 
 # -------------------------------------  Index -------------------------------------
-def index(request):
-    template = 'index.html'
+def home(request):
+    template = 'home.html'
+    context = {}
+    return render(request, template, context)
+
+
+def temporal_index(request):
+    template = 'temporal-index.html'
     context = {}
     return render(request, template, context)
 

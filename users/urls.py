@@ -6,8 +6,11 @@ from users import views
 app_name = 'users'
 
 urlpatterns = [
-    # index
-    url(r'^home/$', views.index, name='index'),
+    # temporal-index
+    url(r'^$', views.temporal_index, name='index'),
+
+    # home
+    url(r'^home/$', views.home, name='home'),
 
     # auth
     url(r'^auth/$', views.login, name='login'),
