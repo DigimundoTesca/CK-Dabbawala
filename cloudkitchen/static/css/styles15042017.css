@@ -37,8 +37,8 @@
 }
 /* Sticky footer styles
 -------------------------------------------------- */
-a.link {
-  color: #fefefe;
+a.link 
+{  color: #fefefe;
   font-weight: 300;
   transition: all 0.3s ease;
 }
