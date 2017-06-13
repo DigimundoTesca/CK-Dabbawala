@@ -15,10 +15,11 @@ from cloudkitchen.settings.base import PAGE_TITLE
 def new_customer(request):
     form_customer = CustomerProfileForm(request.POST or None)
     if request.method == 'POST':
+        print(request.POST)
         if form_customer.is_valid():
             customer = form_customer.save(commit=False)
             customer.save()
-            return redirect('users:thanks')
+            return redirect('customers:thanks')
 
     template = 'register/new_customer.html'
     title = 'Dabbawala - Bienvenido a Dabbawala. Registrare y obtén un desayuno gratis. '
@@ -36,7 +37,7 @@ def thanks(request):
         if form.is_valid():
             customer = form.save(commit=False)
             customer.save()
-            return redirect('users:new_customer')
+            return redirect('customers:new_customer')
     else:
         form = CustomerProfileForm()
 
