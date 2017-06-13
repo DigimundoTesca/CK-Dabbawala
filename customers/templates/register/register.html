@@ -1,0 +1,50 @@
+{% extends "dabbawala/base_nav_footer.html" %}
+{% load static %}
+
+{% block content %}
+  <div id="main">
+    <img class="bord2" src="{% static 'images/image/reverse.png' %}" alt="Borde">
+    <h2>bienvenido a </h2>
+    <h1>Dabbawalla</h1>
+    <div class="regis">
+      <p>Registrate y obtén<br><span>UN DESAYUNO GRATIS</span><br><br></p>
+    </div>
+  </div>
+  <div id="main">
+    <img class="arr" src="{% static 'images/image/arrow.png' %}" alt="Borde">
+    <div class="form">
+      <div class="cols colr">
+        <div class="col1 formr">
+          <label for="name">Nombre con el que te identificaremos. Obligatorio</label>
+          <input type="text" name="name" id="name" placeholder="Nombre de usuario" />
+          <label for="email">Correo. Obligatorio</label>
+          <input type="text" name="email" id="email" placeholder="Correo" />
+          <label for="telefono">Obligatorio</label>
+          <input type="text" name="telefono" id="telefono" placeholder="Telefono con Whatsapp" />
+          <label for="addres">Dirección</label>
+          <input type="text" name="addres" id="addres" placeholder="Busca tu dirección" />
+          <input type="submit" class="fit" name="submit" value="REGISTRATE" />
+        </div>
+        <div class="col2 mapr">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d15042.031969956412!2d-99.1732938!3d19.51979255!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2smx!4v1493530892480" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="main">
+    <img class="arr" src="{% static 'images/image/arrow.png' %}" alt="Borde" height="60px">
+    <div class="form">
+      <h2>¿TIENES ALGUNA DUDA O SUGERENCIA?</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
+      <form class="col sections" action="" method="post" accept-charset="utf-8">
+        <div class="col1">
+          <input type="text" name="email" id="email" placeholder="Email" />
+          <input type="submit" class="fit" name="submit" value="Enviar" />
+        </div>
+        <div class="col2">
+          <textarea name="message" placeholder="Mensaje" id="message" rows="2"></textarea>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock content %}

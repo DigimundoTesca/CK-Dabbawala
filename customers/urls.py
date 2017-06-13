@@ -8,7 +8,8 @@ app_name = 'customers'
 
 urlpatterns = [
     # New Customer
-    url(r'^register/$', views.new_customer, name='new_customer'),
+    url(r'^register-old/$', views.new_customer, name='new_customer'),
+    url(r'^register/$', views.register, name='register'),
     url(r'^register/thanks/$', views.thanks, name='thanks'),
     url(r'^customers/register/list/$', views.customers_list, name='customers_list'),
 ]

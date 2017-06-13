@@ -1,9 +1,10 @@
 import json
 
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
+from customers.models import CustomerProfile
 from .forms import CustomerProfileForm
 
 
@@ -44,6 +45,19 @@ def thanks(request):
 
     context = {
         'form': form,
+        'title': title,
+    }
+
+    return render(request, template, context)
+
+
+def register(request):
+    form_customer = CustomerProfileForm(request.POST or None)
+
+    template = 'register/register.html'
+    title = 'Dabbawala - Bienvenido a Dabbawala. Registrare y obtén un desayuno gratis. '
+    context = {
+        'form_customer': form_customer,
         'title': title,
     }
 
