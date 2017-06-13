@@ -83,7 +83,7 @@
         function save_change () {
           JSONCustomer = JSON.stringify(CustomerProfile);
           $.ajax({
-            url: "{% url 'users:customers_list' %}",
+            url: "{% url 'customers:customers_list' %}",
             type: 'POST',
             data: {
               'customer': JSONCustomer,
