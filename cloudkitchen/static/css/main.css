@@ -5195,3 +5195,7 @@
     letter-spacing: 0.15em;
     line-height: 3;
   }
+
+.container-hidden {
+  display: none;
+}
