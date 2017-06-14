@@ -1,9 +1,9 @@
-{% extends "register/new_customer.html" %}
+{% extends "register/register.html" %}
 
 {% block alert %}
 <script type="text/javascript" charset="utf-8">
 	function rel(){
-		        window.location.href = "{% url 'customers:new_customer' %}";
+		        window.location.href = "{% url 'customers:register' %}";
 
 	}
 	function showAlert() {
