@@ -136,8 +136,10 @@
 
     infoWindow.open(map, marker);
 
-    var latitude = markerLatLng.lat();
-    var longitude = markerLatLng.lng();
+    var Latitude = $('#id_latitude').val();
+    var Longitude = $('#id_longitude').val();
+    // var latitude = markerLatLng.lat();
+    // var longitude = markerLatLng.lng();
 
     setLatLng(latitude, longitude);
   }
