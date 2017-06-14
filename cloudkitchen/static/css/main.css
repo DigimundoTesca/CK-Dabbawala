@@ -1482,6 +1482,14 @@
         color:black;
       }
 
+      #main .form {
+        width: 100% !important;
+      }
+
+      #main div.colr {
+        width: 95% !important;
+      }
+
       #main form .col1, #main form .col2 {
         width: 100%;
       }
@@ -1749,6 +1757,17 @@
         margin-left: 8.33333%;
       }
 
+    }
+
+    @media screen and (max-width: 430px) {
+      #innerbtn {
+        width: 100%;
+        margin: 0.5em !important;
+      }
+
+      #innerbtn input {
+        width: 100% !important;
+      }
     }
 
     @media screen and (max-width: 370px) {
@@ -4286,8 +4305,8 @@
   }
 
   #innerbtn {
-    position: relative;
-    overflow: visible;    
+    width: 100%;
+    margin: 0;
   }
 
   #innerbtn input {
@@ -4297,13 +4316,7 @@
   #innerbtn input, #innerbtn a {
     display: inline;
     margin-left: 0 !important;
-    padding-left: 0 !important;
   }
-
-  /*#btn-search {
-    position: absolute;
-    right: 10px;
-  }*/
 
   #main .formr {
     padding: 0;
