@@ -4285,12 +4285,6 @@
     margin: 0 auto !important;
   }
 
-  #main .mapr {
-    padding-top: -4em;
-    width: 400px;
-    margin: 0 auto;
-  }
-
   #main .formr {
     padding: 0;
     padding-top: 2em;
@@ -5196,6 +5190,6 @@
     line-height: 3;
   }
 
-.container-hidden {
-  display: none;
-}
+  .container-hidden {
+    display: none;
+  }

@@ -1,6 +1,16 @@
 {% extends "dabbawala/base_nav_footer.html" %}
 {% load static %}
 
+{% block stylesheets %}
+<style media="screen">
+ #map {
+  height: 400px;
+  width: 100%;
+  margin-top: 30px;
+}
+</style>
+{% endblock stylesheets%}
+
 {% block content %}
 <div id="main"> 
   <img class="bord2" src="{% static 'images/image/reverse.png' %}" alt="Borde">
@@ -100,12 +110,10 @@
 {% endblock content %}
 
 {% block scripts %}
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrITfQswCPmOPEBRM1Ufeiogh22FxQV5k" defer charset="utf-8"></script>
-
 <script type="text/javascript">
-  var map = null;
-  var infoWindow = null;
-  var marker = null;
+  var map;
+  var infoWindow;
+  var marker;
 
   function drawMap (options) {
     map = new google.maps.Map($("#map").get(0), options);
@@ -232,4 +240,5 @@
     initMap();
   });
 </script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrITfQswCPmOPEBRM1Ufeiogh22FxQV5k" defer charset="utf-8"></script>
 {% endblock scripts %}
