@@ -55,7 +55,7 @@ def thanks(request):
         if form.is_valid():
             customer = form.save(commit=False)
             customer.save()
-            return redirect('customers:register')
+            return redirect('customers:new_customer')
     else:
         form = CustomerProfileForm()
 
