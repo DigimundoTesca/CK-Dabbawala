@@ -172,7 +172,7 @@
       </section>
       <section class="container">
         <div id="cube" class="show-front">
-          <figure id="frontdisplay" class="front">
+          <figure id="frontdisplay" class="front scrol">
             {% for product in products %}
             <div id='1roti{{product.pk}}' class="product">
               <img src="{{product.image.url}}" alt="Imagen para Roti">
@@ -183,7 +183,7 @@
             </div> 
             {% endfor %}
           </figure>
-          <figure id="backdisplay" class="back">
+          <figure id="backdisplay" class="back scrol">
             {% for product in products %}
             <div id='2roti{{product.pk}}' class="product">
               <img src="{{product.image.url}}" alt="Imagen para Ensalada">
@@ -194,7 +194,7 @@
             </div>
             {% endfor %}
           </figure>
-          <figure id="rightdisplay" class="right">
+          <figure id="rightdisplay" class="right scrol">
             {% for product in products %}
             <div id='3roti{{product.pk}}' class="product">
               <img src="{{product.image.url}}" alt="Imagen para Licuado">
@@ -205,7 +205,7 @@
             </div>
             {% endfor %}
           </figure>
-          <figure id="leftdisplay" class="left">
+          <figure id="leftdisplay" class="left scrol">
             {% for product in products %}
             <div id='4roti{{product.pk}}' class="product">
               <img src="{{product.image.url}}" alt="Imagen para Licuado">
@@ -216,7 +216,7 @@
             </div>
             {% endfor %}
           </figure>
-          <figure id="topdisplay" class="top">
+          <figure id="topdisplay" class="top scrol">
             {% for product in products %}
             <div id='roti{{product.pk}}' class="product">
               <img src="{{product.image.url}}" alt="Imagen para Licuado">
