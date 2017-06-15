@@ -8,27 +8,25 @@
     <a href="#menu" title=""></a>
   </nav>
 
-  <!-- Menu -->
+  <!-- Menu --> 
   <nav id="menu">
     <ul class="links">
       <li><a href="{% url 'users:home' %}">Home</a></li>
       <li><a href="{% url 'orders:new_order' %}">Escoge tu dabba</a></li>
-      <li><a href="plan.html">Planes</a></li>
-      <li><a href="menu.html">Menú</a></li>
-      <li><a href="contact.html">Contacto</a></li>
+      <!-- <li><a href="plan.html">Planes</a></li> -->
+      <li><a href="{% url 'products:menu'%}">Menú</a></li> 
+      <li><a href="{% url 'branch_offices:contact' %}">Contacto</a></li>
       <li><a href="#" class="button nob" data-type="zoomin"><span>Inicia Sesión</span></a></li>
       <li><a href="{% url 'customers:register' %}" class="button fit">Resgistrate</a></li>
     </ul>
   </nav>
 
   <nav id="mainmenu">
-    <!-- <a href="#menu" title="">Home</a> -->
     <a href="{% url 'users:home' %}" class="men"><span> Home </span></a>
-    <!-- <a href="about.html" class="men"><span> Acerca de </span></a> -->
     <a href="{% url 'orders:new_order' %}" class="men"><span> Escoge tu dabba </span></a>
-    <a href="plan.html" class="men"><span> Planes </span></a>
-    <a href="menu.html" class="men"><span> Menú </span></a>
-    <a href="contact.html" class="men"><span> Contacto </span></a>
+    <!-- <a href="plan.html" class="men"><span> Planes </span></a> -->
+    <a href="{% url 'products:menu'%}" class="men"><span> Menú </span></a>
+    <a href="{% url 'branch_offices:contact' %}" class="men"><span> Contacto </span></a>
     <a href="" title=""></a>
     <a href="" title=""></a>
     <div class="menres nob">
