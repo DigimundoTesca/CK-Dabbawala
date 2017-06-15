@@ -886,6 +886,23 @@
 
     }
 
+    @media screen and (max-width: 1230px) {
+      #cart {
+        float: none !important;
+        margin: 0 auto !important;
+        padding-top: 0 !important;
+      }
+
+      .thecube {
+        float: none !important;
+        margin: 0 auto !important;
+      }
+
+      .salessection {
+        height: 100% !important;
+      }
+    }
+
     @media screen and (max-width: 1140px) {
 
       #header .logo {
