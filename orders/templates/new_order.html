@@ -276,8 +276,71 @@
         </ul>
       </div>
       <a id="btn-orders-reset" class="button fit orde">Cancelar Venta</a>
-      <a href="{% url 'orders:pay' %}" class="button fit orde"><span>Arma tu dabba</span></a>
+      <a id="btn-order" data-toggle="modal" data-target="#modal-order" class="button fit orde"><span>Arma tu dabba</span></a>
     </div>
+    </div>
+  </div>
+</div>
+
+<!-- Dabba Modal -->
+<div class="modal fade" id="modal-package" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="container-fluid">
+          <div class="card col-xs-4">
+            <span id="modal-prod-head-1" class="modal-head-prod-name"></span>
+          </div>
+          <div class="card col-xs-4">
+            <span id="modal-prod-head-2" class="modal-head-prod-name"></span>
+          </div>
+          <div class="card col-xs-4">
+            <span id="modal-prod-head-3" class="modal-head-prod-name"></span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="card card-scroll col-xs-4 ">
+            {% for cartridge in cartridges %}
+              {% if cartridge.category == 'FD' %}
+                <div class="modal-prod-container product-container" id="modal-prod-cont-1">
+                  <h5 class="modal-prod-name">{{ cartridge.name }}</h5>
+                  <img src="{{ cartridge.image.url }}" alt="product image" id="modal-img-1-{{ cartridge.pk }}" class="modal-product-img">
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+          <div class="card card-scroll col-xs-4 ">
+            {% for cartridge in cartridges %}
+              {% if cartridge.category == 'CO' %}
+                <div class="modal-prod-container product-container" id="modal-prod-cont-2">
+                  <h5 class="modal-prod-name">{{ cartridge.name }}</h5>
+                  <img src="{{ cartridge.image.url }}" alt="product image" id="modal-img-2-{{ cartridge.pk }}" class="modal-product-img">
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+          <div class="card card-scroll col-xs-4 ">
+            {% for cartridge in cartridges %}
+              {% if cartridge.category == 'CO' %}
+                <div class="modal-prod-container product-container" id="modal-prod-cont-3">
+                  <h5 class="modal-prod-name">{{ cartridge.name }}</h5>
+                  <img src="{{ cartridge.image.url }}" alt="product image" id="modal-img-3-{{ cartridge.pk }}" class="modal-product-img">
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="container">
+          <div class="row">
+            <button type="button" class="btn btn-secondary col-xs-3 push-xs-2" data-dismiss="modal" id="btn-close-dabba-modal">Close</button>
+            <button id="btn-add-dabba" data-dismiss="modal" type="button" class="btn btn-success col-xs-4 push-xs-3">¡Listo!</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
