@@ -24,35 +24,48 @@ iframe {
 }
 
 #cart {
-  width: 278px;
-  float: left;
-  margin-left: 100px;
+  width: 300px;
   margin-bottom: 30px;
 }
 
 .salessection {
-  height: 700px;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row-reverse;
+  justify-content: space-around;
 }
-
+.order {
+  text-transform: uppercase;
+}
 .ticket {
   color: #000 !important;
 }
-
 .thecube {
   font-family: 'Helvetica Neue', Arial, sans-serif;
   -webkit-text-size-adjust: none;
   color: #333;
   max-width: 720px;
-  float: right;
-  margin-right: 50px;
   margin-bottom: 6em;
   padding-bottom: 2em;
-  padding: 10px;
+}
+.group-sales {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 
-
+.button{
+  font-size: 17px;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+}
 .container-sales {
   margin: 0 0.5rem;
+  text-align: center !important;
 }
 .container-sales-reports .sales-graphics {
   margin-bottom: 1rem; 
@@ -98,23 +111,6 @@ iframe {
 }
 .container-sales-reports .sales-details table.table-sales-details span.sales-actions:hover > i {
   opacity: 0.8;
-}
-.container-sales .group-sales button#btn-orders-reset{
-  height: 4rem;
-  margin-bottom: 1rem;
-  transition: all 0.3s ease;
-}
-.container-sales .group-sales button#btn-order{
-  background-color: #0bc8ad;
-  color: #fefefe;
-  font-size: 1.5em;
-  height: 4rem;
-  margin-bottom: 1rem;
-  transition: all 0.3s ease;
-}
-.container-sales .group-sales button#btn-order:hover {
-  background-color: #43afa0;
-  color: #fefefe;
 }
 .container-sales .group-sales .card-scroll {
   min-height: calc(100vh - 16rem);
@@ -265,14 +261,17 @@ iframe {
 .container-sales .group-sales .info-sale  {
   margin-top: 1rem;
 }
+.text-total {
+  color: #000;
+}
 .container-sales .group-sales .info-sale .text-total {
   font-size: 1.2rem;
 }
 .container-sales .group-sales .info-sale p .point-total-price {
   display: none;
 }
-.container-sales .group-sales .info-sale p .text-price {
-  font-size: 3rem;
+.group-sales .info-sale p .text-price {
+  font-size: 3rem !important;
 }
 .container-sales .group-sales .info-sale p .text-price-decimal{
   font-size: 1.5rem;

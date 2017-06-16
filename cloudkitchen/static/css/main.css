@@ -888,18 +888,11 @@
 
     @media screen and (max-width: 1230px) {
       #cart {
-        float: none !important;
-        margin: 0 auto !important;
-        padding-top: 0 !important;
+        width: 500px !important;
       }
 
       .thecube {
-        float: none !important;
-        margin: 0 auto !important;
-      }
-
-      .salessection {
-        height: 100% !important;
+        margin-bottom: 0 !important;
       }
     }
 
