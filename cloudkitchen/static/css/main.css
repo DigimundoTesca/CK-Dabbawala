@@ -2955,12 +2955,10 @@
     #pay tfoot tr td img {
       vertical-align: middle;
     }
-    #pay tfoot tr td {
-      text-align: left;
-    }
 
     #pay tfoot tr th {
       padding-top: 1em;
+      text-align: center;
     }
 
     #pay tbody tr td, #pay thead tr th, #pay tfoot tr th, #pay tfoot tr td {
