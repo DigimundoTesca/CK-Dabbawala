@@ -1,0 +1,43 @@
+{% extends "dabbawala/base_nav_footer.html" %}
+{% load static %}
+
+{% block content %}
+<div id="main">
+  <img class="bord" src="{% static 'images/image/reverse.png' %}" alt="Borde de flechas">
+  <h2>pago</h2>
+  <table id="pay">
+    <thead>
+      <tr>
+        <th>ORDEN</th>
+        <th>TOTAL</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Roti</td>
+        <td>$30</td>
+      </tr>
+      <tr>
+        <td>Agua</td>
+        <td>$15</td>
+      </tr>
+      <tr>
+        <td>Fruta</td>
+        <td>$15</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th>TOTAL</th>
+        <th>$60</th>
+      </tr>
+      <tr>
+      <td><span>Efectivo</span></td>
+        <td>
+          <a href="" class="button payb"><span>Pagar</span></a>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+{% endblock content %}

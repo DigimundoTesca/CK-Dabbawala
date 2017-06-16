@@ -13,7 +13,7 @@
     /*position: absolute;*/
     display: block;
     margin: 0 auto 50px;
-    border: 1px solid #CCC;
+    /*border: 1px solid #CCC;*/
     -webkit-perspective: 1000px;
     -moz-perspective: 1000px;
     -o-perspective: 1000px;
@@ -51,12 +51,12 @@
     backface-visibility: hidden;
   }
 
-  #cube .front  { background: rgb(250,243,237); }
-  #cube .back   { background: rgb(250,243,237); visibility: hidden; }
-  #cube .right  { background: rgb(250,243,237); visibility: hidden; }
-  #cube .left   { background: rgb(250,243,237); visibility: hidden; }
-  #cube .top    { background: rgb(250,243,237); visibility: hidden; }
-  #cube .bottom { background: rgb(250,243,237); visibility: hidden; }
+  #cube .front  { background: rgba(250,243,237,0.5); }
+  #cube .back   { background: rgba(250,243,237,0.5); visibility: hidden; }
+  #cube .right  { background: rgba(250,243,237,0.5); visibility: hidden; }
+  #cube .left   { background: rgba(250,243,237,0.5); visibility: hidden; }
+  #cube .top    { background: rgba(250,243,237,0.5); visibility: hidden; }
+  #cube .bottom { background: rgba(250,243,237,0.5); visibility: hidden; }
 
   #cube .front  {
     -webkit-transform: translateZ( 300px );
@@ -233,7 +233,7 @@
     </div>
     <div id="cart">  
       <h3>tu pedido</h3>
-      <table id="pay">
+      <!--<table id="pay">
         <thead>
           <tr>
             <th>ORDEN</th>
@@ -259,8 +259,35 @@
             <td></td>
           </tr>
         </tfoot>
-      </table>
-    <a href="pay.html" class="button esp"><span>ARMA TU DABBA</span></a>
+      </table>-->
+      <div class="col-xs-12 col-lg-3 group-sales">
+      <div class="card col-sm-12 card-outline-info">
+        <div class="info-sale">
+          <span class="text-total left">Total: </span>
+          <p class="text-xs-center">
+            <span class="text-price align-top" id="s-total-price">$ </span>
+            <span id="total-price">
+            <span class="text-price align-top" id="int-total-price">0</span>
+            <span class="point-total-price">.</span>
+            <span class="text-price-decimal" id="dec-total-price">00</span>
+          </span>
+          </p>
+        </div>
+        </div>
+      <div class="card col-sm-12 card-scroll-orders card-scroll card-outline-warning">
+        <div class="card-block products-block">
+          <div class="row">
+            <div class="col-xs-10 col-lg-9 col-xl-10">
+              <h4 class="ticket">Productos</h4>
+            </div>
+          </div>
+        </div>
+        <ul class="list-group list-group-flush" id="sales-list">
+        </ul>
+      </div>
+      <button type="button" id="btn-orders-reset" class="btn btn-danger c">Cancelar Venta</button>
+    </div>
+    <a href="{% url 'orders:pay' %}" class="button esp"><span>ARMA TU DABBA</span></a>
     </div>
   </div>
 </div>

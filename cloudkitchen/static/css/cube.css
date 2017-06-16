@@ -35,11 +35,14 @@ section, footer, nav {
     float: left;
     margin-left: 100px;
     margin-bottom: 30px;
-    padding-top: 8%;
   }
 
   .salessection {
     height: 700px;
+  }
+
+  .ticket {
+    color: #000 !important;
   }
 
   iframe {
