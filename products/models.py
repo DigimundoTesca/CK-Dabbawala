@@ -107,14 +107,30 @@ class Cartridge(models.Model):
     FOOD_DISHES = 'FD'
     COMPLEMENTS = 'CO'
 
+    # Subcategories
+    FRUITS = 'FR'
+    JUICES = 'JU'
+    ROTIS = 'RO'
+    SALADS = 'SA'
+    SMOOTHIES = 'SM'
+
     CATEGORIES = (
         (FOOD_DISHES, 'Platillos'),
         (COMPLEMENTS, 'Complementos'),
     )
 
+    SUBCATEGORIES = (
+        (FRUITS, 'Frutas'),
+        (JUICES, 'Jugos'),
+        (ROTIS, 'Rotis'),
+        (SALADS, 'Ensaladas'),
+        (SMOOTHIES, 'Licuados'),
+    )
+
     name = models.CharField(max_length=128, default='')
     price = models.DecimalField(decimal_places=2, default=0, max_digits=12)
     category = models.CharField(choices=CATEGORIES, default=FOOD_DISHES, max_length=2)
+    subcategory = models.CharField(choices=SUBCATEGORIES, default=FRUITS, max_length=2)
     created_at = models.DateTimeField(auto_now=True)
     image = models.ImageField(blank=False, upload_to='cartridges')
     is_active = models.BooleanField(default=True)
