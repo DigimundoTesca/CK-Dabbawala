@@ -420,17 +420,6 @@
         return cookieValue;
       }
 
-      function activateDabbaButton() {
-        header_1 = $('#modal-prod-head-1').is(':empty');
-        header_2 = $('#modal-prod-head-2').is(':empty');
-        header_3 = $('#modal-prod-head-3').is(':empty');
-
-        if (header_1 == false && header_2 == false && header_3 == false) {
-          $('#btn-add-dabba').attr('disabled', false);
-        } else {
-          $('#btn-add-dabba').attr('disabled', true);
-        }
-      }
       /** Agrega un producto al carrito del ticket */
       $(this).on('click', '.product-img', function(event) {
         var product_type = $(this).attr('id');
@@ -517,25 +506,7 @@
         }
 
         addProductToTicket();
-      });
-
-      /** Elección de elementos para crear el dabba */
-      $(this).on('click', '.modal-prod-container', function(event) {
-        let number_container = $(this).attr('id');
-        let product_name = $(this).children('.modal-prod-name').text();
-        let id_product = $(this).find('img').attr('id');
-        if (number_container.indexOf('1') != -1) {
-          DabbaProduct.id[0] = id_product.substring(12);
-          $('#modal-prod-head-1').text(product_name).fadeTo('slow', 1);
-        } else if (number_container.indexOf('2') != -1) {
-          DabbaProduct.id[1] = id_product.substring(12);
-          $('#modal-prod-head-2').text(product_name).fadeTo('slow', 1);
-        } else if (number_container.indexOf('3') != -1) {
-          DabbaProduct.id[2] = id_product.substring(12);
-          $('#modal-prod-head-3').text(product_name).fadeTo('slow', 1);
-        }
-        activateDabbaButton();
-      });
+      }); 
 
       $(this).on('click', '.remove-icon-li', function(event) {
         let element = $(this);
@@ -592,15 +563,6 @@
       });
 
       $(this).on('click', '.add-icon-li', function(event) {});
-
-      /** Resetear los titulos del modal-package */
-      $(this).on('click', '#btn-close-dabba-modal', function(event) {
-        $('.modal-head-prod-name').empty();
-      });
-
-      $(this).on('click', '#package-container', function(event) {
-        activateDabbaButton();
-      });
 
       /** Agrega el dabba manual al carrito del ticket */
       $(this).on('click', '#btn-add-dabba', function(event) {
@@ -686,164 +648,10 @@
       });
 
       /** Despliega el modal para realizar la venta */
-      $(this).on('click', '#btn-order', function(event) {
-        function getActualTime() {
-          var datetime = new Date();
-          var hours = datetime.getHours();
-          var minutes = datetime.getMinutes();
-          var seconds = datetime.getMinutes();
-
-          var hours_f = (hours < 10) ? '0' + hours : hours;
-          var minutes_f = (minutes < 10) ? '0' + minutes : minutes;
-          var seconds_f = (seconds < 10) ? '0' + seconds : seconds;
-
-          var actual_time = hours_f + ":" + minutes_f + ":" + seconds_f;
-
-          return actual_time;
-        }
-
-        function getActualDate() {
-          var datetime = new Date();
-          var day = datetime.getDate();
-          var month = datetime.getMonth() + 1;
-          var year = datetime.getFullYear();
-
-          var day_f = (day < 10) ? '0' + day : day;
-          var month_f = (month < 10) ? '0' + month : month;
-
-          var actual_date = day_f + "/" + month_f + "/" + year;
-
-          return actual_date;
-        }
-
-        $("#ticket-time").text(getActualTime());
-        $("#ticket-date").text(getActualDate());
-
-        $('#sales-list-modal').empty();
-
-        $nuevo_li = $("" +
-          "<li>" +
-          "<span class='name-li-title-modal'>Nombre</span> " +
-          "<span class='cost-li-title-modal'>Cost</span>" +
-          "<span class='cant-li-title-modal'>Cant</span>" +
-          "<span class='total-li-title-modal'>Total</span> " +
-          "</li>");
-
-        $nuevo_li.appendTo('#sales-list-modal');
-
-        $('#sales-list li').each(function() {
-          let name = $(this).find('.name-li').text();
-          let cost_base = $(this).find('.cost-base-li').text();
-          let cant = $(this).find('.cant-li').text();
-          let total = $(this).find('.total-li').text();
-          let id = $(this).attr('id');
-          let li_id = (id + '-modal').toString();
-
-          /** Acorta el nombre */
-          name = name.split(' ');
-          $.each(name, function(index, item) {
-            name[index] = item.substring(0, 3);
-          });
-
-          name = name.toString().replace(',', ' ');
-          name = name.replace(/,/g, ' ');
-
-          $nuevo_li = $("" +
-            "<li id='" + li_id + "' class='list-group-item'>" +
-            "<span class='name-li-modal text-uppercase'>" + name + "</span> " +
-            "<span class='cost-li-modal'>" + '$ ' + cost_base + "</span>" +
-            "<span class='cant-li-modal'>" + cant + "</span>" +
-            "<span class='total-li-modal'>" + '$ ' + total + "</span> " +
-            "</li>");
-
-          $nuevo_li.appendTo('#sales-list-modal');
-        });
-
-        let total_ticket = $('#total-price').text();
-
-        $nuevo_li = $("" +
-          "<li class='total-ticket-container'>" +
-          "<span id='total-ticket'>" + "$ " + total_ticket + "</span> " +
-          "</li>");
-
-        $nuevo_li.appendTo('#sales-list-modal');
-
-        function setButtonStatus(length) {
-          if (length <= 2) {
-            $('.btn-printer').attr('disabled', true);
-          } else {
-            $('.btn-printer').attr('disabled', false);
-          }
-        }
-
-        var size_tickets = $('#sales-list-modal li').length;
-        setButtonStatus(size_tickets);
-      });
-
-      /** Despliega el modal para realizar la venta */
-      $(this).on('click', '#dabba-img', function(event) {
+      $(this).on('click', '.product-img', function(event) {
         element = $(this);
         price = element.parent().find('span.product-cost').text();
         DabbaProduct.cost = price;
-      });
-
-      /** Realizar la venta e imprimir ticket */
-      $(this).on('click', '.btn-printer', function(event) {
-        var payment_type = $(this).attr('id');
-        var ticket_list = $('#sales-list-modal li');
-        var csrf_token = getCookie('csrftoken');
-
-        function rel() {
-          location.reload();
-        }
-
-        // Add payment type to ticket json
-        if (payment_type == 'btn-pago-efectivo') {
-          Ticket['payment_type'] = 'CA';
-        } else {
-          Ticket['payment_type'] = 'CR';
-        }
-
-        if (ticket_list.length > 2) {
-          JSONTicket = JSON.stringify(Ticket);
-          $.ajax({
-            url: '{% url "sales:new_sale" %}',
-            type: 'POST',
-            data: {
-              'ticket': JSONTicket,
-              csrfmiddlewaretoken: csrf_token,
-            },
-            traditional: true,
-            datatype: 'jsonp',
-            success: function(result) {
-              swal({
-                title: "Éxito",
-                text: "Venta realizada",
-                type: "success",
-                showConfirmButton: false,
-              });
-              $('#btn-pago-efectivo').attr('disabled', 'true');
-              $('#btn-pago-tarjeta').attr('disabled', 'true');
-              $('#ticket-id').text(result.ticket_id);
-              $('#ticket-order').text(result.ticket_order);
-              var options = {
-                mode: 'iframe',
-                popClose: true,
-              };
-              $("#printer").printArea(options);
-              setTimeout(rel, 1500);
-            },
-            error: function(result, jqXHR, textStatus, errorThrown) {
-              swal({
-                title: "Venta no realizada!",
-                text: 'Contacte a soporte!\n ' + 'Errores: ' + textStatus + ', ' + jqXHR,
-                type: "error",
-                showConfirmButton: false
-              });
-              setTimeout(rel, 3000);
-            },
-          });
-        };
       });
 
       /** Cancelar Venta - Resetear ticket */

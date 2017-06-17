@@ -43,16 +43,22 @@ iframe {
   height: 60px;
   line-height: 60px;
   border-radius: 15px !important;
+}.orde.cancel {
+  margin-top: 20px;
+  background-color: #F44336 !important;
 }
-.orde.cancel {
+.orde.set {
+  background-color: #4CAF50 !important;
+}
+.orde.cancel:active {
   margin-top: 20px;
   background-color: #C62828 !important;
 }
-.orde.set {
+.orde.set:active {
   background-color: #388E3C !important;
 }
 .orde.cancel:hover {
-  background-color: #FF5252 !important;
+  background-color: #FF8A80 !important;
   color: #fff !important;
 }
 .orde.set:hover {
