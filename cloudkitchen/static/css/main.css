@@ -4844,6 +4844,10 @@
     text-decoration: none;
   }
 
+  #main .bord {
+    margin-top: -35px;
+  }
+
   .bord {
     width: 100%;
   }
