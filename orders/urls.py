@@ -10,6 +10,7 @@ urlpatterns = [
     # New Customer
     url(r'^orders/new/$', views.new_order, name='new_order'),
     url(r'^arma-tu-dabba/$', views.new_order, name='new_dabba'),
+    url(r'^pay/$', views.pay, name='pay'),
 ]
 
 # Test

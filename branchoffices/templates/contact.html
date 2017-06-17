@@ -1,0 +1,54 @@
+{% extends "dabbawala/base_nav_footer.html" %}
+{% load static %}
+
+{% block content %}
+<div id="main">
+  <img class="bord2" src="{% static 'images/image/reverse.png' %}" alt="Borde">
+  <h2>contacto</h2>
+  <h1>Dabbawalla</h1>
+  <div class="first">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+      cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+      proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    </div>
+  </div>
+  <div id="main">
+    <img class="arr" src="{% static 'images/image/arrow.png'%}" alt="Borde de flechas">
+    <div class="form">
+      <div class="cols">
+        <div class="col1">
+          <h4>¿TIENES ALGUNA DUDA O SUGERENCIA?</h4>
+          <p class="cont">Por favor envianos tus dudas y nos pondremos en contacto a la brevedad.</p>
+          <input type="text" name="name" id="name" placeholder="Nombre de usuario" />
+          <input type="text" name="email" id="email" placeholder="Correo" />
+          <textarea name="message" placeholder="Mensaje" id="message"></textarea>
+          <input type="submit" name="submit" value="ENVIAR" />
+        </div>
+        <div class="col2 contactcol">
+          <h4>contacto</h4>
+          <p class="cont">Visítanos o contáctanos</p>
+          <ul class="icons con">
+            <li><a class="icon alt fa-map-marker"><span class="label"> Cto Museos Pte 33, Hab Bellavista, Satelite Tlalnepantla, Méx.</span></a></li>
+            <li><a class="icon alt fa-phone"><span class="label"> 555-555-555</span></a></li>
+            <li><a class="icon alt fa-envelope"><span class="label"> dabba@dabba.com</span></a></li>
+            <li><a class="icon alt fa-globe"><span class="label">dabbawalla.com</span></a></li>
+          </ul>
+          <h4>Síguenos</h4>
+          <ul class="icons">
+            <li><a rel="nofollow" target="_blank" href="" class="icon alt fa-facebook"><span class="label"></span></a></li>
+            <li><a rel="nofollow" target="_blank" href="" class="icon alt fa-google-plus"><span class="label"></span></a></li>
+          </ul>
+        </div>
+      </div> 
+    </div>
+  </div>
+  <div id="main">
+    <div class="form">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d15042.031969956412!2d-99.1732938!3d19.51979255!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2smx!4v1493530892480" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+{% endblock content %}

@@ -80,7 +80,18 @@ def test(request):
     return render(request, template, {})
 
 
-# -------------------------------------  Profile -------------------------------------
+# -------------------------------------  Menu -------------------------------------
+@login_required(login_url='users:login')
+def menu(request):
+    suppliers_list = Supplier.objects.order_by('id')
+    template = 'all_products/menu.html'
+    title = 'Menú'
+    context = {
+        'suppliers': suppliers_list,
+        'title': title,
+        'page_title': PAGE_TITLE
+    }
+    return render(request, template, context)
 
 
 # -------------------------------------  Providers -------------------------------------

@@ -10,3 +10,9 @@ def branch_offices(request):
         'page_title': 'Dabbawala'
     }
     return render(request, template, context)
+
+
+def contact(request):
+      template = 'contact.html'
+      context = {}
+      return render(request, template, context)

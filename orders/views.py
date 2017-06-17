@@ -11,3 +11,14 @@ def new_order(request):
   }
   
   return render(request, template, context)
+
+
+def pay(request):
+  all_products = Cartridge.objects.all()
+  template = 'pay.html'
+  
+  context = {
+    'products': all_products,
+  }
+  
+  return render(request, template, context)

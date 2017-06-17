@@ -886,6 +886,16 @@
 
     }
 
+    @media screen and (max-width: 1230px) {
+      #cart {
+        width: 500px !important;
+      }
+
+      .thecube {
+        margin-bottom: 0 !important;
+      }
+    }
+
     @media screen and (max-width: 1140px) {
 
       #header .logo {
@@ -1482,6 +1492,14 @@
         color:black;
       }
 
+      #main .form {
+        width: 100% !important;
+      }
+
+      #main div.colr {
+        width: 95% !important;
+      }
+
       #main form .col1, #main form .col2 {
         width: 100%;
       }
@@ -1749,6 +1767,17 @@
         margin-left: 8.33333%;
       }
 
+    }
+
+    @media screen and (max-width: 430px) {
+      #innerbtn {
+        width: 100%;
+        margin: 0.5em !important;
+      }
+
+      #innerbtn input {
+        width: 100% !important;
+      }
     }
 
     @media screen and (max-width: 370px) {
@@ -2919,12 +2948,10 @@
     #pay tfoot tr td img {
       vertical-align: middle;
     }
-    #pay tfoot tr td {
-      text-align: left;
-    }
 
     #pay tfoot tr th {
       padding-top: 1em;
+      text-align: center;
     }
 
     #pay tbody tr td, #pay thead tr th, #pay tfoot tr th, #pay tfoot tr td {
@@ -4164,10 +4191,6 @@
     line-height: 1.2;
   }
 
-  #main .bord {
-    margin-top: -40px;
-  }
-
   #main .arr {
     height: 60px;
     margin-top: -25px;
@@ -4285,10 +4308,18 @@
     margin: 0 auto !important;
   }
 
-  #main .mapr {
-    padding-top: -4em;
-    width: 400px;
-    margin: 0 auto;
+  #innerbtn {
+    width: 100%;
+    margin: 0;
+  }
+
+  #innerbtn input {
+    width: 83%;
+  }
+
+  #innerbtn input, #innerbtn a {
+    display: inline;
+    margin-left: 0 !important;
   }
 
   #main .formr {
@@ -4813,6 +4844,10 @@
     text-decoration: none;
   }
 
+  #main .bord {
+    margin-top: -35px;
+  }
+
   .bord {
     width: 100%;
   }
@@ -4985,12 +5020,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    background: -moz-radial-gradient(center, ellipse cover,  rgba(127,127,127,0) 0%, rgba(127,127,127,0.9) 100%);
-    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(127,127,127,0)), color-stop(100%,rgba(127,127,127,0.9)));
-    background: -webkit-radial-gradient(center, ellipse cover,  rgba(127,127,127,0) 0%,rgba(127,127,127,0.9) 100%);
-    background: -o-radial-gradient(center, ellipse cover,  rgba(127,127,127,0) 0%,rgba(127,127,127,0.9) 100%);
-    background: -ms-radial-gradient(center, ellipse cover,  rgba(127,127,127,0) 0%,rgba(127,127,127,0.9) 100%);
-    background: radial-gradient(center, ellipse cover,  rgba(127,127,127,0) 0%,rgba(127,127,127,0.9) 100%);
+    background: transparent;
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#007f7f7f', endColorstr='#e67f7f7f',GradientType=1 );
   }
 
@@ -5194,4 +5224,8 @@
     font-weight: 600;
     letter-spacing: 0.15em;
     line-height: 3;
+  }
+
+  .container-hidden {
+    display: none;
   }
