@@ -39,6 +39,25 @@ iframe {
 .order {
   text-transform: uppercase;
 }
+.orde {
+  height: 60px;
+  line-height: 60px;
+  border-radius: 15px !important;
+}
+.orde.cancel {
+  margin-top: 20px;
+  background-color: #C62828 !important;
+}
+.orde.set {
+  background-color: #388E3C !important;
+}
+.orde.cancel:hover {
+  background-color: #FF5252 !important;
+  color: #fff !important;
+}
+.orde.set:hover {
+  background-color: #00E676 !important;
+}
 .thecube {
   font-family: 'Helvetica Neue', Arial, sans-serif;
   -webkit-text-size-adjust: none;
