@@ -39,9 +39,6 @@ iframe {
 .order {
   text-transform: uppercase;
 }
-.ticket {
-  color: #000 !important;
-}
 .thecube {
   font-family: 'Helvetica Neue', Arial, sans-serif;
   -webkit-text-size-adjust: none;
@@ -51,13 +48,18 @@ iframe {
   padding-bottom: 2em;
 }
 .group-sales {
+  width: 300px !important;
+  margin: 0 auto;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
 }
-
+.card{
+  margin: 10px;
+  margin-bottom: 5px;
+}
 .orde{
   font-size: 17px;
   text-transform: uppercase;
@@ -276,4 +278,12 @@ iframe {
 .container-sales .group-sales .info-sale p .text-price-decimal{
   font-size: 1.5rem;
   margin-bottom: 3rem;
+}
+
+
+@media screen and (max-width: 1100px) {
+  .card {
+    margin: 10px !important;
+    margin-bottom: 5px !important;
+  }
 }
