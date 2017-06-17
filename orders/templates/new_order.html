@@ -143,6 +143,7 @@
     z-index: 1 !important;
   }
 </style>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.3.8/sweetalert2.min.css">
 <link rel="stylesheet" href="{% static 'css/cube.css' %}">
 <script src=" {% static 'js/prefixfree.js' %}"></script>
 {% endblock stylesheets %}
@@ -290,8 +291,132 @@
         </ul>
       </div>
       <a id="btn-orders-reset" class="button fit orde">Cancelar Venta</a>
-      <a id="btn-order" href="{% url 'orders:pay' %}" class="button fit orde"><span>Arma tu dabba</span></a>
+      <a id="btn-order" data-toggle="modal" data-target="#modal-order" class="button fit orde"><span>Arma tu dabba</span></a>
     </div>
+    </div>
+  </div>
+</div>
+
+<!-- Dabba Modal -->
+<div class="modal fade" id="modal-package" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="container-fluid">
+          <div class="card col-xs-4">
+            <span id="modal-prod-head-1" class="modal-head-prod-name"></span>
+          </div>
+          <div class="card col-xs-4">
+            <span id="modal-prod-head-2" class="modal-head-prod-name"></span>
+          </div>
+          <div class="card col-xs-4">
+            <span id="modal-prod-head-3" class="modal-head-prod-name"></span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="card card-scroll col-xs-4 ">
+            {% for cartridge in cartridges %}
+            {% if cartridge.category == 'FD' %}
+            <div class="modal-prod-container product-container" id="modal-prod-cont-1">
+              <h5 class="modal-prod-name">{{ cartridge.name }}</h5>
+              <img src="{{ cartridge.image.url }}" alt="product image" id="modal-img-1-{{ cartridge.pk }}" class="modal-product-img">
+            </div>
+            {% endif %}
+            {% endfor %}
+          </div>
+          <div class="card card-scroll col-xs-4 ">
+            {% for cartridge in cartridges %}
+            {% if cartridge.category == 'CO' %}
+            <div class="modal-prod-container product-container" id="modal-prod-cont-2">
+              <h5 class="modal-prod-name">{{ cartridge.name }}</h5>
+              <img src="{{ cartridge.image.url }}" alt="product image" id="modal-img-2-{{ cartridge.pk }}" class="modal-product-img">
+            </div>
+            {% endif %}
+            {% endfor %}
+          </div>
+          <div class="card card-scroll col-xs-4 ">
+            {% for cartridge in cartridges %}
+            {% if cartridge.category == 'CO' %}
+            <div class="modal-prod-container product-container" id="modal-prod-cont-3">
+              <h5 class="modal-prod-name">{{ cartridge.name }}</h5>
+              <img src="{{ cartridge.image.url }}" alt="product image" id="modal-img-3-{{ cartridge.pk }}" class="modal-product-img">
+            </div>
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="container">
+          <div class="row">
+            <button type="button" class="btn btn-secondary col-xs-3 push-xs-2" data-dismiss="modal" id="btn-close-dabba-modal">Close</button>
+            <button id="btn-add-dabba" data-dismiss="modal" type="button" class="btn btn-success col-xs-4 push-xs-3">¡Listo!</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Ticket Modal -->
+<div class="modal fade" id="modal-order" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Realizar venta</h4>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="card card-scroll col-xs-4" id="printer-container">
+            <div id="printer" style="margin: 0 auto">
+              <figure class="content-img">
+                <img src="{% static 'images/dabbawala_black.jpg' %}" alt="logo-cloudkitchen">
+              </figure>
+              <div class="ticket-order-container text-xs-center">
+                <span>ORDEN</span>
+                <span id="ticket-order"></span>
+              </div>
+              <div class="ticket-address">
+                <p class="text-xs-center">
+                  20 de Noviembre #32, San Lucas Tepetlacalco, Tlanepantla Edo. De México CP 54055
+                </p>
+              </div>
+              <div class="container ticket-datetime-container">
+                <div class="row">
+                  <div class="col-xs-6 ticket-datetime">
+                    <span id="ticket-time"></span>
+                  </div>
+                  <div class="col-xs-6 ticket-datetime">
+                    <span id="ticket-date"></span>
+                  </div>
+                </div>
+              </div>
+              <ul class="list-group list-group-flush" id="sales-list-modal">
+              </ul>
+              <div class="ticket-id-container">
+                <span>ID: </span><span id="ticket-id"></span>
+              </div>
+              <div class="ticket-celphone">
+                <span>Whatsapp: 55 42 46 73 60</span>
+              </div>
+            </div>
+          </div>
+          <div class="card card-scroll" id="ticket-description">
+            <h3>No olvides recordarle al cliente las promociones</h3>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="container">
+          <div class="row">
+            <button type="submit" id="btn-pago-tarjeta" class="btn btn-primary col-xs-4 push-xs-3 btn-printer">Pago con tarjeta</button>
+            <button type="submit" id="btn-pago-efectivo" class="btn btn-success col-xs-4 push-xs-4 btn-printer">Pago con efectivo</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -301,24 +426,24 @@
 {% block scripts %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.3.8/sweetalert2.min.js"></script>
 <script type="text/javascript" charset="utf-8">
-  $(document).ready(function() {
-    let Ticket = {
-      cartuchos: [],
-      paquetes: [],
-      payment_type: 'cash',
-    };
+    $(document).ready(function() {
+      let Ticket = {
+        cartuchos: [],
+        paquetes: [],
+        payment_type: 'cash',
+      }
 
-    let DabbaProduct = {
-      id: [],
-      cost: null,
-    };
+      let DabbaProduct = {
+        id: [],
+        cost: null,
+      }
 
-    function getCookie(name) {
-      var cookieValue = null;
-      if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-          var cookie = jQuery.trim(cookies[i]);
+      function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+          var cookies = document.cookie.split(';');
+          for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
             // Does this cookie string begin with the name we want?
             if (cookie.substring(0, name.length + 1) === (name + '=')) {
               cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
@@ -384,7 +509,7 @@
             if (cost % 2 != 0) {
               cost = cost.toFixed(2);
             } else
-            cost += '.00';
+              cost += '.00';
             $('ul#sales-list').find('#' + li_id + ' .cant-li').text(cant);
             $('ul#sales-list').find('#' + li_id + ' .total-li').text(cost);
           } else {
@@ -420,7 +545,7 @@
             "<span class='text-price align-top' id='int-total-price'>" + arreglo[0] + "</span>" +
             "<span class='point-total-price'>.</span>" +
             "<span class='text-price-decimal' id='dec-total-price'>" + arreglo[1] + "</span>"
-            );
+          );
 
           addProductToJSON(id, cant, cost);
         }
@@ -471,7 +596,7 @@
             "<span class='text-price align-top' id='int-total-price'>" + total_ticket_split[0] + "</span>" +
             "<span class='point-total-price'>.</span>" +
             "<span class='text-price-decimal' id='dec-total-price'>" + total_ticket_split[1] + "</span>"
-            );
+          );
 
 
           // Removes cartridge from ticket JSON
@@ -495,14 +620,14 @@
             "<span class='text-price align-top' id='int-total-price'>" + arreglo[0] + "</span>" +
             "<span class='point-total-price'>.</span>" +
             "<span class='text-price-decimal' id='dec-total-price'>" + arreglo[1] + "</span>"
-            );
+          );
         }
 
       });
 
       $(this).on('click', '.add-icon-li', function(event) {});
 
-      /** Resetear los titulos del modal-dabba */
+      /** Resetear los titulos del modal-package */
       $(this).on('click', '#btn-close-dabba-modal', function(event) {
         $('.modal-head-prod-name').empty();
       });
@@ -585,7 +710,7 @@
             "<span class='text-price align-top' id='int-total-price'>" + arreglo[0] + "</span>" +
             "<span class='point-total-price'>.</span>" +
             "<span class='text-price-decimal' id='dec-total-price'>" + arreglo[1] + "</span>"
-            );
+          );
 
           addProductToJSON(li_id, dabba_name_string, cant, cost);
 
@@ -775,14 +900,14 @@
             "<span class='text-price align-top' id='int-total-price'>0</span>" +
             "<span class='point-total-price'>.</span>" +
             "<span class='text-price-decimal' id='dec-total-price'>00</span>"
-            );
+          );
           $('.modal-head-prod-name').empty();
         }
         resetTicketList();
         resetTicketObject();
       });
     });
-</script>
+  </script>
 
 <script>
   function visible() {
