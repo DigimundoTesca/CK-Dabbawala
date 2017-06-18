@@ -45,6 +45,11 @@ def register(request):
         'form_customer': form_customer,
         'title': title,
     }
+    if request.method == 'POST':
+        if 'newuser' in request.POST:
+            if request.POST['type'] == 'regist_user':
+                new_user = request.POST['newuser']
+                print(new_user)
 
     return render(request, template, context)
 
@@ -69,6 +74,7 @@ def thanks(request):
     }
 
     return render(request, template, context)
+
 
 
 @login_required(login_url='users:login')
@@ -97,12 +103,3 @@ def customers_list(request):
     return render(request, template, context)
 
 
-
-    if request.method == 'POST':
-        if 'newuser' in request.POST:
-            if request.POST['type'] == 'regist_user':
-                new_user = request.POST['newuser']
-                print('\n\nExito!!!\n\n')
-                return HttpResponse('success')
-            print('\n\nError\n\n')
-        return HttpRepsonse('FAIL!!!!!')
