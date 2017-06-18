@@ -8,6 +8,9 @@
     width: 100%;
     margin-top: 30px;
   }
+  .swaladdress {
+    visibility: hidden;
+  }
 </style>
 {% endblock stylesheets%}
 
@@ -65,6 +68,7 @@
           </div>
           <label for="addres">Dirección</label>
           <div id="innerbtn">
+            <label class="swaladdress">Por favor arrastra el marcador a tu posición exacta.</label>
             <input type="text" class="form-control" id="id_address" name="address" placeholder="Busca tu dirección" maxlength="255" onkeypress="return search(event)" required="">
             <a class="icon alt fa-search" type="" id="btn-search"></a>
             {%  if form_customer.address.errors %}
@@ -109,6 +113,7 @@
 {% endblock content %}
 
 {% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.3.8/sweetalert2.min.js"></script>
 <script type="text/javascript">
   var map;
   var infoWindow;
@@ -183,6 +188,11 @@
     geocoder.geocode({'address': address}, geocodeResult);
   });
 
+  function swalYourAddress(){
+    var popup = document.getElementsByClassName("swaladdress")[0];
+    popup.style.visibility = "visible";
+;  }
+
   function pulsar(e) {
     tecla = (document.all) ? e.keyCode :e.which;
     return (tecla!=13);
@@ -226,8 +236,9 @@
 
       setLatLng(latitude, longitude);
 
-
       addMarkerLsteners(marker);
+
+      swalYourAddress();
 
     } else {
       /** If there's not results */
