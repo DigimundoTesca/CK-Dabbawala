@@ -81,7 +81,7 @@
               <strong>Oops! </strong><span id="msj-alert">mensaje</span>
             </div>
           </div>
-          <button type="submit" class="btn btn-success btn-block">Registrate</button>
+          <button id="getJson" type="submit" class="btn btn-success btn-block">Registrate</button>
         </div>
         <div class="col2 mapr map-container">
           <div id="map" class=""></div> 
@@ -237,6 +237,46 @@
   }
   $(function() {
     initMap();
+  });
+</script>
+<script>
+  $('#getJson').on('click', function() {
+    let name, addres, mail, phone;
+    let URL = "{% url 'customers:register' %}";
+    name = $('#id_name').val();
+    addres = $('#id_address').val();
+    mail = $('#id_email').val();
+    phone = $('#id_phone_number').val();
+    let new_user = new Object();
+    new_user.name = name;
+    new_user.mail = mail;
+    new_user.phone = phone;
+    new_user.addres =  addres;
+
+    let userJson = JSON.stringify(new_user);
+    console.log(new_user)
+    console.log(userJson)
+
+    $.ajax({
+      url: "{% url 'customers:register' %}",
+      type: 'POST',
+      data: {
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        'newuser': userJson,
+      },
+      traditional: true, 
+      datatype: 'jsonp',
+    })
+    .done(function() {
+      console.log("success");
+    })
+    .fail(function() {
+      console.log("error");
+    })
+    .always(function() {
+      console.log("complete");
+    });
+    
   });
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrITfQswCPmOPEBRM1Ufeiogh22FxQV5k" defer charset="utf-8"></script>

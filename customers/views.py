@@ -49,6 +49,7 @@ def register(request):
     return render(request, template, context)
 
 
+
 def thanks(request):
     if request.method == 'POST':
         form = CustomerProfileForm(request.POST, request.FILES)
@@ -94,3 +95,12 @@ def customers_list(request):
     }
 
     return render(request, template, context)
+
+
+
+    if request.method == 'POST':
+        if 'newuser' in request.POST:
+            newuser = json.loads(request.POST.get('newuser'))
+            print(newuser)
+            return HttpResponse('success')
+    return HttpRepsonse('FAIL!!!!!')
