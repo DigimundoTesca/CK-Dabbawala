@@ -242,7 +242,6 @@
 <script>
   $('#getJson').on('click', function() {
     let name, addres, mail, phone;
-    let URL = "{% url 'customers:register' %}";
     name = $('#id_name').val();
     addres = $('#id_address').val();
     mail = $('#id_email').val();
@@ -263,6 +262,7 @@
       data: {
         csrfmiddlewaretoken: '{{ csrf_token }}',
         'newuser': userJson,
+        'type': 'regist_user'
       },
       traditional: true, 
       datatype: 'jsonp',

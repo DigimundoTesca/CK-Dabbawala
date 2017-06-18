@@ -100,7 +100,9 @@ def customers_list(request):
 
     if request.method == 'POST':
         if 'newuser' in request.POST:
-            newuser = json.loads(request.POST.get('newuser'))
-            print(newuser)
-            return HttpResponse('success')
-    return HttpRepsonse('FAIL!!!!!')
+            if request.POST['type'] == 'regist_user':
+                new_user = request.POST['newuser']
+                print('\n\nExito!!!\n\n')
+                return HttpResponse('success')
+            print('\n\nError\n\n')
+        return HttpRepsonse('FAIL!!!!!')
