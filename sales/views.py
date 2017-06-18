@@ -395,8 +395,7 @@ def sales(request):
             # Get cartridges details
             for ticket_detail in all_ticket_details:
                 if ticket_detail.ticket.id == ticket_id:
-                    ticket_object['ticket_order'] = ticket_detail.ticket.order_number;
-
+                    ticket_object['ticket_order'] = ticket_detail.ticket.order_number
                     if ticket_detail.cartridge:
                         cartridge_object = {
                             'name': ticket_detail.cartridge.name,
@@ -411,7 +410,6 @@ def sales(request):
 
                         for cartridge_recipe in package_cartridge_recipe:
                             cartridges_list.append(cartridge_recipe.cartridge.name)
-                            
                         package_cartridge_object = {
                             'cartridges': cartridges_list,
                             'quantity': ticket_detail.quantity,
@@ -522,9 +520,9 @@ def new_sale(request):
             """
             Saves the tickets details for cartridges
             """
-            for ticket_detail in ticket_detail_json_object['cartuchos']:
+            for ticket_detail in ticket_detail_json_object['cartridges']:
                 cartridge_object = get_object_or_404(Cartridge, id=ticket_detail['id'])
-                quantity = ticket_detail['cant']
+                quantity = ticket_detail['quantity']
                 price = ticket_detail['price']
                 new_ticket_detail_object = TicketDetail(
                     ticket=new_ticket_object,
@@ -534,7 +532,7 @@ def new_sale(request):
                 )
                 new_ticket_detail_object.save()
 
-            for ticket_detail_packages in ticket_detail_json_object['paquetes']:
+            for ticket_detail_packages in ticket_detail_json_object['packages']:
                 """
                 Saves the tickets details for package cartridges
                     1. Iterates each package
@@ -569,8 +567,6 @@ def new_sale(request):
                 if is_new_package:
                     package_name = ticket_detail_packages['name']
                     package_price = ticket_detail_packages['price']
-                    print(package_name)
-                    print(package_price)
                     new_package_object = PackageCartridge(name=package_name, price=package_price, is_active=True)
                     new_package_object.save()
 
