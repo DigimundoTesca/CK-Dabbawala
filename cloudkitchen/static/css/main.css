@@ -1482,7 +1482,7 @@
 
     @media screen and (max-width: 630px) {
 
-      #main form {
+      #main form, #main1 form, #main2 form, #main3 form, #main4 form {
         display: flex;
         flex-wrap: wrap;
         flex-direction: row;
@@ -1492,19 +1492,20 @@
         color:black;
       }
 
-      #main .form {
+      #main .form, #main1 .form, #main2 .form, #main3 .form, #main4 .form {
         width: 100% !important;
       }
 
-      #main div.colr {
+      #main div.colr, #main1 div.colr, #main2 div.colr, #main3 div.colr, #main4 div.colr {
         width: 95% !important;
       }
-
-      #main form .col1, #main form .col2 {
+ 
+      #main form .col1, #main1 form .col1, #main2 form .col1, #main3 form .col1, #main4 form .col1,
+      #main form .col2, #main1 form .col2, #main2 form .col2, #main3 form .col2, #main4 form .col2 {
         width: 100%;
       }
-
-      #main form textarea {
+ 
+      #main form textarea, #main1 form textarea, #main2 form textarea, #main3 form textarea, #main4 form textarea {
         margin: 0 auto;
         width: 95%;
       }
@@ -1543,8 +1544,8 @@
       #carta .col1, #carta .col2 {
         width: 100%;
       }
-
-      #main .first {
+ 
+      #main .first, #main1 .first, #main2 .first, #main3 .first, #main4 .first {
         width: 90% !important;
       }
 
@@ -3751,10 +3752,10 @@
   }
 
   #header.alt {
-    -moz-transition: opacity 2.5s ease;
-    -webkit-transition: opacity 2.5s ease;
-    -ms-transition: opacity 2.5s ease;
-    transition: opacity 2.5s ease;
+    -moz-transition: opacity 0.5s ease;
+    -webkit-transition: opacity 0.5s ease;
+    -ms-transition: opacity 0.5s ease;
+    transition: opacity 0.5s ease;
     -moz-transition-delay: 0.75s;
     -webkit-transition-delay: 0.75s;
     -ms-transition-delay: 0.75s;
@@ -3946,10 +3947,10 @@
   }
 
   #banner:after {
-    -moz-transition: opacity 2.5s ease;
-    -webkit-transition: opacity 2.5s ease;
-    -ms-transition: opacity 2.5s ease;
-    transition: opacity 2.5s ease;
+    -moz-transition: opacity 0.3s ease;
+    -webkit-transition: opacity 0.3s ease;
+    -ms-transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease;
     -moz-transition-delay: 0.75s;
     -webkit-transition-delay: 0.75s;
     -ms-transition-delay: 0.75s;
@@ -4155,7 +4156,7 @@
 
   /* Main */
 
-  #main {
+  #main, #main1, #main2, #main3, #main4 {
     background-color: #ffffff;
     background-image: -webkit-linear-gradient(150deg, #ffffff 50%, rgb(250,243,237) 50%);
     background-image: -o-linear-gradient(150deg, #ffffff 50%, rgb(250,243,237) 50%);
@@ -4165,49 +4166,52 @@
     vertical-align: middle;
   }
 
-  #main h1, #main h2, #main h3, #main h4 {
+  #main h1, #main1 h1, #main2 h1, #main3 h1, #main4 h1,
+  #main h2, #main1 h2, #main2 h2, #main3 h2, #main4 h2,
+  #main h3, #main1 h3, #main2 h3, #main3 h3, #main4 h3,
+  #main h4, #main1 h4, #main2 h4, #main3 h4, #main4 h4 {
     color: #F84F0E;
     padding: 0;
     margin: 0;
   }
 
-  #main h3 {
+  #main h3, #main1 h3, #main2 h3, #main3 h3, #main4 h3 {
     margin-top: 2em;
   }
 
-  #main h2 {
+  #main h2, #main1 h2, #main2 h2, #main3 h2, #main4 h2 {
     text-transform: uppercase;
     margin-top: 1em;
   }
 
-  #main h4 {
+  #main h4, #main1 h4, #main2 h4, #main3 h4, #main4 h4 {
     font-family:'Conv_Futura',Sans-Serif;
     text-transform: uppercase;
     margin-top: 1em;
   }
 
-  #main .cont {
+  #main .cont, #main1 .cont, #main2 .cont, #main3 .cont, #main4 .cont {
     font-size: 0.75em;
     line-height: 1.2;
   }
 
-  #main .arr {
+  #main .arr, #main1 .arr, #main2 .arr, #main3 .arr, #main4 .arr {
     height: 60px;
     margin-top: -25px;
   }
-
-  #main .menustrong {
+ 
+  #main .menustrong, #main1 .menustrong, #main2 .menustrong, #main3 .menustrong, #main4 .menustrong {
     color: #F84F0E;
     font-size: 1.5em;
   }
-
-  #main div.first {
+ 
+  #main div.first, #main1 div.first, #main2 div.first, #main3 div.first, #main4 div.first {
     width: 50%;
     margin:0 auto;
     padding-bottom: 2em;
   }
-
-  #main div.cols {
+ 
+  #main div.cols, #main1 div.cols, #main2 div.cols, #main3 div.cols, #main4 div.cols {
     padding-top: 3em;
     padding-bottom: 3em;
     width: 80%;
@@ -4217,8 +4221,8 @@
     flex-wrap: wrap;
     vertical-align: middle;
   }
-
-  #main div.colr {
+ 
+  #main div.colr, #main1 div.colr, #main2 div.colr, #main3 div.colr, #main4 div.colr {
     padding-top: 0em;
     padding-bottom: 0.5em;
     width: 80%;
@@ -4278,30 +4282,31 @@
     width: 90%;
     margin: 0 auto;
   }
-
-  #main.col {
+ 
+  #main.col, #main1.col, #main2.col, #main3.col, #main4.col {
     width: 100%;
     margin: 0 auto;
   }
-
-  #main .col1 img, #main .col2 img {
+ 
+  #main .col1 img, #main1 .col1 img, #main2 .col1 img, #main3 .col1 img, #main4 .col1 img, 
+  #main .col2 img, #main1 .col2 img, #main2 .col2 img, #main3 .col2 img, #main4 .col2 img {
     margin: 0 auto;
     margin-top: 15%;
   }
-
-  #main .col1 {
+ 
+  #main .col1, #main1 .col1, #main2 .col1, #main3 .col1, #main4 .col1 {
     width: 450px;
     display: table-cell;
     vertical-align: middle;
     margin: 0 auto;
   }
-
-  #main .col1 .cont {
+ 
+  #main .col1 .cont, #main1 .col1 .cont, #main2 .col1 .cont, #main3 .col1 .cont, #main4 .col1 .cont {
     text-align: left;
     padding-left: 1em;
   }
 
-  #main .col2{
+  #main .col2, #main1 .col2, #main2 .col2, #main3 .col2, #main4 .col2 {
     width: 450px;
     display: table-cell;
     vertical-align: middle;
@@ -4321,24 +4326,25 @@
     display: inline;
     margin-left: 0 !important;
   }
-
-  #main .formr {
+ 
+  #main .formr, #main1 .formr, #main2 .formr, #main3 .formr, #main4 .formr {
     padding: 0;
     padding-top: 2em;
     padding-right: 0;
   }
-  #main .form {
+
+  #main .form, #main1 .form, #main2 .form, #main3 .form, #main4 .form {
     width: 80%;
     margin: 0 auto;
     padding-top: 1.5em;
     color:black;
   }
-
-  #main .form .col1 {
+ 
+  #main .form .col1, #main1 .form .col1, #main2 .form .col1, #main3 .form .col1, #main4 .form .col1 {
     padding-right: 1em;
   }
 
-  #main .form iframe{
+  #main .form iframe, #main1 .form iframe, #main2 .form iframe, #main3 .form iframe, #main4 .form iframe {
     padding-top: 2em;
     padding-bottom: 1em;
     margin-bottom: 1.5em;
@@ -4371,22 +4377,23 @@
     color: #D3D3D3;
     opacity: 1;
   }
-
-  #main form.col {
+ 
+  #main form.col, #main1 form.col, #main2 form.col, #main3 form.col, #main4 form.col {
     margin: 0 auto;
     padding-top: 2em;
     padding-bottom: 1.5em;
   }
-
-  #main .contactcol {
+ 
+  #main .contactcol, #main1 .contactcol, #main2 .contactcol, #main3 .contactcol, #main4 .contactcol {
     max-width: 90% !important;
   }
 
-  #main div.col1 input, #main div.col2 {
+  #main div.col1 input, #main1 div.col1 input, #main2 div.col1 input, #main3 div.col1 input, #main4 div.col1 input, 
+  #main div.col2, #main1 div.col2, #main2 div.col2, #main3 div.col2, #main4 div.col2 {
     margin: 0.5em;
   }
-
-  #main label {
+ 
+  #main label, #main1 label, #main2 label, #main3 label, #main4 label {
     font-family:'Conv_Futura',Sans-Serif;
     margin: 0.8em !important;
     margin-bottom: -10px !important;
@@ -4397,25 +4404,25 @@
     text-align: left;
   }
 
-  #main .form p{
+  #main .form p, #main1 .form p, #main2 .form p, #main3 .form p, #main4 .form p {
     text-align: center;
     padding: 0;
     margin: 0;
   }
 
-  #main p {
+  #main p, #main1 p, #main2 p, #main3 p, #main4 p {
     color: #000;
   }
-
-  #main > * {
+ 
+  #main > *, #main1 > *, #main2 > *, #main3 > *, #main4 > * {
     border-top: solid 1px rgba(212, 212, 255, 0.1);
   }
-
-  #main > *:first-child {
+ 
+  #main > *:first-child, #main1 > *:first-child, #main2 > *:first-child, #main3 > *:first-child, #main4 > *:first-child {
     border-top: 0;
   }
-
-  #main > * > .inner {
+ 
+  #main > * > .inner, #main1 > * > .inner, #main2 > * > .inner, #main3 > * > .inner, #main4 > * > .inner {
     padding: 4em 0 2em 0 ;
     margin: 0 auto;
     max-width: 65em;
@@ -4424,14 +4431,14 @@
 
   @media screen and (max-width: 736px) {
 
-    #main > * > .inner {
+    #main > * > .inner, #main1 > * > .inner, #main2 > * > .inner, #main3 > * > .inner, #main4 > * > .inner {
       padding: 3em 0 1em 0 ;
       width: calc(100% - 3em);
     }
 
   }
-
-  #main.alt {
+ 
+  #main.alt, #main1.alt, #main2.alt, #main3.alt, #main4.alt {
     background-color: transparent;
     border-bottom: solid 1px rgba(212, 212, 255, 0.1);
   }
@@ -4844,7 +4851,7 @@
     text-decoration: none;
   }
 
-  #main .bord {
+  #main .bord, #main1 .bord, #main2 .bord, #main3 .bord, #main4 .bord {
     margin-top: -35px;
   }
 
@@ -4859,31 +4866,33 @@
     background-image: -o-linear-gradient(180deg, #F84F0E 50%, rgb(250,243,237) 50%);
     background-image: linear-gradient(180deg, #F84F0E 50%, rgb(250,243,237) 50%);
   }
-
-  #main .pick {
+ 
+  #main .pick, #main1 .pick, #main2 .pick, #main3 .pick, #main4 .pick {
     max-width: 1800px;
     width: 1300px;
     min-width: 300px;
     margin: 0 auto !important;
     text-align: center !important;
   }
-
-  #main .pick a {
+ 
+  #main .pick a, #main1 .pick a, #main2 .pick a, #main3 .pick a, #main4 .pick a {
     max-width: 550px !important;
     min-width: 275 !important;
     margin: auto !important;
     height: 30em;
     
   }
-
-  #main .pick1, #main .pick2 {
+ 
+  #main .pick1, #main1 .pick1, #main2 .pick1, #main3 .pick1, #main4 .pick1,
+  #main .pick2, #main1 .pick2, #main2 .pick2, #main3 .pick2, #main4 .pick2 {
     -webkit-transition: box-shadow 0.3s ease-in-out;
     -moz-transition: box-shadow 0.3s ease-in-out;
     -o-transition: box-shadow 0.3s ease-in-out;
     transition: box-shadow 0.3s ease-in-out;
   }
-
-  #main .pick1:hover, #main .pick2:hover {
+ 
+  #main .pick1:hover, #main1 .pick1:hover, #main2 .pick1:hover, #main3 .pick1:hover, #main4 .pick1:hover,
+  #main .pick2:hover, #main1 .pick2:hover, #main2 .pick2:hover, #main3 .pick2:hover, #main4 .pick2:hover {
     box-shadow: 0 0 0 6px rgba(31,68,120,0.5);
   }
 
@@ -4909,7 +4918,7 @@
     text-align: center;
   }
 
-  #main .pick p{
+  #main .pick p, #main1 .pick p, #main2 .pick p, #main3 .pick p, #main4 .pick p {
     text-align: center;
     padding-left: 1em;
     padding-right: 1em;
@@ -4922,18 +4931,18 @@
     line-height: 1.65;
   }
 
-  #main .pick h2{
+  #main .pick h2, #main1 .pick h2, #main2 .pick h2, #main3 .pick h2, #main4 .pick h2 {
     margin-top: 2em;
     text-align: center;
     /*background-color: rgba(255,255,255,0.15);*/
   }
-
-  #main .regis {
+ 
+  #main .regis, #main1 .regis, #main2 .regis, #main3 .regis, #main4 .regis {
     width: 70%;
     margin: 0 auto;
   }
-
-  #main .regis p {
+ 
+  #main .regis p, #main1 .regis p, #main2 .regis p, #main3 .regis p, #main4 .regis p {
     text-align: center;
     background-color: rgba(255,255,255,0.15);
     color: balck;
@@ -4944,8 +4953,8 @@
     font-weight: 400;
     letter-spacing: 0.05em;
   }
-
-  #main .regis span {
+ 
+  #main .regis span, #main1 .regis span, #main2 .regis span, #main3 .regis span, #main4 .regis span {
     font-weight: 700;
   }
 
