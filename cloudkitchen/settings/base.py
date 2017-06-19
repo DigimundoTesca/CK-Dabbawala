@@ -46,6 +46,7 @@ USER_APPS = [
     'orders.apps.OrdersConfig',
     'kitchen.apps.KitchenConfig',
     'diners.apps.DinersConfig',
+    'customers.apps.CustomersConfig',
     'api.apps.ApiConfig',
 ]
 

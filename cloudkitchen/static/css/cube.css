@@ -1,0 +1,316 @@
+section, footer, nav {
+  display: block;
+}
+
+iframe {
+  width: 100%;
+  height: 100%;
+}
+.list-group-item {
+  text-decoration-color: black !important;
+}
+#options {
+  position: relative;
+  z-index: 100;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+#disclaimer {
+  color: red;
+  font-weight: bold;
+  display: none;
+}
+
+#cart {
+  width: 300px;
+  margin-bottom: 30px;
+}
+
+.salessection {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row-reverse;
+  justify-content: space-around;
+}
+.order {
+  text-transform: uppercase;
+}
+.orde {
+  height: 60px;
+  line-height: 60px;
+  border-radius: 15px !important;
+}.orde.cancel {
+  margin-top: 20px;
+  background-color: #F44336 !important;
+}
+.orde.set {
+  background-color: #4CAF50 !important;
+}
+.orde.cancel:active {
+  margin-top: 20px;
+  background-color: #C62828 !important;
+}
+.orde.set:active {
+  background-color: #388E3C !important;
+}
+.orde.cancel:hover {
+  background-color: #FF8A80 !important;
+  color: #fff !important;
+}
+.orde.set:hover {
+  background-color: #00E676 !important;
+}
+.thecube {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  -webkit-text-size-adjust: none;
+  color: #333;
+  max-width: 720px;
+  margin-bottom: 6em;
+  padding-bottom: 2em;
+}
+.group-sales {
+  width: 300px !important;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+.card{
+  margin: 10px;
+  margin-bottom: 5px;
+}
+.orde{
+  font-size: 17px;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+}
+.container-sales {
+  margin: 0 0.5rem;
+  text-align: center !important;
+}
+.container-sales-reports .sales-graphics {
+  margin-bottom: 1rem; 
+}
+.container-sales-reports .sales-graphics .canvas-holder{
+  margin-bottom: 2rem;
+}
+.container-sales-reports .sales-details .card {
+  max-height: 40vh;
+}
+.container-sales-reports .sales-details span.btn-reports,
+.container-diners span.btn-reports {
+  display: flex;
+  justify-content: center;
+}
+.container-sales-reports .sales-details table.table-sales-details th.header-actions,
+.container-sales-reports .sales-details table.table-sales-details td.header-actions {
+  min-width: 10rem;
+}
+.container-sales-reports .sales-details table.table-sales-details th.header-date,
+.container-sales-reports .sales-details table.table-sales-details td.header-date {
+  min-width: 15rem;
+}
+.container-sales-reports .sales-details table.table-sales-details th.header-date,
+.container-sales-reports .sales-details table.table-sales-details td.header-date {
+  min-width: 17rem;
+}
+.container-sales-reports .sales-details table.table-sales-details th.header-package,
+.container-sales-reports .sales-details table.table-sales-details td.header-package, 
+.container-sales-reports .sales-details table.table-sales-details th.header-products,
+.container-sales-reports .sales-details table.table-sales-details td.header-products {
+  min-width: 20rem;
+}
+.container-sales-reports .sales-details table.table-sales-details span.sales-actions {
+  padding: 0 0.5rem 0 1rem;
+}
+.container-sales-reports .sales-details table.table-sales-details span.sales-actions i {
+  font-size: 2rem;
+  cursor: pointer;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+}
+.container-sales-reports .sales-details table.table-sales-details span.sales-actions:hover > i {
+  opacity: 0.8;
+}
+.container-sales .group-sales .card-scroll {
+  min-height: calc(100vh - 16rem);
+  max-height: calc(100vh - 16rem);
+}
+.container-sales .group-sales .packages-block {
+  min-height: calc(100vh - 21rem);
+  max-height: calc(100vh - 21rem);
+}
+.container-sales .group-sales .products-block i {
+  color: #c9302c;  
+  cursor: pointer;
+  font-size: 2rem;
+}
+.container-sales .group-sales .products-block i:hover {
+  color: #d9534f;
+}
+.container-sales .group-sales .card-block.card-product-title,
+.container-sales .group-sales .card-block.card-package-title {
+  height: 4rem;
+}
+.container-sales .group-sales .card-scroll-orders {
+  min-height: calc(100vh - 25rem);
+  max-height: calc(100vh - 25rem);
+  padding: 0;
+}
+.container-sales .group-sales .card-scroll-orders ul.list-group {
+  font-family: 'Open Sans Condensed', sans-serif;
+}
+.container-sales .group-sales .card-scroll-orders ul.list-group li {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  margin: 0;
+  opacity: 0;
+  padding: 0.5rem 0;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  width: 100%;
+}
+.container-sales .group-sales .card-scroll-orders ul.list-group li.extra-ingredient-li-ticket {
+  text-transform: uppercase;
+}
+.container-sales .group-sales .card-scroll-orders ul.list-group li span{
+  flex: 1;
+  font-size: 1.2rem;
+  letter-spacing: normal;
+  overflow: hidden;
+  padding: 0 0.2rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-spacing: normal;
+}
+.container-sales .group-sales .card-scroll-orders ul.list-group  li {
+  display: flex;
+  flex-wrap: wrap;
+}
+.container-sales .group-sales .card-scroll-orders ul.list-group  span.name-li {
+  min-width: 40%;
+  max-width: 40%;
+  text-align: left;
+}
+.container-sales .group-sales .card-scroll-orders ul.list-group  span.base-cost-li {
+  text-align: center;
+  display: none;
+}
+.container-sales .group-sales .card-scroll-orders ul.list-group  span.quantity-li {
+  min-width: 10%;
+  max-width: 10%;
+  text-align: center;
+}
+.container-sales .group-sales .card-scroll-orders ul.list-group  span.s-li {
+  min-width: 8%;
+  max-width: 8%;
+  text-align: right;
+}
+.container-sales .group-sales .card-scroll-orders ul.list-group  span.total-li {
+  min-width: 22%;
+  max-width: 22%;
+  text-align: right;
+}
+.container-sales .group-sales .card-scroll-orders ul.list-group  span.add-icon-li,
+.container-sales .group-sales .card-scroll-orders ul.list-group  span.remove-icon-li {
+  min-width: 10%;
+  max-width: 10%;
+  cursor: pointer;
+}
+.container-sales .group-sales .card-scroll-orders ul.list-group  span.add-icon-li i,
+.container-sales .group-sales .card-scroll-orders ul.list-group  span.remove-icon-li i{
+  display: flex;
+  font-size: 1em;
+  font-weight: 800;
+}
+.container-sales .group-sales .card-scroll-orders ul.list-group  span.add-icon-li i{
+  color: #5cb85c;
+}
+.container-sales .group-sales .card-scroll-orders ul.list-group  span.add-icon-li i:active {
+  color: #419641;
+}
+.container-sales .group-sales .card-scroll-orders ul.list-group  span.remove-icon-li i{
+  color: #d9534f;
+}
+.container-sales .group-sales .card-scroll-orders ul.list-group  span.remove-icon-li i:active {
+  color: #c9302c;
+}
+.container-sales .group-sales .card-scroll-orders ul.list-group  span.extra-ingredients-name-li {
+  display: flex;
+}
+.container-sales .group-sales .card-block>.card-block{
+  border-bottom: #ffeac4 solid 1px;  
+}
+.container-sales .group-sales .product-container {
+  display: flex;
+  flex-direction: column;
+}
+.container-sales .group-sales .product-container .product-name {
+  font-size: 1.2em;
+}
+.container-sales .group-sales .product-container img  {
+  max-height: 220px;
+  border-radius: 8px;
+  cursor: pointer;
+  max-width: 100%;
+  align-self: center;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+}
+.container-sales .group-sales .product-container img:hover  {
+  opacity: 0.75;
+}
+.container-sales .group-sales .card-block img:active {
+  opacity: 0.5;
+}
+.container-sales .group-sales .card-block span {
+  display: inline-block;
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+}
+.container-sales .group-sales .card-block span.product-cost {
+  margin-left: 0.5rem;
+}
+.container-sales .group-sales .info-sale  {
+  margin-top: 1rem;
+}
+.text-total {
+  color: #000;
+}
+.container-sales .group-sales .info-sale .text-total {
+  font-size: 1.2rem;
+}
+.container-sales .group-sales .info-sale p .point-total-price {
+  display: none;
+}
+.group-sales .info-sale p .text-price {
+  font-size: 3rem !important;
+}
+.container-sales .group-sales .info-sale p .text-price-decimal{
+  font-size: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+
+@media screen and (max-width: 1100px) {
+  .card {
+    margin: 10px !important;
+    margin-bottom: 5px !important;
+  }
+}

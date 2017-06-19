@@ -16,6 +16,7 @@ from django.core.paginator import Paginator
 from django.db.models import Max, Min
 
 from .models import AccessLog, Diner, ElementToEvaluate, SatisfactionRating
+from helpers import Helper, DinersHelper, RatesHelper
 from cloudkitchen.settings.base import PAGE_TITLE
 
 
@@ -493,44 +494,98 @@ def diners_logs(request):
         }
         return render(request, template, context)    
 
-@login_required(login_url='users:login')
 def satisfaction_rating(request):
-    if request.method == 'POST':
+    if request.method == 'POST': 
         if request.POST['type'] == 'satisfaction_rating':
-            satisfaction_rating = request.POST['satisfaction_rating']
+            satisfaction_rating_value = request.POST['satisfaction_rating']
+            if int(satisfaction_rating_value) > 4:
+                satisfaction_rating_value = 4
             elements_list = json.loads(request.POST['elements_id'])
 
             if request.POST['suggestion']:
                 new_satisfaction_rating = SatisfactionRating.objects.create(
-                    satisfaction_rating=satisfaction_rating,
+                    satisfaction_rating=satisfaction_rating_value,
                     suggestion=request.POST['suggestion'],
                 )
             else:
                 new_satisfaction_rating = SatisfactionRating.objects.create(
-                    satisfaction_rating=satisfaction_rating
+                    satisfaction_rating=satisfaction_rating_value
                 )
-            new_satisfaction_rating.save();
+            new_satisfaction_rating.save()
 
             for element in elements_list:
                 new_element = ElementToEvaluate.objects.get(id=element)
                 new_satisfaction_rating.elements.add(new_element)
                 new_satisfaction_rating.save()
-            return JsonResponse({'status':'ready'})
-
+            return JsonResponse({'status': 'ready'})
 
     template = 'satisfaction_rating.html'
     title = 'Rating'
-    elements = ElementToEvaluate.objects.all()
+    elements = ElementToEvaluate.objects.order_by('priority').all()
     context = {
         'title': PAGE_TITLE + ' | ' + title,
         'page_title': title,
         'elements': elements,
     }
-    return render (request, template, context)
+    return render(request, template, context)
+
 
 @login_required(login_url='users:login')
 def analytics(request):
+    helper = Helper()
+    rates_helper = RatesHelper()
+
+    if request.method == 'POST':
+        if request.POST['type'] == 'reactions_day':
+            start_date = helper.naive_to_datetime(datetime.strptime(request.POST['date'], '%d-%m-%Y').date())
+            end_date = helper.naive_to_datetime(start_date + timedelta(days=1))
+            today_suggestions = rates_helper.get_satisfaction_ratings(start_date, end_date)
+            reactions_list = []
+            for element_to_evaluate in rates_helper.elements_to_evaluate:
+                """ For every element chart """
+                element_object = {
+                    'id': element_to_evaluate.id,
+                    'name': element_to_evaluate.element,
+                    'reactions': {
+                        0: {'reaction': 'Enojado', 'quantity': 0},
+                        1: {'reaction': 'Triste', 'quantity': 0},
+                        2: {'reaction': 'Feliz', 'quantity': 0},
+                        3: {'reaction': 'Encantado', 'quantity': 0},
+                    },
+                }
+                for suggestion in today_suggestions:
+                    for element_in_suggestion in suggestion.elements.all():
+                        if element_in_suggestion == element_to_evaluate:
+                            element_object['reactions'][suggestion.satisfaction_rating-1]['quantity'] += 1
+
+                reactions_list.append(element_object)
+            return JsonResponse(reactions_list, safe=False)
+        elif request.POST['type'] == 'reactions_week':
+            initial_date = helper.parse_to_datetime(request.POST['dt_week'].split(',')[0])
+            final_date = helper.parse_to_datetime(request.POST['dt_week'].split(',')[1])
+            data = {
+                'week_number': helper.get_week_number(initial_date),
+                'reactions': rates_helper.get_info_rates_list(initial_date, final_date),
+            }
+            return JsonResponse(data)
+
     template = 'analytics.html'
+    title = 'Analytics'
+    context = {
+        'title': PAGE_TITLE + ' | ' + title,
+        'page_title': title,
+        'dates_range': rates_helper.get_dates_range(),
+        'reactions_week': rates_helper.get_info_rates_actual_week(),
+        'suggestions_week': rates_helper.get_info_suggestions_actual_week(),
+        'elements': rates_helper.elements_to_evaluate,
+        'total_elements': rates_helper.elements_to_evaluate.count(),
+    }
+    return render(request, template, context)
+
+
+@login_required(login_url='users:login')
+def suggestions(request):
+    template = 'suggestions.html'
     title = 'Analytics'
     # ratings = SatisfactionRating.objects.all()
     tests = SatisfactionRating.objects.order_by('-creation_date')
@@ -540,8 +595,7 @@ def analytics(request):
         # 'ratings': ratings,
         'tests': tests,
     }
-    return render (request, template, context)
-
+    return render(request, template, context)
 
 # --------------------------- TEST ------------------------
 @login_required(login_url='users:login')

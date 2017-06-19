@@ -1,0 +1,83 @@
+{% extends "dabbawala/base_nav_footer.html" %}
+{% load static %}
+
+{% block content %}
+<div id="main">
+  <img class="bord2" src="{% static 'images/image/reverse.png' %}" alt="Borde">
+  <h2>MENÚ</h2>
+  <h1>Dabbawalla</h1>
+  <div class="first">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+      cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+      proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    </div>
+  </div>
+  <div id="main">
+    <img class="arr" src="{% static 'images/image/arrow.png' %}" alt="Borde">
+    <div id="carta" class="cols">
+      <div class="col1">
+        <img src="assets/images/image/roti.jpg" alt="Rotis">
+      </div>
+      <div class="col2">
+        <p>Roti Pollo-Mostaza <span class="price">$30</span></p>
+        <p class="ref">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+        <p>Roti Jamón y queso <span class="price">$30</span></p>
+        <p class="ref">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+        <p>Roti chilaquiles <span class="price">$30</span></p>
+        <p class="ref">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+        <p>Roti azteca <span class="price">$30</span></p>
+        <p class="ref">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+        <p>Roti suizo <span class="price">$30</span></p>
+        <p class="ref">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+        <p>Roti champiñones <span class="price">$30</span></p>
+        <p class="ref">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+      </div>
+    </div> 
+  </div>
+  <div id="main">
+    <div id="carta" class="cols">
+      <div class="col2">
+        <p>Papaya<span class="price">$15</span></p>
+        <p class="ref">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+        <p>Naranja<span class="price">$15</span></p>
+        <p class="ref">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+        <p>Melón<span class="price">$15</span></p>
+        <p class="ref">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+        <p>Sandía<span class="price">$15</span></p>
+        <p class="ref">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+
+      </div>
+      <div class="col1">
+        <img src="assets/images/image/fruta.jpg" alt="Fruta">
+      </div>
+    </div>
+  </div>
+  <div id="main">
+    <div id="carta" class="cols">
+      <div class="col1">
+        <img src="assets/images/image/drink.jpg" alt="Bebida">
+      </div>
+      <div class="col2">
+        <p>Café de olla<span class="price">$15</span></p>
+        <p class="ref">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+        <p>Jugo de naranja<span class="price">$15</span></p>
+        <p class="ref">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+
+      </div>
+    </div>
+  </div>
+  <div id="main">
+    <div id="carta" class="cols">
+      <div class="col2">
+        <p>PAQUETE ...<span class="price">$50</span></p>
+        <p class="ref">Incluye un Roti y dos vasos a elegir (fruta y/ó bebida).</p>
+      </div>
+      <div class="col1">
+        <img src="assets/images/image/paq.jpg" alt="Paquetes">
+      </div>
+    </div>
+  </div>
+  {% endblock content %}

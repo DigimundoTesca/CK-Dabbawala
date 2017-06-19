@@ -179,10 +179,7 @@
 {% endblock content %}
 
 {% block javascript %}
-<!--
-<script src="{% static 'js/sweetalert.min.js' %}">
--->
-</script>
+<script src="{% static 'js/jquery.PrintArea.js' %}"></script>
 <script src="{% static 'js/Chart.bundle.min.js' %}" defer></script>
 <script src="{% static 'js/papaparse.min.js' %}" defer></script>
 <script src="{% static 'js/blob.js' %}" defer></script>
@@ -193,10 +190,11 @@
     var ctx_week = document.getElementById("canvas-week-sales"),
         ctx_day = document.getElementById("canvas-day-sales");
     var earnings_week_chart,
-        earnings_day_chart;
+        earnings_day_chart,
+        today_date;
+
     var sales_week = JSON.parse('{{ sales_week | safe }}');
     var dates_range = JSON.parse('{{ dates_range | safe }}');
-    var today_date;
 
     /**
      * returns a list with the earnings of the week per day

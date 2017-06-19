@@ -1,19 +1,13 @@
-import json
-
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.core.signals import request_finished
-from django.dispatch import receiver
 
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as login_django
 from django.contrib.auth import logout as logout_django
 
-from users.forms import CustomerProfileForm, UserForm
-from users.models import CustomerProfile
+from users.forms import UserForm
 from users.models import UserMovements
-
 
 from cloudkitchen.settings.base import PAGE_TITLE
 
@@ -21,28 +15,20 @@ from cloudkitchen.settings.base import PAGE_TITLE
 # -------------------------------------  Index -------------------------------------
 
 def test(request):
-    form_customer = CustomerProfileForm(request.POST, request.FILES)
-    if request.method == 'POST':
-        if form_customer.is_valid():
-            customer = form_customer.save(commit=False)
-            customer.save()
-            return redirect('users:thanks')
-    else:
-        form_customer = CustomerProfileForm()
-    template = 'test/test.html'
-    title = 'Dabbawala - Registro de clientes'
-    form_user = UserForm()
-    context = {
-        'form_customer': form_customer,
-        'title': title,
-    }
-
-    return render(request, template, context)
+    return HttpResponse('Yours tests here')
 
 
 # -------------------------------------  Index -------------------------------------
-def index(request):
-    return redirect('users:login')
+def home(request):
+    template = 'home.html'
+    context = {}
+    return render(request, template, context)
+
+
+def temporal_index(request):
+    template = 'temporal-index.html'
+    context = {}
+    return render(request, template, context)
 
 
 # -------------------------------------  Auth -------------------------------------
@@ -96,72 +82,6 @@ def login(request):
 def logout(request):
     logout_django(request)
     return redirect('users:login')
-
-
-# -------------------------------------  Customers -------------------------------------
-def new_customer(request):
-    form_customer = CustomerProfileForm(request.POST or None)
-    if request.method == 'POST':
-        if form_customer.is_valid():
-            customer = form_customer.save(commit=False)
-            customer.save()
-            return redirect('users:thanks')
-
-    template = 'customers/register/new_customer.html'
-    title = 'Dabbawala - Bienvenido a Dabbawala. Registrare y obtén un desayuno gratis. '
-    context = {
-        'form_customer': form_customer,
-        'title': title,
-    }
-
-    return render(request, template, context)
-
-
-def thanks(request):
-    if request.method == 'POST':
-        form = CustomerProfileForm(request.POST, request.FILES)
-        if form.is_valid():
-            customer = form.save(commit=False)
-            customer.save()
-            return redirect('users:new_customer')
-    else:
-        form = CustomerProfileForm()
-
-    template = 'customers/register/thanks.html'
-    title = 'Dabbawala - Registro de clientes'
-
-    context = {
-        'form': form,
-        'title': title,
-    }
-
-    return render(request, template, context)
-
-
-@login_required(login_url='users:login')
-def customers_list(request):
-    if request.method == 'POST':
-        customer_json_object = json.loads(request.POST.get('customer'))
-
-        customer_object = CustomerProfile.objects.get(id=customer_json_object['id'])
-        customer_object.first_dabba = True
-        customer_object.save()
-        data = {
-            'status': 'ready'
-        }
-        return JsonResponse(data)
-
-    template = 'customers/register/customers_list.html'
-    customers = CustomerProfile.objects.all().order_by('first_dabba')
-    title = 'Clientes registrados'
-
-    context = {
-        'title': title,
-        'page_title': PAGE_TITLE,
-        'customers': customers,
-    }
-
-    return render(request, template, context)
 
 
 @login_required(login_url='users:login')

@@ -1,0 +1,35 @@
+{% load static %}
+<div id="contact">
+  <div class="col1">
+    <img src="{% static 'images/logo.png' %}" alt="Logo de Dabbawalla">
+    <p>20 de Noviembre #32,<br>San Lucas Tepelacalco,<br>Tlalnepantla Edo. de México <br>CP 54055</p>
+  </div>
+  <div class="col2">
+    <h3>home</h3>
+    <!-- <a href="plan.html" title="Planes">Consigue un plan</a> -->
+    <a href="{% url 'products:menu'%}" title="Menú">Conoce nuestro menú</a>
+    <a href="{% url 'branch_offices:contact' %}" title="Dudas">¿Tienes alguna duda?</a>
+  </div>
+  <!-- <div class="col3">
+    <h3>Planes</h3>
+    <a href="plan.html" title="Planes">Dabba Coins</a>
+    <a href="plan.html" title="Planes">Dabba Wallet</a>
+    <a href="plan.html" title="Planes">Planes</a>
+  </div> -->
+  <div class="col4">
+    <h3>Contacto</h3>
+    <a href="{% url 'branch_offices:contact' %}" title="">Contáctanos</a>
+    <a href="" title="">Facebook</a>
+    <!-- <a href="#" title="">Mapa del sitio</a> -->
+  </div>
+  <div class="col5">
+    <a href="{% url 'orders:new_order' %}" class=""><span>¡Arma tu <br> dabba!</span></a>
+  </div>
+  <!--<div class="col6">
+    <ul class="icons">
+      <li><a rel="nofollow" target="_blank" href="" class="icon alt fa-facebook"><span class="label"></span></a></li>
+      <li><a rel="nofollow" target="_blank" href="" class="icon alt fa-github"><span class="label"></span></a></li>
+      <li><a href="{% url 'users:home' %}" class="icon alt fa-home"><span class="label"></span></a></li>
+    </ul>
+  </div>-->
+</div>

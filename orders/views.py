@@ -1,3 +1,24 @@
 from django.shortcuts import render
 
-# Create your views here.
+from products.models import Cartridge
+
+def new_order(request):
+  all_products = Cartridge.objects.all()
+  template = 'new_order.html'
+  
+  context = {
+    'products': all_products,
+  }
+  
+  return render(request, template, context)
+
+
+def pay(request):
+  all_products = Cartridge.objects.all()
+  template = 'pay.html'
+  
+  context = {
+    'products': all_products,
+  }
+  
+  return render(request, template, context)
