@@ -495,7 +495,7 @@ def diners_logs(request):
         return render(request, template, context)    
 
 def satisfaction_rating(request):
-    if request.method == 'POST':
+    if request.method == 'POST': 
         if request.POST['type'] == 'satisfaction_rating':
             satisfaction_rating_value = request.POST['satisfaction_rating']
             if int(satisfaction_rating_value) > 4:

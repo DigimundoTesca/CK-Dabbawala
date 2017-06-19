@@ -81,7 +81,6 @@ def test(request):
 
 
 # -------------------------------------  Menu -------------------------------------
-@login_required(login_url='users:login')
 def menu(request):
     suppliers_list = Supplier.objects.order_by('id')
     template = 'all_products/menu.html'
