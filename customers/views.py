@@ -1,5 +1,6 @@
 import json
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
@@ -45,8 +46,15 @@ def register(request):
         'form_customer': form_customer,
         'title': title,
     }
+    if request.method == 'POST':
+        if 'newuser' in request.POST:
+            if request.POST['type'] == 'regist_user':
+                new_user = request.POST['newuser']
+                if settings.DEBUG:
+                    print(new_user)
 
     return render(request, template, context)
+
 
 
 def thanks(request):
@@ -68,6 +76,7 @@ def thanks(request):
     }
 
     return render(request, template, context)
+
 
 
 @login_required(login_url='users:login')
@@ -94,3 +103,5 @@ def customers_list(request):
     }
 
     return render(request, template, context)
+
+
