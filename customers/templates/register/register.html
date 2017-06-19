@@ -267,8 +267,6 @@
     new_user.addres =  addres;
 
     let userJson = JSON.stringify(new_user);
-    console.log(new_user)
-    console.log(userJson)
 
     $.ajax({
       url: "{% url 'customers:register' %}",
@@ -280,15 +278,6 @@
       },
       traditional: true, 
       datatype: 'jsonp',
-    })
-    .done(function() {
-      console.log("success");
-    })
-    .fail(function() {
-      console.log("error");
-    })
-    .always(function() {
-      console.log("complete");
     });
     
   });

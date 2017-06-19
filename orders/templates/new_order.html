@@ -176,96 +176,96 @@
           <!-- Rotis -->
           <figure id="frontdisplay" class="front scrol">
             {% for product in products %}
-            {% if product.subcategory == 'RO' %}
-            <div id='1roti{{product.pk}}' class="product">
-              <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
-                <img src="{{product.image.url}}" id="cartridge-img-{{ cartridge.pk }}" class="product-img"  alt="Imagen para Roti">
-                <p class="product-name">{{ product.name }}</p>
-                <p class="description">
-                  {{ product.description }}
-                </p>
-                <div class="content-price">
-                  <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ product.price }}</span>
+              {% if product.subcategory == 'RO' %}
+                <div id='1roti{{product.pk}}' class="product">
+                  <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
+                    <img src="{{product.image.url}}" id="cartridge-img-{{ cartridge.pk }}" class="product-img"  alt="Imagen para Roti">
+                    <p class="product-name">{{ product.name }}</p>
+                    <p class="description">
+                      {{ product.description }}
+                    </p>
+                    <div class="content-price">
+                      <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ product.price }}</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            {% endif %}
+              {% endif %}
             {% endfor %}
           </figure>
           <!-- Salads -->
           <figure id="backdisplay" class="back scrol">
             {% for product in products %}
-            {% if product.subcategory == 'SA' %}
-            <div id='2roti{{product.pk}}' class="product">
-              <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
-                <img src="{{product.image.url}}" id="cartridge-img-{{ cartridge.pk }}" class="product-img"  alt="Imagen para Ensalada">
-                <p class="product-name">{{ product.name }}</p>
-                <p class="description">
-                  {{ product.description }}
-                </p>
-                <div class="content-price">
-                  <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ product.price }}</span>
+              {% if product.subcategory == 'SA' %}
+                <div id='2roti{{product.pk}}' class="product">
+                  <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
+                    <img src="{{product.image.url}}" id="cartridge-img-{{ cartridge.pk }}" class="product-img"  alt="Imagen para Ensalada">
+                    <p class="product-name">{{ product.name }}</p>
+                    <p class="description">
+                      {{ product.description }}
+                    </p>
+                    <div class="content-price">
+                      <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ product.price }}</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            {% endif %}
+              {% endif %}
             {% endfor %}
           </figure>
           <!-- Smoothies -->
           <figure id="rightdisplay" class="right scrol">
             {% for product in products %}
-            {% if product.subcategory == 'SM' %}
-            <div id='3roti{{product.pk}}' class="product">
-              <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
-                <img src="{{product.image.url}}" id="cartridge-img-{{ cartridge.pk }}" class="product-img"  alt="Imagen para Licuado">
-                <p class="product-name">{{ product.name }}</p>
-                <p class="description">
-                  {{ product.description }}
-                </p>
-                <div class="content-price">
-                  <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ product.price }}</span>
+              {% if product.subcategory == 'SM' %}
+                <div id='3roti{{product.pk}}' class="product">
+                  <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
+                    <img src="{{product.image.url}}" id="cartridge-img-{{ cartridge.pk }}" class="product-img"  alt="Imagen para Licuado">
+                    <p class="product-name">{{ product.name }}</p>
+                    <p class="description">
+                      {{ product.description }}
+                    </p>
+                    <div class="content-price">
+                      <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ product.price }}</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            {% endif %}
+              {% endif %}
             {% endfor %}
           </figure>
           <!-- Fruits -->
           <figure id="leftdisplay" class="left scrol">
             {% for product in products %}
-            {% if product.subcategory == 'FR' %}
-            <div id='4roti{{product.pk}}' class="product">
-              <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
-                <img src="{{product.image.url}}" id="cartridge-img-{{ cartridge.pk }}" class="product-img"  alt="Imagen para Licuado">
-                <p class="product-name">{{ product.name }}</p>
-                <p class="description">
-                  {{ product.description }}
-                </p>
-                <div class="content-price">
-                  <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ product.price }}</span>
+              {% if product.subcategory == 'FR' %}
+                <div id='4roti{{product.pk}}' class="product">
+                  <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
+                    <img src="{{product.image.url}}" id="cartridge-img-{{ cartridge.pk }}" class="product-img"  alt="Imagen para Licuado">
+                    <p class="product-name">{{ product.name }}</p>
+                    <p class="description">
+                      {{ product.description }}
+                    </p>
+                    <div class="content-price">
+                      <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ product.price }}</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            {% endif %}
+              {% endif %}
             {% endfor %}
           </figure>
           <!-- Juices -->
           <figure id="topdisplay" class="top scrol">
             {% for product in products %}
-            {% if product.subcategory == 'JU' %}
-            <div id='roti{{product.pk}}' class="product">
-              <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
-                <img src="{{product.image.url}}" id="cartridge-img-{{ cartridge.pk }}" class="product-img"  alt="Imagen para Licuado">
-                <p class="product-name">{{ product.name }}</p>
-                <p class="description">
-                  {{ product.description }}
-                </p>
-                <div class="content-price">
-                  <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ product.price }}</span>
+              {% if product.subcategory == 'JU' %}
+                <div id='roti{{product.pk}}' class="product">
+                  <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
+                    <img src="{{product.image.url}}" id="cartridge-img-{{ cartridge.pk }}" class="product-img"  alt="Imagen para Licuado">
+                    <p class="product-name">{{ product.name }}</p>
+                    <p class="description">
+                      {{ product.description }}
+                    </p>
+                    <div class="content-price">
+                      <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ product.price }}</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            {% endif %}
+              {% endif %}
             {% endfor %}
           </figure>
         </div>

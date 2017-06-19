@@ -49,7 +49,8 @@ def register(request):
         if 'newuser' in request.POST:
             if request.POST['type'] == 'regist_user':
                 new_user = request.POST['newuser']
-                print(new_user)
+                if settings.DEBUG:
+                    print(new_user)
 
     return render(request, template, context)
 
