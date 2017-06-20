@@ -22,6 +22,8 @@ from helpers import Helper
 """
 Start auxiliary functions
 """
+
+
 def naive_to_datetime(nd):
     if type(nd) == datetime:
         if nd.tzinfo is not None and nd.tzinfo.utcoffset(nd) is not None: # Is Aware
@@ -64,6 +66,7 @@ def get_number_day(day):
     }
     return days[get_name_day(day)]
 
+
 def get_week_number(dt):
     return dt.isocalendar()[1]
 
@@ -80,6 +83,7 @@ def end_datetime(back_days):
 
 def get_end_week_day(day):
     pass
+
 
 def get_start_week_day(day):
     format = "%w"
@@ -127,8 +131,11 @@ Start of views
 # -------------------------------------  Sales -------------------------------------
 @login_required(login_url='users:login')
 def sales(request):
+    print(type(range(10)))
+    print(range(10))
     all_tickets = Ticket.objects.all()
     all_ticket_details = TicketDetail.objects.all()
+
     def get_dates_range():
         """
         Returns a JSON with a years list.
@@ -142,7 +149,7 @@ def sales(request):
             years_list = [] # [2015:object, 2016:object, 2017:object, ...]
         except:
             return HttpResponse('Necesitas crear ventas para ver esta pantalla <a href="sales:new">Nueva Venta</a>')
-            
+
         while max_year >= min_year:
             year_object = { # 2015:object or 2016:object or 2017:object ...
                 'year' : max_year,
@@ -151,21 +158,21 @@ def sales(request):
 
             tickets_per_year = all_tickets.filter(
                 created_at__range=[naive_to_datetime(date(max_year,1,1)),naive_to_datetime(date(max_year,12,31))])
-            
+
             for ticket in tickets_per_year:
-                if len(year_object['weeks_list']) == 0: 
+                if len(year_object['weeks_list']) == 0:
                     """
                     Creates a new week_object in the weeks_list of the actual year_object
                     """
                     start_week_day = get_start_week_day(ticket.created_at.date())
-                    week_object = { 
+                    week_object = {
                         'week_number': ticket.created_at.isocalendar()[1],
                         'start_date': ticket.created_at.date().strftime("%d-%m-%Y"),
                         'end_date': ticket.created_at.date().strftime("%d-%m-%Y"),
                     }
                     year_object['weeks_list'].append(week_object)
                     # End if
-                else: 
+                else:
                     """
                     Validates if exists some week with an indentical week_number of the actual year
                     If exists a same week in the list validates the start_date and the end_date,
@@ -188,14 +195,14 @@ def sales(request):
 
                     if not existing_week:
                         # There's a different week number
-                        week_object = { 
+                        week_object = {
                             'week_number': ticket.created_at.isocalendar()[1],
                             'start_date': ticket.created_at.date().strftime("%d-%m-%Y"),
                             'end_date': ticket.created_at.date().strftime("%d-%m-%Y"),
                         }
                         year_object['weeks_list'].append(week_object)
 
-                    #End else
+                        #End else
             years_list.append(year_object)
             max_year -= 1
         # End while
@@ -247,7 +254,7 @@ def sales(request):
         days_to_count = get_number_day(datetime.now())
         day_limit = days_to_count
         start_date_number = 0
-        
+
         while start_date_number <= day_limit:
             day_object = {
                 'date': str(start_datetime(days_to_count).date().strftime('%d-%m-%Y')),
@@ -346,8 +353,8 @@ def sales(request):
                         }
                         ticket_object['ticket_details']['packages'].append(ticket_detail_object)
 
-                    ticket_object['total'] += float(ticket_detail.price)                        
-                    
+                    ticket_object['total'] += float(ticket_detail.price)
+
                     try:
                         ticket_object['ticket_details'].append(ticket_detail_object)
                     except Exception as e:
@@ -355,7 +362,6 @@ def sales(request):
             ticket_object['total'] = str(ticket_object['total'])
             tickets_list.append(ticket_object)
         return tickets_list
-        
 
     if request.method == 'POST':
         if request.POST['type'] == 'sales_day':
@@ -416,9 +422,9 @@ def sales(request):
                             'total': ticket_detail.price
                         }
                         ticket_object['packages'].append(package_cartridge_object)
-                    
+
             return JsonResponse({'ticket_details': ticket_object})
-            
+
         if request.POST['type'] == 'tickets':
             tickets_objects_list = []
 
@@ -456,7 +462,7 @@ def sales(request):
             final_date = request.POST['dt_week'].split(',')[1]
             initial_date = parse_to_datetime(initial_date)
             final_date = parse_to_datetime(final_date) + timedelta(days=1)
-            
+
             sales = get_sales(initial_date, final_date)
             tickets = get_tickets(initial_date, final_date)
             data = {

@@ -1,150 +1,9 @@
 {% extends "dabbawala/base_nav_footer.html" %}
-{% load humanize %} 
 {% load static %}
 
 {% block stylesheets %}
-<style media="screen">
 
-  .container {
-    width: 95%;
-    height: 450px;
-    /*position: absolute;*/
-    display: block;
-    margin: 0 auto 50px;
-    /*border: 1px solid #CCC;*/
-    -webkit-perspective: 1000px;
-    -moz-perspective: 1000px;
-    -o-perspective: 1000px;
-    perspective: 1000px;
-    z-index: 1 !important;
-  }
-
-  #cube {
-    width: 100%;
-    height: 100%;
-    -webkit-transform-style: preserve-3d;
-    -moz-transform-style: preserve-3d;
-    -o-transform-style: preserve-3d;
-    transform-style: preserve-3d;
-    -webkit-transition: -webkit-transform 1s;
-    -moz-transition: -moz-transform 1s;
-    -o-transition: -o-transform 1s;
-    transition: transform 1s;
-  }
-
-  #cube figure {
-    display: block;
-    position: absolute;
-    width: 100%;
-    height: 440px;
-    text-align: center;
-    overflow: scroll;
-  }
-
-  #cube.panels-backface-invisible figure, #cube figure {
-    -webkit-backface-visibility: hidden;
-    -moz-backface-visibility: hidden;
-    -o-backface-visibility: hidden;
-    backface-visibility: hidden;
-  }
-
-  #cube .front  { background: rgba(250,243,237,0.5); }
-  #cube .back   { background: rgba(250,243,237,0.5); visibility: hidden; }
-  #cube .right  { background: rgba(250,243,237,0.5); visibility: hidden; }
-  #cube .left   { background: rgba(250,243,237,0.5); visibility: hidden; }
-  #cube .top    { background: rgba(250,243,237,0.5); visibility: hidden; }
-  #cube .bottom { background: rgba(250,243,237,0.5); visibility: hidden; }
-
-  #cube .front  {
-    -webkit-transform: translateZ( 300px );
-    -moz-transform: translateZ( 300px );
-    -o-transform: translateZ( 300px );
-    transform: translateZ( 300px );
-  }
-  #cube .back   {
-    -webkit-transform: rotateX( -180deg ) translateZ( 300px );
-    -moz-transform: rotateX( -180deg ) translateZ( 300px );
-    -o-transform: rotateX( -180deg ) translateZ( 300px );
-    transform: rotateX( -180deg ) translateZ( 300px );
-  }
-  #cube .right {
-    -webkit-transform: rotateY(   90deg ) translateZ( 300px );
-    -moz-transform: rotateY(   90deg ) translateZ( 300px );
-    -o-transform: rotateY(   90deg ) translateZ( 300px );
-    transform: rotateY(   90deg ) translateZ( 300px );
-  }
-  #cube .left {
-    -webkit-transform: rotateY(  -90deg ) translateZ( 300px );
-    -moz-transform: rotateY(  -90deg ) translateZ( 300px );
-    -o-transform: rotateY(  -90deg ) translateZ( 300px );
-    transform: rotateY(  -90deg ) translateZ( 300px );
-  }
-  #cube .top {
-    -webkit-transform: rotateX(   90deg ) translateZ( 300px );
-    -moz-transform: rotateX(   90deg ) translateZ( 300px );
-    -o-transform: rotateX(   90deg ) translateZ( 300px );
-    transform: rotateX(   90deg ) translateZ( 300px );
-  }
-  #cube .bottom {
-    -webkit-transform: rotateX(  -90deg ) translateZ( 300px );
-    -moz-transform: rotateX(  -90deg ) translateZ( 300px );
-    -o-transform: rotateX(  -90deg ) translateZ( 300px );
-    transform: rotateX(  -90deg ) translateZ( 300px );
-  }
-
-  #cube.show-front {
-    -webkit-transform: translateZ( -100px );
-    -moz-transform: translateZ( -100px );
-    -o-transform: translateZ( -100px );
-    transform: translateZ( -100px );
-  }
-  #cube.show-back {
-    -webkit-transform: translateZ( -100px ) rotateX( -180deg );
-    -moz-transform: translateZ( -100px ) rotateX( -180deg );
-    -o-transform: translateZ( -100px ) rotateX( -180deg );
-    transform: translateZ( -100px ) rotateX( -180deg );
-  }
-  #cube.show-right {
-    -webkit-transform: translateZ( -100px ) rotateY(  -90deg );
-    -moz-transform: translateZ( -100px ) rotateY(  -90deg );
-    -o-transform: translateZ( -100px ) rotateY(  -90deg );
-    transform: translateZ( -100px ) rotateY(  -90deg );
-  }
-  #cube.show-left {
-    -webkit-transform: translateZ( -100px ) rotateY(   90deg );
-    -moz-transform: translateZ( -100px ) rotateY(   90deg );
-    -o-transform: translateZ( -100px ) rotateY(   90deg );
-    transform: translateZ( -100px ) rotateY(   90deg );
-  }
-  #cube.show-top {
-    -webkit-transform: translateZ( -100px ) rotateX(  -90deg );
-    -moz-transform: translateZ( -100px ) rotateX(  -90deg );
-    -o-transform: translateZ( -100px ) rotateX(  -90deg );
-    transform: translateZ( -100px ) rotateX(  -90deg );
-  }
-  #cube.show-bottom {
-    -webkit-transform: translateZ( -100px ) rotateX(   90deg );
-    -moz-transform: translateZ( -100px ) rotateX(   90deg );
-    -o-transform: translateZ( -100px ) rotateX(   90deg );
-    transform: translateZ( -100px ) rotateX(   90deg );
-  }
-</style>
-<style media="screen and (max-width: 700px)">
-  .container {
-    width: 100%;
-    height: 450px;
-    display: block;
-    margin: 0 auto;
-    -webkit-perspective: 100000px;
-    -moz-perspective: 100000px;
-    -o-perspective: 100000px;
-    perspective: 100000px;
-    z-index: 1 !important;
-  }
-</style>
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.3.8/sweetalert2.min.css">
 <link rel="stylesheet" href="{% static 'css/cube.css' %}">
-<script src=" {% static 'js/prefixfree.js' %}"></script>
 {% endblock stylesheets %}
 
 {% block content %}
@@ -152,7 +11,7 @@
   <div class="inner">
     <header class="inner">
       <h1>ARMA TU DABBA</h1>
-      <h2>ROTI + 2 Complementos <br>$50</h2>
+      <h2>ROTI + 2 Complementos <br>$ 69.00</h2>
     </header>
   </div>
 </section>
@@ -171,14 +30,14 @@
         </p>
       </section>
       <section id="group-complements" class="container">
-        <div id="cube" class="show-front card-block product-container">
+        <div id="cube" class="show-front card-block">
           <!-- Rotis -->
           <figure id="frontdisplay" class="front scrol">
             {% for product in products %}
               {% if product.subcategory == 'RO' %}
-                <div id='1roti{{product.pk}}' class="product">
-                  <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
-                    <img src="{{product.image.url}}" id="cartridge-img-{{ cartridge.pk }}" class="product-img"  alt="Imagen para Roti">
+                <div id='1-{{product.pk}}' class="product">
+                  <div class="card-block product-container" id="cartridge-{{ product.pk }}">
+                    <img src="{{product.image.url}}" id="cartridge-img-{{ product.pk }}" class="product-img"  alt="Imagen para Roti">
                     <p class="product-name">{{ product.name }}</p>
                     <p class="description">
                       {{ product.description }}
@@ -195,9 +54,9 @@
           <figure id="backdisplay" class="back scrol">
             {% for product in products %}
               {% if product.subcategory == 'SA' %}
-                <div id='2roti{{product.pk}}' class="product">
-                  <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
-                    <img src="{{product.image.url}}" id="cartridge-img-{{ cartridge.pk }}" class="product-img"  alt="Imagen para Ensalada">
+                <div id='2-{{product.pk}}' class="product">
+                  <div class="card-block product-container" id="cartridge-{{ product.pk }}">
+                    <img src="{{product.image.url}}" id="cartridge-img-{{ product.pk }}" class="product-img"  alt="Imagen para Ensalada">
                     <p class="product-name">{{ product.name }}</p>
                     <p class="description">
                       {{ product.description }}
@@ -214,9 +73,9 @@
           <figure id="rightdisplay" class="right scrol">
             {% for product in products %}
               {% if product.subcategory == 'SM' %}
-                <div id='3roti{{product.pk}}' class="product">
-                  <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
-                    <img src="{{product.image.url}}" id="cartridge-img-{{ cartridge.pk }}" class="product-img"  alt="Imagen para Licuado">
+                <div id='3-{{product.pk}}' class="product">
+                  <div class="card-block product-container" id="cartridge-{{ product.pk }}">
+                    <img src="{{product.image.url}}" id="cartridge-img-{{ product.pk }}" class="product-img"  alt="Imagen para Licuado">
                     <p class="product-name">{{ product.name }}</p>
                     <p class="description">
                       {{ product.description }}
@@ -233,9 +92,9 @@
           <figure id="leftdisplay" class="left scrol">
             {% for product in products %}
               {% if product.subcategory == 'FR' %}
-                <div id='4roti{{product.pk}}' class="product">
-                  <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
-                    <img src="{{product.image.url}}" id="cartridge-img-{{ cartridge.pk }}" class="product-img"  alt="Imagen para Licuado">
+                <div id='4-{{product.pk}}' class="product">
+                  <div class="card-block product-container" id="cartridge-{{ product.pk }}">
+                    <img src="{{product.image.url}}" id="cartridge-img-{{ product.pk }}" class="product-img"  alt="Imagen para Licuado">
                     <p class="product-name">{{ product.name }}</p>
                     <p class="description">
                       {{ product.description }}
@@ -252,9 +111,9 @@
           <figure id="topdisplay" class="top scrol">
             {% for product in products %}
               {% if product.subcategory == 'JU' %}
-                <div id='roti{{product.pk}}' class="product">
-                  <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
-                    <img src="{{product.image.url}}" id="cartridge-img-{{ cartridge.pk }}" class="product-img"  alt="Imagen para Licuado">
+                <div id='roti-{{product.pk}}' class="product">
+                  <div class="card-block product-container" id="cartridge-{{ product.pk }}">
+                    <img src="{{product.image.url}}" id="cartridge-img-{{ product.pk }}" class="product-img"  alt="Imagen para Licuado">
                     <p class="product-name">{{ product.name }}</p>
                     <p class="description">
                       {{ product.description }}
@@ -304,430 +163,12 @@
   </div>
 </div>
 
-<!-- Ticket Modal -->
-<div class="modal fade" id="modal-order" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Realizar venta</h4>
-      </div>
-      <div class="modal-body">
-        <div class="container-fluid">
-          <div class="card card-scroll col-xs-4" id="printer-container">
-            <div id="printer" style="margin: 0 auto">
-              <figure class="content-img">
-                <img src="{% static 'images/si_black.jpg' %}" alt="logo-dabbawala">
-              </figure>
-              <div class="ticket-order-container text-xs-center">
-                <span>ORDEN: </span><span id="ticket-order"></span>
-              </div>
-              <div class="ticket-address">
-                <p class="text-xs-center">
-                  Suministros integrales de insumos SA de CV. <br>
-                  AV insurgentes 1647 Col. San José Insurgentes Del . Benito Juárez Cp: 03900
-                </p>
-              </div>
-              <div class="container ticket-datetime-container">
-                <div class="row">
-                  <div class="col-xs-6 ticket-datetime">
-                    <span id="ticket-time"></span>
-                  </div>
-                  <div class="col-xs-6 ticket-datetime">
-                    <span id="ticket-date"></span>
-                  </div>
-                </div>
-              </div>
-              <ul class="list-group list-group-flush" id="sales-list-modal">
-              </ul>
-              <div class="ticket-id-container">
-                <span>ID: </span><span id="ticket-id"></span>
-              </div>
-              <div class="ticket-contact">
-                <p class="text-xs-center">
-                  Contacto:<br>
-                  (55) 41 22 69 00 <br>
-                  contacto@suministrosintegrales.mx <br>
-                </p>
-                <p class="text-xs-center mt-1">
-                  <strong>¡GRACIAS POR SONREIR! <span class="smile">☺</span></strong> <br>
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="card card-scroll" id="ticket-description">
-            <h3>No olvides recordarle al cliente las promociones</h3>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <div class="container">
-          <div class="row">
-            <button type="submit" id="btn-pago-tarjeta" class="btn btn-primary col-xs-4 push-xs-3 btn-printer">Pago con tarjeta</button>
-            <button type="submit" id="btn-pago-efectivo" class="btn btn-success col-xs-4 push-xs-4 btn-printer">Pago con efectivo</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Extra Ingredients Modals -->
-<div class="modal fade" id="extra-ingredient-modal" tabindex="-1" role="dialog" aria-labelledby="extra-ingredient-modal-label" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <h3 class="modal-title" id="extra-ingredient-modal-label">Ingredientes Extra</h3>
-      </div>
-      <div class="modal-body">
-        <ul class="list-unstyled list-group">
-        </ul>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary orde" data-dismiss="modal">Cancelar</button>
-        <button id="btn-add-extra-ingredient" type="button" class="btn btn-primary">Agregar Ingredientes</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 {% endblock content %}
 
 {% block scripts %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.3.8/sweetalert2.min.js"></script>
-<script type="text/javascript" charset="utf-8">
-  $(document).ready(function() {
-    let Ticket = {
-      cartuchos: [],
-      paquetes: [],
-      payment_type: 'cash',
-    }
-
-    let DabbaProduct = {
-      id: [],
-      cost: null,
-    }
-
-    function getCookie(name) {
-      var cookieValue = null;
-      if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-          var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-              break;
-            }
-          }
-        }
-        return cookieValue;
-      }
-
-      /** Agrega un producto al carrito del ticket */
-      $(this).on('click', '.product-img', function(event) {
-        var product_type = $(this).attr('id');
-        var element = $(this)
-
-        function addProductToJSON(id, cant, price) {
-          if (id.indexOf('cartridge') >= 0) {
-            id = id.replace('cartridge-', '');
-
-            /** Itera la lista de cartuchos */
-            function findIdCartucho(cartuchos) {
-              return cartuchos.id == id;
-            }
-            if (!Ticket.cartuchos.find(findIdCartucho)) { // Si no existe
-              nuevo_cartucho = {}
-              nuevo_cartucho.id = id;
-              nuevo_cartucho.cant = cant;
-              nuevo_cartucho.price = price;
-              Ticket.cartuchos.push(nuevo_cartucho);
-
-            } else {
-              mi_cartucho = Ticket.cartuchos.find(findIdCartucho);
-              mi_cartucho.cant = cant;
-              mi_cartucho.price = price;
-            }
-          }
-        }
-
-        function addProductToTicket() {
-          let name = element.siblings('.product-name').text();
-          let cost_base = parseFloat(element.siblings('.content-price').children('.product-cost').text());
-          let cost = cost_base;
-          let id = element.parent().attr('id');
-          let li_id = ('li-' + id).toString();
-          let cant = $('ul#sales-list').find('#' + li_id + ' .cant-li').text();
-          let total = 0;
-
-          if ($('#' + li_id + '').length != 0) {
-            cant++;
-
-            cost = cost * cant;
-            if (cost % 2 != 0) {
-              cost = cost.toFixed(2);
-            } else
-            cost += '.00';
-            $('ul#sales-list').find('#' + li_id + ' .cant-li').text(cant);
-            $('ul#sales-list').find('#' + li_id + ' .total-li').text(cost);
-          } else {
-            cant = 1;
-            if (cost % 2 != 0)
-              cost = cost.toFixed(2);
-            else
-              cost += '.00';
-            if (cost_base % 2 != 0)
-              cost_base = cost_base.toFixed(2);
-            else
-              cost_base += '.00';
-            $nuevo_li = $("" +
-              "<li id='" + li_id + "' class='list-group-item'>" +
-              "<span class='name-li text-uppercase'>" + name + "</span> " +
-              "<span class='cost-base-li'>" + cost_base + "</span>" +
-              "<span class='remove-icon-li'><i class='material-icons'>remove</i></span>" +
-              "<span class='cant-li'>" + cant + "</span>" +
-              "<span class='add-icon-li'><i class='material-icons'>add</i></span>" +
-              "<span class='font-weight-bold s-li'>$ </span>" +
-              "<span class='total-li font-weight-bold'>" + cost + "</span> " +
-              "</li>");
-            $nuevo_li.appendTo('#sales-list').fadeTo('slow', 1);
-          }
-
-          /** Modificacion del total general */
-          $('ul li').find('.total-li').each(function() {
-            re = $(this).text()
-            total += parseFloat(re)
-          });
-          var arreglo = total.toFixed(2).split('.')
-          $('#total-price').html("" +
-            "<span class='text-price align-top' id='int-total-price'>" + arreglo[0] + "</span>" +
-            "<span class='point-total-price'>.</span>" +
-            "<span class='text-price-decimal' id='dec-total-price'>" + arreglo[1] + "</span>"
-            );
-
-          addProductToJSON(id, cant, cost);
-        }
-
-        addProductToTicket();
-      }); 
-
-      $(this).on('click', '.remove-icon-li', function(event) {
-        let element = $(this);
-        let quantity_product = element.siblings('.cant-li').text();
-        let cost_base_product = element.siblings('.cost-base-li').text();
-        let total_product = element.siblings('.total-li').text();
-        let total_ticket = 0;
-        let id_product = element.parent().attr('id').substring(13);
-        var count = 0;
-
-        /** Refresh total ticket. Removes the product from the tiket list*/
-        if (quantity_product == 1) {
-          element.parent().remove(); // Removes from DOM
-
-          /** Modificacion del total del ticket */
-          $('ul li').find('.total-li').each(function() {
-            var total_span = $(this).text();
-            total_ticket += parseFloat(total_span);
-          });
-
-          var total_ticket_split = total_ticket.toFixed(2).split('.')
-
-          $('#total-price').html("" +
-            "<span class='text-price align-top' id='int-total-price'>" + total_ticket_split[0] + "</span>" +
-            "<span class='point-total-price'>.</span>" +
-            "<span class='text-price-decimal' id='dec-total-price'>" + total_ticket_split[1] + "</span>"
-            );
-
-
-          // Removes cartridge from ticket JSON
-          Ticket.cartuchos.forEach(function(cartridge_object) {
-            if (cartridge_object.id == id_product) {
-              Ticket.cartuchos.splice(count, 1);
-            };
-            count += 1;
-          });
-
-        } else {
-
-          $('ul li').find('.total-li').each(function() {
-            re = $(this).text()
-            total_ticket += parseFloat(re)
-          });
-
-          var arreglo = total_ticket.toFixed(2).split('.')
-
-          $('#total-price').html("" +
-            "<span class='text-price align-top' id='int-total-price'>" + arreglo[0] + "</span>" +
-            "<span class='point-total-price'>.</span>" +
-            "<span class='text-price-decimal' id='dec-total-price'>" + arreglo[1] + "</span>"
-            );
-        }
-
-      });
-
-      $(this).on('click', '.add-icon-li', function(event) {});
-
-      /** Agrega el dabba manual al carrito del ticket */
-      $(this).on('click', '#btn-add-dabba', function(event) {
-
-        var product_type = $(this).attr('id');
-        var element = $(this);
-
-        function addProductToJSON(id_list, name, quantity, price) {
-          new_package = {}
-          new_package.id_list = []
-          new_package.quantity = quantity;
-          new_package.price = price;
-          new_package.name = name;
-          Ticket.paquetes.push(new_package);
-
-          id_list.forEach(function(element) {
-            new_package.id_list.push(element);
-          });
-
-          $('.modal-head-prod-name').empty();
-          DabbaProduct.id.length = 0;
-
-        }
-
-        function addProductToTicket() {
-          dabba_name_list = [];
-          dabba_name_list_string = "";
-          dabba_name_string = "";
-
-          header_1 = $('#modal-prod-head-1').text().trim();
-          header_2 = $('#modal-prod-head-2').text().trim();
-          header_3 = $('#modal-prod-head-3').text().trim();
-
-          dabba_name_string += header_1 + ' ' + header_2 + ' ' + header_3;
-
-          dabba_name_list.push(header_1.split(' ', 1));
-          dabba_name_list.push(header_2.split(' ', 1));
-          dabba_name_list.push(header_3.split(' ', 1));
-
-          dabba_name_list.forEach(function(dabba_name) {
-            dabba_name.forEach(function(word) {
-              dabba_name_list_string += word.substring(0, 3) + ' ';
-            });
-          });
-
-          let cost_base = DabbaProduct.cost;
-          let cost = cost_base;
-          let id = element.parent().attr('id');
-          let li_id = DabbaProduct.id;
-          let cant = 1;
-          let total = 0;
-
-          $nuevo_li = $("" +
-            "<li class='list-group-item'>" +
-            "<span class='name-li text-uppercase'>" + dabba_name_list_string + "</span> " +
-            "<span class='cost-base-li'>" + cost_base + "</span>" +
-            "<span class='remove-icon-li'><i class='material-icons'>remove</i></span>" +
-            "<span class='cant-li'>" + cant + "</span>" +
-            "<span class='add-icon-li'><i class='material-icons'>add</i></span>" +
-            "<span class='font-weight-bold s-li'>$ </span>" +
-            "<span class='total-li font-weight-bold'>" + cost + "</span> " +
-            "</li>");
-          $nuevo_li.appendTo('#sales-list').fadeTo('slow', 1);
-
-          /** Modificacion del total general */
-          $('ul li').find('.total-li').each(function() {
-            re = $(this).text()
-            total += parseFloat(re)
-          });
-
-          var arreglo = total.toFixed(2).split('.')
-          $('#total-price').html("" +
-            "<span class='text-price align-top' id='int-total-price'>" + arreglo[0] + "</span>" +
-            "<span class='point-total-price'>.</span>" +
-            "<span class='text-price-decimal' id='dec-total-price'>" + arreglo[1] + "</span>"
-            );
-
-          addProductToJSON(li_id, dabba_name_string, cant, cost);
-
-        }
-
-        addProductToTicket();
-      });
-
-      /** Despliega el modal para realizar la venta */
-      $(this).on('click', '.product-img', function(event) {
-        element = $(this);
-        price = element.parent().find('span.product-cost').text();
-        DabbaProduct.cost = price;
-      });
-
-      /** Cancelar Venta - Resetear ticket */
-      $(this).on('click', '#btn-orders-reset', function(event) {
-        function resetTicketObject() {
-          Ticket.cartuchos.length = 0;
-          Ticket.paquetes.length = 0;
-          DabbaProduct.id.length = 0;
-        }
-
-        function resetTicketList() {
-          swal({
-            title: "Venta Cancelada!",
-            type: "error",
-            timer: 700,
-            showConfirmButton: false
-          });
-          $('#sales-list').empty();
-          $('#total-price').html("" +
-            "<span class='text-price align-top' id='int-total-price'>0</span>" +
-            "<span class='point-total-price'>.</span>" +
-            "<span class='text-price-decimal' id='dec-total-price'>00</span>"
-            );
-          $('.modal-head-prod-name').empty();
-        }
-        resetTicketList();
-        resetTicketObject();
-      });
-    });
-</script>
-
-<script>
-  function visible() {
-    document.getElementById("frontdisplay").style.visibility = "visible";
-    document.getElementById("backdisplay").style.visibility = "hidden";
-    document.getElementById("rightdisplay").style.visibility = "hidden";
-    document.getElementById("leftdisplay").style.visibility = "hidden";
-    document.getElementById("topdisplay").style.visibility = "hidden";
-  }
-  function visible1() {
-    document.getElementById("frontdisplay").style.visibility = "hidden";
-    document.getElementById("backdisplay").style.visibility = "visible";
-    document.getElementById("rightdisplay").style.visibility = "hidden";
-    document.getElementById("leftdisplay").style.visibility = "hidden";
-    document.getElementById("topdisplay").style.visibility = "hidden";
-  }
-  function visible2() {
-    document.getElementById("frontdisplay").style.visibility = "hidden";
-    document.getElementById("backdisplay").style.visibility = "hidden";
-    document.getElementById("rightdisplay").style.visibility = "visible";
-    document.getElementById("leftdisplay").style.visibility = "hidden";
-    document.getElementById("topdisplay").style.visibility = "hidden";
-  }
-  function visible3() {
-    document.getElementById("frontdisplay").style.visibility = "hidden";
-    document.getElementById("backdisplay").style.visibility = "hidden";
-    document.getElementById("rightdisplay").style.visibility = "hidden";
-    document.getElementById("leftdisplay").style.visibility = "visible";
-    document.getElementById("topdisplay").style.visibility = "hidden";
-  }
-  function visible4() {
-    document.getElementById("frontdisplay").style.visibility = "hidden";
-    document.getElementById("backdisplay").style.visibility = "hidden";
-    document.getElementById("rightdisplay").style.visibility = "hidden";
-    document.getElementById("leftdisplay").style.visibility = "hidden";
-    document.getElementById("topdisplay").style.visibility = "visible";
-  }
-</script>
 <script type="text/javascript" src="{% static 'js/cube/utils.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/cube/rotate-box.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.3.8/sweetalert2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="{% static 'js/orders/scripts.js' %}"></script>
 
 {% endblock scripts %}
