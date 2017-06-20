@@ -6,10 +6,7 @@
   #map {
     height: 400px;
     width: 100%;
-    margin-top: 30px;
-  }
-  .swaladdress {
-    visibility: hidden;
+    margin-top: 15px;
   }
 </style>
 {% endblock stylesheets%}
@@ -30,7 +27,7 @@
       <div class="cols colr">
         <div class="col1 formr">
           {% csrf_token %}
-          <label for="name">Nombre con el que te identificaremos. Obligatorio</label>
+          <label for="name">Obligatorio</label>
           <input type="text" class="form-control" id="id_name" name="{{ form_customer.user.name }}" placeholder="Nombre de usuario" maxlength="30" value="{% if form_customer.user.value == None %}{% else %}{{ form_customer.user.value }}{% endif %}" required autofocus onkeypress="return pulsar(event)" >
           {%  if form_customer.user.errors %}
           <div class="has-danger">
@@ -41,7 +38,7 @@
             {% endfor %}
           </div>
           {% endif %}
-          <label for="email">Correo. Obligatorio</label>
+          <label for="email">Obligatorio</label>
           <input type="email" class="form-control" id="id_email" name="{{ form_customer.email.name }}" placeholder="Correo" maxlength="255" value="{% if  form_customer.email.value == None %}{% else %}{{ form_customer.email.value }}{% endif %}" required onkeypress="return pulsar(event)" >
           {%  if form_customer.email.errors %}
           <div class="has-danger">
@@ -68,7 +65,6 @@
           </div>
           <label for="addres">Dirección</label>
           <div id="innerbtn">
-            <label class="swaladdress">Por favor arrastra el marcador a tu posición exacta.</label>
             <input type="text" class="form-control" id="id_address" name="address" placeholder="Busca tu dirección" maxlength="255" onkeypress="return search(event)" required="">
             <a class="icon alt fa-search" type="" id="btn-search"></a>
             {%  if form_customer.address.errors %}
@@ -85,9 +81,21 @@
               <strong>Oops! </strong><span id="msj-alert">mensaje</span>
             </div>
           </div>
-          <button id="getJson" type="submit" class="btn btn-success btn-block">Registrate</button>
+          <div class="swaladdress">
+            <label class="ref">Proporciona referencias de tu domicilio.</label>
+            <textarea rows="3" type="text" class="form-control areainput" id="id_reference" name="addresreference" placeholder="No. 29  Zaguán blanco, enfrente de una tienda de abarrotes"></textarea>
+          </div>
+          <button id="getJson" type="submit" class="btn-success fit">Registrate</button>
         </div>
         <div class="col2 mapr map-container">
+          <div id="overmap" class="container-hidden">
+            <div class="alert alert-warning" role="alert">
+              <span id="msj-alert" class="alertmap">Arrastra el marcador a tu posición exacta.</span>
+            </div>
+          </div>
+          <!--<div class="overmap">
+            <label class="refmap">Por favor arrastra el marcador a tu posición exacta.</label>
+          </div>-->
           <div id="map" class=""></div> 
         </div>
       </div>
@@ -161,7 +169,7 @@
   function initMap() {
     var LatLng = new google.maps.LatLng(19.5228008,-99.2291418);
     var optionsMap = {
-      zoom: 15,
+      zoom: 18,
       center: LatLng,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
     }
@@ -191,6 +199,11 @@
   function swalYourAddress(){
     var popup = document.getElementsByClassName("swaladdress")[0];
     popup.style.visibility = "visible";
+    popup.style.height = "auto";
+    $("#overmap").fadeIn(1500);
+      setTimeout(function() {
+        $("#container-msj-alert").fadeOut(1500);
+      },6000);
 ;  }
 
   function pulsar(e) {
@@ -215,7 +228,7 @@
       setAddressValue(address);
 
       var optionsMap = {
-        zoom: 15,
+        zoom: 18,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
       }
 
@@ -257,7 +270,7 @@
   $('#getJson').on('click', function() {
     let name, addres, mail, phone;
     name = $('#id_name').val();
-    addres = $('#id_address').val();
+    addres = $('#id_address').val() +' Reference ' + $('#id_reference').val();
     mail = $('#id_email').val();
     phone = $('#id_phone_number').val();
     let new_user = new Object();

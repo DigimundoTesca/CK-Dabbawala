@@ -5238,3 +5238,19 @@
   .container-hidden {
     display: none;
   }
+  .swaladdress {
+    visibility: hidden;
+    height: 0px;
+  }
+  .areainput {
+    border-radius: 0px;
+    width: 100%;
+  }
+  #getJson {
+    margin-left: 10px;
+  }
+  #overmap {
+    margin: 0 auto;
+    width: 95%;
+    margin-bottom: 10px;
+  }
