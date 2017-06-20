@@ -84,7 +84,9 @@ iframe {
 }
 .thecube {
   font-family: 'Helvetica Neue', Arial, sans-serif;
-  width: 100% !important;
+  width: 800px;
+  min-width: 400px;
+  max-width: 2000px;
   -webkit-text-size-adjust: none;
   color: #333;
   margin-bottom: 6em;
