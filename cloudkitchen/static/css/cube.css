@@ -43,6 +43,9 @@ iframe {
 #salesmain .cartmain {
   width: 30% !important;
 }
+#tot, #prod {
+  width: 100%;
+}
 
 .salessection {
   height: 100%;
@@ -89,10 +92,9 @@ iframe {
   padding-bottom: 2em;
 }
 .group-sales {
-  width: 300px !important;
   margin: 0 auto;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
@@ -107,8 +109,8 @@ iframe {
   letter-spacing: 5px;
 }
 .container-sales {
-  margin: 0 0.5rem;
-  text-align: center !important;
+  /*margin: 0 0.5rem;
+  text-align: center !important;*/
 }
 .container-sales-reports .sales-graphics {
   margin-bottom: 1rem; 
@@ -156,12 +158,8 @@ iframe {
   opacity: 0.8;
 }
 .container-sales .group-sales .card-scroll {
-  min-height: calc(100vh - 16rem);
-  max-height: calc(100vh - 16rem);
-}
-.container-sales .group-sales .packages-block {
-  min-height: calc(100vh - 21rem);
-  max-height: calc(100vh - 21rem);
+  min-height: 150px;
+  max-height: 300px;
 }
 .container-sales .group-sales .products-block i {
   color: #c9302c;  

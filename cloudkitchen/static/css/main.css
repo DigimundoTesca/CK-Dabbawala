@@ -4242,7 +4242,7 @@
   .product {
     display: inline-block;
     padding-top: 20px;
-    width: 220px;
+    width: 30%;
   }
   .product p {
     font-size: 15px;
@@ -4268,7 +4268,7 @@
   }
 
   .product img {
-    height: 130px;
+    width: 75%;
   }
 
   .bcol {
