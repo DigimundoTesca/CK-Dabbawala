@@ -10,7 +10,7 @@
   <div class="inner">
     <header class="inner">
       <h1>ARMA TU DABBA</h1>
-      <h2>ROTI + 2 Complementos <br>$50</h2>
+      <h2>ROTI + 2 Complementos <br>$ 69.00</h2>
     </header>
   </div>
 </section>
@@ -34,9 +34,9 @@
           <figure id="frontdisplay" class="front scrol">
             {% for product in products %}
               {% if product.subcategory == 'RO' %}
-                <div id='1roti{{product.pk}}' class="product">
-                  <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
-                    <img src="{{product.image.url}}" id="cartridge-img-{{ cartridge.pk }}" class="product-img"  alt="Imagen para Roti">
+                <div id='1-{{product.pk}}' class="product">
+                  <div class="card-block product-container" id="cartridge-{{ product.pk }}">
+                    <img src="{{product.image.url}}" id="cartridge-img-{{ product.pk }}" class="product-img"  alt="Imagen para Roti">
                     <p class="product-name">{{ product.name }}</p>
                     <p class="description">
                       {{ product.description }}
@@ -53,9 +53,9 @@
           <figure id="backdisplay" class="back scrol">
             {% for product in products %}
               {% if product.subcategory == 'SA' %}
-                <div id='2roti{{product.pk}}' class="product">
-                  <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
-                    <img src="{{product.image.url}}" id="cartridge-img-{{ cartridge.pk }}" class="product-img"  alt="Imagen para Ensalada">
+                <div id='2-{{product.pk}}' class="product">
+                  <div class="card-block product-container" id="cartridge-{{ product.pk }}">
+                    <img src="{{product.image.url}}" id="cartridge-img-{{ product.pk }}" class="product-img"  alt="Imagen para Ensalada">
                     <p class="product-name">{{ product.name }}</p>
                     <p class="description">
                       {{ product.description }}
@@ -72,9 +72,9 @@
           <figure id="rightdisplay" class="right scrol">
             {% for product in products %}
               {% if product.subcategory == 'SM' %}
-                <div id='3roti{{product.pk}}' class="product">
-                  <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
-                    <img src="{{product.image.url}}" id="cartridge-img-{{ cartridge.pk }}" class="product-img"  alt="Imagen para Licuado">
+                <div id='3-{{product.pk}}' class="product">
+                  <div class="card-block product-container" id="cartridge-{{ product.pk }}">
+                    <img src="{{product.image.url}}" id="cartridge-img-{{ product.pk }}" class="product-img"  alt="Imagen para Licuado">
                     <p class="product-name">{{ product.name }}</p>
                     <p class="description">
                       {{ product.description }}
@@ -91,9 +91,9 @@
           <figure id="leftdisplay" class="left scrol">
             {% for product in products %}
               {% if product.subcategory == 'FR' %}
-                <div id='4roti{{product.pk}}' class="product">
-                  <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
-                    <img src="{{product.image.url}}" id="cartridge-img-{{ cartridge.pk }}" class="product-img"  alt="Imagen para Licuado">
+                <div id='4-{{product.pk}}' class="product">
+                  <div class="card-block product-container" id="cartridge-{{ product.pk }}">
+                    <img src="{{product.image.url}}" id="cartridge-img-{{ product.pk }}" class="product-img"  alt="Imagen para Licuado">
                     <p class="product-name">{{ product.name }}</p>
                     <p class="description">
                       {{ product.description }}
@@ -110,9 +110,9 @@
           <figure id="topdisplay" class="top scrol">
             {% for product in products %}
               {% if product.subcategory == 'JU' %}
-                <div id='roti{{product.pk}}' class="product">
-                  <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
-                    <img src="{{product.image.url}}" id="cartridge-img-{{ cartridge.pk }}" class="product-img"  alt="Imagen para Licuado">
+                <div id='roti-{{product.pk}}' class="product">
+                  <div class="card-block product-container" id="cartridge-{{ product.pk }}">
+                    <img src="{{product.image.url}}" id="cartridge-img-{{ product.pk }}" class="product-img"  alt="Imagen para Licuado">
                     <p class="product-name">{{ product.name }}</p>
                     <p class="description">
                       {{ product.description }}
@@ -255,68 +255,9 @@
 {% endblock content %}
 
 {% block scripts %}
-  <script type="text/javascript" src="{% static 'js/cube/utils.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/cube/utils.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/cube/rotate-box.js' %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.3.8/sweetalert2.min.js"></script>
-<script type="text/javascript" charset="utf-8">
-  $(document).ready(function() {
-
-    function getCookie(name) {
-      let cookieValue = null;
-      if (document.cookie && document.cookie !== '') {
-        let cookies = document.cookie.split(';');
-        let i = 0;
-        for (; i < cookies.length; i++) {
-          let cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-              break;
-            }
-          }
-        }
-        return cookieValue;
-      }
-
-    });
-</script>
-
-<script>
-  function visible() {
-    document.getElementById("frontdisplay").style.visibility = "visible";
-    document.getElementById("backdisplay").style.visibility = "hidden";
-    document.getElementById("rightdisplay").style.visibility = "hidden";
-    document.getElementById("leftdisplay").style.visibility = "hidden";
-    document.getElementById("topdisplay").style.visibility = "hidden";
-  }
-  function visible1() {
-    document.getElementById("frontdisplay").style.visibility = "hidden";
-    document.getElementById("backdisplay").style.visibility = "visible";
-    document.getElementById("rightdisplay").style.visibility = "hidden";
-    document.getElementById("leftdisplay").style.visibility = "hidden";
-    document.getElementById("topdisplay").style.visibility = "hidden";
-  }
-  function visible2() {
-    document.getElementById("frontdisplay").style.visibility = "hidden";
-    document.getElementById("backdisplay").style.visibility = "hidden";
-    document.getElementById("rightdisplay").style.visibility = "visible";
-    document.getElementById("leftdisplay").style.visibility = "hidden";
-    document.getElementById("topdisplay").style.visibility = "hidden";
-  }
-  function visible3() {
-    document.getElementById("frontdisplay").style.visibility = "hidden";
-    document.getElementById("backdisplay").style.visibility = "hidden";
-    document.getElementById("rightdisplay").style.visibility = "hidden";
-    document.getElementById("leftdisplay").style.visibility = "visible";
-    document.getElementById("topdisplay").style.visibility = "hidden";
-  }
-  function visible4() {
-    document.getElementById("frontdisplay").style.visibility = "hidden";
-    document.getElementById("backdisplay").style.visibility = "hidden";
-    document.getElementById("rightdisplay").style.visibility = "hidden";
-    document.getElementById("leftdisplay").style.visibility = "hidden";
-    document.getElementById("topdisplay").style.visibility = "visible";
-  }
-</script>
+<script type="text/javascript" charset="utf-8" src="{% static 'js/orders/scripts.js' %}"></script>
 
 {% endblock scripts %}
