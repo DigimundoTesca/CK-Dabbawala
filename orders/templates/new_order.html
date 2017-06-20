@@ -145,7 +145,6 @@
 </style>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.3.8/sweetalert2.min.css">
 <link rel="stylesheet" href="{% static 'css/cube.css' %}">
-<script src=" {% static 'js/prefixfree.js' %}"></script>
 {% endblock stylesheets %}
 
 {% block content %}
@@ -398,26 +397,19 @@
 {% endblock content %}
 
 {% block scripts %}
+  <script type="text/javascript" src="{% static 'js/cube/utils.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/cube/rotate-box.js' %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.3.8/sweetalert2.min.js"></script>
 <script type="text/javascript" charset="utf-8">
   $(document).ready(function() {
-    let Ticket = {
-      cartuchos: [],
-      paquetes: [],
-      payment_type: 'cash',
-    }
-
-    let DabbaProduct = {
-      id: [],
-      cost: null,
-    }
 
     function getCookie(name) {
-      var cookieValue = null;
+      let cookieValue = null;
       if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-          var cookie = jQuery.trim(cookies[i]);
+        let cookies = document.cookie.split(';');
+        let i = 0;
+        for (; i < cookies.length; i++) {
+          let cookie = jQuery.trim(cookies[i]);
             // Does this cookie string begin with the name we want?
             if (cookie.substring(0, name.length + 1) === (name + '=')) {
               cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
@@ -428,266 +420,6 @@
         return cookieValue;
       }
 
-      /** Agrega un producto al carrito del ticket */
-      $(this).on('click', '.product-img', function(event) {
-        var product_type = $(this).attr('id');
-        var element = $(this)
-
-        function addProductToJSON(id, cant, price) {
-          if (id.indexOf('cartridge') >= 0) {
-            id = id.replace('cartridge-', '');
-
-            /** Itera la lista de cartuchos */
-            function findIdCartucho(cartuchos) {
-              return cartuchos.id == id;
-            }
-            if (!Ticket.cartuchos.find(findIdCartucho)) { // Si no existe
-              nuevo_cartucho = {}
-              nuevo_cartucho.id = id;
-              nuevo_cartucho.cant = cant;
-              nuevo_cartucho.price = price;
-              Ticket.cartuchos.push(nuevo_cartucho);
-
-            } else {
-              mi_cartucho = Ticket.cartuchos.find(findIdCartucho);
-              mi_cartucho.cant = cant;
-              mi_cartucho.price = price;
-            }
-          }
-        }
-
-        function addProductToTicket() {
-          let name = element.siblings('.product-name').text();
-          let cost_base = parseFloat(element.siblings('.content-price').children('.product-cost').text());
-          let cost = cost_base;
-          let id = element.parent().attr('id');
-          let li_id = ('li-' + id).toString();
-          let cant = $('ul#sales-list').find('#' + li_id + ' .cant-li').text();
-          let total = 0;
-
-          if ($('#' + li_id + '').length != 0) {
-            cant++;
-
-            cost = cost * cant;
-            if (cost % 2 != 0) {
-              cost = cost.toFixed(2);
-            } else
-            cost += '.00';
-            $('ul#sales-list').find('#' + li_id + ' .cant-li').text(cant);
-            $('ul#sales-list').find('#' + li_id + ' .total-li').text(cost);
-          } else {
-            cant = 1;
-            if (cost % 2 != 0)
-              cost = cost.toFixed(2);
-            else
-              cost += '.00';
-            if (cost_base % 2 != 0)
-              cost_base = cost_base.toFixed(2);
-            else
-              cost_base += '.00';
-            $nuevo_li = $("" +
-              "<li id='" + li_id + "' class='list-group-item'>" +
-              "<span class='name-li text-uppercase'>" + name + "</span> " +
-              "<span class='cost-base-li'>" + cost_base + "</span>" +
-              "<span class='remove-icon-li'><i class='material-icons'>remove</i></span>" +
-              "<span class='cant-li'>" + cant + "</span>" +
-              "<span class='add-icon-li'><i class='material-icons'>add</i></span>" +
-              "<span class='font-weight-bold s-li'>$ </span>" +
-              "<span class='total-li font-weight-bold'>" + cost + "</span> " +
-              "</li>");
-            $nuevo_li.appendTo('#sales-list').fadeTo('slow', 1);
-          }
-
-          /** Modificacion del total general */
-          $('ul li').find('.total-li').each(function() {
-            re = $(this).text()
-            total += parseFloat(re)
-          });
-          var arreglo = total.toFixed(2).split('.')
-          $('#total-price').html("" +
-            "<span class='text-price align-top' id='int-total-price'>" + arreglo[0] + "</span>" +
-            "<span class='point-total-price'>.</span>" +
-            "<span class='text-price-decimal' id='dec-total-price'>" + arreglo[1] + "</span>"
-            );
-
-          addProductToJSON(id, cant, cost);
-        }
-
-        addProductToTicket();
-      }); 
-
-      $(this).on('click', '.remove-icon-li', function(event) {
-        let element = $(this);
-        let quantity_product = element.siblings('.cant-li').text();
-        let cost_base_product = element.siblings('.cost-base-li').text();
-        let total_product = element.siblings('.total-li').text();
-        let total_ticket = 0;
-        let id_product = element.parent().attr('id').substring(13);
-        var count = 0;
-
-        /** Refresh total ticket. Removes the product from the tiket list*/
-        if (quantity_product == 1) {
-          element.parent().remove(); // Removes from DOM
-
-          /** Modificacion del total del ticket */
-          $('ul li').find('.total-li').each(function() {
-            var total_span = $(this).text();
-            total_ticket += parseFloat(total_span);
-          });
-
-          var total_ticket_split = total_ticket.toFixed(2).split('.')
-
-          $('#total-price').html("" +
-            "<span class='text-price align-top' id='int-total-price'>" + total_ticket_split[0] + "</span>" +
-            "<span class='point-total-price'>.</span>" +
-            "<span class='text-price-decimal' id='dec-total-price'>" + total_ticket_split[1] + "</span>"
-            );
-
-
-          // Removes cartridge from ticket JSON
-          Ticket.cartuchos.forEach(function(cartridge_object) {
-            if (cartridge_object.id == id_product) {
-              Ticket.cartuchos.splice(count, 1);
-            };
-            count += 1;
-          });
-
-        } else {
-
-          $('ul li').find('.total-li').each(function() {
-            re = $(this).text()
-            total_ticket += parseFloat(re)
-          });
-
-          var arreglo = total_ticket.toFixed(2).split('.')
-
-          $('#total-price').html("" +
-            "<span class='text-price align-top' id='int-total-price'>" + arreglo[0] + "</span>" +
-            "<span class='point-total-price'>.</span>" +
-            "<span class='text-price-decimal' id='dec-total-price'>" + arreglo[1] + "</span>"
-            );
-        }
-
-      });
-
-      $(this).on('click', '.add-icon-li', function(event) {});
-
-      /** Agrega el dabba manual al carrito del ticket */
-      $(this).on('click', '#btn-add-dabba', function(event) {
-
-        var product_type = $(this).attr('id');
-        var element = $(this);
-
-        function addProductToJSON(id_list, name, quantity, price) {
-          new_package = {}
-          new_package.id_list = []
-          new_package.quantity = quantity;
-          new_package.price = price;
-          new_package.name = name;
-          Ticket.paquetes.push(new_package);
-
-          id_list.forEach(function(element) {
-            new_package.id_list.push(element);
-          });
-
-          $('.modal-head-prod-name').empty();
-          DabbaProduct.id.length = 0;
-
-        }
-
-        function addProductToTicket() {
-          dabba_name_list = [];
-          dabba_name_list_string = "";
-          dabba_name_string = "";
-
-          header_1 = $('#modal-prod-head-1').text().trim();
-          header_2 = $('#modal-prod-head-2').text().trim();
-          header_3 = $('#modal-prod-head-3').text().trim();
-
-          dabba_name_string += header_1 + ' ' + header_2 + ' ' + header_3;
-
-          dabba_name_list.push(header_1.split(' ', 1));
-          dabba_name_list.push(header_2.split(' ', 1));
-          dabba_name_list.push(header_3.split(' ', 1));
-
-          dabba_name_list.forEach(function(dabba_name) {
-            dabba_name.forEach(function(word) {
-              dabba_name_list_string += word.substring(0, 3) + ' ';
-            });
-          });
-
-          let cost_base = DabbaProduct.cost;
-          let cost = cost_base;
-          let id = element.parent().attr('id');
-          let li_id = DabbaProduct.id;
-          let cant = 1;
-          let total = 0;
-
-          $nuevo_li = $("" +
-            "<li class='list-group-item'>" +
-            "<span class='name-li text-uppercase'>" + dabba_name_list_string + "</span> " +
-            "<span class='cost-base-li'>" + cost_base + "</span>" +
-            "<span class='remove-icon-li'><i class='material-icons'>remove</i></span>" +
-            "<span class='cant-li'>" + cant + "</span>" +
-            "<span class='add-icon-li'><i class='material-icons'>add</i></span>" +
-            "<span class='font-weight-bold s-li'>$ </span>" +
-            "<span class='total-li font-weight-bold'>" + cost + "</span> " +
-            "</li>");
-          $nuevo_li.appendTo('#sales-list').fadeTo('slow', 1);
-
-          /** Modificacion del total general */
-          $('ul li').find('.total-li').each(function() {
-            re = $(this).text()
-            total += parseFloat(re)
-          });
-
-          var arreglo = total.toFixed(2).split('.')
-          $('#total-price').html("" +
-            "<span class='text-price align-top' id='int-total-price'>" + arreglo[0] + "</span>" +
-            "<span class='point-total-price'>.</span>" +
-            "<span class='text-price-decimal' id='dec-total-price'>" + arreglo[1] + "</span>"
-            );
-
-          addProductToJSON(li_id, dabba_name_string, cant, cost);
-
-        }
-
-        addProductToTicket();
-      });
-
-      /** Despliega el modal para realizar la venta */
-      $(this).on('click', '.product-img', function(event) {
-        element = $(this);
-        price = element.parent().find('span.product-cost').text();
-        DabbaProduct.cost = price;
-      });
-
-      /** Cancelar Venta - Resetear ticket */
-      $(this).on('click', '#btn-orders-reset', function(event) {
-        function resetTicketObject() {
-          Ticket.cartuchos.length = 0;
-          Ticket.paquetes.length = 0;
-          DabbaProduct.id.length = 0;
-        }
-
-        function resetTicketList() {
-          swal({
-            title: "Venta Cancelada!",
-            type: "error",
-            timer: 700,
-            showConfirmButton: false
-          });
-          $('#sales-list').empty();
-          $('#total-price').html("" +
-            "<span class='text-price align-top' id='int-total-price'>0</span>" +
-            "<span class='point-total-price'>.</span>" +
-            "<span class='text-price-decimal' id='dec-total-price'>00</span>"
-            );
-          $('.modal-head-prod-name').empty();
-        }
-        resetTicketList();
-        resetTicketObject();
-      });
     });
 </script>
 
@@ -728,7 +460,5 @@
     document.getElementById("topdisplay").style.visibility = "visible";
   }
 </script>
-<script type="text/javascript" src="{% static 'js/cube/utils.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/cube/rotate-box.js' %}"></script>
 
 {% endblock scripts %}
