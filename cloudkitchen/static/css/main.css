@@ -4242,7 +4242,8 @@
   .product {
     display: inline-block;
     padding-top: 20px;
-    width: 280px;
+    width: 220px;
+    max-width: 500px;
   }
   .product p {
     font-size: 15px;
