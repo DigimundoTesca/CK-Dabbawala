@@ -4,7 +4,7 @@ section, footer, nav {
 
 iframe {
   width: 100%;
-  height: 100%;
+  height: 100%; 
 }
 .list-group-item {
   text-decoration-color: black !important;
@@ -26,8 +26,22 @@ iframe {
 }
 
 #cart {
-  width: 300px;
+  min-width: 300px;
   margin-bottom: 30px;
+}
+
+#salesmain {
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around !important;
+}
+
+#salesmain .thecube {
+  width: 60% !important;
+}
+
+#salesmain .cartmain {
+  width: 30% !important;
 }
 
 .salessection {
@@ -68,9 +82,9 @@ iframe {
 }
 .thecube {
   font-family: 'Helvetica Neue', Arial, sans-serif;
+  width: 100% !important;
   -webkit-text-size-adjust: none;
   color: #333;
-  max-width: 720px;
   margin-bottom: 6em;
   padding-bottom: 2em;
 }
@@ -162,8 +176,8 @@ iframe {
   height: 4rem;
 }
 .container-sales .group-sales .card-scroll-orders {
-  min-height: calc(100vh - 25rem);
-  max-height: calc(100vh - 25rem);
+  min-height: 300px;
+  max-height: 700px;
   padding: 0;
 }
 .container-sales .group-sales .card-scroll-orders ul.list-group {
