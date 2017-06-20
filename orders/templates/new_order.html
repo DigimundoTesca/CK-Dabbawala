@@ -29,7 +29,7 @@
         </p>
       </section>
       <section id="group-complements" class="container">
-        <div id="cube" class="show-front card-block product-container">
+        <div id="cube" class="show-front card-block">
           <!-- Rotis -->
           <figure id="frontdisplay" class="front scrol">
             {% for product in products %}
@@ -157,96 +157,6 @@
         </div>
         <a id="btn-orders-reset" class="button fit orde cancel">Cancelar Venta</a>
         <a id="btn-order" class="button fit orde set" data-toggle="modal" data-target="#modal-order"><span>Arma tu dabba</span></a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Ticket Modal -->
-<div class="modal fade" id="modal-order" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Realizar venta</h4>
-      </div>
-      <div class="modal-body">
-        <div class="container-fluid">
-          <div class="card card-scroll col-xs-4" id="printer-container">
-            <div id="printer" style="margin: 0 auto">
-              <figure class="content-img">
-                <img src="{% static 'images/si_black.jpg' %}" alt="logo-dabbawala">
-              </figure>
-              <div class="ticket-order-container text-xs-center">
-                <span>ORDEN: </span><span id="ticket-order"></span>
-              </div>
-              <div class="ticket-address">
-                <p class="text-xs-center">
-                  Suministros integrales de insumos SA de CV. <br>
-                  AV insurgentes 1647 Col. San José Insurgentes Del . Benito Juárez Cp: 03900
-                </p>
-              </div>
-              <div class="container ticket-datetime-container">
-                <div class="row">
-                  <div class="col-xs-6 ticket-datetime">
-                    <span id="ticket-time"></span>
-                  </div>
-                  <div class="col-xs-6 ticket-datetime">
-                    <span id="ticket-date"></span>
-                  </div>
-                </div>
-              </div>
-              <ul class="list-group list-group-flush" id="sales-list-modal">
-              </ul>
-              <div class="ticket-id-container">
-                <span>ID: </span><span id="ticket-id"></span>
-              </div>
-              <div class="ticket-contact">
-                <p class="text-xs-center">
-                  Contacto:<br>
-                  (55) 41 22 69 00 <br>
-                  contacto@suministrosintegrales.mx <br>
-                </p>
-                <p class="text-xs-center mt-1">
-                  <strong>¡GRACIAS POR SONREIR! <span class="smile">☺</span></strong> <br>
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="card card-scroll" id="ticket-description">
-            <h3>No olvides recordarle al cliente las promociones</h3>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <div class="container">
-          <div class="row">
-            <button type="submit" id="btn-pago-tarjeta" class="btn btn-primary col-xs-4 push-xs-3 btn-printer">Pago con tarjeta</button>
-            <button type="submit" id="btn-pago-efectivo" class="btn btn-success col-xs-4 push-xs-4 btn-printer">Pago con efectivo</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Extra Ingredients Modals -->
-<div class="modal fade" id="extra-ingredient-modal" tabindex="-1" role="dialog" aria-labelledby="extra-ingredient-modal-label" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <h3 class="modal-title" id="extra-ingredient-modal-label">Ingredientes Extra</h3>
-      </div>
-      <div class="modal-body">
-        <ul class="list-unstyled list-group">
-        </ul>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary orde" data-dismiss="modal">Cancelar</button>
-        <button id="btn-add-extra-ingredient" type="button" class="btn btn-primary">Agregar Ingredientes</button>
       </div>
     </div>
   </div>
