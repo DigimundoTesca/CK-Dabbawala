@@ -10,7 +10,7 @@
 }
 
 #sales-main {
-  margin: 0 auto;
+  margin: 1rem auto 0;
   display: flex;
   justify-content: space-around !important;
 }
@@ -32,6 +32,15 @@
   margin-bottom: 2rem;
   width: 95% !important;
 }
+#cart-container .order-total {
+  margin-top: 0;
+  font-size: 1.8rem;
+}
+#cart-container .order-title {
+  margin-top: 1rem;
+  font-size: 1.8rem;
+  margin-top: 2rem;
+}
 #cart-container .card-float {
   background: rgb(250,243,237);
   border: 1px #5bc0d3 solid;
@@ -46,16 +55,12 @@
 }
 
 #cart-body {
-  
+  min-height: 280px;
 }
 
-#cart-header .text-total {
-  color: #151515;
-  font-size: 1.2rem;
-}
 #cart-header .total-container {
   display: flex;
-  font-size: 3rem;
+  font-size: 3.2rem;
   justify-content: center;
   margin: .5rem .2rem;
   text-align: center;
@@ -65,7 +70,7 @@
 }
 #cart-header .total-container #total-price {
   display: flex;
-  font-size: 3rem;
+  font-size: 3.2rem;
 }
 #cart-header .total-container .point-total-price {
   display: none;
