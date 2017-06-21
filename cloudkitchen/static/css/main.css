@@ -4956,6 +4956,9 @@
 
   #carta .col2 {
     margin-top: 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   #plan h3 {
