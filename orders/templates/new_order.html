@@ -49,7 +49,7 @@
             {% endfor %}
           </figure>
           <!-- Salads -->
-          <figure id="backdisplay" class="back">
+          <figure id="backdisplay" class="back panels-backface-invisible">
             {% for product in products %}
               {% if product.subcategory == 'SA' %}
                 <div id='2-{{product.pk}}' class="product">
@@ -68,7 +68,7 @@
             {% endfor %}
           </figure>
           <!-- Smoothies -->
-          <figure id="rightdisplay" class="right">
+          <figure id="rightdisplay" class="right panels-backface-invisible">
             {% for product in products %}
               {% if product.subcategory == 'SM' %}
                 <div id='3-{{product.pk}}' class="product">
@@ -87,7 +87,7 @@
             {% endfor %}
           </figure>
           <!-- Fruits -->
-          <figure id="leftdisplay" class="left">
+          <figure id="leftdisplay" class="left panels-backface-invisible">
             {% for product in products %}
               {% if product.subcategory == 'FR' %}
                 <div id='4-{{product.pk}}' class="product">
@@ -106,7 +106,7 @@
             {% endfor %}
           </figure>
           <!-- Juices -->
-          <figure id="topdisplay" class="top">
+          <figure id="topdisplay" class="top panels-backface-invisible">
             {% for product in products %}
               {% if product.subcategory == 'JU' %}
                 <div id='roti-{{product.pk}}' class="product">

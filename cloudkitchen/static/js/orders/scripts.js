@@ -32,37 +32,39 @@ $(document).ready(function() {
 });
 
   function visible() {
-    document.getElementById("frontdisplay").style.visibility = "visible";
-    document.getElementById("backdisplay").style.visibility = "hidden";
-    document.getElementById("rightdisplay").style.visibility = "hidden";
-    document.getElementById("leftdisplay").style.visibility = "hidden";
-    document.getElementById("topdisplay").style.visibility = "hidden";
+    $('#frontdisplay').removeClass('panels-backface-invisible');
+    $('#backdisplay').addClass('panels-backface-invisible');
+    $('#rightdisplay').addClass('panels-backface-invisible');
+    $('#leftdisplay').addClass('panels-backface-invisible');
+    $('#topdisplay').addClass('panels-backface-invisible');
+
   }
   function visible1() {
-    document.getElementById("frontdisplay").style.visibility = "hidden";
-    document.getElementById("backdisplay").style.visibility = "visible";
-    document.getElementById("rightdisplay").style.visibility = "hidden";
-    document.getElementById("leftdisplay").style.visibility = "hidden";
-    document.getElementById("topdisplay").style.visibility = "hidden";
+    $('#frontdisplay').addClass('panels-backface-invisible');
+    $('#backdisplay').removeClass('panels-backface-invisible');
+    $('#rightdisplay').addClass('panels-backface-invisible');
+    $('#leftdisplay').addClass('panels-backface-invisible');
+    $('#topdisplay').addClass('panels-backface-invisible');
   }
   function visible2() {
-    document.getElementById("frontdisplay").style.visibility = "hidden";
-    document.getElementById("backdisplay").style.visibility = "hidden";
-    document.getElementById("rightdisplay").style.visibility = "visible";
-    document.getElementById("leftdisplay").style.visibility = "hidden";
-    document.getElementById("topdisplay").style.visibility = "hidden";
+    $('#frontdisplay').addClass('panels-backface-invisible');
+    $('#backdisplay').addClass('panels-backface-invisible');
+    $('#rightdisplay').removeClass('panels-backface-invisible');
+    $('#leftdisplay').addClass('panels-backface-invisible');
+    $('#topdisplay').addClass('panels-backface-invisible');
+
   }
   function visible3() {
-    document.getElementById("frontdisplay").style.visibility = "hidden";
-    document.getElementById("backdisplay").style.visibility = "hidden";
-    document.getElementById("rightdisplay").style.visibility = "hidden";
-    document.getElementById("leftdisplay").style.visibility = "visible";
-    document.getElementById("topdisplay").style.visibility = "hidden";
+    $('#frontdisplay').addClass('panels-backface-invisible');
+    $('#backdisplay').addClass('panels-backface-invisible');
+    $('#rightdisplay').addClass('panels-backface-invisible');
+    $('#leftdisplay').removeClass('panels-backface-invisible');
+    $('#topdisplay').addClass('panels-backface-invisible');
   }
   function visible4() {
-    document.getElementById("frontdisplay").style.visibility = "hidden";
-    document.getElementById("backdisplay").style.visibility = "hidden";
-    document.getElementById("rightdisplay").style.visibility = "hidden";
-    document.getElementById("leftdisplay").style.visibility = "hidden";
-    document.getElementById("topdisplay").style.visibility = "visible";
+    $('#frontdisplay').addClass('panels-backface-invisible');
+    $('#backdisplay').addClass('panels-backface-invisible');
+    $('#rightdisplay').addClass('panels-backface-invisible');
+    $('#leftdisplay').addClass('panels-backface-invisible');
+    $('#topdisplay').removeClass('panels-backface-invisible');
   }

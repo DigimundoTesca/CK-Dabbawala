@@ -153,22 +153,15 @@
     height: 440px;
     text-align: center;
     overflow: scroll;
-    transition: all 1s ease;
+    transition: all 0.3s;
   }
 
-  #cube.panels-backface-invisible figure, #cube figure {
-    -webkit-backface-visibility: hidden;
-    -moz-backface-visibility: hidden;
-    -o-backface-visibility: hidden;
-    backface-visibility: hidden;
-  }
-
-  #cube .front  { background: rgba(250,243,237,1); }
-  #cube .back   { background: rgba(250,243,237,1); visibility: hidden; }
-  #cube .right  { background: rgba(250,243,237,1); visibility: hidden; }
-  #cube .left   { background: rgba(250,243,237,1); visibility: hidden; }
-  #cube .top    { background: rgba(250,243,237,1); visibility: hidden; }
-  #cube .bottom { background: rgba(250,243,237,1); visibility: hidden; }
+  #cube .front  { background: rgba(250,243,237,0.6); }
+  #cube .back   { background: rgba(250,243,237,0.6); }
+  #cube .right  { background: rgba(250,243,237,0.6); }
+  #cube .left   { background: rgba(250,243,237,0.6); }
+  #cube .top    { background: rgba(250,243,237,0.6); }
+  #cube .bottom { background: rgba(250,243,237,0.6); }
 
   #cube .front  {
     -webkit-transform: translateZ( 300px );
@@ -242,6 +235,10 @@
     -moz-transform: translateZ( -100px ) rotateX(   90deg );
     -o-transform: translateZ( -100px ) rotateX(   90deg );
     transform: translateZ( -100px ) rotateX(   90deg );
+  }
+
+  .panels-backface-invisible{
+    visibility: hidden;
   }
 }
 
