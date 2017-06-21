@@ -2,8 +2,6 @@
 #options {
   position: relative;
   z-index: 100;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -25,7 +23,9 @@
   margin-bottom: 1rem;
   padding-bottom: 1em;
 }
-
+#thecube #show-buttons {
+  margin: 1rem 0 0;
+}
 /** Sales properties */
 #cart-container {
   border-radius: 3px;
@@ -255,9 +255,8 @@
   .container-cube {
     width: 90%;
     height: 450px;
-    /*position: absolute;*/
     display: block;
-    margin: 0 auto 50px;
+    margin: 0 auto;
     z-index: 1 !important;
   }
 
