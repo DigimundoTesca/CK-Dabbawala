@@ -290,6 +290,9 @@
     .\-1u {
       margin-left: 8.33333%;
     }
+    #flomen {
+      visibility: hidden;
+    }
 
     @media screen and (max-width: 2000px) {
 
@@ -1139,7 +1142,6 @@
 
       .menu .cols p {
         margin: 0 !important;
-        background-color: rgba(255,255,255,1) !important;
         font-family:'Conv_Futura',Sans-Serif !important;
         font-weight: 700 !important;
         font-size: 13pt !important;
@@ -2173,7 +2175,6 @@
       width: -webkit-max-content;
       width: -ms-max-content;
       width: max-content;
-      margin-bottom: 2em;
     }
 
     header.major > :first-child {
@@ -2619,6 +2620,9 @@
 
     ul.con {
       margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     ul.con li {
@@ -3849,7 +3853,7 @@
   #banner.main {
     background-image: url("../images/image/1.jpg");
     top: 0;
-    margin-bottom: -2.2em;
+    margin-bottom: 0;
   }
 
   #banner.build {
@@ -4101,7 +4105,7 @@
     background-image: -webkit-linear-gradient(150deg, #ffffff 50%, rgb(250,243,237) 50%);
     background-image: -o-linear-gradient(150deg, #ffffff 50%, rgb(250,243,237) 50%);
     background-image: linear-gradient(15deg, #ffffff 50%, rgb(250,243,237) 50%);
-    /*flex-wrap: wrap;*/
+    flex-wrap: wrap;
     text-align: center;
     vertical-align: middle;
   }
@@ -4112,11 +4116,13 @@
   #main h4, #main1 h4, #main2 h4, #main3 h4, #main4 h4 {
     color: #F84F0E;
     padding: 0;
-    margin: 0;
+    margin: 0 !important;
+    text-align: center;
   }
 
   #main h3, #main1 h3, #main2 h3, #main3 h3, #main4 h3 {
     margin-top: 2em;
+    padding-top: 50px;
   }
 
   #main h2, #main1 h2, #main2 h2, #main3 h2, #main4 h2 {
@@ -4148,7 +4154,9 @@
   #main div.first, #main1 div.first, #main2 div.first, #main3 div.first, #main4 div.first {
     width: 50%;
     margin:0 auto;
-    padding-bottom: 2em;
+    padding-bottom: 40px;
+    padding-top: 50px;
+    text-align: justify;
   }
  
   #main div.cols, #main1 div.cols, #main2 div.cols, #main3 div.cols, #main4 div.cols {
@@ -4240,6 +4248,7 @@
     display: table-cell;
     vertical-align: middle;
     margin: 0 auto;
+    text-align: center;
   }
  
   #main .col1 .cont, #main1 .col1 .cont, #main2 .col1 .cont, #main3 .col1 .cont, #main4 .col1 .cont {
@@ -4252,6 +4261,7 @@
     display: table-cell;
     vertical-align: middle;
     margin: 0 auto !important;
+    text-align: center;
   }
 
   #innerbtn {
@@ -4326,7 +4336,7 @@
   }
  
   #main .contactcol, #main1 .contactcol, #main2 .contactcol, #main3 .contactcol, #main4 .contactcol {
-    max-width: 90% !important;
+    width: 100%;
   }
 
   #main div.col1 input, #main1 div.col1 input, #main2 div.col1 input, #main3 div.col1 input, #main4 div.col1 input, 
@@ -4337,7 +4347,6 @@
   #main label, #main1 label, #main2 label, #main3 label, #main4 label {
     font-family:'Conv_Futura',Sans-Serif;
     margin: 0.8em !important;
-    margin-bottom: -10px !important;
     color:#F84F0E;
     display: block;
     letter-spacing: 0;
@@ -4349,10 +4358,14 @@
     text-align: center;
     padding: 0;
     margin: 0;
+    position: initial;
   }
 
   #main p, #main1 p, #main2 p, #main3 p, #main4 p {
     color: #000;
+    text-align: justify;
+    left: 0;
+    z-index: 1;
   }
  
   #main > *, #main1 > *, #main2 > *, #main3 > *, #main4 > * {
@@ -4794,6 +4807,10 @@
 
   #main .bord, #main1 .bord, #main2 .bord, #main3 .bord, #main4 .bord {
     margin-top: -35px;
+    margin-top: -35px;
+    position: absolute;
+    left: 0;
+    z-index: 1;
   }
 
   .bord {
@@ -4893,6 +4910,8 @@
     font-size: 30pt;
     font-weight: 400;
     letter-spacing: 0.05em;
+    position: initial;
+    padding-bottom: 50px;
   }
  
   #main .regis span, #main1 .regis span, #main2 .regis span, #main3 .regis span, #main4 .regis span {
