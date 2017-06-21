@@ -12,15 +12,15 @@
 {% endblock stylesheets%}
 
 {% block content %}
-<div id="main"> 
+<div id="main1"> 
   <img class="bord2" src="{% static 'images/image/reverse.png' %}" alt="Borde">
   <h2>bienvenido a </h2>
-  <h1>Dabbawalla</h1>
+  <h1>Dabbawala</h1>
   <div class="regis">
-    <p>Registrate y obtén<br><span>UN DESAYUNO GRATIS</span><br><br></p>
+  <p>Registrate y obtén<br><span>UN DESAYUNO GRATIS</span></p>
   </div>
 </div>
-<div id="main">
+<div id="main2">
   <img class="arr" src="{% static 'images/image/arrow.png' %}" alt="Borde">
   <div class="form">
     <form action="" method="POST" class="form-register-customer">
@@ -103,7 +103,7 @@
   <img class="arr" src="{% static 'images/image/arrow.png' %}" alt="Borde" height="60px">
   <div class="form">
     <h2>¿TIENES ALGUNA DUDA O SUGERENCIA?</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
+    <p>Envíanos tus dudas ó sugerencias; estamos siempre al pendiente de nuestros clientes.<br>Te estaremos respondiendo en poco tiempo.</p>
     <form class="col sections" action="" method="post" accept-charset="utf-8">
       <div class="col1">
         <input type="text" name="email" id="email" placeholder="Email" />
@@ -198,99 +198,99 @@
     popup.style.visibility = "visible";
     popup.style.height = "auto";
     $("#overmap").fadeIn(1500);
-      setTimeout(function() {
-        $("#container-msj-alert").fadeOut(1500);
-      },6000);
-;  }
+    setTimeout(function() {
+      $("#container-msj-alert").fadeOut(1500);
+    },6000);
+    ;  }
 
-  function pulsar(e) {
-    tecla = (document.all) ? e.keyCode :e.which;
-    return (tecla!=13);
-  }
-
-  function search(e) {
-    var code = (e.keyCode ? e.keyCode : e.which);
-    if(code == 13) { 
-      var address = $('#id_address').val();
-      var geocoder = new google.maps.Geocoder();
-      geocoder.geocode({'address': address}, geocodeResult);
+    function pulsar(e) {
+      tecla = (document.all) ? e.keyCode :e.which;
+      return (tecla!=13);
     }
 
-    return (code!=13);
-  }
-
-  function geocodeResult(results, status) {
-    if (status == 'OK') {
-      var address = results[0].formatted_address;
-      setAddressValue(address);
-
-      var optionsMap = {
-        zoom: 18,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
+    function search(e) {
+      var code = (e.keyCode ? e.keyCode : e.which);
+      if(code == 13) { 
+        var address = $('#id_address').val();
+        var geocoder = new google.maps.Geocoder();
+        geocoder.geocode({'address': address}, geocodeResult);
       }
 
-      drawMap(optionsMap);
-      map.fitBounds(results[0].geometry.viewport);
-
-      var markerOptions = { 
-        position: results[0].geometry.location,
-        draggable: true, 
-        animation: google.maps.Animation.DROP,
-      }
-
-      marker = new google.maps.Marker(markerOptions);
-      marker.setMap(map);
-
-      var latitude = marker.position.lat();
-      var longitude = marker.position.lng();
-
-      setLatLng(latitude, longitude);
-
-      addMarkerLsteners(marker);
-
-      swalYourAddress();
-
-    } else {
-      /** If there's not results */
-      $("#msj-alert").text('No encontramos tu dirección');
-      $("#container-msj-alert").fadeIn(1500);
-      setTimeout(function() {
-        $("#container-msj-alert").fadeOut(1500);
-      },6000);
+      return (code!=13);
     }
-  }
-  $(function() {
-    initMap();
-  });
-</script>
-<script>
-  $('#getJson').on('click', function() {
-    let name, addres, mail, phone;
-    name = $('#id_name').val();
-    addres = $('#id_address').val() +' Reference ' + $('#id_reference').val();
-    mail = $('#id_email').val();
-    phone = $('#id_phone_number').val();
-    let new_user = new Object();
-    new_user.name = name;
-    new_user.mail = mail;
-    new_user.phone = phone;
-    new_user.addres =  addres;
 
-    let userJson = JSON.stringify(new_user);
+    function geocodeResult(results, status) {
+      if (status == 'OK') {
+        var address = results[0].formatted_address;
+        setAddressValue(address);
 
-    $.ajax({
-      url: "{% url 'customers:register' %}",
-      type: 'POST',
-      data: {
-        csrfmiddlewaretoken: '{{ csrf_token }}',
-        'newuser': userJson,
-        'type': 'regist_user'
-      },
-      traditional: true, 
-      datatype: 'jsonp',
+        var optionsMap = {
+          zoom: 18,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+        }
+
+        drawMap(optionsMap);
+        map.fitBounds(results[0].geometry.viewport);
+
+        var markerOptions = { 
+          position: results[0].geometry.location,
+          draggable: true, 
+          animation: google.maps.Animation.DROP,
+        }
+
+        marker = new google.maps.Marker(markerOptions);
+        marker.setMap(map);
+
+        var latitude = marker.position.lat();
+        var longitude = marker.position.lng();
+
+        setLatLng(latitude, longitude);
+
+        addMarkerLsteners(marker);
+
+        swalYourAddress();
+
+      } else {
+        /** If there's not results */
+        $("#msj-alert").text('No encontramos tu dirección');
+        $("#container-msj-alert").fadeIn(1500);
+        setTimeout(function() {
+          $("#container-msj-alert").fadeOut(1500);
+        },6000);
+      }
+    }
+    $(function() {
+      initMap();
     });
-    
-  });
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrITfQswCPmOPEBRM1Ufeiogh22FxQV5k" defer charset="utf-8"></script>
-{% endblock scripts %}
+  </script>
+  <script>
+    $('#getJson').on('click', function() {
+      let name, addres, mail, phone;
+      name = $('#id_name').val();
+      addres = $('#id_address').val() +' Reference ' + $('#id_reference').val();
+      mail = $('#id_email').val();
+      phone = $('#id_phone_number').val();
+      let new_user = new Object();
+      new_user.name = name;
+      new_user.mail = mail;
+      new_user.phone = phone;
+      new_user.addres =  addres;
+
+      let userJson = JSON.stringify(new_user);
+
+      $.ajax({
+        url: "{% url 'customers:register' %}",
+        type: 'POST',
+        data: {
+          csrfmiddlewaretoken: '{{ csrf_token }}',
+          'newuser': userJson,
+          'type': 'regist_user'
+        },
+        traditional: true, 
+        datatype: 'jsonp',
+      });
+
+    });
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrITfQswCPmOPEBRM1Ufeiogh22FxQV5k" defer charset="utf-8"></script>
+  {% endblock scripts %}
