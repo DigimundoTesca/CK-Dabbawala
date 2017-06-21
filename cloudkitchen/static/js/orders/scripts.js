@@ -21,14 +21,21 @@ $(document).ready(function() {
     }
     return cookieValue;
   }
-
-  $('.product').click(function(){
+  
+  $('.product').on('click', function(event) {
     let productId = $(this).attr('id').split('-')[1];
     let productName = $(this).find('.product-name').text();
     let productCost = $(this).find('.product-cost').text();
-    
+    console.log($(this));
+
+    let newItem = $("<li class='list-item'>" +
+      "<span class='prod-name'>Producto</span>" +
+      "<span class='prod-unit'>P. Unit</span>" +
+      "<span class='prod-quantity'>Cant</span>" +
+      "<span class='prod-total'>Total</span>" +
+      "</li>");
+    $('#list-container-prods').append(newItem);
   });
-  
 });
 
   function visible() {
