@@ -1,9 +1,9 @@
   {% extends "dabbawala/base_nav_footer.html" %}
   {% load static %}
 
-  {% block stylesheets %}
-  <link rel="stylesheet" href="{% static 'css/cube.css' %}">
-  {% endblock stylesheets %}
+{% block stylesheets %}
+<link rel="stylesheet" href="{% static 'css/cube-230617.css' %}">
+{% endblock stylesheets %}
 
   {% block content %}
   <div id="contenedor">
@@ -126,12 +126,31 @@
                 </div>
               </div>
               {% endif %}
+<<<<<<< HEAD
               {% endfor %}
             </figure>
           </div>
         </section>
+=======
+            {% endfor %}
+          </figure>
+        </div>
+      </section>
+    </div>
+    <div id="cart-container">
+      <h3 class="order-total">Total</h3>
+      <div id="cart-header" class="card-float">
+        <p class="total-container">
+          <span class="text-price" id="s-total-price">$ </span>
+          <span id="total-price">
+            <span class="text-price" id="int-total-price">0</span>
+            <span class="point-total-price">.</span>
+            <span class="text-price-decimal" id="dec-total-price">00</span>
+          </span>
+        </p>
+>>>>>>> develop
       </div>
-      <div id="cart-container">  
+      <div id="cart-container">
         <h3 class="order-total">Total</h3>
         <div id="cart-header" class="card-float">
           <p class="total-container">
@@ -190,9 +209,9 @@
 
 {% block scripts %}
 <script type="text/javascript" src="{% static 'js/cube/utils.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/cube/rotate-box.js' %}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.3.8/sweetalert2.min.js"></script>
+<script type="text/javascript" src="{% static 'js/cube/rotate-box-230617.js' %}"></script>
 <script type="text/javascript" charset="utf-8" src="{% static 'js/orders/scripts.js' %}"></script>
+<<<<<<< HEAD
 <script>
   function showAlert() {
     swal({
@@ -201,8 +220,8 @@
       type: "success",
       timer: 2500,
       showConfirmButton: false
-    });  
-    setTimeout(rel, 2100);  
+    });
+    setTimeout(rel, 2100);
   }
   $(function() {
     showAlert();
@@ -210,4 +229,6 @@
   window.onload = document.getElementById("contenedor").style.display="none";
   window.onload = document.getElementById("infor").style.display="initial";
 </script>
+=======
+>>>>>>> develop
 {% endblock scripts %}

@@ -228,6 +228,7 @@ ul#sales-list li.list-item span.prod-total {
     padding: 0;
     border: 1px #5bc0d3 solid;
     border-radius: 5px;
+    perspective: 1000000px;
   }
 
   #cube {
@@ -377,6 +378,7 @@ ul#sales-list li.list-item span.prod-total {
     max-width: 35% ;
   }
 }
+<<<<<<< HEAD:cloudkitchen/static/css/cube.css
 
 /*Loader css*/
 
@@ -450,3 +452,5 @@ ul#sales-list li.list-item span.prod-total {
     height: 5em;
   }
 }
+=======
+>>>>>>> develop:cloudkitchen/static/css/cube-230617.css

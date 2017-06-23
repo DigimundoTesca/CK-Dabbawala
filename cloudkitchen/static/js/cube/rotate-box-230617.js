@@ -12,7 +12,7 @@ var init = function() {
   for (var i=0, len = showPanelButtons.length; i < len; i++) {
     showPanelButtons[i].addEventListener( 'click', onButtonClick, false);
   }
-
+  
 };
-
+  
 window.addEventListener( 'DOMContentLoaded', init, false);
