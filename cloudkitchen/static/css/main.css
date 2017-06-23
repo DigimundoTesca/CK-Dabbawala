@@ -290,6 +290,7 @@
     .\-1u {
       margin-left: 8.33333%;
     }
+
     #flomen {
       visibility: hidden;
     }
@@ -1954,10 +1955,6 @@
 
     @-ms-viewport {
       width: device-width;
-    }
-
-    body {
-      -ms-overflow-style: scrollbar;
     }
 
     @media screen and (max-width: 480px) {
@@ -4186,11 +4183,15 @@
     padding-bottom: 2em;
     margin: 0 auto;
   }
-
   .product {
-    display: inline-block;
+    display: inline-flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
     padding-top: 20px;
     width: 220px;
+    height: 350px;
     max-width: 500px;
   }
   .product p {
@@ -4218,6 +4219,7 @@
 
   .product img {
     width: 180px;
+    height: 120px;
   }
 
   .bcol {
@@ -5219,4 +5221,25 @@
   }
   #map {
     width: 80%;
+  }
+
+  /*Scroll bar properties*/
+  ::-webkit-scrollbar-track
+  {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 8px;
+    background-color: #F5F5F5;
+  }
+
+  ::-webkit-scrollbar
+  {
+    width: 8px;
+    background-color: #F5F5F5;
+  }
+
+  ::-webkit-scrollbar-thumb
+  {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: rgba(248,79,14,0.5);
   }

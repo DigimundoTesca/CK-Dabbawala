@@ -1,8 +1,26 @@
 $(document).ready(function() {
 
+  window.onload = document.getElementById("container-loader").style.display="none";
+  window.onload = document.getElementById("infor").style.display="initial";
+
+
   let Ticket = {
     packages: {},
     cartridges: {}
+  }
+
+  function showAlert() {
+    swal({
+      title: "Menú cargado!",
+      text: "Disfruta tus alimentos!",
+      type: "success",
+      timer: 2500,
+      showConfirmButton: false
+    }).then(
+      function(){},
+      function(dismiss){}
+    );
+    setTimeout(2100);
   }
 
   function getCookie(name) {
@@ -93,6 +111,9 @@ $(document).ready(function() {
 
     addProductToTicketObj(productId, productName, productCost);
   });
+
+
+  showAlert();
 
 });
 

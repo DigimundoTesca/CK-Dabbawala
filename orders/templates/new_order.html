@@ -1,187 +1,191 @@
-{% extends "dabbawala/base_nav_footer.html" %}
-{% load static %}
+  {% extends "dabbawala/base_nav_footer.html" %}
+  {% load static %}
 
 {% block stylesheets %}
 <link rel="stylesheet" href="{% static 'css/cube-230617.css' %}">
 {% endblock stylesheets %}
 
-{% block content %}
-<section id="banner" class="build major style3">
-  <div class="inner">
-    <header class="inner">
-      <h1>ARMA TU DABBA</h1>
-      <h2>ROTI + 2 Complementos <br>$ 69.00</h2>
-    </header>
-  </div>
-</section>
-<div id="main">
-  <img class="bord" src="{% static 'images/image/reverse.png' %}" alt="Borde de flechas">
-  <div id="sales-main" class="sales-section">
-    <div id="thecube">
-      <section id="options">
-        <p id="show-buttons">
-          <button class="show-front" onclick="visible()">Roti</button>
-          <button class="show-back" onclick="visible1()">Ensaladas</button>
-          <button class="show-right" onclick="visible2()">Licuados</button>
-          <button class="show-left" onclick="visible3()">Fruta</button>
-          <button class="show-top" onclick="visible4()">Jugos</button>
-        </p>
-      </section>
-      <section id="group-complements" class="container-cube">
-        <div id="cube" class="show-front card-block">
-          <!-- Rotis -->
-          <figure id="frontdisplay" class="front">
-            {% for product in products %}
-              {% if product.subcategory == 'RO' %}
-                <div id='1-{{product.pk}}' class="product">
-                  <div class="card-block product-container" id="cartridge-{{ product.pk }}">
-                    <img src="{{product.image.url}}" id="cartridge-img-{{ product.pk }}" class="product-img"  alt="Imagen para Roti">
-                    <p class="product-name">{{ product.name }}</p>
-                    <p class="description">
-                      {{ product.description }}
-                    </p>
-                    <div class="content-price">
-                      <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ product.price }}</span>
-                    </div>
-                  </div>
-                </div>
-              {% endif %}
-            {% endfor %}
-          </figure>
-          <!-- Salads -->
-          <figure id="backdisplay" class="back panels-backface-invisible">
-            {% for product in products %}
-              {% if product.subcategory == 'SA' %}
-                <div id='2-{{product.pk}}' class="product">
-                  <div class="card-block product-container" id="cartridge-{{ product.pk }}">
-                    <img src="{{product.image.url}}" id="cartridge-img-{{ product.pk }}" class="product-img"  alt="Imagen para Ensalada">
-                    <p class="product-name">{{ product.name }}</p>
-                    <p class="description">
-                      {{ product.description }}
-                    </p>
-                    <div class="content-price">
-                      <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ product.price }}</span>
-                    </div>
-                  </div>
-                </div>
-              {% endif %}
-            {% endfor %}
-          </figure>
-          <!-- Smoothies -->
-          <figure id="rightdisplay" class="right panels-backface-invisible">
-            {% for product in products %}
-              {% if product.subcategory == 'SM' %}
-                <div id='3-{{product.pk}}' class="product">
-                  <div class="card-block product-container" id="cartridge-{{ product.pk }}">
-                    <img src="{{product.image.url}}" id="cartridge-img-{{ product.pk }}" class="product-img"  alt="Imagen para Licuado">
-                    <p class="product-name">{{ product.name }}</p>
-                    <p class="description">
-                      {{ product.description }}
-                    </p>
-                    <div class="content-price">
-                      <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ product.price }}</span>
-                    </div>
-                  </div>
-                </div>
-              {% endif %}
-            {% endfor %}
-          </figure>
-          <!-- Fruits -->
-          <figure id="leftdisplay" class="left panels-backface-invisible">
-            {% for product in products %}
-              {% if product.subcategory == 'FR' %}
-                <div id='4-{{product.pk}}' class="product">
-                  <div class="card-block product-container" id="cartridge-{{ product.pk }}">
-                    <img src="{{product.image.url}}" id="cartridge-img-{{ product.pk }}" class="product-img"  alt="Imagen para Licuado">
-                    <p class="product-name">{{ product.name }}</p>
-                    <p class="description">
-                      {{ product.description }}
-                    </p>
-                    <div class="content-price">
-                      <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ product.price }}</span>
-                    </div>
-                  </div>
-                </div>
-              {% endif %}
-            {% endfor %}
-          </figure>
-          <!-- Juices -->
-          <figure id="topdisplay" class="top panels-backface-invisible">
-            {% for product in products %}
-              {% if product.subcategory == 'JU' %}
-                <div id='roti-{{product.pk}}' class="product">
-                  <div class="card-block product-container" id="cartridge-{{ product.pk }}">
-                    <img src="{{product.image.url}}" id="cartridge-img-{{ product.pk }}" class="product-img"  alt="Imagen para Licuado">
-                    <p class="product-name">{{ product.name }}</p>
-                    <p class="description">
-                      {{ product.description }}
-                    </p>
-                    <div class="content-price">
-                      <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ product.price }}</span>
-                    </div>
-                  </div>
-                </div>
-              {% endif %}
-            {% endfor %}
-          </figure>
-        </div>
-      </section>
+  {% block content %}
+  <div id="container-loader">
+   <div class="loader" id="loader"><p>Cargando Menú...</p></div>
+ </div>
+ <div id="infor">
+  <section id="banner" class="build major style3">
+    <div class="inner">
+      <header class="inner">
+        <h1>ARMA TU DABBA</h1>
+        <h2>ROTI + 2 Complementos <br>$ 69.00</h2>
+      </header>
     </div>
-    <div id="cart-container">
-      <h3 class="order-total">Total</h3>
-      <div id="cart-header" class="card-float">
-        <p class="total-container">
-          <span class="text-price" id="s-total-price">$ </span>
-          <span id="total-price">
-            <span class="text-price" id="int-total-price">0</span>
-            <span class="point-total-price">.</span>
-            <span class="text-price-decimal" id="dec-total-price">00</span>
-          </span>
-        </p>
-      </div>
-      <h3 class="order-title" >Tu pedido</h3>
-      <div id="cart-body" class="card-float">
-        <div class="card-block products-block">
-          <div class="row">
+  </section>
+  <div id="main">
+    <img class="bord" src="{% static 'images/image/reverse.png' %}" alt="Borde de flechas">
+    <div id="sales-main" class="sales-section">
+      <div id="thecube">
+        <section id="options">
+          <p id="show-buttons">
+            <button class="show-front" onclick="visible()">Roti</button>
+            <button class="show-back" onclick="visible1()">Ensaladas</button>
+            <button class="show-right" onclick="visible2()">Licuados</button>
+            <button class="show-left" onclick="visible3()">Fruta</button>
+            <button class="show-top" onclick="visible4()">Jugos</button>
+          </p>
+        </section>
+        <section id="group-complements" class="container-cube">
+          <div id="cube" class="show-front card-block">
+            <!-- Rotis -->
+            <figure id="frontdisplay" class="front">
+              {% for product in products %}
+              {% if product.subcategory == 'RO' %}
+              <div id='1-{{product.pk}}' class="product">
+                <div class="card-block product-container" id="cartridge-{{ product.pk }}">
+                  <img src="{{product.image.url}}" id="cartridge-img-{{ product.pk }}" class="product-img"  alt="Imagen para Roti">
+                  <p class="product-name">{{ product.name }}</p>
+                  <p class="description">
+                    {{ product.description }}
+                  </p>
+                  <div class="content-price">
+                    <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ product.price }}</span>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+              {% endfor %}
+            </figure>
+            <!-- Salads -->
+            <figure id="backdisplay" class="back panels-backface-invisible">
+              {% for product in products %}
+              {% if product.subcategory == 'SA' %}
+              <div id='2-{{product.pk}}' class="product">
+                <div class="card-block product-container" id="cartridge-{{ product.pk }}">
+                  <img src="{{product.image.url}}" id="cartridge-img-{{ product.pk }}" class="product-img"  alt="Imagen para Ensalada">
+                  <p class="product-name">{{ product.name }}</p>
+                  <p class="description">
+                    {{ product.description }}
+                  </p>
+                  <div class="content-price">
+                    <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ product.price }}</span>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+              {% endfor %}
+            </figure>
+            <!-- Smoothies -->
+            <figure id="rightdisplay" class="right panels-backface-invisible">
+              {% for product in products %}
+              {% if product.subcategory == 'SM' %}
+              <div id='3-{{product.pk}}' class="product">
+                <div class="card-block product-container" id="cartridge-{{ product.pk }}">
+                  <img src="{{product.image.url}}" id="cartridge-img-{{ product.pk }}" class="product-img"  alt="Imagen para Licuado">
+                  <p class="product-name">{{ product.name }}</p>
+                  <p class="description">
+                    {{ product.description }}
+                  </p>
+                  <div class="content-price">
+                    <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ product.price }}</span>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+              {% endfor %}
+            </figure>
+            <!-- Fruits -->
+            <figure id="leftdisplay" class="left panels-backface-invisible">
+              {% for product in products %}
+              {% if product.subcategory == 'FR' %}
+              <div id='4-{{product.pk}}' class="product">
+                <div class="card-block product-container" id="cartridge-{{ product.pk }}">
+                  <img src="{{product.image.url}}" id="cartridge-img-{{ product.pk }}" class="product-img"  alt="Imagen para Licuado">
+                  <p class="product-name">{{ product.name }}</p>
+                  <p class="description">
+                    {{ product.description }}
+                  </p>
+                  <div class="content-price">
+                    <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ product.price }}</span>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+              {% endfor %}
+            </figure>
+            <!-- Juices -->
+            <figure id="topdisplay" class="top panels-backface-invisible">
+              {% for product in products %}
+              {% if product.subcategory == 'JU' %}
+              <div id='roti-{{product.pk}}' class="product">
+                <div class="card-block product-container" id="cartridge-{{ product.pk }}">
+                  <img src="{{product.image.url}}" id="cartridge-img-{{ product.pk }}" class="product-img"  alt="Imagen para Licuado">
+                  <p class="product-name">{{ product.name }}</p>
+                  <p class="description">
+                    {{ product.description }}
+                  </p>
+                  <div class="content-price">
+                    <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ product.price }}</span>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+              {% endfor %}
+            </figure>
           </div>
-        </div>
-        <ul class="list-group list-group-flush" id="sales-list">
-          <li class="li-separator li-prods">
-          <span class="separator-title">Productos</span>
-            <ul id="list-container-prods">
-              <li class="prod-list-head list-item">
-                <span class="prod-name">Producto</span>
-                <span class="prod-unit">P. Unit</span>
-                <span class="prod-quantity">Cant</span>
-                <span class="prod-total">Total</span>
-              </li>
-            </ul>
-          </li>
-          <li class="li-separator li-combos">
-            <span class="separator-title">Paquetes</span>
-            <ul>
-              <li class="prod-list-head list-item">
-                <span class="prod-name">Producto</span>
-                <span class="prod-unit">P. Unit</span>
-                <span class="prod-quantity">Cant</span>
-                <span class="prod-total">Total</span>
-              </li>
-              <li class="list-item">
-                <span class="prod-name">Chilaquilerssss</span>
-                <span class="prod-unit">$ 30.00</span>
-                <span class="prod-quantity">5</span>
-                <span class="prod-total">$ 150.00</span>
-              </li>
-            </ul>
-          </li>
-        </ul>
+        </section>
       </div>
-      <button id="btn-orders-reset" class="fit orde cancel">Cancelar Venta</button>
-      <button id="btn-order" class="fit orde set"><span>Arma tu dabba</span></button>
+      <div id="cart-container">
+        <h3 class="order-total">Total</h3>
+        <div id="cart-header" class="card-float">
+          <p class="total-container">
+            <span class="text-price" id="s-total-price">$ </span>
+            <span id="total-price">
+              <span class="text-price" id="int-total-price">0</span>
+              <span class="point-total-price">.</span>
+              <span class="text-price-decimal" id="dec-total-price">00</span>
+            </span>
+          </p>
+        </div>
+        <h3 class="order-title" >Tu pedido</h3>
+        <div id="cart-body" class="card-float">
+          <div class="card-block products-block">
+            <div class="row">
+            </div>
+          </div>
+          <ul class="list-group list-group-flush" id="sales-list">
+            <li class="li-separator li-prods">
+              <span class="separator-title">Productos</span>
+              <ul>
+                <li class="prod-list-head list-item">
+                  <span class="prod-name">Producto</span>
+                  <span class="prod-unit">P. Unit</span>
+                  <span class="prod-quantity">Cant</span>
+                  <span class="prod-total">Total</span>
+                </li>
+              </ul>
+            </li>
+            <li class="li-separator li-combos">
+              <span class="separator-title">Paquetes</span>
+              <ul>
+                <li class="prod-list-head list-item">
+                  <span class="prod-name">Producto</span>
+                  <span class="prod-unit">P. Unit</span>
+                  <span class="prod-quantity">Cant</span>
+                  <span class="prod-total">Total</span>
+                </li>
+                <li class="list-item">
+                  <span class="prod-name">Chilaquilerssss</span>
+                  <span class="prod-unit">$ 30.00</span>
+                  <span class="prod-quantity">5</span>
+                  <span class="prod-total">$ 150.00</span>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <button id="btn-orders-reset" class="fit orde cancel">Cancelar Venta</button>
+        <button id="btn-order" class="fit orde set"><span>Arma tu dabba</span></button>
+      </div>
     </div>
   </div>
 </div>
-
 {% endblock content %}
 
 {% block scripts %}

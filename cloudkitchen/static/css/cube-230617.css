@@ -1,3 +1,25 @@
+/** Scroll bar properties */
+#cube figure::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 8px;
+  background-color: #F5F5F5;
+}
+
+#cube figure::-webkit-scrollbar
+{
+  width: 8px;
+  background-color: #F5F5F5;
+}
+
+#cube figure::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: #F84F0E;
+}
+
+
 /** Cube properties */
 #options {
   position: relative;
@@ -237,11 +259,12 @@ ul#sales-list li.list-item span.prod-total {
     font-size: 1rem;
     line-height: 0.9rem;
     padding-bottom: 0.5rem;
+    text-align: center;
   }
   #cube figure .description {
     font-size: 0.9rem;
     line-height: 0.9rem;
-
+    text-align: center;
   }
 
   #cube .front  { background: rgba(250,243,237,0.6); }
@@ -356,3 +379,79 @@ ul#sales-list li.list-item span.prod-total {
     max-width: 35% ;
   }
 }
+<<<<<<< HEAD:cloudkitchen/static/css/cube.css
+
+/*Loader css*/
+
+#contenedor {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+#infor {
+  display: none;
+}
+
+.loader,
+.loader:before,
+.loader:after {
+  background: #FFF;
+  -webkit-animation: load1 1s infinite ease-in-out;
+  animation: load1 1s infinite ease-in-out;
+  width: 1em;
+  height: 4em;
+}
+.loader:before,
+.loader:after {
+  position: absolute;
+  top: 0;
+  content: '';
+}
+.loader:before {
+  left: -1.5em;
+}
+.loader {
+  /*text-indent: -9999em;*/
+  margin: 40% auto;
+  position: relative;
+  font-size: 11px;
+  -webkit-animation-delay: 0.16s;
+  animation-delay: 0.16s;
+}
+.loader:after {
+  left: 1.5em;
+  -webkit-animation-delay: 0.32s;
+  animation-delay: 0.32s;
+}
+.loader p {
+  padding-top: 60px;
+  font-size: 20px;
+  margin-left: -40px;
+  text-align: center;
+}
+@-webkit-keyframes load1 {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 0 #FFF;
+    height: 4em;
+  }
+  40% {
+    box-shadow: 0 -2em #ffffff;
+    height: 5em;
+  }
+}
+@keyframes load1 {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 0 #FFF;
+    height: 4em;
+  }
+  40% {
+    box-shadow: 0 -2em #ffffff;
+    height: 5em;
+  }
+}
+=======
+>>>>>>> develop:cloudkitchen/static/css/cube-230617.css
