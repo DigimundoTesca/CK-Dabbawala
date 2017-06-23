@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-  Ticket = {
+  let Ticket = {
     packages: {},
     cartridges: {}
   }
@@ -21,10 +21,47 @@ $(document).ready(function() {
     }
     return cookieValue;
   }
-  
+
+  function updateTicketList() {
+    let i,
+      newItem,
+      packagesListContainer;
+
+    packagesListContainer = $('ul#list-container-prods');
+    packagesListContainer.empty();
+    newItem = $("<li class='prod-list-head  list-item'>" +
+      "<span class='prod-name'>Producto</span>" +
+      "<span class='prod-unit'>P. Unit</span>" +
+      "<span class='prod-quantity'>Cant</span>" +
+      "<span class='prod-total'>Total</span>" +
+      "</li>");
+    packagesListContainer.append(newItem);
+
+    for (key in Ticket.cartridges)  {
+      newItem = $("<li class='list-item'>" +
+        "<span class='prod-name'>" + Ticket.cartridges[key].name + "</span>" +
+        "<span class='prod-unit'>$ " + Ticket.cartridges[key].cost.toFixed(2) + "</span>" +
+        "<span class='prod-quantity'>" + Ticket.cartridges[key].quantity + "</span>" +
+        "<span class='prod-total'> $ " + Ticket.cartridges[key].total.toFixed(2) + "</span>" +
+        "</li>");
+        packagesListContainer.append(newItem);
+
+    }
+
+    // Draws the cartridges in cart.
+    // newItem = $("<li class='list-item'>" +
+    // "<span class='prod-name'></span>" +
+    // "<span class='prod-unit'></span>" +
+    // "<span class='prod-quantity'></span>" +
+    // "<span class='prod-total'></span>" +
+    // "</li>");
+
+    // $('ul#list-container-prods').append(newItem);
+
+  }
   /**
    * Adds the elements to the ticket json
-   * 
+   *
    * @param {Number} id
    * @param {String} name
    * @param {Number} cost
@@ -44,16 +81,17 @@ $(document).ready(function() {
       }
       Ticket.cartridges[id] = newProduct;
     }
-    // console.log("Ticket %O:", Ticket)
+    updateTicketList();
+    console.log("Ticket %O:", Ticket)
   };
 
-  $('.product').on('click', function(event) {
+  $(this).on('click', '.product', function(event) {
     let productId = +$(this).attr('id').split('-')[1];
     let productName = $(this).find('.product-name').text();
     let productCost = +$(this).find('.product-cost').text();
-    
-    addProductToTicketObj(productId, productName, productCost);
 
+    addProductToTicketObj(productId, productName, productCost);
+    console.log('jajaj');
     // let newItem = $("<li class='list-item'>" +
     //   "<span class=prod-name>" + productName + "</span>" +
     //   "<span class='prod-unit'>" + productCost + "</span>" +
