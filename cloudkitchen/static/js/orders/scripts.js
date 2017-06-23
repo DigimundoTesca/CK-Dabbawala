@@ -80,10 +80,9 @@ $(document).ready(function() {
   }
   /**
    * Adds the elements to the ticket json
-   *
-   * @param {Number} id
-   * @param {String} name
-   * @param {Number} cost
+   * @param {Number} id   Cartridge ticket id
+   * @param {String} name Cartridge ticket name
+   * @param {Number} cost Catridge ticket cost
    */
   function addProductToTicketObj(id, name, cost){
      // Cheks if there's a same product in the ticket json
@@ -116,8 +115,6 @@ $(document).ready(function() {
   showAlert();
 
 });
-
-
 
 function visible() {
   $('#frontdisplay').removeClass('panels-backface-invisible');
