@@ -379,11 +379,9 @@ ul#sales-list li.list-item span.prod-total {
     max-width: 35% ;
   }
 }
-<<<<<<< HEAD:cloudkitchen/static/css/cube.css
-
 /*Loader css*/
 
-#contenedor {
+#container-loader {
   width: 100% !important;
   height: 100% !important;
 }
@@ -453,5 +451,3 @@ ul#sales-list li.list-item span.prod-total {
     height: 5em;
   }
 }
-=======
->>>>>>> develop:cloudkitchen/static/css/cube-230617.css
