@@ -86,13 +86,14 @@ $(document).ready(function() {
     console.log("Ticket %O:", Ticket)
   };
 
-  $(this).on('click', '.container-cube', function(event) {
+  $(this).on('click', '.product', function(event) {
     let productId = +$(this).attr('id').split('-')[1];
     let productName = $(this).find('.product-name').text();
     let productCost = +$(this).find('.product-cost').text();
 
     addProductToTicketObj(productId, productName, productCost);
   });
+
 });
 
 
