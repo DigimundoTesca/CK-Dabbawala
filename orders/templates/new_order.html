@@ -6,7 +6,7 @@
 {% endblock stylesheets %}
 
   {% block content %}
-  <div id="contenedor">
+  <div id="container-loader">
    <div class="loader" id="loader"><p>Cargando Menú...</p></div>
  </div>
  <div id="infor">
@@ -192,21 +192,4 @@
 <script type="text/javascript" src="{% static 'js/cube/utils.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/cube/rotate-box-230617.js' %}"></script>
 <script type="text/javascript" charset="utf-8" src="{% static 'js/orders/scripts.js' %}"></script>
-<script>
-  window.onload = document.getElementById("contenedor").style.display="none";
-  window.onload = document.getElementById("infor").style.display="initial";
-  function showAlert() {
-    swal({
-      title: "Menú cargado!",
-      text: "Disfruta tus alimentos!",
-      type: "success",
-      timer: 2500,
-      showConfirmButton: false
-    });
-    setTimeout(rel, 2100);
-  }
-  $(function() {
-    showAlert();
-  });
-</script>
 {% endblock scripts %}
