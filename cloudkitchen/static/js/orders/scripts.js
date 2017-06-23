@@ -28,13 +28,15 @@ $(document).ready(function() {
       packagesListContainer;
 
     packagesListContainer = $('ul#list-container-prods');
-    packagesListContainer.empty();
+
     newItem = $("<li class='prod-list-head  list-item'>" +
       "<span class='prod-name'>Producto</span>" +
       "<span class='prod-unit'>P. Unit</span>" +
       "<span class='prod-quantity'>Cant</span>" +
       "<span class='prod-total'>Total</span>" +
       "</li>");
+
+    packagesListContainer.empty();
     packagesListContainer.append(newItem);
 
     for (key in Ticket.cartridges)  {
@@ -45,7 +47,6 @@ $(document).ready(function() {
         "<span class='prod-total'> $ " + Ticket.cartridges[key].total.toFixed(2) + "</span>" +
         "</li>");
         packagesListContainer.append(newItem);
-
     }
 
     // Draws the cartridges in cart.
@@ -85,23 +86,16 @@ $(document).ready(function() {
     console.log("Ticket %O:", Ticket)
   };
 
-  $(this).on('click', '.product', function(event) {
+  $(this).on('click', '.container-cube', function(event) {
     let productId = +$(this).attr('id').split('-')[1];
     let productName = $(this).find('.product-name').text();
     let productCost = +$(this).find('.product-cost').text();
 
     addProductToTicketObj(productId, productName, productCost);
-    console.log('jajaj');
-    // let newItem = $("<li class='list-item'>" +
-    //   "<span class=prod-name>" + productName + "</span>" +
-    //   "<span class='prod-unit'>" + productCost + "</span>" +
-    //   "<span class='prod-quantity'>Cant</span>" +
-    //   "<span class='prod-total'>Total</span>" +
-    //   "</li>");
-
-    // $('#list-container-prods').append(newItem);
   });
 });
+
+
 
 function visible() {
   $('#frontdisplay').removeClass('panels-backface-invisible');
@@ -124,7 +118,6 @@ function visible2() {
   $('#rightdisplay').removeClass('panels-backface-invisible');
   $('#leftdisplay').addClass('panels-backface-invisible');
   $('#topdisplay').addClass('panels-backface-invisible');
-
 }
 function visible3() {
   $('#frontdisplay').addClass('panels-backface-invisible');
