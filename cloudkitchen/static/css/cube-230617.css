@@ -259,11 +259,12 @@ ul#sales-list li.list-item span.prod-total {
     font-size: 1rem;
     line-height: 0.9rem;
     padding-bottom: 0.5rem;
+    text-align: center;
   }
   #cube figure .description {
     font-size: 0.9rem;
     line-height: 0.9rem;
-
+    text-align: center;
   }
 
   #cube .front  { background: rgba(250,243,237,0.6); }

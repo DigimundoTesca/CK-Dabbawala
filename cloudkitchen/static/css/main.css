@@ -4183,11 +4183,15 @@
     padding-bottom: 2em;
     margin: 0 auto;
   }
-
   .product {
-    display: inline-block;
+    display: inline-flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
     padding-top: 20px;
     width: 220px;
+    height: 350px;
     max-width: 500px;
   }
   .product p {
@@ -4215,6 +4219,7 @@
 
   .product img {
     width: 180px;
+    height: 120px;
   }
 
   .bcol {
