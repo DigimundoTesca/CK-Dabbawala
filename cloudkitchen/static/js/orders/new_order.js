@@ -3,12 +3,13 @@ $(document).ready(function() {
   window.onload = document.getElementById("container-loader").style.display="none";
   window.onload = document.getElementById("infor").style.display="initial";
 
-
   let Ticket = {
     packages: {},
     cartridges: {}
   }
-
+  /**
+   * Shows a Sweet alerto meanwhile the loads the page
+   */
   function showAlert() {
     swal({
       title: "Menú cargado!",
@@ -21,6 +22,20 @@ $(document).ready(function() {
       function(dismiss){}
     );
     setTimeout(2100);
+  }
+
+  function initScrolls(){
+    let scrolls = document.getElementsByClassName('container-scroll');
+    let i = 0;
+    for (; i < scrolls.length; i++) {
+      let container = scrolls[i];
+      Ps.initialize(container, {
+        wheelPropagation: true,
+        minScrollbarLength: 80,
+        maxScrollbarLength: 180,
+        useBothWheelAxes: true,
+      });
+    }
   }
 
   function getCookie(name) {
@@ -100,20 +115,10 @@ $(document).ready(function() {
     addProductToTicketObj(productId, productName, productCost);
   });
 
+  initScrolls();
   showAlert();
-
 });
-let scrolls = document.getElementsByClassName('container-scroll');
-let i = 0;
-for (; i < scrolls.length; i++) {
-  let container = scrolls[i];
-  Ps.initialize(container, {
-    wheelPropagation: true,
-    minScrollbarLength: 80,
-    maxScrollbarLength: 180,
-    useBothWheelAxes: true,
-  });
-}
+
 function visible() {
   $('#frontdisplay').removeClass('panels-backface-invisible');
   $('#backdisplay').addClass('panels-backface-invisible');
@@ -122,6 +127,7 @@ function visible() {
   $('#topdisplay').addClass('panels-backface-invisible');
 
 }
+
 function visible1() {
   $('#frontdisplay').addClass('panels-backface-invisible');
   $('#backdisplay').removeClass('panels-backface-invisible');
