@@ -1171,9 +1171,7 @@
         margin-left: 0 !important;
         font-weight: 400 !important;
         font-size: 10pt !important;
-        width: 190px;
         line-height: 1.5em !important;
-        width: 350px;
       }
 
       .window-container {
@@ -1491,7 +1489,7 @@
       }
 
       #carta .col1, #carta .col2 {
-        width: 100%;
+        width: 100% !important;
       }
 
       #main .first, #main1 .first, #main2 .first, #main3 .first, #main4 .first {
