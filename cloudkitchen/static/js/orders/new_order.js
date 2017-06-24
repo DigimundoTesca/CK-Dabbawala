@@ -90,7 +90,6 @@ $(document).ready(function() {
       Ticket.cartridges[id] = newProduct;
     }
     updateTicketList();
-    console.log("Ticket %O:", Ticket)
   };
 
   $(this).on('click', '.product', function(event) {
