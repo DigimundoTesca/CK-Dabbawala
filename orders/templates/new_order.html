@@ -3,6 +3,14 @@
 
 {% block stylesheets %}
 <link rel="stylesheet" href="{% static 'css/cube-230617.css' %}">
+<link rel="stylesheet" href="{% static 'css/perfect-scrollbar.css' %}">
+<style>
+#cube > figure {
+    position: relative;
+    height: 100%;
+    background-color: red;
+  }
+</style>
 {% endblock stylesheets %}
 
 {% block content %}
@@ -34,7 +42,7 @@
         <section id="group-complements" class="container-cube">
           <div id="cube" class="show-front card-block">
             <!-- Rotis -->
-            <figure id="frontdisplay" class="front">
+            <figure id="frontdisplay" class="front container-scroll">
               {% for product in products %}
               {% if product.subcategory == 'RO' %}
               <div id='1-{{product.pk}}' class="product">
@@ -53,7 +61,7 @@
               {% endfor %}
             </figure>
             <!-- Salads -->
-            <figure id="backdisplay" class="back panels-backface-invisible">
+            <figure id="backdisplay" class="back panels-backface-invisible  container-scroll">
               {% for product in products %}
               {% if product.subcategory == 'SA' %}
               <div id='2-{{product.pk}}' class="product">
@@ -72,7 +80,7 @@
               {% endfor %}
             </figure>
             <!-- Smoothies -->
-            <figure id="rightdisplay" class="right panels-backface-invisible">
+            <figure id="rightdisplay" class="right panels-backface-invisib  container-scroll">
               {% for product in products %}
               {% if product.subcategory == 'SM' %}
               <div id='3-{{product.pk}}' class="product">
@@ -91,7 +99,7 @@
               {% endfor %}
             </figure>
             <!-- Fruits -->
-            <figure id="leftdisplay" class="left panels-backface-invisible">
+            <figure id="leftdisplay" class="left panels-backface-invisible  container-scroll">
               {% for product in products %}
               {% if product.subcategory == 'FR' %}
               <div id='4-{{product.pk}}' class="product">
@@ -110,7 +118,7 @@
               {% endfor %}
             </figure>
             <!-- Juices -->
-            <figure id="topdisplay" class="top panels-backface-invisible">
+            <figure id="topdisplay" class="top panels-backface-invisible  container-scroll">
               {% for product in products %}
               {% if product.subcategory == 'JU' %}
               <div id='roti-{{product.pk}}' class="product">
@@ -192,4 +200,12 @@
 <script type="text/javascript" src="{% static 'js/cube/utils.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/cube/rotate-box-230617.js' %}"></script>
 <script type="text/javascript" charset="utf-8" src="{% static 'js/orders/scripts.js' %}"></script>
+
+<script src="{% static 'js/perfect-scroll/perfect-scrollbar.min.js' %}"></script>
+<script>
+  $(function() {
+    Ps.initialize(document.getElementsByClass('container-scroll'));
+    
+  });
+  </script>
 {% endblock scripts %}
