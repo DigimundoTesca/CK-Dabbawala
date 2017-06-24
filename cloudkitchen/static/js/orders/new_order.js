@@ -3,6 +3,7 @@ $(document).ready(function() {
   window.onload = document.getElementById("container-loader").style.display="none";
   window.onload = document.getElementById("infor").style.display="initial";
 
+
   let Ticket = {
     packages: {},
     cartridges: {}
@@ -103,7 +104,17 @@ $(document).ready(function() {
   showAlert();
 
 });
-
+let scrolls = document.getElementsByClassName('container-scroll');
+let i = 0;
+for (; i < scrolls.length; i++) {
+  let container = scrolls[i];
+  Ps.initialize(container, {
+    wheelPropagation: true,
+    minScrollbarLength: 80,
+    maxScrollbarLength: 180,
+    useBothWheelAxes: true,
+  });
+}
 function visible() {
   $('#frontdisplay').removeClass('panels-backface-invisible');
   $('#backdisplay').addClass('panels-backface-invisible');
