@@ -82,11 +82,13 @@ def test(request):
 
 # -------------------------------------  Menu -------------------------------------
 def menu(request):
+    all_products = Cartridge.objects.all()
     suppliers_list = Supplier.objects.order_by('id')
     template = 'all_products/menu.html'
     title = 'Menú'
     context = {
         'suppliers': suppliers_list,
+        'products': all_products,
         'title': title,
         'page_title': PAGE_TITLE
     }
@@ -340,3 +342,5 @@ def cartridge_modify(request, pk):
         'page_title': PAGE_TITLE
     }
     return render(request, template, context)
+
+

@@ -1,25 +1,3 @@
-/** Scroll bar properties */
-/*#cube figure::-webkit-scrollbar-track
-{
-  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-  border-radius: 8px;
-  background-color: #F5F5F5;
-}
-
-#cube figure::-webkit-scrollbar
-{
-  width: 8px;
-  background-color: #F5F5F5;
-}
-
-#cube figure::-webkit-scrollbar-thumb
-{
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-  background-color: #F84F0E;
-}*/
-
-
 /** Cube properties */
 #options {
   position: relative;
@@ -69,7 +47,7 @@
   margin-top: 2rem;
 }
 #cart-container .card-float {
-  background: rgb(250,243,237);
+  background: #F9ECE0;
   border: 1px #5bc0d3 solid;
   border-radius: 5px;
   box-shadow: 0px 4px 8px 1px rgba(0,0,0, 0.2);
@@ -267,12 +245,12 @@ ul#sales-list li.list-item span.prod-total {
     text-align: center;
   }
 
-  #cube .front  { background: rgba(250,243,237,0.6); }
-  #cube .back   { background: rgba(250,243,237,0.6); }
-  #cube .right  { background: rgba(250,243,237,0.6); }
-  #cube .left   { background: rgba(250,243,237,0.6); }
-  #cube .top    { background: rgba(250,243,237,0.6); }
-  #cube .bottom { background: rgba(250,243,237,0.6); }
+  #cube .front  { background: #F9ECE0; }
+  #cube .back   { background: #F9ECE0; }
+  #cube .right  { background: #F9ECE0; }
+  #cube .left   { background: #F9ECE0; }
+  #cube .top    { background: #F9ECE0; }
+  #cube .bottom { background: #F9ECE0; }
 
   #cube .front  {
     -webkit-transform: translateZ( 300px );
