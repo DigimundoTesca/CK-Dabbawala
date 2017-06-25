@@ -4959,8 +4959,7 @@
     margin-top: 10% !important;
   }
 
-  #carta .col2 {
-    margin-top: 10%;
+  #carta .col2, #carta .col1 {
     display: flex;
     flex-direction: column;
     justify-content: center;
