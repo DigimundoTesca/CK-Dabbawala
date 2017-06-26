@@ -1525,6 +1525,11 @@
         width: 75%;
       }
 
+      .sale-circle {
+        width: 70px !important;
+        height: 70px !important;
+      }
+
       #carta .col1, #carta .col2 {
         width: 100% !important;
       }
@@ -1766,10 +1771,6 @@
 
       #cartfloat {
         min-width: 330px;
-      }
-      .sale-circle {
-        width: 70px !important;
-        height: 70px !important;
       }
     }
 
