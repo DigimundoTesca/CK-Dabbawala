@@ -8,7 +8,7 @@ $(document).ready(function() {
     cartridges: {}
   }
   /**
-   * Shows a Sweet alerto meanwhile the loads the page
+   * Shows a Sweet alert meanwhile the loads the page
    */
   function showAlert() {
     swal({
@@ -55,6 +55,10 @@ $(document).ready(function() {
     return cookieValue;
   }
 
+  /**
+   * Sets the data from Ticket Object in the cart
+   * @return {[type]} [description]
+   */
   function updateTicketList() {
     let i,
       newItem,
@@ -115,6 +119,14 @@ $(document).ready(function() {
     addProductToTicketObj(productId, productName, productCost);
   });
 
+  $(this).on('click', '#btn-orders-reset', function(event) {
+    Ticket = {
+      cartridges: {},
+      packages: {}
+    }
+    updateTicketList();
+  });
+
   initScrolls();
   showAlert();
 });
@@ -126,7 +138,6 @@ function visible() {
   $('#leftdisplay').addClass('panels-backface-invisible');
   $('#topdisplay').addClass('panels-backface-invisible');
   $('#bottomdisplay').addClass('panels-backface-invisible');
-
 }
 
 function visible1() {
