@@ -4289,7 +4289,7 @@
 
   #main .col1 img, #main1 .col1 img, #main2 .col1 img, #main3 .col1 img, #main4 .col1 img,
   #main .col2 img, #main1 .col2 img, #main2 .col2 img, #main3 .col2 img, #main4 .col2 img {
-    margin: 0 auto;
+    margin: 0 auto !important;
     margin-top: 15%;
   }
 
