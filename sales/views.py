@@ -41,7 +41,7 @@ def sales(request):
                     'datetime': timezone.localtime(ticket.created_at),
                     'earnings': 0
                 }
-                for ticket_detail in sales_helper.get_all_tickets():
+                for ticket_detail in sales_helper.get_all_tickets_details():
                     if ticket_detail.ticket == ticket:
                         earnings_sale_object['earnings'] += ticket_detail.price
                 sales_day_list.append(earnings_sale_object)
@@ -160,6 +160,7 @@ def delete_sale(request):
 @login_required(login_url='users:login')
 def new_sale(request):
     helper = Helper()
+    sales_helper = SalesHelper()
     if request.method == 'POST':
         if request.POST['ticket']:
             """ 
@@ -178,7 +179,10 @@ def new_sale(request):
             ticket_detail_json_object = json.loads(request.POST.get('ticket'))
             payment_type = ticket_detail_json_object['payment_type']
             new_ticket_object = Ticket(
-                cash_register=cash_register, seller=user_profile_object, payment_type=payment_type)
+                cash_register=cash_register,
+                seller=user_profile_object,
+                payment_type=payment_type,
+                order_number=sales_helper.get_new_order_number())
             new_ticket_object.save()
 
             """

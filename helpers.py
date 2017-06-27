@@ -288,6 +288,7 @@ class SalesHelper(object):
         super(SalesHelper, self).__init__()
 
     def set_all_tickets(self):
+
         self.__all_tickets = Ticket.objects.select_related('seller').all()
 
     def set_all_tickets_details(self):
@@ -590,6 +591,16 @@ class SalesHelper(object):
             ticket_object['total'] = str(ticket_object['total'])
             tickets_list.append(ticket_object)
         return tickets_list
+
+    def get_new_order_number(self):
+        if self.__all_tickets is None:
+            self.set_all_tickets()
+
+        order_numbers_list = []
+        for ticket in self.get_all_tickets():
+            order_numbers_list.append(ticket.order_number)
+
+        return max(order_numbers_list) + 1
 
 
 class ProductsHelper(object):

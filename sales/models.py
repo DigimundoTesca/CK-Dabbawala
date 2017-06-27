@@ -24,8 +24,7 @@ class Ticket(models.Model):
         CashRegister, on_delete=models.CASCADE, default=1)
     payment_type = models.CharField(
         choices=PAYMENT_TYPE, default=CASH, max_length=2)
-    order_number = models.IntegerField(
-        null=True, blank=True)
+    order_number = models.IntegerField(default=1, blank=False, null=False)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
