@@ -300,6 +300,13 @@
       visibility: hidden;
     }
 
+    #cartfloat {
+      display: none;
+      border: 1px #5bc0d3 solid;
+      border-radius: 3px;
+      background: #F9ECE0;
+    }
+
     @media screen and (max-width: 2000px) {
 
       #mainmenu {
@@ -558,7 +565,7 @@
 
       #header .logo {
         border: 0;
-        display: inline-block;
+        display: flex;
         font-size: 0.8em;
         height: inherit;
         line-height: inherit;
@@ -923,6 +930,10 @@
         visibility: hidden;
       }
 
+      #main .bord {
+        margin-top: -25px !important;
+      }
+
       .row > * {
         padding: 0 0 0 1.5em;
       }
@@ -1136,6 +1147,25 @@
 
     }
 
+    @media screen and (max-width: 899px) {
+      #cartfloat {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-around;
+        width: 80%;
+        margin: 0 auto;
+        margin-top: 40px;
+        /*height: 20px;*/
+      }
+      #main .bord {
+        margin-top: -20px !important;
+      }
+      #thecube {
+        padding: 0 !important;
+      }
+    }
+
     @media screen and (max-width: 736px) {
 
       #flomen{
@@ -1171,9 +1201,7 @@
         margin-left: 0 !important;
         font-weight: 400 !important;
         font-size: 10pt !important;
-        width: 190px;
         line-height: 1.5em !important;
-        width: 350px;
       }
 
       .window-container {
@@ -1483,6 +1511,13 @@
       #contact .col5 span {
         font-size: 20px !important;
       }
+
+      #main .bord {
+        margin-top: -10px !important;
+      }
+      #cartfloat {
+        width: 90% !important;
+      }
     }
 
     @media screen and (max-width: 480px) {
@@ -1490,8 +1525,13 @@
         width: 75%;
       }
 
+      .sale-circle {
+        width: 70px !important;
+        height: 70px !important;
+      }
+
       #carta .col1, #carta .col2 {
-        width: 100%;
+        width: 100% !important;
       }
 
       #main .first, #main1 .first, #main2 .first, #main3 .first, #main4 .first {
@@ -1727,6 +1767,10 @@
 
       #innerbtn input {
         width: 100% !important;
+      }
+
+      #cartfloat {
+        min-width: 330px;
       }
     }
 
@@ -3862,7 +3906,7 @@
   #banner.build {
     background-image: url("../images/image/build.jpg");
     top: 0;
-    margin-bottom: -1.5em;
+    margin-bottom: -35px;
   }
 
   #banner.build .inner {
@@ -4197,7 +4241,6 @@
     align-items: center;
     padding-top: 20px;
     width: 220px;
-    height: 350px;
     max-width: 500px;
   }
   .product p {
@@ -4247,7 +4290,7 @@
 
   #main .col1 img, #main1 .col1 img, #main2 .col1 img, #main3 .col1 img, #main4 .col1 img,
   #main .col2 img, #main1 .col2 img, #main2 .col2 img, #main3 .col2 img, #main4 .col2 img {
-    margin: 0 auto;
+    margin: 0 auto !important;
     margin-top: 15%;
   }
 
@@ -4732,6 +4775,8 @@
     text-align: center !important;
     align-items: flex-start;
     flex-wrap: wrap;
+    margin-bottom: 30px;
+    margin-top: 30px;
   }
 
   #contact div > a {
@@ -4954,6 +4999,7 @@
     font-weight: 400;
     font-size: 12pt;
     line-height: 20px;
+    width: 85%;
   }
 
 
@@ -4962,8 +5008,7 @@
     margin-top: 10% !important;
   }
 
-  #carta .col2 {
-    margin-top: 10%;
+  #carta .col2, #carta .col1 {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -5001,6 +5046,7 @@
     left: 0;
     top: 0;
     background: transparent;
+    z-index: 10;
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#007f7f7f', endColorstr='#e67f7f7f',GradientType=1 );
   }
 
