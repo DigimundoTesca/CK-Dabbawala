@@ -111,6 +111,7 @@ def kitchen(request):
     tickets = Ticket.objects.all()
     tickets_details = TicketDetail.objects.all()
     extra_ingredients = TicketExtraIngredient.objects.all()
+
     def get_processed_products():
         processed_products_list = []
         processed_objects = ProcessedProduct.objects.filter(status='PE')
@@ -177,7 +178,7 @@ def assembly(request):
         template = 'assembly.html'
         title = 'Ensamblado'
         
-        pending_orders = ProcessedProduct.objects.filter(status='PE')
+        pending_orders = ProcessedProduct.objects.filter(status='PE')[:10]
         orders_list = []
 
         for order in pending_orders:
@@ -214,7 +215,7 @@ def assembly(request):
         context = {
             'title': PAGE_TITLE + ' | ' + title,
             'page_title': title,
-            'title': PAGE_TITLE
+            'orders': orders_list
         }
 
         return render(request, template, context)
