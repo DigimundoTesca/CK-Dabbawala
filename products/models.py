@@ -114,6 +114,7 @@ class Cartridge(models.Model):
     ROTIS = 'RO'
     SALADS = 'SA'
     SMOOTHIES = 'SM'
+    WATERS = 'WA'
 
     CATEGORIES = (
         (FOOD_DISHES, 'Platillos'),
@@ -126,6 +127,7 @@ class Cartridge(models.Model):
         (ROTIS, 'Rotis'),
         (SALADS, 'Ensaladas'),
         (SMOOTHIES, 'Licuados'),
+        (WATERS, 'Aguas'),
     )
 
     name = models.CharField(max_length=128, default='')
