@@ -53,10 +53,10 @@
           <p id="show-buttons">
             <button class="show-front" onclick="visible()">Roti</button>
             <button class="show-back" onclick="visible1()">Ensaladas</button>
-            <button class="show-right" onclick="visible2()">Licuados</button>
+            <button class="show-right" onclick="visible2()">Bebidas</button>
             <button class="show-left" onclick="visible3()">Fruta</button>
-            <button class="show-top" onclick="visible4()">Jugos</button>
-            <button class="show-bottom" onclick="visible5()">Aguas</button>
+            <!--<button class="show-top" onclick="visible4()">Jugos</button>
+            <button class="show-bottom" onclick="visible5()">Aguas</button>-->
           </p>
         </section>
         <section id="group-complements" class="container-cube">
@@ -107,7 +107,7 @@
             <figure id="rightdisplay" class="right panels-backface-invisib  ">
               <div class="container-scroll">
                 {% for product in products %}
-                {% if product.subcategory == 'SM' %}
+                {% if product.subcategory == 'SM' or product.subcategory == 'FR' or product.subcategory == 'JU' %}
                 <div id='3-{{product.pk}}' class="product">
                   <div class="card-block product-container" id="cartridge-{{ product.pk }}">
                     <img src="{{product.image.url}}" id="cartridge-img-{{ product.pk }}" class="product-img"  alt="Imagen para Licuado">
@@ -146,7 +146,7 @@
               </div>
             </figure>
             <!-- Juices -->
-            <figure id="topdisplay" class="top panels-backface-invisible  ">
+            <!-- <figure id="topdisplay" class="top panels-backface-invisible  ">
               <div class="container-scroll">
                 {% for product in products %}
                 {% if product.subcategory == 'JU' %}
@@ -165,11 +165,11 @@
                 {% endif %}
                 {% endfor %}
               </div>
-            </figure>
+            </figure> -->
             <!-- Water -->
             <!-- TODO
             Modify water class to show them on cube-->
-            <figure id="bottomdisplay" class="bottom panels-backface-invisible  ">
+            <!-- <figure id="bottomdisplay" class="bottom panels-backface-invisible  ">
               <div class="container-scroll">
                 {% for product in products %}
                 {% if product.subcategory == 'JU' %}
@@ -188,7 +188,7 @@
                 {% endif %}
                 {% endfor %}
               </div>
-            </figure>
+            </figure> -->
           </div>
         </section>
       </div>
