@@ -164,19 +164,3 @@ function visible3() {
   $('#topdisplay').addClass('panels-backface-invisible');
   $('#bottomdisplay').addClass('panels-backface-invisible');
 }
-function visible4() {
-  $('#frontdisplay').addClass('panels-backface-invisible');
-  $('#backdisplay').addClass('panels-backface-invisible');
-  $('#rightdisplay').addClass('panels-backface-invisible');
-  $('#leftdisplay').addClass('panels-backface-invisible');
-  $('#topdisplay').removeClass('panels-backface-invisible');
-  $('#bottomdisplay').addClass('panels-backface-invisible');
-}
-function visible5() {
-  $('#frontdisplay').addClass('panels-backface-invisible');
-  $('#backdisplay').addClass('panels-backface-invisible');
-  $('#rightdisplay').addClass('panels-backface-invisible');
-  $('#leftdisplay').addClass('panels-backface-invisible');
-  $('#topdisplay').addClass('panels-backface-invisible');
-  $('#bottomdisplay').removeClass('panels-backface-invisible');
-}
