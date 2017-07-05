@@ -56,6 +56,56 @@ $(document).ready(function() {
   }
 
   /**
+   * Returns the total ticket in cartridges
+   * @return {number} total cartridges ticket
+   */
+  function getTotalCartridges() {
+    let totalCartridges = 0;
+
+    for (var item in Ticket.cartridges) {
+      totalCartridges += Ticket.cartridges[item].total;
+    }
+
+    return totalCartridges;
+  }
+
+  /**
+   * Returns the total ticket in cartridges
+   * @return {number} total packages ticket
+   */
+  function getTotalPackages() {
+    let totalPackages = 0;
+
+    for (var item in Ticket.packages) {
+      totalPackages += Ticket.packages[item].total;
+    }
+
+    return totalPackages;
+  }
+
+  /**
+   * Changes the total ticket label
+   * @param {number} total new total ticket
+   */
+  function setTotalTicket(total) {
+    // Checks if new total has decimals
+    if (total % 1 === 0) {
+      $('#int-total-price').text(total);
+      $('#dec-total-price').text('00');
+    } else {
+      total = total.toFixed(2).split('.');
+      $('#int-total-price').text(total[0]);
+      $('#dec-total-price').text(total[1]);
+    }
+  }
+  /**
+   * Updates the total ticket at JSON and DOM
+   */
+  function updateTotal() {
+    let total = getTotalCartridges() + getTotalPackages();
+    setTotalTicket(total);
+  }
+  /**
    * Sets the data from Ticket Object in the cart
    * @return {[type]} [description]
    */
@@ -109,6 +159,7 @@ $(document).ready(function() {
       Ticket.cartridges[id] = newProduct;
     }
     updateTicketList();
+    updateTotal();
   };
 
   $(this).on('click', '.product', function(event) {
