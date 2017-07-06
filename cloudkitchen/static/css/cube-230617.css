@@ -83,12 +83,21 @@
   display: none;
 }
 #main {
-  padding: 0 1rem;
+  padding: 0 1rem 1rem;
 }
+
+#main .bord {
+  margin-top: 0;
+}
+
+#main h3 {
+  margin-top: 0rem;
+  padding-top: 1rem;
+}
+
 #sales-main {
   margin: 0 auto;
-  padding: 0 1rem;
-  margin-top: 2.3rem;
+  padding: 5rem 1rem 0;
   display: flex;
   justify-content: space-around !important;
   width: 100%;
@@ -102,20 +111,23 @@
   -webkit-text-size-adjust: none;
   color: #151515;
   margin-bottom: 1rem;
-  padding-top: 50px;
   padding-bottom: 1em;
+  padding-top: 1em;
 }
 #btns-options {
-  position: relative;
-  z-index: 100;
+  margin: .5rem 0;
+}
+#show-buttons {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+#btns-options button {
+  border-radius: 5px;
+  height: 2.2rem;
+  min-width: 11rem;
 }
 
-#show-buttons {
-  margin: 1rem 0;
-}
 /** Sales properties */
 #cart-container {
   border-radius: 3px;
