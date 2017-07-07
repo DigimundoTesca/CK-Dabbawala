@@ -46,6 +46,8 @@
       </footer>
     </div>
   </div>
+  {% block alert %}
+  {% endblock alert %}
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.3.8/sweetalert2.min.js"></script>
@@ -58,7 +60,5 @@
   <script type="text/javascript" src="{% static 'js/demo.js' %}"></script>
   {% block scripts %}
   {% endblock scripts %}
-  {% block alert %}
-  {% endblock alert %}
 </body>
 </html>

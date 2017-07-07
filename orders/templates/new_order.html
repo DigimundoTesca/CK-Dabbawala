@@ -56,7 +56,7 @@
             <button class="show-right" onclick="visible2()">Bebidas</button>
             <button class="show-left" onclick="visible3()">Fruta</button>
           </div>
-          <button id="btn-make-dabba" onclick="">Arma tu dabba</button>
+          <button id="btn-make-dabba" onclick="location.href='#popup';">Arma tu dabba</button>
         </section>
         <section id="group-complements" class="container-cube">
           <div id="cube" class="show-front card-block">
@@ -211,8 +211,19 @@
     </div>
   </div>
 </div>
+
 {% endblock content %}
 
+{% block alert %}
+<!-- New Dabba Modal -->
+<div class="modal-wrapper" id="popup">
+  <div class="popup-contenedor">
+    <h2>Arma tu Dabba</h2>
+    <p>Elige un producto y dos complementos</p>
+    <a class="popup-cerrar" href="#">X</a>
+  </div>
+</div>
+{% endblock %}
 {% block scripts %}
 <script type="text/javascript" src="{% static 'js/cube/utils.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/cube/rotate-box-230617.js' %}"></script>
