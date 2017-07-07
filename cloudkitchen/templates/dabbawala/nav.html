@@ -16,7 +16,7 @@
       <!-- <li><a href="plan.html">Planes</a></li> -->
       <li><a href="{% url 'products:menu'%}">Menú</a></li>
       <li><a href="{% url 'branch_offices:contact' %}">Contacto</a></li>
-      <li><a href="#" class="button nob" data-type="zoomin"><span>Inicia Sesión</span></a></li>
+      <li><a href="" class="button nob" data-type="zoomin"><span>Inicia Sesión</span></a></li>
       <li><a href="{% url 'customers:register' %}" class="button fit">Resgistrate</a></li>
     </ul>
   </nav>
@@ -24,11 +24,8 @@
   <nav id="mainmenu">
     <a href="{% url 'users:home' %}" class="men"><span> Home </span></a>
     <a href="{% url 'orders:new_order' %}" class="men"><span> Escoge tu dabba </span></a>
-    <!-- <a href="plan.html" class="men"><span> Planes </span></a> -->
     <a href="{% url 'products:menu'%}" class="men"><span> Menú </span></a>
     <a href="{% url 'branch_offices:contact' %}" class="men"><span> Contacto </span></a>
-    <a href="" title=""></a>
-    <a href="" title=""></a>
     <div class="menres nob">
       <a href="#" class="button nob" data-type="zoomin"><span>Inicia Sesión</span></a>
     </div>
@@ -36,7 +33,6 @@
     <div class="menres">
       <a href="{% url 'customers:register' %}" class="button"><span>Resgistrate </span></a>
     </div>
-    <a >   </a>
   </nav>
 </header>
 
@@ -47,7 +43,7 @@
       <form class="logform" action="" method="post" accept-charset="utf-8">
         <label>Usuario<input type="text" name="user" id="user" placeholder="Usuario"/></label>
         <label>Contraseña<input type="text" name="pass" id="pass" placeholder="Contraseña" /></label>
-        <input type="submit" class="" name="submit" value="Login" />
+        <button id="btn-login" class="button">Login<button>
       </form>
     </div>
     <div class="colm2">

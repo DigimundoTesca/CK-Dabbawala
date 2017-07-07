@@ -2076,11 +2076,11 @@
 
     a:hover {
       border-bottom-color: transparent;
-      color: #F98559 !important;
+      color: #F98559;
     }
 
     a:active {
-      color: #F98559 !important;
+      color: #F98559;
     }
 
     strong, b {
@@ -3631,7 +3631,7 @@
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 10000;
+    z-index: 21;
   }
 
   #header img {
@@ -4579,7 +4579,7 @@
     top: 0;
     visibility: hidden;
     width: 100%;
-    z-index: 10002;
+    z-index: 22;
   }
 
   #menu .inner {

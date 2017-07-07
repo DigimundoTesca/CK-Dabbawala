@@ -178,6 +178,26 @@ $(document).ready(function() {
     updateTicketList();
   });
 
+  $('#make-dabba').on('click', function(event) {
+    if ($('#modal-package').hasClass('modal-hidde')) {
+      $('#modal-package').removeClass('modal-hidde');
+    }
+  });
+
+  $('#close-modal').on('click', function(event) {
+    if( $('#close').text() === 'close' ) {
+      $('#close').addClass('transformer')
+      $('#done').removeClass('transformer')
+      $('#close').text('');
+      $('#done').text('done');
+    } else {
+      $('#done').addClass('transformer')
+      $('#close').removeClass('transformer')
+      $('#close').text('close');
+      $('#done').text('');
+    }
+  });
+
   initScrolls();
   showAlert();
 });
