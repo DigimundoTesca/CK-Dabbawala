@@ -185,17 +185,7 @@ $(document).ready(function() {
   });
 
   $('#close-modal').on('click', function(event) {
-    if( $('#close').text() === 'close' ) {
-      $('#close').addClass('transformer')
-      $('#done').removeClass('transformer')
-      $('#close').text('');
-      $('#done').text('done');
-    } else {
-      $('#done').addClass('transformer')
-      $('#close').removeClass('transformer')
-      $('#close').text('close');
-      $('#done').text('');
-    }
+    $('#modal-package').addClass('modal-hidde');
   });
 
   initScrolls();
