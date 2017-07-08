@@ -30,9 +30,11 @@ $(document).ready(function() {
     for (; i < scrolls.length; i++) {
       let container = scrolls[i];
       Ps.initialize(container, {
+        wheelSpeed: 1,
         wheelPropagation: true,
-        minScrollbarLength: 80,
-        maxScrollbarLength: 180,
+        swipePropagation: true,
+        minScrollbarLength: 20,
+        maxScrollbarLength: 80,
         useBothWheelAxes: true,
       });
     }
