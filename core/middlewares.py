@@ -10,6 +10,6 @@ class HostMiddleware(MiddlewareMixin):
             if host == 'dabbawala.com.mx' or host == 'www.dabbawala.com.mx':
                 return redirect('users:index')
             else:
-                return redirect('users:auth')
+                return redirect('users:login')
         except KeyError:
             return None
