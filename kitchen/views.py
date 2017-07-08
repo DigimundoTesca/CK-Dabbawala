@@ -10,8 +10,9 @@ from sales.models import Ticket, TicketDetail, TicketExtraIngredient
 
 @login_required(login_url='users:login')
 def cold_kitchen(request):
-    template = 'kitchen/cold.html'
+    template = 'cold.html'
     tickets = Ticket.objects.all()
+    title = 'Cocina Fría'
 
     def get_processed_products():
         processed_products_list = []
@@ -58,8 +59,9 @@ def cold_kitchen(request):
 
 
 def hot_kitchen(request):
-    template = 'kitchen/hot.html'
+    template = 'hot.html'
     tickets = Ticket.objects.all()
+    title = 'Cocina Caliente'
 
     def get_processed_products():
         processed_products_list = []
@@ -177,7 +179,7 @@ def assembly(request):
     else:
         template = 'assembly.html'
         title = 'Ensamblado'
-        
+
         pending_orders = ProcessedProduct.objects.filter(status='PE')[:10]
         orders_list = []
 

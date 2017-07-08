@@ -29,7 +29,7 @@
   <div class="row container-sales-header">
     <div class="col-xs-12 col-md-6">
       <div class="text-xs-center">
-        <p>Ventas de la semana <span id="week-number">{{ week_number }}</span>: 
+        <p>Ventas de la semana <span id="week-number">{{ week_number }}</span>:
         <span class="font-weight-bold">$</span>
         <span id="total-earnings-text" class="font-weight-bold"></span></p>
       </div>
@@ -130,7 +130,7 @@
         <div class="printer-container">
           <div id="printer">
             <figure class="content-img">
-              <img src="{% static 'images/logo.png' %}" alt="logo-dabbawala">
+              <img src="{% static 'images/dabbawala_black.jpg' %}" alt="logo">
             </figure>
             <div class="ticket-order-container text-xs-center">
               <span>ORDEN</span>
@@ -138,8 +138,7 @@
             </div>
             <div class="ticket-address">
               <p class="text-xs-center">
-                Suministros integrales de insumos SA de CV 
-                AV insurgentes 1647 Col. San José Insurgentes Del . Benito Juárez Cp: 03900
+                Calle Hidalgo #78, San Lucas Tepetlaco. 54055 Tlalnepantla, Méx
               </p>
             </div>
             <div class="container ticket-datetime-container">
@@ -159,9 +158,7 @@
             </div>
             <div class="ticket-contact">
               <p class="text-xs-center">
-                Contacto:<br>
-                (55) 41 22 69 00 <br>
-                contacto@suministrosintegrales.mx <br>
+                <span>Whatsapp: 55 8107 4807</span>
               </p>
               <p class="text-xs-center mt-1">
                 <strong>¡GRACIAS POR SONREIR! <span class="smile">😊</span></strong> <br>
@@ -246,11 +243,11 @@
     function minutes_to_hours(original_time) {
       hours = parseInt(original_time / 60);
       minutes = parseInt(original_time % 60);
-      
+
       if (hours.toString().length < 2) {
         hours = "0"+hours;
       }
-      
+
       if (minutes.toString().length < 2) {
         minutes = "0"+minutes;
       }
@@ -279,25 +276,25 @@
     function get_time_differences(initial_time, final_time){
       initial_mins = parseInt(initial_time.substr(3,2));
       initial_hours = parseInt(initial_time.substr(0,2));
-      
+
       final_mins = parseInt(final_time.substr(3,2));
       final_hours = parseInt(final_time.substr(0,2));
 
       elapsed_mins = final_mins - initial_mins;
       elapsed_hours = final_hours - initial_hours;
-      
+
       if (elapsed_mins < 0) {
         elapsed_hours--;
         elapsed_mins = 60 + elapsed_mins;
       }
-      
+
       hours = elapsed_hours.toString();
       minutes = elapsed_mins.toString();
-      
+
       if (hours.length < 2) {
         hours = "0"+hours;
       }
-      
+
       if (minutes.length < 2) {
         minutes = "0"+minutes;
       }
@@ -313,7 +310,7 @@
       return hour_formated;
     }
 
-    /** 
+    /**
      * Returns a list with the earnings of each time range
      */
     function get_sales_day_list(initial_hour, final_hour, separation_time, sales_list) {
@@ -332,7 +329,7 @@
 
         for (var i = 0; i < sales_list.length; i++) {
           hour_sale = convert_datetime_to_hour(sales_list[i].datetime);
-          
+
           if(is_time_in_range(hour_sale, start_hour_f, end_hour_f)) {
             earnings += parseFloat(sales_list[i].earnings);
             elements_ok.push(sales_list[i]);
@@ -411,7 +408,7 @@
     function convert_date_to_str(date) {
       months = {
         1: 'Ene', 2: 'Feb', 3: 'Mar', 4: 'Abr', 5: 'May', 6: 'Jun',
-        7: 'Jul', 8: 'Ago', 9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dic', 
+        7: 'Jul', 8: 'Ago', 9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dic',
       }
       date = date.split('-')
       fdate = date[0] + " " + months[parseInt(date[1])] + " " + date[2];
@@ -428,13 +425,13 @@
       });
 
       selected_year = $('#dates-range-form').find('#dt-year').val();
-      
+
       $.each(dates_range, function(index, item) {
         if (dates_range[index].year ==  selected_year) {
-          $.each(dates_range[index].weeks_list, function(index, item) { 
+          $.each(dates_range[index].weeks_list, function(index, item) {
             $('#dates-range-form').find('#dt-week').append(
-              "<option value=" + item.start_date + "," + item.end_date + ">" + 
-              "Semana " + item.week_number + ": " + 
+              "<option value=" + item.start_date + "," + item.end_date + ">" +
+              "Semana " + item.week_number + ": " +
               convert_date_to_str(item.start_date) +
               " - " + convert_date_to_str(item.end_date) +
               "</option>"
@@ -547,7 +544,7 @@
       }
     });
 
-    /** 
+    /**
      * Receives a number and returns it with currency format
      */
     function set_number_format(amount, decimals) {
@@ -570,7 +567,7 @@
       return amount_parts.join('.');
     }
 
-    /** 
+    /**
      * Calculates total earnings in the actual week and print it
      */
     function set_total_earnings() {
@@ -583,13 +580,13 @@
       $('#total-earnings-text').append(total_earnings);
     }
 
-    /** 
+    /**
      * Refresh the page with de dates of the year and week selected
      */
     $(this).on('change', '#dt-week', function(event) {
       dt_year = $('#dt-year').val();
       dt_week = $('#dt-week').val();
-      
+
       $.ajax({
         url: "{% url 'sales:sales' %}",
         type: 'POST',
@@ -625,7 +622,7 @@
           }).then(
           function(){},
           function(dismiss){});
-          
+
           /**
            * Filling the sales table
            */
@@ -637,10 +634,10 @@
             for (var j = 0; j < tickets_objects[i].ticket_details['cartridges'].length; j++) {
               cartridges_list += "" +
               "<span class='badge badge-success'>" +
-                "<span class='badge badge-info'>" + 
+                "<span class='badge badge-info'>" +
                 tickets_objects[i].ticket_details['cartridges'][j].quantity +
                 "</span>" +
-                "<span class='badge badge-success'>" + 
+                "<span class='badge badge-success'>" +
                 tickets_objects[i].ticket_details['cartridges'][j].name +
                 "</span>" +
               "</span>" +
@@ -650,10 +647,10 @@
             for (var j = 0; j < tickets_objects[i].ticket_details['packages'].length; j++) {
               packages_list += "" +
               "<span class='badge badge-primary'>" +
-                "<span class='badge badge-info'>" + 
+                "<span class='badge badge-info'>" +
                 tickets_objects[i].ticket_details['packages'][j].quantity +
                 "</span>" +
-                "<span class='badge badge-primary'>" + 
+                "<span class='badge badge-primary'>" +
                 tickets_objects[i].ticket_details['packages'][j].name +
                 "</span>" +
               "</span>" +
@@ -669,9 +666,9 @@
               "<td class='header-packages'>" + packages_list + "</td>" +
               "<td>" + tickets_objects[i].seller + "</td>" +
               "<td class='td-total'>" + tickets_objects[i].total + "</td>" +
-              "<td class='header-actions'>" + 
+              "<td class='header-actions'>" +
               "<span class='sales-actions delete-ticket'><i class='material-icons text-muted'>delete</i></span>" +
-              "<span class='sales-actions print-ticket'><i class='material-icons text-primary'>local_printshop</i></span>" + 
+              "<span class='sales-actions print-ticket'><i class='material-icons text-primary'>local_printshop</i></span>" +
               "</td>" +
               "</tr>" +
             "");
@@ -696,7 +693,7 @@
     });
 
     /**
-     * Get's the ticket id for printer-icon selected 
+     * Get's the ticket id for printer-icon selected
      * TODO: Make an iframe to print the ticket
      */
     $(this).on('click', '.print-ticket', function(event) {
@@ -710,7 +707,7 @@
       function show_modal(dataResponse) {
         var nuevo_li;
 
-        // First reset the ticket 
+        // First reset the ticket
         sales_list_modal.empty();
 
         nuevo_li = ("" +
@@ -722,7 +719,7 @@
         "</li>");
 
         sales_list_modal.append(nuevo_li);
-       
+
         function iterate_cartridges(element, index, array) {
           var name = element.name;
           var cost_base = parseFloat(element.total) / element.quantity;
@@ -790,7 +787,7 @@
         ticket_details.cartridges.forEach(iterate_cartridges);
         ticket_details.packages.forEach(iterate_packages);
         $("#ticket-id").text(id_element);
-        
+
         var nuevo_li = $("" +
           "<li class='total-ticket-container mt-1'>" +
           " <span id='total-ticket'>$ <span class='total-ticket-cant'> " +
@@ -853,7 +850,7 @@
     });
 
     /**
-     * Get's the ticket id for delete-icon selected 
+     * Get's the ticket id for delete-icon selected
      * TODO: Make a view for delete the ticket from backend
      */
     $(this).on('click', '.delete-ticket', function(event) {
@@ -907,7 +904,7 @@
           function(dismiss){});
     });
 
-    /** 
+    /**
      * Saves the ticket a csv file
      */
     $(this).on('click', '#btn-save-ticket-csv', function(event) {
@@ -940,7 +937,7 @@
             // tmpElemento.download = 'Nombre_De_Mi_Excel.xls';
             // tmpElemento.click();
 
-            var blob = new Blob([ ticket_details ], { 
+            var blob = new Blob([ ticket_details ], {
               type: "text/csv;charset=UTF-8" }
               );
             var datetime = new Date();
