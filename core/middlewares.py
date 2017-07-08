@@ -9,7 +9,7 @@ class HostMiddleware(MiddlewareMixin):
             host = request.META['HTTP_HOST'] + request.META['PATH_INFO']
             if host == 'dabbawala.com.mx' or host == 'www.dabbawala.com.mx':
                 return redirect('users:index')
-            else:
-                return redirect('users:login')
+            elif host == 'dabbanet.dabbawala.com.mx':
+                return redirect('users:auth')
         except KeyError:
             return None
