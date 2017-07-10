@@ -599,8 +599,10 @@ class SalesHelper(object):
         order_numbers_list = []
         for ticket in self.get_all_tickets():
             order_numbers_list.append(ticket.order_number)
-
-        return max(order_numbers_list) + 1
+        try:
+            return max(order_numbers_list) + 1
+        except Exception as e:
+            print(e)
 
 
 class ProductsHelper(object):
