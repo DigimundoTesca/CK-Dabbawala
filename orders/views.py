@@ -5,7 +5,7 @@ from django.http import JsonResponse
 
 from branchoffices.models import CashRegister
 from products.models import Cartridge
-from sales.models import Ticket, TicketDetail
+from sales.models import TicketBase, TicketDetail
 from users.models import User as UserProfile
 from helpers import SalesHelper
 
@@ -21,7 +21,7 @@ def new_order(request):
         user_profile_object = get_object_or_404(UserProfile, username=username)
         cash_register = CashRegister.objects.first()
         ticket_detail_json_object = json.loads(request.POST.get('ticket'))
-        new_ticket_object = Ticket(
+        new_ticket_object = TicketBase(
             cash_register=cash_register,
             seller=user_profile_object,
             payment_type='CA',

@@ -9,7 +9,7 @@ from diners.models import AccessLog, Diner, SatisfactionRating, ElementToEvaluat
 from kitchen.models import Warehouse, ProcessedProduct
 from products.models import Supply, Cartridge, PackageCartridge, CartridgeRecipe, PackageCartridgeRecipe, \
     ExtraIngredient
-from sales.models import Ticket, TicketDetail, TicketExtraIngredient
+from sales.models import TicketBase, TicketDetail, TicketExtraIngredient
 
 
 class Helper(object):
@@ -289,7 +289,7 @@ class SalesHelper(object):
 
     def set_all_tickets(self):
 
-        self.__all_tickets = Ticket.objects.select_related('seller').all()
+        self.__all_tickets = TicketBase.objects.select_related('seller').all()
 
     def set_all_tickets_details(self):
         self.__all_tickets_details = TicketDetail.objects. \

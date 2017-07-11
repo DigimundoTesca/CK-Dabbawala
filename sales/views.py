@@ -11,7 +11,7 @@ from django.utils import timezone
 from branchoffices.models import CashRegister
 from cloudkitchen.settings.base import PAGE_TITLE
 from products.models import Cartridge, PackageCartridge, PackageCartridgeRecipe
-from sales.models import Ticket, TicketDetail
+from sales.models import TicketBase, TicketDetail
 from users.models import User as UserProfile
 from helpers import Helper, SalesHelper
 
@@ -152,7 +152,7 @@ def sales(request):
 def delete_sale(request):
     if request.method == 'POST':
         ticket_id = request.POST['ticket_id']
-        ticket = Ticket.objects.get(id=ticket_id)
+        ticket = TicketBase.objects.get(id=ticket_id)
         ticket.delete()
         return JsonResponse({'result': 'excelente!'})
 
@@ -178,7 +178,7 @@ def new_sale(request):
             cash_register = CashRegister.objects.first()
             ticket_detail_json_object = json.loads(request.POST.get('ticket'))
             payment_type = ticket_detail_json_object['payment_type']
-            new_ticket_object = Ticket(
+            new_ticket_object = TicketBase(
                 cash_register=cash_register,
                 seller=user_profile_object,
                 payment_type=payment_type,
@@ -302,7 +302,7 @@ def test(request):
 
     tickets_details = TicketDetail.objects.select_related('ticket', 'ticket__seller', 'cartridge',
                                                           'package_cartridge').filter()
-    tickets = Ticket.objects.all()
+    tickets = TicketBase.objects.all()
     tickets_list = []
 
     for ticket in tickets:

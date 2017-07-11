@@ -5,13 +5,13 @@ from django.shortcuts import render, redirect
 from cloudkitchen.settings.base import PAGE_TITLE
 from kitchen.models import ProcessedProduct
 from products.models import PackageCartridgeRecipe, Cartridge, PackageCartridge
-from sales.models import Ticket, TicketDetail, TicketExtraIngredient
+from sales.models import TicketBase, TicketDetail, TicketExtraIngredient
 
 
 @login_required(login_url='users:login')
 def cold_kitchen(request):
     template = 'cold.html'
-    tickets = Ticket.objects.all()
+    tickets = TicketBase.objects.all()
     title = 'Cocina Fría'
 
     def get_processed_products():
@@ -60,7 +60,7 @@ def cold_kitchen(request):
 
 def hot_kitchen(request):
     template = 'hot.html'
-    tickets = Ticket.objects.all()
+    tickets = TicketBase.objects.all()
     title = 'Cocina Caliente'
 
     def get_processed_products():
@@ -110,7 +110,7 @@ def hot_kitchen(request):
 def kitchen(request):
     template = 'kitchen.html'
     title = 'Cocina'
-    tickets = Ticket.objects.all()
+    tickets = TicketBase.objects.all()
     tickets_details = TicketDetail.objects.all()
     extra_ingredients = TicketExtraIngredient.objects.all()
 

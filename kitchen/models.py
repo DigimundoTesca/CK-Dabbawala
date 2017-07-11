@@ -3,7 +3,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from products.models import Supply, Cartridge, PackageCartridge
-from sales.models import Ticket, TicketDetail
+from sales.models import TicketBase, TicketDetail
 
 
 class ProcessedProduct(models.Model):
@@ -19,14 +19,14 @@ class ProcessedProduct(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     prepared_at = models.DateTimeField(editable=True, null=True, blank=True)
     status = models.CharField(max_length=10, choices=STATUS, default=ASSEMBLED)
-    ticket = models.OneToOneField(Ticket, on_delete=models.CASCADE)
+    ticket = models.OneToOneField(TicketBase, on_delete=models.CASCADE)
 
     def __str__(self):
         return '%s' % self.created_at
 
-    @receiver(post_save, sender=Ticket)
+    @receiver(post_save, sender=TicketBase)
     def create_processed_product(sender, instance, **kwargs):
-        ticket = Ticket.objects.get(id=instance.id)
+        ticket = TicketBase.objects.get(id=instance.id)
         processed_product = ProcessedProduct.objects.filter(ticket=ticket).exists()
 
         if not processed_product:
