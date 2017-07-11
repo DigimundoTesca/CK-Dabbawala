@@ -1,16 +1,18 @@
 {% extends 'base/base_nav_footer.html' %}
 {% load static %}
+
 {% block link %}
   <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+  <link rel="stylesheet" href="{% static 'css/kitchen/kitchen.css' %}">
 {% endblock link %}
 {% block content %}
   <div class="container-fluid container-assembly">
     <h3>Presiona el boton <strong>"Ensamblar"</strong> hasta que sea azul completamente.</h3>
     <div class="row mt-2">
-      <table class="table table-hoverable table-responsive pl-1 pr-1">
+      <table id="table-assembly" class="table table-hoverable table-responsive pl-1 pr-1">
         <thead class="thead-inverse">
           <tr>
-            <th>ORDEN</th>
+            <th>Orden</th>
             <th>Productos</th>
             <th>Paquetes</th>
             <th></th>

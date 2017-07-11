@@ -1,0 +1,33 @@
+/** Asembly Template */
+.container-assembly,
+.container-kitchen {
+  width: calc(100vw - 4rem);
+  padding: 0 2rem;
+}
+table#table-assembly {
+  font-size: 1.4rem;
+}
+table#table-assembly .badge {
+  font-size: 1.4rem;
+}
+table#table-assembly button.btn-assembly{
+  transition: all 1s ease;
+}
+/** Kitchen Templates */
+.container-kitchen h1 {
+  font-size: 6rem;
+}
+table#table-kitchen {
+  font-size: 3rem;
+}
+table#table-kitchen .id_kitchen_table {
+  text-align: center;
+}
+table#table-kitchen ul {
+  padding-left: 0;
+}
+table#table-kitchen ul li {
+  display: flex;
+  min-height: 3rem;
+  list-style: none;
+}

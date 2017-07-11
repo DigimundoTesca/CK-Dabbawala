@@ -37,7 +37,7 @@
 }
 /* Sticky footer styles
 -------------------------------------------------- */
-a.link 
+a.link
 {  color: #fefefe;
   font-weight: 300;
   transition: all 0.3s ease;
@@ -156,7 +156,7 @@ nav.navbar-base {
 .custom-select {
   height: 2.5em !important;
   scroll: no !important;
-  overflow-y: hidden !important; 
+  overflow-y: hidden !important;
 }
 
 /* CloudKitchen styles
@@ -310,7 +310,7 @@ small {
 .btn-extra-ing {
   width: 100%;
   text-overflow:ellipsis;
-  white-space:nowrap; 
+  white-space:nowrap;
   overflow:hidden;
   border-radius: 18px;
   background-color: #0275d8;
@@ -325,7 +325,7 @@ small {
   color: #0275d8;
   border: 1px solid #0275d8;
 }
-.btn-option { 
+.btn-option {
   font-size: 1.2rem !important;
 }
 .btn-rate-1,
@@ -364,15 +364,6 @@ small {
 .container-hidden {
   display: none;
 }
-.container-assembly table {
-  font-size: 1.4rem;
-}
-.container-assembly table .badge {
-  font-size: 1.4rem;
-}
-.container-assembly table button.btn-assembly{
-  transition: all 1s ease;
-}
 .container-diners #dates-range-form {
 }
 .container-diners #dates-range-form .container-select {
@@ -404,20 +395,6 @@ small {
 }
 .container-main {
   padding-top: 0;
-}
-.container-kitchen h1 {
-  font-size: 6rem;
-}
-.container-kitchen table.table-kitchen {
-  font-size: 3rem;
-}
-.container-kitchen .table-kitchen ul {
-  padding-left: 0;
-}
-.container-kitchen .table-kitchen ul li {
-  display: flex;
-  min-height: 3rem;
-  list-style: none;
 }
 .container-rating {
   display: flex;
@@ -461,7 +438,7 @@ small {
   background: #dedede;
 }
 .container-rating .rating-footer .hidden {
-  display: none;  
+  display: none;
 }
 .container-rating .rating-footer #btn-writte-commentary,
 .container-rating .rating-footer #btn-send-score {
@@ -485,7 +462,7 @@ small {
   margin: 0 0.5rem;
 }
 .container-sales-reports .sales-graphics {
-  margin-bottom: 1rem; 
+  margin-bottom: 1rem;
 }
 .container-sales-reports .sales-graphics .canvas-holder{
   margin-bottom: 2rem;
@@ -511,7 +488,7 @@ small {
   min-width: 17rem;
 }
 .container-sales-reports .sales-details table.table-sales-details th.header-package,
-.container-sales-reports .sales-details table.table-sales-details td.header-package, 
+.container-sales-reports .sales-details table.table-sales-details td.header-package,
 .container-sales-reports .sales-details table.table-sales-details th.header-products,
 .container-sales-reports .sales-details table.table-sales-details td.header-products {
   min-width: 20rem;
@@ -555,7 +532,7 @@ small {
   max-height: calc(100vh - 21rem);
 }
 .container-sales .group-sales .products-block i {
-  color: #c9302c;  
+  color: #c9302c;
   cursor: pointer;
   font-size: 2rem;
 }
@@ -659,7 +636,7 @@ small {
   display: flex;
 }
 .container-sales .group-sales .card-block>.card-block{
-  border-bottom: #ffeac4 solid 1px;  
+  border-bottom: #ffeac4 solid 1px;
 }
 .container-sales .group-sales .product-container {
   display: flex;
@@ -815,7 +792,7 @@ small {
 }
 .modal#modal-ticket .modal-content {
   margin: auto;
-  min-height: 30rem; 
+  min-height: 30rem;
   max-width: 30rem;
 }
 .modal#modal-package .modal-content h5 {
@@ -845,25 +822,25 @@ small {
   white-space: nowrap;
   width: 100%;
 }
-.modal#modal-package .modal-content .modal-body, 
+.modal#modal-package .modal-content .modal-body,
 .modal#modal-order .modal-content .modal-body {
   max-height: 21.5rem;
   min-height: 21.5rem;
 }
 .modal#modal-ticket .modal-content .modal-body {
-  min-height: 22rem; 
+  min-height: 22rem;
 }
 .modal#modal-package .modal-content .modal-body .card {
-  display: flex; 
+  display: flex;
   flex-direction: column;
 }
 .modal#modal-package .modal-content .modal-body .card .product-container  {
   padding: 0.5rem;
-  border-bottom: #ffea94 solid 1px;  
+  border-bottom: #ffea94 solid 1px;
 }
 .modal#modal-package .modal-content .modal-body .card .product-container img {
   cursor: pointer;
-  width: 100%; 
+  width: 100%;
   border-radius: 3px;
   -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
@@ -954,7 +931,7 @@ small {
 .popout #fab-add-supply:after {
   background: #419641 !important;
 }
-#printer { 
+#printer {
   color: #000000;
   font-size: 0.8rem;
   font-family: 'Dosis-Regular', serif;
@@ -962,7 +939,7 @@ small {
   max-width: 58mm;
   margin: 0 auto;
 }
-#printer .modal-body { 
+#printer .modal-body {
   overflow: hidden;
 }
 #printer figure {
@@ -990,7 +967,7 @@ small {
  min-width: 22.5%;
  max-width: 25%;
  text-align: right;
-} 
+}
 #printer ul li span.quantity-li-modal{
   min-width: 15%;
   max-width: 15%;
@@ -1003,7 +980,7 @@ small {
   max-width: 50%;
 }
 #printer ul li span.cost-li-title-modal,
-#printer ul li span.total-li-title-modal {  
+#printer ul li span.total-li-title-modal {
   /*font-family: 'Dosis-SemiBold';*/
   font-family: 'Dosis-Bold';
   text-align: center;
@@ -1018,7 +995,7 @@ small {
   max-width: 12%;
 }
 #printer ul li.total-ticket-container{
-  justify-content: flex-end;  
+  justify-content: flex-end;
 }
 #printer ul li span.total-ticket {
   margin-top: 0.2rem;
@@ -1047,13 +1024,13 @@ small {
 #printer .ticket-contact .smile {
   font-size: 1.2rem;
 }
-@media (min-width: 1024px) { 
+@media (min-width: 1024px) {
   .container-new-customers table {
     display: table;
     width: 100%;
   }
 }
-@media (min-width: 1024px) { 
+@media (min-width: 1024px) {
   .container-assembly table {
     display: table;
     width: 100%;
@@ -1061,7 +1038,7 @@ small {
 }
 
 
-/** 
+/**
  * Media Queries
  */
  @media (min-width: 768px) {
