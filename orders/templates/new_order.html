@@ -16,7 +16,7 @@
     <div class="inner">
       <header class="inner">
         <h1>ARMA TU DABBA</h1>
-        <h2>ROTI + 2 Complementos <br>$ 69.00</h2>
+        <h2>ROTI + 2 Complementos <br>$ 59.00</h2>
       </header>
     </div>
   </section>
@@ -302,11 +302,12 @@ $(document).ready(function() {
     for (; i < scrolls.length; i++) {
       let container = scrolls[i];
       Ps.initialize(container, {
-        wheelSpeed: 1,
+        wheelSpeed: 0.2,
         wheelPropagation: true,
         swipePropagation: true,
-        minScrollbarLength: 20,
-        maxScrollbarLength: 80,
+        swipeEasing: true,
+        minScrollbarLength: 40,
+        maxScrollbarLength: 120,
         useBothWheelAxes: true,
       });
     }
@@ -507,7 +508,8 @@ $(document).ready(function() {
   initScrolls();
   showAlert();
 });
-
+</script>
+<script type="text/javascript">
 function visible() {
   $('#frontdisplay').removeClass('panels-backface-invisible');
   $('#backdisplay').addClass('panels-backface-invisible');
@@ -541,7 +543,5 @@ function visible3() {
   $('#topdisplay').addClass('panels-backface-invisible');
   $('#bottomdisplay').addClass('panels-backface-invisible');
 }
-
 </script>
-
 {% endblock scripts %}

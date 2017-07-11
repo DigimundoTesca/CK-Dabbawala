@@ -341,7 +341,7 @@ module.exports = {
   swipePropagation: true,
   swipeEasing: true,
   useBothWheelAxes: false,
-  wheelPropagation: false,
+  wheelPropagation: true,
   wheelSpeed: 1,
   theme: 'default'
 };
