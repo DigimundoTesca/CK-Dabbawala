@@ -7,7 +7,7 @@
   <div class="container-fluid container-assembly">
     <h3>Presiona el boton <strong>"Ensamblar"</strong> hasta que sea azul completamente.</h3>
     <div class="row mt-2">
-      <table class="table table-hoverable table-responsive ml-1 mr-1">
+      <table class="table table-hoverable table-responsive pl-1 pr-1">
         <thead class="thead-inverse">
           <tr>
             <th>ORDEN</th>
@@ -64,10 +64,10 @@
       e.preventDefault();
       var assembly_button = $(this);
       assembly_button.removeClass('btn-success btn-primary').addClass('btn-info');
-      
+
       holdStarter = setTimeout(function() {
         holdStarter = null;
-        holdActive = true; 
+        holdActive = true;
         assembly_button.removeClass('btn-info').addClass('btn-primary');
       }, holdDelay);
     });
@@ -76,16 +76,16 @@
     $(this).on('mouseleave','btn-assembly', function(e){
       var assembly_button = $(this);
       assembly_button.removeClass('btn-success btn-primary').addClass('btn-info');
-      
+
       holdStarter = setTimeout(function() {
         holdStarter = null;
-        holdActive = false; 
+        holdActive = false;
         assembly_button.removeClass('btn-info').addClass('btn-primary');
       }, holdDelay);
     });
-    
+
     $(this).on('mouseup touchend', '.btn-assembly', function (e) {
-      e.preventDefault(); 
+      e.preventDefault();
       var assembly_button = $(this);
       if (holdStarter) {
         clearTimeout(holdStarter);
