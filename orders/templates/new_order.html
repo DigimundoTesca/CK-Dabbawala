@@ -230,7 +230,7 @@
         </div>
         <div class="modal-content-cartridges container-scroll">
           {% for product in products %}
-            {% if  product.category == 'FD' %}
+            {% if  product.subcategory == 'RO' %}
             <img src="{{ product.image.url }}" alt="">
             {% endif %}
           {% endfor %}
@@ -242,7 +242,7 @@
         </div>
         <div class="modal-content-cartridges container-scroll">
           {% for product in products %}
-            {% if  product.category == 'CO' %}
+            {% if  product.subcategory == 'FR' or product.subcategory == 'JU' or product.subcategory == 'WA' %}
             <img src="{{ product.image.url }}" alt="">
             {% endif %}
           {% endfor %}
@@ -254,7 +254,7 @@
         </div>
         <div class="modal-content-cartridges container-scroll">
           {% for product in products %}
-            {% if  product.category == 'CO' %}
+            {% if  product.subcategory == 'FR' or product.subcategory == 'JU' or product.subcategory == 'WA' %}
             <img src="{{ product.image.url }}" alt="">
             {% endif %}
           {% endfor %}
