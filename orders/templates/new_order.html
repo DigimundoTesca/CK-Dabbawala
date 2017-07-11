@@ -453,7 +453,7 @@ $(document).ready(function() {
   });
 
   $(this).on('click', '#btn-orders-reset', function(event) {
-    Ticket = {
+    let Ticket = {
       cartridges: {},
       packages: {}
     }
@@ -472,13 +472,13 @@ $(document).ready(function() {
 
   $('#btn-order').on('click', function(event) {
     let csrf_token = get_cookie('csrftoken');
-
+    JSONTicket = JSON.stringify(Ticket);
     $.ajax({
-      url: '/arma-tu-dabba/',
+      url: {% url 'orders:new_order' %},
       type: 'POST',
       data: {
         'type': 'new_order',
-        'ticket': Ticket,
+        'ticket': JSONTicket,
         csrfmiddlewaretoken: csrf_token,
       },
       traditional: true,

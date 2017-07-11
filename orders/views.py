@@ -1,22 +1,50 @@
 import json
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 
+from branchoffices.models import CashRegister
 from products.models import Cartridge
+from sales.models import Ticket, TicketDetail
+from users.models import User as UserProfile
+from helpers import SalesHelper
 
 
 def new_order(request):
+    sales_helper = SalesHelper()
     template = 'new_order.html'
     all_products = Cartridge.objects.all()
 
     if request.method == 'POST':
-        try:
-            ticket = json.loads(request.POST['ticket'])
-            return JsonResponse({'hola': 'amigo'})
-        except Exception as e:
-            print('error:')
-            print(e)
+        ticket = json.loads(request.POST['ticket'])
+        username = request.user
+        user_profile_object = get_object_or_404(UserProfile, username=username)
+        cash_register = CashRegister.objects.first()
+        ticket_detail_json_object = json.loads(request.POST.get('ticket'))
+        new_ticket_object = Ticket(
+            cash_register=cash_register,
+            seller=user_profile_object,
+            payment_type='CA',
+            order_number=sales_helper.get_new_order_number())
+        new_ticket_object.save()
+
+        """
+        Saves the tickets details for cartridges
+        """
+        print(ticket_detail_json_object)
+        for ticket_detail in ticket_detail_json_object['cartridges']:
+            cartridge_object = get_object_or_404(Cartridge, id=ticket_detail)
+            quantity = ticket_detail_json_object['cartridges'][ticket_detail]['quantity']
+            cost = ticket_detail_json_object['cartridges'][ticket_detail]['cost']
+            new_ticket_detail_object = TicketDetail(
+                ticket=new_ticket_object,
+                cartridge=cartridge_object,
+                quantity=quantity,
+                price=cost
+            )
+            new_ticket_detail_object.save()
+
+        return JsonResponse({'hola': 'amigo'})
 
     context = {
         'products': all_products,
