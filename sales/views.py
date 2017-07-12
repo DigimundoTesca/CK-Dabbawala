@@ -13,7 +13,7 @@ from cloudkitchen.settings.base import PAGE_TITLE
 from products.models import Cartridge, PackageCartridge, PackageCartridgeRecipe
 from sales.models import TicketBase, TicketDetail
 from users.models import User as UserProfile
-from helpers import Helper, SalesHelper
+from helpers import Helper, SalesHelper, ProductsHelper
 
 
 # -------------------------------------  Sales -------------------------------------
@@ -161,10 +161,11 @@ def delete_sale(request):
 def new_sale(request):
     helper = Helper()
     sales_helper = SalesHelper()
+    products_helper = ProductsHelper()
     if request.method == 'POST':
         if request.POST['ticket']:
-            """ 
-            Gets the tickets in the week and returns n + 1 
+            """
+            Gets the tickets in the week and returns n + 1
             where n is the Ticket.order_number biggest for the current week
             TODO:
             1. Get tickets in the current week range
@@ -283,7 +284,7 @@ def new_sale(request):
         return JsonResponse({'status': 'error'})
 
     else:
-        cartridges_list = Cartridge.objects.all()
+        cartridges_list = products_helper.get_all_cartridges().order_by('subcategory')
         package_cartridges = PackageCartridge.objects.all()
         template = 'sales/new_sale.html'
         title = 'Nueva venta'

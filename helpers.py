@@ -429,7 +429,7 @@ class SalesHelper(object):
                     """
                     Validates if exists some week with an similar week_number of the actual year
                     If exists a same week in the list validates the start_date and the end_date,
-                    In each case valid if there is an older start date or a more current end date 
+                    In each case valid if there is an older start date or a more current end date
                         if it is the case, update the values.
                     Else creates a new week_object with the required week number
                     """
@@ -630,7 +630,7 @@ class ProductsHelper(object):
             select_related('location').order_by('name')
 
     def set_all_cartridges(self):
-        self.__all_cartridges = Cartridge.objects.all()
+        self.__all_cartridges = Cartridge.objects.all().order_by('name')
 
     def set_all_packages_cartridges(self):
         self.__all_packages_cartridges = PackageCartridge.objects.all()
@@ -1156,7 +1156,7 @@ class RatesHelper(object):
                     """
                     Validates if exists some week with an similar week_number of the actual year
                     If exists a same week in the list validates the start_date and the end_date,
-                    In each case valid if there is an older start date or a more current end date 
+                    In each case valid if there is an older start date or a more current end date
                         if it is the case, update the values.
                     Else creates a new week_object with the required week number
                     """
@@ -1438,12 +1438,12 @@ class PIDControl(object):
         # Es obvio que si ya existe un ticket detail con la misma fecha no importa, ya que
         # sólo indicaremos que si existen tickets en ese día ...
 
-        """ 
+        """
         Ahora obtendremos el promedio de todos esos días, como son tickets details
         entonces ya incluye el producto vendido y obvio, el precio base y el total, pero necesitamos conocer el
         id de la gelatina, por lo tanto debemos pasarlo por argumento en la funcion
         en este caso pasaremos el objecto como tal...
-        Una vez encontrado el ticket detail correspondiente podremos añadir las elementos que se 
+        Una vez encontrado el ticket detail correspondiente podremos añadir las elementos que se
         vendieron en ese movimiento
         """
 
@@ -1460,7 +1460,7 @@ class PIDControl(object):
         day_average = total_elements / len(total_days_dict)
         # Promedio de dia = cantidad de elementos vendidos entre total de dias obtenidos
 
-        """ Necesitamos calcular los días totales :D ¿Cómo los calcularias? 
+        """ Necesitamos calcular los días totales :D ¿Cómo los calcularias?
         TIP: Te puedes guiar usando los tickets_details_list <- Contiene los datos que sí nos sirven
 
         TODO: Obtener la cantidad de lunes en TODOS los tiempos en los que se haya vendido la gelatina
