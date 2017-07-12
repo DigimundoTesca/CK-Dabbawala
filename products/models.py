@@ -200,7 +200,7 @@ class PackageCartridge(models.Model):
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now=True)
     image = models.ImageField(blank=False, upload_to='cartridges', default='')
-    
+
     def __str__(self):
         return self.name
 

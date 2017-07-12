@@ -284,7 +284,7 @@ def new_sale(request):
         return JsonResponse({'status': 'error'})
 
     else:
-        cartridges_list = products_helper.get_all_cartridges().order_by('subcategory')
+        cartridges_list = products_helper.all_cartridges
         package_cartridges = PackageCartridge.objects.all()
         template = 'sales/new_sale.html'
         title = 'Nueva venta'
