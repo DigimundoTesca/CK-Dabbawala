@@ -1,6 +1,6 @@
 import json
 
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 
 from branchoffices.models import CashRegister
@@ -15,7 +15,11 @@ def new_order(request):
     template = 'new_order.html'
     all_products = Cartridge.objects.all()
 
+
     if request.method == 'POST':
+        if not request.user.is_authenticated:
+            return JsonResponse({'result': 'not_authenticated'})
+
         ticket = json.loads(request.POST['ticket'])
         username = request.user
         user_profile_object = get_object_or_404(UserProfile, username=username)
@@ -26,7 +30,7 @@ def new_order(request):
             seller=user_profile_object,
             payment_type='CA',
             order_number=sales_helper.get_new_order_number())
-        new_ticket_object.save()
+        # new_ticket_object.save()
 
         """
         Saves the tickets details for cartridges
@@ -42,9 +46,10 @@ def new_order(request):
                 quantity=quantity,
                 price=cost
             )
-            new_ticket_detail_object.save()
+            # new_ticket_detail_object.save()
 
         return JsonResponse({'hola': 'amigo'})
+        # return redirect('users:login')
 
     context = {
         'products': all_products,
