@@ -543,6 +543,9 @@ span#close-modal:hover {
   #thecube {
     width: 60%;
   }
+  #sales-main {
+    max-width: 1200px;
+  }
 }
 /*Loader css*/
 
