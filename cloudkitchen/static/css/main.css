@@ -5037,7 +5037,7 @@
     left: 0;
     top: 0;
     background: transparent;
-    z-index: 10;
+    z-index: 40;
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#007f7f7f', endColorstr='#e67f7f7f',GradientType=1 );
   }
 
@@ -5304,11 +5304,13 @@
     height: 100%;
   }
   #mainmenu li:last-child a{
-    border: 2px #fff solid;
+    border: 1px #fff solid;
     border-radius: 3px;
   }
   #mainmenu li:last-child a:hover {
     box-shadow: none;
+    border-bottom: 1.5px #fff solid;
+    background: rgba(255,255,255,.3);
   }
   #mainmenu li a:hover {
     color: #fff;
