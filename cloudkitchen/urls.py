@@ -15,7 +15,6 @@ urlpatterns = [
     url(r'^', include('orders.urls')),
     url(r'^', include('kitchen.urls')),
     url(r'^', include('diners.urls')),
-    url(r'^', include('customers.urls')),
 ]
 
 admin.site.site_header = 'Dabbanet'

@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ValidationError
-from users.models import User as UserProfile
+from .models import CustomerProfile, User as UserProfile
 
 
 class UserForm(forms.ModelForm):
@@ -18,3 +18,9 @@ class UserForm(forms.ModelForm):
         if password != password_confirm:
             msg = 'Las contraseñas no coinciden'
             self.add_error('password_confirm', msg)
+
+
+class CustomerProfileForm(forms.ModelForm):
+    class Meta:
+        model = CustomerProfile
+        fields = ['user', 'email', 'phone_number', 'longitude', 'latitude', 'address', 'first_dabba']

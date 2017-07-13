@@ -15,12 +15,16 @@ urlpatterns = [
     # auth
     url(r'^auth/$', views.login, name='login'),
     url(r'^auth/logout/$', views.logout, name='logout'),
-    url(r'^auth/login_register/$', views.login_register, name='login_register'), 
+    url(r'^auth/login_register/$', views.login_register, name='login_register'),
 
     # profile
     # url(r'^profiles/$', views.ProfileVIew, name='profiles'),
 
-    # test
+    # Customers
+    url(r'^register-old/$', views.new_customer, name='new_customer'),
+    url(r'^register/$', views.register, name='register'),
+    url(r'^register/thanks/$', views.thanks, name='thanks'),
+    url(r'^customers/list/$', views.customers_list, name='customers_list'),
 ]
 
 if settings.DEBUG:

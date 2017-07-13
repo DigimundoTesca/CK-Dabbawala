@@ -1,8 +1,9 @@
 from django.contrib import admin
 
-from users.models import User as UserProfile, UserMovements
+from .models import User as UserProfile, UserMovements, CustomerProfile
 
 
+@admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
 	pass
 
@@ -13,4 +14,8 @@ class UserMovements(admin.ModelAdmin):
     ordering = ('creation_date',)
 
 
-admin.site.register(UserProfile, UserProfileAdmin)
+@admin.register(CustomerProfile)
+class CustomerProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'address', 'latitude', 'longitude', 'first_dabba',)
+    list_editable = ('first_dabba',)
+    ordering = ('first_dabba',)
