@@ -16,22 +16,31 @@
       <li><a href="{% url 'products:menu'%}">Menú</a></li>
       <li><a href="{% url 'branch_offices:contact' %}">Contacto</a></li>
       <li><a href="" class="button nob" data-type="zoomin"><span>Inicia Sesión</span></a></li>
-      <li><a href="{% url 'users:register' %}" class="button fit">Resgistrate</a></li>
+      <li><a href="{% url 'users:register' %}" class="button fit">Arma tu Dabba</a></li>
     </ul>
   </nav>
 
   <nav id="mainmenu">
-    <a href="{% url 'users:home' %}" class="men"><span> Home </span></a>
-    <a href="{% url 'orders:new_order' %}" class="men"><span> Escoge tu dabba </span></a>
-    <a href="{% url 'products:menu'%}" class="men"><span> Menú </span></a>
-    <a href="{% url 'branch_offices:contact' %}" class="men"><span> Contacto </span></a>
-    <div class="menres nob">
-      <a href="#" class="button nob" data-type="zoomin"><span>Inicia Sesión</span></a>
-    </div>
-    <a href="" title=""></a>
-    <div class="menres">
-      <a href="{% url 'users:register' %}" class="button"><span>Resgistrate </span></a>
-    </div>
+    <ul>
+      <li>
+        <a href="{% url 'users:home' %}" class="men"><span> Home </span></a>
+      </li>
+      <li>
+        <a href="{% url 'orders:new_order' %}" class="men"><span> Escoge tu dabba </span></a>
+      </li>
+      <li>
+        <a href="{% url 'products:menu'%}" class="men"><span> Menú </span></a>
+      </li>
+      <li>
+        <a href="{% url 'branch_offices:contact' %}" class="men"><span> Contacto </span></a>
+      </li>
+      <li>
+        <a id="show-overlay" href="#" data-type="zoomin"><span>Inicia Sesión</span></a>
+      </li>
+      <li>
+        <a href="{% url 'users:register' %}"><span>Arma tu Dabba</span></a>
+      </li>
+    </ul>
   </nav>
 </header>
 

@@ -12,6 +12,7 @@ from helpers import SalesHelper
 
 def new_order(request):
     sales_helper = SalesHelper()
+    print(request.session)
     template = 'new_order.html'
     all_products = Cartridge.objects.all()
 

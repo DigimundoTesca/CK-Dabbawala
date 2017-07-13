@@ -306,7 +306,6 @@
       border-radius: 3px;
       background: #F9ECE0;
     }
-
     @media screen and (max-width: 2000px) {
 
       #mainmenu {
@@ -5273,4 +5272,16 @@
   }
   #map {
     width: 80%;
+  }
+
+
+  /**
+   * MediaQueries by Ramses
+   * @type {[type]}
+   */
+
+  @media screen and (min-width: 900px) {
+    #mainmenu {
+      
+    }
   }
