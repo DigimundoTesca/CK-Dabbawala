@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block stylesheets %}
-  <link rel="stylesheet" href="{% static 'css/orders/pay.css' %}">
+<link rel="stylesheet" href="{% static 'css/orders/pay.css' %}">
 {% endblock stylesheets %}
 
 {% block content %}
@@ -10,40 +10,63 @@
   <img class="bord2" src="{% static 'images/image/reverse.png' %}" alt="Borde">
   <h2>pago</h2>
   <div class="container-pay">
+    {# {{ request.session.cart }}#}
     <table id="pay">
       <thead>
         <tr>
+          <th>CANTIDAD</th>
           <th>ORDEN</th>
+          <th>PRECIO</th>
           <th>TOTAL</th>
         </tr>
       </thead>
       <tbody>
+        {% for key, cartridge in request.session.cart.cartridges.items %}
         <tr>
-          <td>Roti</td>
-          <td>$30</td>
+          <td>{{ cartridge.quantity }}</td>
+          <td>{{ cartridge.name }}</td>
+          <td>$ {{ cartridge.cost }}</td>
+          <td>
+            <span class="total-item-sign">$</span>
+            <span class="total-item-cart">{{ cartridge.total }}</span>
+          </td>
         </tr>
-        <tr>
-          <td>Agua</td>
-          <td>$15</td>
-        </tr>
-        <tr>
-          <td>Fruta</td>
-          <td>$15</td>
-        </tr>
+        {% endfor %}
       </tbody>
       <tfoot>
         <tr>
-          <th>TOTAL</th>
-          <th>$60</th>
-        </tr>
-        <tr>
-        <td><span>Efectivo</span></td>
-          <td>
-            <button id="btn-pay"><span class="btn-text">Ordenar</span></button>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td id="td-total-cart">
+            <span class="total-cart-sign">$</span>
+            <span id="total-cart"></span>
           </td>
         </tr>
       </tfoot>
     </table>
+    {% if request.user.is_authenticated %}
+      <button id="btn-pay">
+        <span class="btn-text">Ordenar</span>
+      </button>
+    {% else %}
+      <button id="btn-pay">
+        <span class="btn-text">Ordenar</span>
+      </button>
+    {% endif %}
   </div>
 </div>
 {% endblock content %}
+
+{% block scripts %}
+  <script type="text/javascript">
+    $(document).ready(function($) {
+        let totalItems = $('.total-item-cart');
+        let total = 0;
+        totalItems.each(function(index, item) {
+            total += parseFloat(item.innerHTML);
+        });
+        $('#total-cart').text(total);
+    });
+  </script>
+{% endblock %}

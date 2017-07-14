@@ -26,7 +26,7 @@ button#btn-pay {
   padding: 0;
   width: 100%;
   border-radius: 5px;
-  height: 2.5rem;
+  height: 3rem;
 }
 button#btn-pay span.btn-text {
   color: #fdfdfd;
@@ -34,4 +34,21 @@ button#btn-pay span.btn-text {
   margin: 0;
   padding: 0;
   line-height: 1rem;
+}
+#td-total-cart {
+  display: flex;
+  align-content: flex-start;
+  padding: 0;
+  margin: 0;
+}
+#td-total-cart span {
+  font-size: 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+td#total-cart .sign {
+  text-align: center;
+  font-weight: bolder;
+  color: black;
 }

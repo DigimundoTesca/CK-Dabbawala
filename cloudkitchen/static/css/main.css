@@ -2082,7 +2082,7 @@
       color: #F98559;
     }
 
-    strong, b {
+    b {
       color: #ffffff;
       font-weight: 600;
     }
@@ -2926,9 +2926,7 @@
 
     #pay tfoot tr td span {
       color: black;
-      margin-left: 1em;
-      font-size: 18px;
-      /*letter-spacing: 0.5px;*/
+      margin-left: .5em;
       font-weight: 600;
     }
 
@@ -2937,7 +2935,7 @@
     }
 
     #pay tfoot tr th {
-      padding-top: 1em;
+      padding-top: .5em;
       text-align: center;
     }
 
