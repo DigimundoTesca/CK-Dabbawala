@@ -1307,6 +1307,33 @@ class RatesHelper(object):
         self.__elements_to_evaluate = ElementToEvaluate.objects.order_by('priority').all()
 
 
+class CartHelper(object):
+    def __init__(self, cart:dict):
+        super(CartHelper, self).__init__()
+        self.__cart = cart
+
+    def is_empty(self):
+        """
+        Checks if the json cart is empty
+        :rtype: bool
+        """
+        return not bool(self.__cart['cartridges']) or bool(self.__cart['packages'])
+
+    @property
+    def cart(self):
+        return self.__cart
+
+    @cart.setter
+    def cart(self, cart):
+        if 'cartridges' in cart or 'packages' in cart:
+            if not cart['cartridges'] or not cart['packages']:
+                self.__cart = {}
+            else:
+                self.__cart = cart
+        else:
+            self.__cart = {}
+
+
 class PIDControl(object):
     def __init__(self):
         super(PIDControl, self).__init__()

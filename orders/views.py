@@ -7,25 +7,28 @@ from branchoffices.models import CashRegister
 from products.models import Cartridge
 from sales.models import TicketBase, TicketDetail
 from users.models import User as UserProfile
-from helpers import SalesHelper
+from helpers import SalesHelper, CartHelper
 
 
 def new_order(request):
     sales_helper = SalesHelper()
-    print(request.session)
     template = 'new_order.html'
     all_products = Cartridge.objects.all()
 
-
     if request.method == 'POST':
-        if not request.user.is_authenticated:
-            return JsonResponse({'result': 'not_authenticated'})
+        if request.POST['type'] == 'new_order':
+            request.session.clear()
+            # Checks if the cart is empty
+            cart = json.loads(request.POST['cart'])
+            cart_helper = CartHelper(cart)
+            request.session['cart'] = cart
+            return JsonResponse({'result': 'cart_filled'})
 
-        ticket = json.loads(request.POST['ticket'])
+
         username = request.user
         user_profile_object = get_object_or_404(UserProfile, username=username)
         cash_register = CashRegister.objects.first()
-        ticket_detail_json_object = json.loads(request.POST.get('ticket'))
+        ticket_detail_json_object = json.loads(request.POST.get('cart'))
         new_ticket_object = TicketBase(
             cash_register=cash_register,
             seller=user_profile_object,

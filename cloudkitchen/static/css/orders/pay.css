@@ -1,0 +1,37 @@
+.container-pay {
+  border: 1px #5bc0d3 solid;
+  border-radius: 5px;
+  background: #F9ECE0;
+  box-shadow: 0px 4px 8px 1px rgba(0,0,0,.2);
+  max-width: 720px;
+  margin: 1rem auto 2rem;
+  /*padding-bottom: 2rem;*/
+  transition: all .3s ease;
+  overflow: hidden;
+  /*margin-bottom: 5rem;*/
+}
+
+.container-pay:hover {
+  box-shadow: 0px 4px 12px 0px rgba(0,0,0,.2);
+}
+
+#main {
+  overflow: hidden;
+}
+
+button#btn-pay {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  border-radius: 5px;
+  height: 2.5rem;
+}
+button#btn-pay span.btn-text {
+  color: #fdfdfd;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  line-height: 1rem;
+}
