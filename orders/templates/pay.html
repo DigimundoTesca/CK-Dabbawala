@@ -46,19 +46,16 @@
       </tfoot>
     </table>
     <div class="container-pay-footer">
-      {% if request.user.is_authenticated %}
-      <button id="btn-pay">
-        <span class="btn-text">Ordenar</span>
-      </button>
-      <button id="btn-pay">
-        <span class="btn-text">Ordenar</span>
-      </button>
-      {% else %}
       <button id="btn-cancel-pay">
         <span class="btn-text" >Cancelar pedido</span>
       </button>
-      <button id="btn-login-pay">
+      {% if request.user.is_authenticated %}
+      <button id="btn-login-pay" class="show-overlay" data-type="zoomin">
         <span class="btn-text show-overlay" data-type="zoomin">Login y Ordenar</span>
+      </button>
+      {% else %}
+      <button id="btn-login-pay" class="show-overlay" data-type="zoomin">
+        <span class="btn-text">Login y Ordenar</span>
       </button>
       {% endif %}
     </div>

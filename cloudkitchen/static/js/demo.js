@@ -1,20 +1,14 @@
 $(document).ready(function() {
 	$('.show-overlay').on('click', function() {
-		window.location.hash = '#header';
-		$('#user').focus();
 		type = $(this).attr('data-type');
-
-		$('.overlay-container').fadeIn(function() {
-
-			window.setTimeout(function(){
-				$('.window-container.' + type).addClass('window-container-visible');
-			}, 100);
-
-		});
+		$('.overlay-container').fadeIn();
+		$('.window-container.' + type).addClass('window-container-visible');
+		document.getElementById('cart-overlay').scrollIntoView();
 	});
 
 	$('.closeres').click(function() {
-		$('.overlay-container').fadeOut().end().find('.window-container').removeClass('window-container-visible');
+		$('.overlay-container').fadeOut();
+		$('.window-container').removeClass('window-container-visible');
 	});
 
 });
