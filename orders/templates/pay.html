@@ -64,14 +64,75 @@
 {% endblock content %}
 
 {% block scripts %}
-  <script type="text/javascript">
-    $(document).ready(function($) {
-        let totalItems = $('.total-item-cart');
-        let total = 0;
-        totalItems.each(function(index, item) {
-            total += parseFloat(item.innerHTML);
-        });
-        $('#total-cart').text(total);
+<script type="text/javascript">
+  $(document).ready(function($) {
+    let firstSession = true;
+    console.log('{{first_session}}');
+    let totalItems = $('.total-item-cart');
+    let total = 0;
+
+    totalItems.each(function(index, item) {
+        total += parseFloat(item.innerHTML);
     });
-  </script>
+
+    /**
+     * Gets a cookie from cache
+     */
+    function get_cookie(name) {
+      var cookie_value = null;
+      if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+          var cookie = jQuery.trim(cookies[i]);
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookie_value = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookie_value;
+    }
+
+    /**
+     * Shows a Sweet alert if is a new user
+     */
+    function showWelcomeAlert() {
+      $.ajax({
+        url: {% url 'orders:pay' %},
+        type: 'POST',
+        data: {
+          'type': 'welcomeReady',
+          csrfmiddlewaretoken: get_cookie('csrftoken'),
+        },
+        traditional: true,
+        datatype: 'jsonp',
+        success: function(result) {
+          swal({
+            title: "¡Bienvenido!",
+            text: "Ya puedes ordenar tu comida",
+            type: "success",
+            timer: 2000,
+            showConfirmButton: false
+          }).then(
+            function(){},
+            function(dismiss){}
+          );
+        },
+        error: function(result, jqXHR, textStatus, errorThrown) {
+          swal({
+            title: "Hubo un problema!",
+            text: 'Estamos teniendo problemas, recarga la paǵina o intenta más tarde',
+            type: "error",
+          });
+          // setTimeout(rel, 1500);
+        },
+      });
+    }
+
+    $('#total-cart').text(total);
+    if (firstSession) {
+      showWelcomeAlert();
+    }
+  });
+</script>
 {% endblock %}

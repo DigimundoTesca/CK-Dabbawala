@@ -27,7 +27,7 @@
       <div class="cols colr">
         <div class="col1 formr">
           {% csrf_token %}
-          <label for="name">Obligatorio</label>
+          <label for="name">Nombre de usuario</label>
           <input type="text" class="form-control" id="id_name" name="{{ form_customer.user.name }}" placeholder="Nombre de usuario" maxlength="30" value="{% if form_customer.user.value == None %}{% else %}{{ form_customer.user.value }}{% endif %}" required autofocus onkeypress="return pulsar(event)" >
           {%  if form_customer.user.errors %}
           <div class="has-danger">
@@ -38,7 +38,7 @@
             {% endfor %}
           </div>
           {% endif %}
-          <label for="email">Obligatorio</label>
+          <label for="email">Email</label>
           <input type="email" class="form-control" id="id_email" name="{{ form_customer.email.name }}" placeholder="Correo" maxlength="255" value="{% if  form_customer.email.value == None %}{% else %}{{ form_customer.email.value }}{% endif %}" required onkeypress="return pulsar(event)" >
           {%  if form_customer.email.errors %}
           <div class="has-danger">
@@ -48,7 +48,7 @@
             {% endfor %}
           </div>
           {% endif %}
-          <label for="telefono">Obligatorio</label>
+          <label for="telefono">Whatsapp</label>
           <input type="text" class="form-control" id="id_phone_number" name="{{ form_customer.phone_number.name }}" placeholder="Número con WhatsApp" maxlength="10" value="{% if  form_customer.phone_number.value == None %}{% else %}{{ form_customer.phone_number.value }}{% endif %}" required onkeypress="return pulsar(event)" >
           {%  if form_customer.phone_number.errors %}
           <div class="has-danger">
@@ -65,7 +65,7 @@
           </div>
           <label for="addres">Dirección</label>
           <div id="innerbtn">
-            <input type="text" class="form-control" id="id_address" name="address" placeholder="Busca tu dirección" maxlength="255" onkeypress="return search(event)" required="">
+            <input type="text" class="form-control" id="id_address" name="address" placeholder="Dirección donde llevaremos tu comida" maxlength="255" onkeypress="return search(event)" required="">
             <a class="icon alt fa-search" type="" id="btn-search"></a>
             {%  if form_customer.address.errors %}
             <div class="has-danger">

@@ -121,7 +121,7 @@ def new_customer(request):
         if form_customer.is_valid():
             customer = form_customer.save(commit=False)
             customer.save()
-            return redirect('customers:thanks')
+            return redirect('users:thanks')
 
     template = 'register/new_customer.html'
     title = 'Dabbawala - Bienvenido a Dabbawala. Registrare y obtén un desayuno gratis. '
@@ -139,7 +139,10 @@ def register(request):
         if form_customer.is_valid():
             customer = form_customer.save(commit=False)
             customer.save()
-            return redirect('customers:thanks')
+            if request.session.has_key('cart'):
+                request.session['first_session'] = True
+                return redirect('orders:pay')
+            return redirect('orders:new_order')
 
     template = 'register/register.html'
     title = 'Bienvenido a Dabbawala.'
@@ -147,12 +150,6 @@ def register(request):
         'form_customer': form_customer,
         'title': title,
     }
-    if request.method == 'POST':
-        if 'newuser' in request.POST:
-            if request.POST['type'] == 'regist_user':
-                new_user = request.POST['newuser']
-                if settings.DEBUG:
-                    print(new_user)
 
     return render(request, template, context)
 
@@ -164,7 +161,7 @@ def thanks(request):
         if form.is_valid():
             customer = form.save(commit=False)
             customer.save()
-            return redirect('customers:new_customer')
+            return redirect('users:new_customer')
     else:
         form = CustomerProfileForm()
 

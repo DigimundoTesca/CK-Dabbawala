@@ -65,9 +65,10 @@ def new_order(request):
 def pay(request):
     all_products = Cartridge.objects.all()
     template = 'pay.html'
-
+    first_session = request.session.has_key('first_session')
     context = {
         'products': all_products,
+        'first_session':first_session,
     }
 
     return render(request, template, context)
