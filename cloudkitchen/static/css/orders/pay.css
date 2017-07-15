@@ -1,11 +1,30 @@
+#btn-cancel-pay {
+  background: rgba(214, 3, 3, .8);
+}
+#btn-cancel-pay:hover {
+  background: rgba(214, 3, 3, 1);
+}
+#btn-login-pay {
+  background: rgba(23, 163, 54, .8);
+}
+#btn-login-pay:hover {
+  background: rgba(23, 163, 54, 1);
+}
 h2.pay-title {
   margin-top: 2rem;
 }
+
+form.logform button:not(#btn-login) {
+  visibility: hidden;
+}
+
 .container-pay {
   border: 1px #5bc0d3 solid;
   border-radius: 5px;
   background: #F9ECE0;
   box-shadow: 0px 4px 8px 1px rgba(0,0,0,.2);
+  display: flex;
+  flex-direction: column;
   max-width: 720px;
   margin: 1rem auto 2rem;
   /*padding-bottom: 2rem;*/
@@ -18,26 +37,32 @@ h2.pay-title {
   box-shadow: 0px 4px 12px 0px rgba(0,0,0,.2);
 }
 
-#main {
-  overflow: hidden;
+.container-pay-footer {
+  display: flex;
+  padding: 1rem;
 }
 
-button#btn-pay {
-  display: flex;
+.container-pay-footer button {
+  flex-grow: 1;
   justify-content: center;
-  margin: 0;
+  margin: 0 1rem;
   padding: 0;
-  width: 100%;
   border-radius: 5px;
   height: 3rem;
 }
-button#btn-pay span.btn-text {
+
+.container-pay-footer button span.btn-text {
   color: #fdfdfd;
   height: 100%;
   margin: 0;
   padding: 0;
   line-height: 1rem;
 }
+
+#main {
+  overflow: hidden;
+}
+
 #td-total-cart {
   display: flex;
   align-content: flex-start;

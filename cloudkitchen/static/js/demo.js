@@ -1,5 +1,7 @@
 $(document).ready(function() {
-	$('#show-overlay').on('click', function() {
+	$('.show-overlay').on('click', function() {
+		window.location.hash = '#header';
+		$('#user').focus();
 		type = $(this).attr('data-type');
 
 		$('.overlay-container').fadeIn(function() {
