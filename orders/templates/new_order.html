@@ -107,7 +107,7 @@
             <figure id="rightdisplay" class="right panels-backface-invisib  ">
               <div class="container-scroll">
                 {% for product in products %}
-                {% if product.subcategory == 'SM' or product.subcategory == 'JU' %}
+                {% if product.subcategory == 'SM' or product.subcategory == 'JU'  or product.subcategory == 'WA' %}
                 <div id='3-{{product.pk}}' class="product">
                   <div class="card-block product-container" id="cartridge-{{ product.pk }}">
                     <img src="{{product.image.url}}" id="cartridge-img-{{ product.pk }}" class="product-img"  alt="Imagen para Licuado">
