@@ -203,7 +203,7 @@
           <button id="btn-orders-reset" class="fit orde cancel">Cancelar Venta</button>
         </div>
         <div class="container-btn">
-          <button id="btn-order" class="fit orde set" disabled="true"><span>Realizar Pedido</span></button>
+          <button id="btn-order" class="fit orde set" disabled="disabled"><span>Realizar Pedido</span></button>
         </div>
       </div>
     </div>
@@ -269,13 +269,14 @@
 <script type="text/javascript">
 $(document).ready(function() {
 
-  window.onload = document.getElementById("container-loader").style.display="none";
-  window.onload = document.getElementById("infor").style.display="initial";
+  window.onload = document.getElementById("container-loader").style.display = "none";
+  window.onload = document.getElementById("infor").style.display = "initial";
 
   let Ticket = {
     packages: {},
     cartridges: {}
-  }
+  };
+
   /**
    * Shows a Sweet alert meanwhile the loads the page
    */
@@ -314,11 +315,11 @@ $(document).ready(function() {
    * Gets a cookie from cache
    */
   function get_cookie(name) {
-    var cookie_value = null;
+    let cookie_value = null;
     if (document.cookie && document.cookie !== '') {
-      var cookies = document.cookie.split(';');
-      for (var i = 0; i < cookies.length; i++) {
-        var cookie = jQuery.trim(cookies[i]);
+      let cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        let cookie = jQuery.trim(cookies[i]);
         if (cookie.substring(0, name.length + 1) === (name + '=')) {
           cookie_value = decodeURIComponent(cookie.substring(name.length + 1));
           break;
@@ -328,12 +329,6 @@ $(document).ready(function() {
     return cookie_value;
   }
 
-  /**
-   * Page reload
-   */
-  function rel() {
-    location.reload();
-  }
 
   /**
    * Returns the total ticket in cartridges
@@ -342,7 +337,7 @@ $(document).ready(function() {
   function getTotalCartridges() {
     let totalCartridges = 0;
 
-    for (var item in Ticket.cartridges) {
+    for (let item in Ticket.cartridges) {
       totalCartridges += Ticket.cartridges[item].total;
     }
 
@@ -356,7 +351,7 @@ $(document).ready(function() {
   function getTotalPackages() {
     let totalPackages = 0;
 
-    for (var item in Ticket.packages) {
+    for (let item in Ticket.packages) {
       totalPackages += Ticket.packages[item].total;
     }
 
@@ -368,14 +363,15 @@ $(document).ready(function() {
    * @param {number} total new total ticket
    */
   function setTotalTicket(total) {
+    let intTotalPrice = $('#int-total-price');
+
     // Checks if new total has decimals
     if (total % 1 === 0) {
-      $('#int-total-price').text(total);
-      $('#dec-total-price').text('00');
+      intTotalPrice.text(total);
+      intTotalPrice.text('00');
     } else {
-      total = total.toFixed(2).split('.');
-      $('#int-total-price').text(total[0]);
-      $('#dec-total-price').text(total[1]);
+      intTotalPrice.text(total.toFixed(2).split('.')[0]);
+      intTotalPrice.text(total.toFixed(2).split('.')[1]);
     }
   }
 
@@ -392,9 +388,8 @@ $(document).ready(function() {
    * @return {[type]} [description]
    */
   function updateTicketList() {
-    let i,
-      newItem,
-      packagesListContainer;
+      let newItem,
+          packagesListContainer;
 
     packagesListContainer = $('ul#list-container-prods');
 
@@ -408,7 +403,7 @@ $(document).ready(function() {
     packagesListContainer.empty();
     packagesListContainer.append(newItem);
 
-    for (key in Ticket.cartridges)  {
+    for (let key in Ticket.cartridges)  {
       newItem = $("<li class='list-item'>" +
         "<span class='prod-name'>" + Ticket.cartridges[key].name + "</span>" +
         "<span class='prod-unit'>$ " + Ticket.cartridges[key].cost.toFixed(2) + "</span>" +
@@ -427,23 +422,22 @@ $(document).ready(function() {
    * @param {Number} cost Catridge ticket cost
    */
   function addProductToTicketObj(id, name, cost){
-     // Cheks if there's a same product in the ticket json
+     // Checks if there's a same product in the ticket json
     if (Ticket.cartridges[id]) {
       Ticket.cartridges[id].total += cost;
       Ticket.cartridges[id].quantity++;
     } else {
-      let newProduct = {
+      Ticket.cartridges[id] = {
         id: parseInt(id),
         name: name,
         cost: cost,
         quantity: 1,
         total: cost
-      }
-      Ticket.cartridges[id] = newProduct;
+      };
     }
     updateTicketList();
     updateTotal();
-  };
+  }
 
   $(this).on('click', '.product', function(event) {
     let productId = +$(this).attr('id').split('-')[1];
@@ -455,11 +449,12 @@ $(document).ready(function() {
   });
 
   $(this).on('click', '#btn-orders-reset', function(event) {
-    let Ticket = {
+    Ticket = {
       cartridges: {},
       packages: {}
-    }
+    };
     updateTicketList();
+    $('#btn-order').attr('disabled', 'true');
   });
 
   $('#make-dabba').on('click', function(event) {
@@ -471,7 +466,7 @@ $(document).ready(function() {
   });
 
   $('#btn-order').on('click', function(event) {
-    JSONTicket = JSON.stringify(Ticket);
+    let JSONTicket = JSON.stringify(Ticket);
     $.ajax({
       url: {% url 'orders:new_order' %},
       type: 'POST',
