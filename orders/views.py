@@ -2,7 +2,7 @@ import json
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
-
+from django.views.decorators.csrf import ensure_csrf_cookie
 from branchoffices.models import CashRegister
 from products.models import Cartridge
 from sales.models import TicketBase, TicketDetail
@@ -10,6 +10,7 @@ from users.models import User as UserProfile
 from helpers import SalesHelper, CartHelper
 
 
+@ensure_csrf_cookie
 def new_order(request):
     sales_helper = SalesHelper()
     template = 'new_order.html'
@@ -61,7 +62,7 @@ def new_order(request):
 
     return render(request, template, context)
 
-
+@ensure_csrf_cookie
 def pay(request):
     all_products = Cartridge.objects.all()
     template = 'pay.html'
