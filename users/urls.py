@@ -28,4 +28,4 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-    urlpatterns.append(url(r'^customers/test', views.test, name='cutomers_test'))
+    urlpatterns.append(url(r'^register/test', views.test, name='register_test'))

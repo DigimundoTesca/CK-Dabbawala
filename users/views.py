@@ -19,7 +19,21 @@ from cloudkitchen.settings.base import PAGE_TITLE
 # -------------------------------------  Index -------------------------------------
 
 def test(request):
-    return HttpResponse('Yours tests here')
+    form_user = CustomerProfileForm(request.POST or None)
+
+    if request.method == 'POST':
+        if form_user.is_valid():
+            new_user = form_user.save(commit=False)
+            new_user.set_password(form_user.cleaned_data['password'])
+            new_user.save()
+            form_user = None
+            return HttpResponse('EXITO')
+
+    template = 'test.html'
+    context = {
+        'form': form_user,
+    }
+    return render(request, template, context)
 
 
 # -------------------------------------  Index -------------------------------------

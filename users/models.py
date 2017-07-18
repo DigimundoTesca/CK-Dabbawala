@@ -42,7 +42,7 @@ class UserMovements(models.Model):
         return self.user
 
 
-class CustomerProfile(models.Model):
+class CustomerProfile(User):
     phone_number = models.CharField(
         max_length=10,
         unique=True,

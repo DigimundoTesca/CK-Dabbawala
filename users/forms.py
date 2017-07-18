@@ -1,5 +1,4 @@
 from django import forms
-from django.forms import ValidationError
 from .models import CustomerProfile, User as UserProfile
 
 
@@ -23,4 +22,14 @@ class UserForm(forms.ModelForm):
 class CustomerProfileForm(forms.ModelForm):
     class Meta:
         model = CustomerProfile
-        fields = ['phone_number', 'longitude', 'latitude', 'address', 'first_dabba']
+        fields = [
+            'username',
+            'email',
+            'password',
+            'is_active',
+            'phone_number',
+            'longitude',
+            'latitude',
+            'address',
+            'first_dabba'
+        ]
