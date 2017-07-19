@@ -4309,15 +4309,6 @@
     margin: 0;
   }
 
-  #innerbtn input {
-    width: 83%;
-  }
-
-  #innerbtn input, #innerbtn a {
-    display: inline;
-    margin-left: 0 !important;
-  }
-
   #main .formr, #main1 .formr, #main2 .formr, #main3 .formr, #main4 .formr {
     padding: 0;
     padding-top: 2em;

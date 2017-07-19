@@ -1,0 +1,24 @@
+button.btn-success {
+    height: 2.5rem;
+}
+#innerbtn {
+    display: flex;
+    align-items: center;
+}
+#innerbtn input {
+    margin: 0;
+    width: 90%;
+}
+#innerbtn a {
+    margin: 0;
+    width: 10%;
+    cursor: pointer;
+    justify-content: flex-end;
+}
+
+#map {
+    height: 400px;
+    width: 100%;
+    margin-top: 15px;
+  }
+

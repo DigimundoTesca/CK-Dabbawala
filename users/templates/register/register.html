@@ -2,206 +2,202 @@
 {% load static %}
 
 {% block stylesheets %}
-<style media="screen">
-  #map {
-    height: 400px;
-    width: 100%;
-    margin-top: 15px;
-  }
-</style>
+  <link rel="stylesheet" href="{% static 'css/register/register.css' %}">
 {% endblock stylesheets%}
 
 {% block content %}
-<div id="main1">
-  <img class="bord2" src="{% static 'images/image/reverse.png' %}" alt="Borde">
-  <h2>bienvenido a </h2>
-  <h1>Dabbawala</h1>
-  <div class="regis">
-  <p>Registrate y obtén<br><span>UN DESAYUNO GRATIS</span></p>
+  <div id="main1">
+    <img class="bord2" src="{% static 'images/image/reverse.png' %}" alt="Borde">
+    <h2>bienvenido a </h2>
+    <h1>Dabbawala</h1>
+    <div class="regis">
+      <p>Registrate y obtén<br>
+        <span>UN DESAYUNO GRATIS</span>
+      </p>
+    </div>
   </div>
-</div>
-<div id="main2">
-  <img class="arr" src="{% static 'images/image/arrow.png' %}" alt="Borde">
-  <div class="form">
-    <form action="" method="POST" class="form-register-customer">
-      <div class="cols colr">
-        <div class="col1 formr">
-          {% csrf_token %}
-          <label for="name">Nombre de usuario</label>
-          <input type="text" class="form-control" id="id_name" name="{{ form_customer.user.name }}" placeholder="Nombre de usuario" maxlength="30" value="{% if form_customer.user.value == None %}{% else %}{{ form_customer.user.value }}{% endif %}" required autofocus onkeypress="return pulsar(event)" >
-          {%  if form_customer.user.errors %}
-          <div class="has-danger">
-            {%  for error in form_customer.user.errors %}
-            <small class="form-control-feedback">
-              {{ error|escape }}
-            </small>
-            {% endfor %}
-          </div>
-          {% endif %}
-          <label for="email">Email</label>
-          <input type="email" class="form-control" id="id_email" name="{{ form_customer.email.name }}" placeholder="Correo" maxlength="255" value="{% if  form_customer.email.value == None %}{% else %}{{ form_customer.email.value }}{% endif %}" required onkeypress="return pulsar(event)" >
-          {%  if form_customer.email.errors %}
-          <div class="has-danger">
-            {%  for error in form_customer.email.errors %}
-            <small class="form-control-feedback">{{ error|escape }}
-            </small>
-            {% endfor %}
-          </div>
-          {% endif %}
-          <label for="telefono">Whatsapp</label>
-          <input type="text" class="form-control" id="id_phone_number" name="{{ form_customer.phone_number.name }}" placeholder="Número con WhatsApp" maxlength="10" value="{% if  form_customer.phone_number.value == None %}{% else %}{{ form_customer.phone_number.value }}{% endif %}" required onkeypress="return pulsar(event)" >
-          {%  if form_customer.phone_number.errors %}
-          <div class="has-danger">
-            {%  for error in form_customer.phone_number.errors %}
-            <small class="form-control-feedback">{{ error|escape }}
-            </small>
-            {% endfor %}
-          </div>
-          {% endif %}
-          <input type="hidden" class="form-control " id="id_longitude" name="longitude" value="{{ form_customer.longitude.value }}">
-          <input type="hidden" class="form-control" id="id_latitude" name="latitude" value="{{ form_customer.latitude.value }}">
-          <div class="col-xs-12">
-            <small id="id_address_help" class="form-text text-muted"></small>
-          </div>
-          <label for="addres">Dirección</label>
-          <div id="innerbtn">
-            <input type="text" class="form-control" id="id_address" name="address" placeholder="Dirección donde llevaremos tu comida" maxlength="255" onkeypress="return search(event)" required="">
-            <a class="icon alt fa-search" type="" id="btn-search"></a>
-            {%  if form_customer.address.errors %}
-            <div class="has-danger">
-              {%  for error in form_customer.address.errors %}
-              <small class="form-control-feedback">{{ error|escape }}
-              </small>
-              {% endfor %}
-            </div>
+  <div id="main2">
+    <img class="arr" src="{% static 'images/image/arrow.png' %}" alt="Borde">
+    <div class="form">
+      <form id="form-register" action="" method="POST" class="form-register-customer">
+        <div class="cols colr">
+          <div class="col1 formr">
+            {% csrf_token %}
+            <label for="name">Nombre de usuario</label>
+            <input type="text" class="form-control" id="id_name" name="{{ form_customer.user.name }}" placeholder="Nombre de usuario" maxlength="30" value="{% if form_customer.user.value == None %}{% else %}{{ form_customer.user.value }}{% endif %}" required autofocus onkeypress="return pulsar(event)" >
+            {%  if form_customer.user.errors %}
+              <div class="has-danger">
+                {%  for error in form_customer.user.errors %}
+                  <small class="form-control-feedback">
+                    {{ error|escape }}
+                  </small>
+                {% endfor %}
+              </div>
             {% endif %}
-          </div>
-          <div id="container-msj-alert" class="form-group container-hidden">
-            <div class="alert alert-warning" role="alert">
-              <strong>Oops! </strong><span id="msj-alert">mensaje</span>
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="id_email" name="{{ form_customer.email.name }}" placeholder="Correo" maxlength="255" value="{% if  form_customer.email.value == None %}{% else %}{{ form_customer.email.value }}{% endif %}" required onkeypress="return pulsar(event)" >
+            {%  if form_customer.email.errors %}
+              <div class="has-danger">
+                {%  for error in form_customer.email.errors %}
+                  <small class="form-control-feedback">{{ error|escape }}
+                  </small>
+                {% endfor %}
+              </div>
+            {% endif %}
+            <label for="telefono">Whatsapp</label>
+            <input type="text" class="form-control" id="id_phone_number" name="{{ form_customer.phone_number.name }}" placeholder="Número con WhatsApp" maxlength="10" value="{% if  form_customer.phone_number.value == None %}{% else %}{{ form_customer.phone_number.value }}{% endif %}" required onkeypress="return pulsar(event)" >
+            {%  if form_customer.phone_number.errors %}
+              <div class="has-danger">
+                {%  for error in form_customer.phone_number.errors %}
+                  <small class="form-control-feedback">{{ error|escape }}
+                  </small>
+                {% endfor %}
+              </div>
+            {% endif %}
+            <input type="hidden" class="form-control " id="id_longitude" name="longitude" value="{{ form_customer.longitude.value }}">
+            <input type="hidden" class="form-control" id="id_latitude" name="latitude" value="{{ form_customer.latitude.value }}">
+            <div class="col-xs-12">
+              <small id="id_address_help" class="form-text text-muted"></small>
             </div>
-          </div>
-          <div class="swaladdress">
-            <label class="ref">Proporciona referencias de tu domicilio.</label>
-            <textarea rows="3" type="text" class="form-control areainput" id="id_reference" name="addresreference" placeholder="No. 29  Zaguán blanco, enfrente de una tienda de abarrotes"></textarea>
-          </div>
-          <button id="getJson" type="submit" class="btn-success fit">Registrate</button>
-        </div>
-        <div class="col2 mapr map-container">
-          <div id="overmap" class="container-hidden">
-            <div class="alert alert-warning" role="alert">
-              <span id="msj-alert" class="alertmap">Arrastra el marcador a tu posición exacta.</span>
+            <label for="addres">Dirección</label>
+            <div id="innerbtn">
+              <input type="text" class="form-control" id="id_address" name="address" placeholder="Dirección donde llevaremos tu comida" maxlength="255" onkeypress="return search(event)" required="">
+              <a class="icon alt fa-search" type="" id="btn-search"></a>
+              {%  if form_customer.address.errors %}
+                <div class="has-danger">
+                  {%  for error in form_customer.address.errors %}
+                    <small class="form-control-feedback">{{ error|escape }}
+                    </small>
+                  {% endfor %}
+                </div>
+              {% endif %}
             </div>
+            <div id="container-msj-alert" class="form-group container-hidden">
+              <div class="alert alert-warning" role="alert">
+                <strong>Oops! </strong><span id="msj-alert">mensaje</span>
+              </div>
+            </div>
+            <div class="swaladdress">
+              <label class="ref">Proporciona referencias de tu domicilio.</label>
+              <textarea rows="3" type="text" class="form-control areainput" id="id_reference" name="addresreference" placeholder="No. 29  Zaguán blanco, enfrente de una tienda de abarrotes"></textarea>
+            </div>
+            <button id="getJson" type="submit" class="btn-success fit" disabled="disabled">Registrate</button>
           </div>
-          <div id="map" class=""></div>
+          <div class="col2 mapr map-container">
+            <div id="overmap" class="container-hidden">
+              <div class="alert alert-warning" role="alert">
+                <span id="msj-alert" class="alertmap">Arrastra el marcador a tu posición exacta.</span>
+              </div>
+            </div>
+            <div id="map" class=""></div>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
-</div>
-<div id="main">
-  <img class="arr" src="{% static 'images/image/arrow.png' %}" alt="Borde" height="60px">
-  <div class="form">
-    <h2>¿TIENES ALGUNA DUDA O SUGERENCIA?</h2>
-    <p>Envíanos tus dudas ó sugerencias; estamos siempre al pendiente de nuestros clientes.<br>Te estaremos respondiendo en poco tiempo.</p>
-    <form class="col sections" action="" method="post" accept-charset="utf-8">
-      <div class="col1">
-        <input type="text" name="email" id="email" placeholder="Email" />
-        <input type="submit" class="fit" name="submit" value="Enviar" />
-      </div>
-      <div class="col2">
-        <textarea name="message" placeholder="Mensaje" id="message" rows="2"></textarea>
-      </div>
-    </form>
+  <div id="main">
+    <img class="arr" src="{% static 'images/image/arrow.png' %}" alt="Borde" height="60px">
+    <div class="form">
+      <h2>¿TIENES ALGUNA DUDA O SUGERENCIA?</h2>
+      <p>Envíanos tus dudas ó sugerencias; estamos siempre al pendiente de nuestros clientes.<br>Te estaremos respondiendo en poco tiempo.</p>
+      <form class="col sections" action="" method="post" accept-charset="utf-8">
+        <div class="col1">
+          <input type="text" name="email" id="email" placeholder="Email" />
+          <input type="submit" class="fit" name="submit" value="Enviar" />
+        </div>
+        <div class="col2">
+          <textarea name="message" placeholder="Mensaje" id="message" rows="2"></textarea>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
 {% endblock content %}
 
 {% block scripts %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.3.8/sweetalert2.min.js"></script>
-<script type="text/javascript">
-  var map;
-  var infoWindow;
-  var marker;
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.3.8/sweetalert2.min.js"></script>
+  <script type="text/javascript">
+    var map;
+    var infoWindow;
+    var marker;
 
-  function drawMap (options) {
-    map = new google.maps.Map($("#map").get(0), options);
-  }
-
-  function setAddressValue (address) {
-    $('#id_address').val(address);
-  }
-
-  function setLatLng(lat, lng){
-    $('#id_latitude').val(lat);
-    $('#id_longitude').val(lng);
-  }
-
-  function openInfoWindow(marker) {
-    var markerLatLng;
-    var latitude = marker.getPosition().lat();
-    var longitude = marker.getPosition().lng();
-    markerLatLng = latitude+longitude;
-    infoWindow.setContent([
-      'Aquí enviaremos tu Dabba.'
-      ].join(''));
-
-    infoWindow.open(map, marker);
-
-    var Latitude = $('#id_latitude').val();
-    var Longitude = $('#id_longitude').val();
-
-    setLatLng(latitude, longitude);
-  }
-
-  function addMarkerLsteners (marker) {
-    google.maps.event.addListener(marker, 'dragend', function(){
-      openInfoWindow(marker);
-    });
-    google.maps.event.addListener(marker, 'click', function(){
-      openInfoWindow(marker);
-    });
-  }
-
-  function initMap() {
-    var LatLng = new google.maps.LatLng(19.5228008,-99.2291418);
-    var optionsMap = {
-      zoom: 18,
-      center: LatLng,
-      mapTypeId: google.maps.MapTypeId.ROADMAP,
+    function drawMap (options) {
+      map = new google.maps.Map($("#map").get(0), options);
     }
 
-    infoWindow = new google.maps.InfoWindow();
+    function setAddressValue (address) {
+      $('#id_address').val(address);
+    }
 
-    drawMap(optionsMap);
+    function setLatLng(lat, lng){
+      $('#id_latitude').val(lat);
+      $('#id_longitude').val(lng);
+    }
 
-    marker = new google.maps.Marker({
-      animation: google.maps.Animation.DROP,
-      draggable: true,
-      map: map,
-      position: LatLng,
+    function openInfoWindow(marker) {
+      var markerLatLng;
+      var latitude = marker.getPosition().lat();
+      var longitude = marker.getPosition().lng();
+      markerLatLng = latitude+longitude;
+      infoWindow.setContent([
+        'Aquí enviaremos tu Dabba.'
+      ].join(''));
+
+      infoWindow.open(map, marker);
+
+      var Latitude = $('#id_latitude').val();
+      var Longitude = $('#id_longitude').val();
+
+      setLatLng(latitude, longitude);
+    }
+
+    function addMarkerLsteners (marker) {
+      google.maps.event.addListener(marker, 'dragend', function(){
+        openInfoWindow(marker);
+      });
+      google.maps.event.addListener(marker, 'click', function(){
+        openInfoWindow(marker);
+      });
+    }
+
+    function initMap() {
+      var LatLng = new google.maps.LatLng(19.5228008,-99.2291418);
+      var optionsMap = {
+        zoom: 18,
+        center: LatLng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+      }
+
+      infoWindow = new google.maps.InfoWindow();
+
+      drawMap(optionsMap);
+
+      marker = new google.maps.Marker({
+        animation: google.maps.Animation.DROP,
+        draggable: true,
+        map: map,
+        position: LatLng,
+      });
+
+      addMarkerLsteners(marker);
+      openInfoWindow(marker);
+
+    }
+
+    $('#btn-search').on('click', function() {
+      var address = $('#id_address').val();
+      var geocoder = new google.maps.Geocoder();
+      geocoder.geocode({'address': address}, geocodeResult);
     });
 
-    addMarkerLsteners(marker);
-    openInfoWindow(marker);
-
-  }
-
-  $('#btn-search').on('click', function() {
-    var address = $('#id_address').val();
-    var geocoder = new google.maps.Geocoder();
-    geocoder.geocode({'address': address}, geocodeResult);
-  });
-
-  function swalYourAddress(){
-    var popup = document.getElementsByClassName("swaladdress")[0];
-    popup.style.visibility = "visible";
-    popup.style.height = "auto";
-    $("#overmap").fadeIn(1500);
-    setTimeout(function() {
-      $("#container-msj-alert").fadeOut(1500);
-    },6000);
-    ;  }
+    function swalYourAddress(){
+      var popup = document.getElementsByClassName("swaladdress")[0];
+      popup.style.visibility = "visible";
+      popup.style.height = "auto";
+      $("#overmap").fadeIn(1500);
+      setTimeout(function() {
+        $("#container-msj-alert").fadeOut(1500);
+      },6000);
+      ;  }
 
     function pulsar(e) {
       tecla = (document.all) ? e.keyCode :e.which;
@@ -293,4 +289,4 @@
     });
   </script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrITfQswCPmOPEBRM1Ufeiogh22FxQV5k" defer charset="utf-8"></script>
-  {% endblock scripts %}
+{% endblock scripts %}
