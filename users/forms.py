@@ -12,6 +12,10 @@ class UserForm(forms.ModelForm):
         model = UserProfile
         fields = ['username', 'email', 'password', 'is_active']
 
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        self.fields['is_active'].value = False
+
     def clean(self):
         cleaned_data = super(UserForm, self).clean()
         password = cleaned_data.get("password")
@@ -29,15 +33,14 @@ class CustomerProfileForm(forms.ModelForm):
         model = CustomerProfile
         fields = [
             'username',
-            'email',
             'password',
             'password_confirm',
-            'is_active',
+            'email',
             'phone_number',
             'longitude',
             'latitude',
             'address',
-            'first_dabba'
+            'references',
         ]
 
     def __init__(self, *args, **kwargs):
@@ -53,4 +56,3 @@ class CustomerProfileForm(forms.ModelForm):
         if password != password_confirm:
             msg = 'Las contraseñas no coinciden'
             self.add_error('password_confirm', msg)
-

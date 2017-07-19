@@ -41,9 +41,9 @@ class UserMovements(models.Model):
 class CustomerProfile(User):
     phone_regex = RegexValidator(
         regex=r'^\d{10}$',
-        message="Número de teléfono a 10 dígitos.")
+        message="Debe ingresar un número telefónico de 10 dígitos.")
     phone_number = models.CharField(
-        max_length=15,
+        max_length=10,
         validators=[phone_regex],
         blank=True,
         error_messages={
@@ -54,7 +54,7 @@ class CustomerProfile(User):
     address = models.CharField(max_length=255, default='')
     longitude = models.CharField(default='0.0', max_length=30, blank=True)
     latitude = models.CharField(default='0.0', max_length=30, blank=True)
-    first_dabba = models.BooleanField(default=False)
+    first_dabba = models.BooleanField(default=True)
     references = models.CharField(max_length=255, default='')
 
     class Meta:

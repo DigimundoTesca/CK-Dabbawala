@@ -21,7 +21,6 @@ urlpatterns = [
     # url(r'^profiles/$', views.ProfileVIew, name='profiles'),
 
     # Customers
-    url(r'^register-old/$', views.new_customer, name='new_customer'),
     url(r'^register/$', views.register, name='register'),
     url(r'^register/thanks/$', views.thanks, name='thanks'),
     url(r'^customers/list/$', views.customers_list, name='customers_list'),

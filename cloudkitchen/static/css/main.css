@@ -2324,7 +2324,6 @@
       font-size: 0.8em;
       font-weight: 600;
       /*letter-spacing: 0.25em;*/
-      margin: 0 0 1em 0;
     }
 
     input[type="text"],
@@ -4293,7 +4292,7 @@
 
   #main .col1 .cont, #main1 .col1 .cont, #main2 .col1 .cont, #main3 .col1 .cont, #main4 .col1 .cont {
     text-align: left;
-    padding-left: 1em;
+    /*padding-left: 1em;*/
   }
 
   #main .col2, #main1 .col2, #main2 .col2, #main3 .col2, #main4 .col2 {
@@ -4311,7 +4310,7 @@
 
   #main .formr, #main1 .formr, #main2 .formr, #main3 .formr, #main4 .formr {
     padding: 0;
-    padding-top: 2em;
+    padding-top: 1rem;
     padding-right: 0;
   }
 
@@ -4322,9 +4321,6 @@
     color:black;
   }
 
-  #main .form .col1, #main1 .form .col1, #main2 .form .col1, #main3 .form .col1, #main4 .form .col1 {
-    padding-right: 1em;
-  }
 
   #main .form iframe, #main1 .form iframe, #main2 .form iframe, #main3 .form iframe, #main4 .form iframe {
     padding-top: 2em;
@@ -4339,8 +4335,6 @@
 
   .form input, .form textarea {
     border: solid 1px #F9A38F;
-    margin: 0.5em;
-    padding-left: 0.5em;
   }
 
   input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
@@ -4370,18 +4364,13 @@
     width: 100%;
   }
 
-  #main div.col1 input, #main1 div.col1 input, #main2 div.col1 input, #main3 div.col1 input, #main4 div.col1 input,
-  #main div.col2, #main1 div.col2, #main2 div.col2, #main3 div.col2, #main4 div.col2 {
-    margin: 0.5em;
-  }
-
   #main label, #main1 label, #main2 label, #main3 label, #main4 label {
     font-family:'Conv_Futura',Sans-Serif;
-    margin: 0.8em !important;
+    margin-left: 1rem;
     color:#F84F0E;
     display: block;
     letter-spacing: 0;
-    font-size: 0.7em;
+    font-size: .8rem;
     text-align: left;
   }
 

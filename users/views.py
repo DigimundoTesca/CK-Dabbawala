@@ -128,45 +128,24 @@ def logout_check(user):
 
 
 # -------------------------------------  Customers -------------------------------------
-def new_customer(request):
-    form_customer = CustomerProfileForm(request.POST or None)
-    if request.method == 'POST':
-        print(request.POST)
-        if form_customer.is_valid():
-            customer = form_customer.save(commit=False)
-            customer.save()
-            return redirect('users:thanks')
-
-    template = 'register/new_customer.html'
-    title = 'Dabbawala - Bienvenido a Dabbawala. Registrare y obtén un desayuno gratis. '
-    context = {
-        'form_customer': form_customer,
-        'title': title,
-    }
-
-    return render(request, template, context)
-
-
 def register(request):
     form_customer = CustomerProfileForm(request.POST or None)
     if request.method == 'POST':
         if form_customer.is_valid():
-            customer = form_customer.save(commit=False)
-            customer.save()
+            new_customer = form_customer.save(commit=False)
+            new_customer.set_password(form_customer.cleaned_data['password'])
+            new_customer.save()
+
             if request.session.has_key('cart'):
                 request.session['first_session'] = True
                 return redirect('orders:pay')
             return redirect('orders:new_order')
 
     template = 'register/register.html'
-    title = 'Bienvenido a Dabbawala.'
     context = {
-        'form_customer': form_customer,
-        'title': title,
+        'form': form_customer,
     }
-
     return render(request, template, context)
-
 
 
 def thanks(request):
