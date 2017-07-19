@@ -5,7 +5,9 @@ from .models import User as UserProfile, UserMovements, CustomerProfile
 
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
-	pass
+	list_display = ('username', 'email', 'is_active', 'is_staff','is_superuser')
+	list_editable = ('email', 'is_active',)
+	ordering = ('username', )
 
 
 @admin.register(UserMovements)
@@ -16,6 +18,5 @@ class UserMovements(admin.ModelAdmin):
 
 @admin.register(CustomerProfile)
 class CustomerProfileAdmin(admin.ModelAdmin):
-    list_display = ('address', 'latitude', 'longitude', 'first_dabba',)
-    list_editable = ('first_dabba',)
-    ordering = ('first_dabba',)
+    list_display = ('username', 'email', 'address', 'is_active', 'first_dabba',)
+    ordering = ('username',)
