@@ -377,7 +377,7 @@
         },
         success: function(result) {
           var sales_day_earnings_list = [];
-          var initial_hour = '08:00',
+          var initial_hour = '06:00',
               final_hour = '16:00',
               separation_time = 60; // In minutes
           var sales_day_object_list = result['sales_day_list'];
@@ -504,8 +504,9 @@
       type: 'horizontalBar',
       data: {
         labels: [
-        "Out",
-        "15:00 - 16:00", "14:00 - 15:00", "13:00 - 14:00", "12:00 - 13:00", "11:00 - 12:00", "10:00 - 11:00", "09:00 - 10:00", "08:00 - 09:00",
+        "Out", "15:00 - 16:00", "14:00 - 15:00", "13:00 - 14:00",
+        "12:00 - 13:00", "11:00 - 12:00", "10:00 - 11:00", "09:00 - 10:00",
+        "08:00 - 09:00", "07:00 - 08:00", "06:00 - 07:00"
         ],
         datasets: [{
           label: 'Ventas en este horario',
@@ -516,6 +517,8 @@
           'rgba(247,202,24,0.7)',
           'rgba(247,202,24,0.7)',
           'rgba(247,202,24,0.7)',
+          'rgba(46,204,113,0.7)',
+          'rgba(46,204,113,0.7)',
           'rgba(46,204,113,0.7)',
           'rgba(46,204,113,0.7)',
           'rgba(46,204,113,0.7)',
