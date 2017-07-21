@@ -1,32 +1,24 @@
+from decimal import Decimal
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
+from django.utils.translation import ugettext as _
 
 
 class User(AbstractUser):
-    # User Rol
-    ADMIN = 'AD'
-    CEO = 'CE'
-    MANAGER = 'MA'
-    CHEF = 'CH'
-    STORER = 'ST'
-    DELIVERY_MAN = 'DM'
-    CUSTOMER = 'CU'
 
-    USER_ROL = (
-        (ADMIN, 'Admin'),
-        (STORER, 'Almacenista'),
-        (CEO, 'CEO'),
-        (CHEF, 'Chef'),
-        (CUSTOMER, 'Cliente'),
-        (MANAGER, 'Gerente'),
-        (DELIVERY_MAN, 'Repartidor'),
-    )
-
-    user_rol = models.CharField(choices=USER_ROL, default=CUSTOMER, max_length=2)
+    coins = models.DecimalField(max_digits=20, decimal_places=4, default=Decimal('0.0'))
 
     class Meta(AbstractUser.Meta):
         swappable = 'AUTH_USER_MODEL'
+        permissions = (
+            ('is_ceo', _('Es CEO')),
+            ('is_storer', _('Es Almacenista')),
+            ('is_chef', _('Es Cocinero')),
+            ('is_customer', _('Es Cliente')),
+            ('is_manager', _('Es Gerente')),
+            ('is_delivery_man', _('Es Repartidor')),
+        )
 
 
 class UserMovements(models.Model):
