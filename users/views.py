@@ -52,8 +52,17 @@ def temporal_index(request):
 # -------------------------------------  Auth -------------------------------------
 def login(request):
     if request.user.is_authenticated():
-        # login(request.user)
-        return redirect('sales:sales')
+        if request.user.has_perm('users.can_see_sales'):
+            return redirect('sales:sales')
+        elif request.user.has_perm('users.can_sell'):
+            return redirect('sales:new_sale')
+        elif request.user.has_perm('users.can_see_commands'):
+            return redirect('kitchen:cold_kitchen')
+        elif request.user.has_perm('users.can_assemble'):
+            return redirect('kitchen:assembly')
+        else:
+            return redirect('users:index')
+
     tab = 'login'
     error_message = None
     success_message = None

@@ -2,7 +2,7 @@ import json
 from datetime import datetime, date, timedelta
 from decimal import Decimal
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
@@ -16,10 +16,8 @@ from helpers import Helper, SalesHelper, ProductsHelper
 
 
 # -------------------------------------  Sales -------------------------------------
-# @login_required(login_url='users:login')
-# @has_module_perms(['users.is_manager', 'users.is_ceo'], login_url='users:home')
+@permission_required('users.can_see_sales')
 def sales(request):
-    print(request.user.has_module_perms('users'))
     helper = Helper()
     sales_helper = SalesHelper()
     if request.method == 'POST':
@@ -157,7 +155,8 @@ def delete_sale(request):
         ticket.delete()
         return JsonResponse({'result': 'excelente!'})
 
-@login_required(login_url='users:login')
+
+@permission_required('users.can_sell')
 def new_sale(request):
     helper = Helper()
     sales_helper = SalesHelper()

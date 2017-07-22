@@ -8,7 +8,6 @@ from products.views import Update_Cartridge
 from products.views import Delete_Cartridge
 from products.views import Create_Cartridge
 
-
 app_name = 'products'
 
 urlpatterns = [
@@ -35,7 +34,7 @@ urlpatterns = [
     url(r'^categories/new/$', views.new_category, name='new_category'),
     url(r'^categories/([A-Za-z]+)/$', views.categories_supplies, name='categories_supplies'),
 
-    #Menu
+    # Menu
     url(r'^menu/$', views.menu, name='menu'),
 ]
 
