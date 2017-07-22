@@ -63,7 +63,7 @@ def RFID(request):
         else:
             access_logs = diners_helper.get_access_logs_today()
             exists = False
-            
+
             for log in access_logs:
                 if rfid == log.RFID:
                     exists = True
@@ -81,7 +81,7 @@ def RFID(request):
                         new_access_log.save()
                     except Diner.DoesNotExist:
                         new_access_log = AccessLog(diner=None, RFID=rfid)
-                        new_access_log.save()   
+                        new_access_log.save()
                 else:
                     if settings.DEBUG:
                         print('RFID Inválido\n')
@@ -91,6 +91,12 @@ def RFID(request):
 
     else:
         return redirect('diners:diners')
+
+
+def diners_login(request):
+    template = 'auth/diners_login.html'
+    context = {}
+    return render(request, template, context)
 
 
 @login_required(login_url='users:login')
@@ -179,7 +185,7 @@ def diners_logs(request):
                     'datetime': timezone.localtime(access_log.access_to_room),
                     'number_day': helper.get_number_day(start_date),
                 }
-                
+
                 access_logs_day_list.append(earnings_sale_object)
             return JsonResponse({'access_logs_day_list': access_logs_day_list})
 
@@ -203,7 +209,7 @@ def diners_logs(request):
                 diners_objects_list.append(diner_object)
 
             return JsonResponse({'diner_logs': diners_objects_list})
-            
+
     else:
         all_diners_objects = diners_helper.get_all_access_logs()
         today_diners_objects = diners_helper.get_access_logs_today()
@@ -214,7 +220,7 @@ def diners_logs(request):
             """
             Returns a JSON with a years list.
             The years list contains years objects that contains a weeks list
-                and the Weeks list contains a weeks objects with two attributes: 
+                and the Weeks list contains a weeks objects with two attributes:
                 start date and final date. Ranges of each week.
             """
             try:
@@ -225,7 +231,7 @@ def diners_logs(request):
                 if settings.DEBUG:
                     print('Error:' , e)
                 return HttpResponse('No hay registros')
-                
+
             while max_year >= min_year:
                 year_object = { # 2015:object or 2016:object or 2017:object ...
                     'year': max_year,
@@ -234,9 +240,9 @@ def diners_logs(request):
 
                 diners_per_year = all_diners_objects.filter(
                     access_to_room__range=[helper.naive_to_datetime(date(max_year, 1, 1)), helper.naive_to_datetime(date(max_year,12,31))])
-                
+
                 for diner in diners_per_year:
-                    if len(year_object['weeks_list']) == 0: 
+                    if len(year_object['weeks_list']) == 0:
                         """
                         Creates a new week_object in the weeks_list of the actual year_object
                         """
@@ -248,11 +254,11 @@ def diners_logs(request):
                         year_object['weeks_list'].append(week_object)
 
                         # End if
-                    else: 
+                    else:
                         """
                         Validates if exists some week with an indentical week_number of the actual year
                         If exists a same week in the list validates the start_date and the end_date,
-                        In each case valid if there is an older start date or a more current end date 
+                        In each case valid if there is an older start date or a more current end date
                             if it is the case, update the values.
                         Else creates a new week_object with the required week number
                         """
@@ -271,7 +277,7 @@ def diners_logs(request):
 
                         if not existing_week:
                             # There's a different week number
-                            week_object = { 
+                            week_object = {
                                 'week_number': diner.access_to_room.isocalendar()[1],
                                 'start_date': diner.access_to_room.date().strftime("%d-%m-%Y"),
                                 'end_date': diner.access_to_room.date().strftime("%d-%m-%Y"),
@@ -300,11 +306,11 @@ def diners_logs(request):
             'diners_week': diners_helper.get_diners_actual_week(),
             'dates_range': get_dates_range(),
         }
-        return render(request, template, context)    
+        return render(request, template, context)
 
 
 def satisfaction_rating(request):
-    if request.method == 'POST': 
+    if request.method == 'POST':
         if request.POST['type'] == 'satisfaction_rating':
             satisfaction_rating_value = request.POST['satisfaction_rating']
             if int(satisfaction_rating_value) > 4:

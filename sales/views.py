@@ -1,6 +1,5 @@
 import json
 from datetime import datetime, date, timedelta
-
 from decimal import Decimal
 
 from django.contrib.auth.decorators import login_required
@@ -17,8 +16,10 @@ from helpers import Helper, SalesHelper, ProductsHelper
 
 
 # -------------------------------------  Sales -------------------------------------
-@login_required(login_url='users:login')
+# @login_required(login_url='users:login')
+# @has_module_perms(['users.is_manager', 'users.is_ceo'], login_url='users:home')
 def sales(request):
+    print(request.user.has_module_perms('users'))
     helper = Helper()
     sales_helper = SalesHelper()
     if request.method == 'POST':
@@ -155,7 +156,6 @@ def delete_sale(request):
         ticket = TicketBase.objects.get(id=ticket_id)
         ticket.delete()
         return JsonResponse({'result': 'excelente!'})
-
 
 @login_required(login_url='users:login')
 def new_sale(request):

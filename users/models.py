@@ -17,6 +17,7 @@ class User(AbstractUser):
             ('is_chef', _('Es Cocinero')),
             ('is_customer', _('Es Cliente')),
             ('is_manager', _('Es Gerente')),
+            ('is_accountant', _('Es Contador')),
             ('is_delivery_man', _('Es Repartidor')),
         )
 
