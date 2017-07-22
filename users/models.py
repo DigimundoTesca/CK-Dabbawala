@@ -12,18 +12,19 @@ class User(AbstractUser):
     class Meta(AbstractUser.Meta):
         swappable = 'AUTH_USER_MODEL'
 
-    permissions = (
-        ('can_sell', _('Puede Vender')),
-        ('can_see_sales', _('Puede Ver Vender')),
-        ('can_see_commands', _('Puede Ver Comandas')),
-        ('can_assemble', _('Puede Ensamblar')),
-        ('can_see_suplies', _('Puede Ver Insumos')),
-        ('can_see_cartrdiges', _('Puede Ver Cartuchos')),
-        ('can_see_packages', _('Puede Ver Paquetes')),
-        ('can_see_storage_analytics', _('Puede Ver Estadísticas de Almacén')),
-        ('can_see_suggestions', _('Puede Ver Comentarios')),
-        ('can_see_suggestions_analytics', _('Puede Ver Estadísticas de Comentarios')),
-    )
+        permissions = (
+            ('can_sell', _('Puede Vender')),
+            ('can_see_sales', _('Puede Ver Vender')),
+            ('can_see_commands', _('Puede Ver Comandas')),
+            ('can_assemble', _('Puede Ensamblar')),
+            ('can_see_suplies', _('Puede Ver Insumos')),
+            ('can_see_cartrdiges', _('Puede Ver Cartuchos')),
+            ('can_see_packages', _('Puede Ver Paquetes')),
+            ('can_see_storage_analytics', _('Puede Ver Estadísticas de Almacén')),
+            ('can_see_suggestions', _('Puede Ver Comentarios')),
+            ('can_see_suggestions_analytics', _('Puede Ver Estadísticas de Comentarios')),
+        )
+
 
 class UserMovements(models.Model):
     user = models.CharField(max_length=20,default='None')
