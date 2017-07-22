@@ -14,7 +14,7 @@ class User(AbstractUser):
 
         permissions = (
             ('can_sell', _('Puede Vender')),
-            ('can_see_sales', _('Puede Ver Vender')),
+            ('can_see_sales', _('Puede Ver Ventas')),
             ('can_see_commands', _('Puede Ver Comandas')),
             ('can_assemble', _('Puede Ensamblar')),
             ('can_see_suplies', _('Puede Ver Insumos')),
