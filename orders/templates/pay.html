@@ -51,7 +51,7 @@
       </button>
       {% if request.user.is_authenticated %}
       <button id="btn-login-pay" class="show-overlay" data-type="zoomin">
-        <span class="btn-text show-overlay" data-type="zoomin">Login y Ordenar</span>
+        <span class="btn-text show-overlay" data-type="zoomin">Ordenar</span>
       </button>
       {% else %}
       <button id="btn-login-pay" class="show-overlay" data-type="zoomin">
@@ -67,7 +67,6 @@
 <script type="text/javascript">
   $(document).ready(function($) {
     let firstSession = true;
-    console.log('{{first_session}}');
     let totalItems = $('.total-item-cart');
     let total = 0;
 
@@ -91,6 +90,13 @@
         }
       }
       return cookie_value;
+    }
+
+    /**
+     * Reload the page every time
+     */
+    function rel(){
+      location.reload();
     }
 
     /**
@@ -133,6 +139,57 @@
     if (firstSession) {
       showWelcomeAlert();
     }
+
+    $('#btn-cancel-pay').click(function(event) {
+      swal({
+        title: "Estás seguro!",
+        text: "¿Deseas cancelar esta orden?",
+        type: "warning",
+        cancelButtonColor: '#d02a2a',
+        confirmButtonText: 'Sí',
+        cancelButtonText: 'Cancelar',
+        showConfirmButton: true,
+        showCancelButton: true,
+      }).then(
+        function(){
+          $.ajax({
+            url: {% url 'orders:pay' %},
+            type: 'POST',
+            data: {
+              'type': 'cancelPay',
+              csrfmiddlewaretoken: get_cookie('csrftoken'),
+            },
+            traditional: true,
+            datatype: 'jsonp',
+            success: function(result) {
+              if(result.code === 1) {
+                swal({
+                  title: "Orden cancelar",
+                  text: "Puedes ordenar nuevamente",
+                  type: "success",
+                  timer: 1500,
+                  showConfirmButton: false
+                }).then(
+                  function(){},
+                  function(dismiss){
+                    setTimeout(rel, 300);
+                  }
+                );
+              }
+            },
+            error: function(result, jqXHR, textStatus, errorThrown) {
+              swal({
+                title: "Hubo un problema!",
+                text: 'Estamos teniendo problemas, recarga la paǵina o intenta más tarde',
+                type: "error",
+              });
+            },
+          });
+        },
+        function(dismiss){}
+      );
+
+    });
   });
 </script>
 {% endblock %}

@@ -20,7 +20,7 @@
         </tr>
       </thead>
       <tbody>
-        {% for customer in customers  %}        
+        {% for customer in customers  %}
           <tr {% if customer.first_dabba %} class="table-success" {% endif %}>
             <th class="customer_user" scope="row">{{ customer.user }}</th>
             <td>{{ customer.email }}</td>
@@ -83,13 +83,13 @@
         function save_change () {
           JSONCustomer = JSON.stringify(CustomerProfile);
           $.ajax({
-            url: "{% url 'customers:customers_list' %}",
+            url: "{% url 'users:customers_list' %}",
             type: 'POST',
             data: {
               'customer': JSONCustomer,
               csrfmiddlewaretoken: '{{ csrf_token }}',
             },
-            traditional: true, 
+            traditional: true,
             datatype: 'jsonp',
             beforeSend: function (xhr) {
             swal({

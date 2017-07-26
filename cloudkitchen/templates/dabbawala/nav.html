@@ -29,7 +29,7 @@
       {% if request.user.is_authenticated %}
       <li><a href="{% url 'branch_offices:contact' %}"><span>{{ request.user }}</span></a></li>
       {% else %}
-      <li><a class="show-overlay" href="#" data-type="zoomin"><span>Inicia Sesión</span></a></li>
+      <li><a class="show-overlay" href="{% url 'users:login_customer' %}" data-type="zoomin"><span>Inicia Sesión</span></a></li>
       <li><a href="{% url 'users:register' %}"><span>Registrate</span></a></li>
       {% endif %}
       {% if request.session.cart %}
@@ -41,22 +41,3 @@
   </nav>
 </header>
 {{request.session.cart}}
-
-<div class="overlay-container" id="cart-overlay">
-  <div class="window-container zoomin">
-    <div class="colm">
-      <h1>LOGIN</h1>
-      <form class="logform" action="" method="post" accept-charset="utf-8">
-        <label>Usuario<input type="text" name="user" id="user" placeholder="Usuario"/></label>
-        <label>Contraseña<input type="text" name="pass" id="pass" placeholder="Contraseña" /></label>
-        <button id="btn-login" class="button">Login<button>
-      </form>
-    </div>
-    <div class="colm2">
-      <h1>Registro</h1>
-      <p>Si aún no te has registrado, te invitamos a que visites nuestra sección de registro y disfrutes de todos los beneficios que tu cuenta te otorga.</p>
-      <a href="{% url 'users:register' %}" class="button"><span>Resgistrate </span></a>
-    </div>
-    <span class="closeres">X</span>
-  </div>
-</div>

@@ -17,7 +17,6 @@ from cloudkitchen.settings.base import PAGE_TITLE
 
 
 # -------------------------------------  Index -------------------------------------
-
 def test(request):
     form_user = CustomerProfileForm(request.POST or None)
 
@@ -105,6 +104,36 @@ def login(request):
     return render(request, template, context)
 
 
+def login_customer(request):
+    error_message = None
+    success_message = None
+    template = 'customers/login.html'
+
+    form_user = UserForm(request.POST or None)
+
+    if request.method == 'POST':
+        form_user = UserForm(None)
+        username_login = request.POST.get('username_login')
+        password_login = request.POST.get('password_login')
+        user = authenticate(username=username_login, password=password_login)
+
+        if user is not None:
+            login_django(request, user)
+            login_check(user.username)
+            return redirect('orders:new_order')
+
+        else:
+            error_message = 'Usuario o contraseña incorrecto'
+
+    context = {
+        'title': 'Bienvenido a CloudKitchen. Inicia Sesión o registrate.',
+        'error_message': error_message,
+        'success_message': success_message,
+        'form_user': form_user,
+    }
+    return render(request, template, context)
+
+
 @login_required(login_url='users:login')
 def logout(request):
     logout_django(request)
@@ -150,7 +179,7 @@ def register(request):
                 return redirect('orders:pay')
             return redirect('orders:new_order')
 
-    template = 'register/register.html'
+    template = 'customers/register.html'
     context = {
         'form': form_customer,
     }
@@ -192,13 +221,13 @@ def customers_list(request):
         }
         return JsonResponse(data)
 
-    template = 'register/customers_list.html'
+    template = 'customers/customers_list.html'
     customers = CustomerProfile.objects.all().order_by('first_dabba')
     title = 'Clientes registrados'
 
     context = {
-        'title': title,
-        'page_title': PAGE_TITLE,
+        'title': PAGE_TITLE + ' | ' + title,
+        'page_title': title,
         'customers': customers,
     }
 

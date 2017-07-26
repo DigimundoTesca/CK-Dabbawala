@@ -2188,12 +2188,6 @@
       overflow-x: auto;
     }
 
-    hr {
-      border: 0;
-      border-bottom: solid 1px rgba(212, 212, 255, 0.1);
-      margin: 2em 0;
-    }
-
     hr.major {
       margin: 3em 0;
     }
@@ -2943,11 +2937,9 @@
    }
 
    /* Button */
-
-   input[type="submit"],
-   input[type="reset"],
-   input[type="button"],
-   button,
+   button {
+     cursor: pointer;
+   }
    .button {
     -moz-appearance: none;
     -webkit-appearance: none;
@@ -2957,18 +2949,18 @@
     -webkit-transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
     -ms-transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
     transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
-    background-color: #F84F0E;
+    background: #F84F0E;
     border: 0;
     border-radius: 0;
     box-shadow: inset 0 0 0 2px #fff;
     color: #ffffff;
     cursor: pointer;
     display: inline-block;
-    font-size: 0.8em;
+    font-size: 0.8rem;
     font-weight: 600;
-    height: 2em;
-    letter-spacing: 0.1em;
-    line-height: 2em;
+    height: 2rem;
+    letter-spacing: 0.1rem;
+    line-height: 1rem;
     padding: 0 0.7em;
     text-align: center;
     text-decoration: none;
@@ -2993,7 +2985,6 @@
     -webkit-transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
     -ms-transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
     transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
-    background-color: transparent;
     border: 0;
     border-radius: 0;
     box-shadow: inset 0 0 0 2px #F98559;
