@@ -38,6 +38,7 @@ class Update_Supply(UpdateView):
         self.object = form.save()
         return redirect('/supplies/')
 
+
 class Delete_Supply(DeleteView):
     model = Supply
     template_name = 'delete_supply.html'
@@ -46,6 +47,7 @@ class Delete_Supply(DeleteView):
         self.object = self.get_object()        
         self.object.delete()
         return redirect('/supplies/')
+
 
 class Create_Cartridge(CreateView):
     model = Cartridge
@@ -56,6 +58,7 @@ class Create_Cartridge(CreateView):
         self.object = form.save()
         return redirect('/cartridges/')
 
+
 class Update_Cartridge(UpdateView):
     model = Cartridge
     fields = ['name','price','category','image']
@@ -65,12 +68,13 @@ class Update_Cartridge(UpdateView):
         self.object = form.save()
         return redirect('/cartridges/')
 
+
 class Delete_Cartridge(DeleteView):
     model = Cartridge
     template_name = 'delete_cartridge.html'
 
     def delete(self, request, *args, **kwargs):        
-        self.object = self.get_object()        
+        self.object = self.get_object()
         self.object.delete()
         return redirect('/cartridges/')
 
