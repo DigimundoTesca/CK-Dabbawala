@@ -1,6 +1,7 @@
 import json
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 
@@ -105,31 +106,25 @@ def login(request):
 
 
 def login_customer(request):
-    error_message = None
-    success_message = None
+    if request.user.is_authenticated():
+        return redirect('orders:new_order')
     template = 'customers/login.html'
 
-    form_user = UserForm(request.POST or None)
+    form = AuthenticationForm(None, request.POST or None)
 
     if request.method == 'POST':
-        form_user = UserForm(None)
-        username_login = request.POST.get('username_login')
-        password_login = request.POST.get('password_login')
-        user = authenticate(username=username_login, password=password_login)
+        if form.is_valid():
+            username = request.POST['username']
+            password = request.POST['password']
+            access = authenticate(username=username, password=password)
 
-        if user is not None:
-            login_django(request, user)
-            login_check(user.username)
-            return redirect('orders:new_order')
-
-        else:
-            error_message = 'Usuario o contraseña incorrecto'
+            if access is not None:
+                login_django(request,access)
+                return redirect('orders:new_order')
 
     context = {
-        'title': 'Bienvenido a CloudKitchen. Inicia Sesión o registrate.',
-        'error_message': error_message,
-        'success_message': success_message,
-        'form_user': form_user,
+        'title': 'Bienvenido a Dabbawala. Inicia Sesión',
+        'form': form,
     }
     return render(request, template, context)
 
@@ -138,6 +133,12 @@ def login_customer(request):
 def logout(request):
     logout_django(request)
     return redirect('users:login')
+
+
+@login_required(login_url='users:login')
+def logout_customer(request):
+    logout_django(request)
+    return redirect('orders:new_order')
 
 
 @login_required(login_url='users:login')
@@ -177,7 +178,7 @@ def register(request):
             if request.session.has_key('cart'):
                 request.session['first_session'] = True
                 return redirect('orders:pay')
-            return redirect('orders:new_order')
+            return redirect('users:login_customer')
 
     template = 'customers/register.html'
     context = {

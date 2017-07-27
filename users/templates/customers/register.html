@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block stylesheets %}
-  <link rel="stylesheet" href="{% static 'css/register/register.css' %}">
+  <link rel="stylesheet" href="{% static 'css/customers/register.css' %}">
 {% endblock stylesheets%}
 
 {% block content %}
@@ -181,7 +181,7 @@
                 placeholder="No. 29 Zaguán blanco, enfrente de una tienda de abarrotes"
               >{% if form.references.value != None %}{{ form.references.value }}{% endif %}</textarea>
             </div>
-            <button id="btn-register" type="submit" class="btn-success fit" disabled="disabled">Registrate</button>
+            <button id="btn-register" type="submit" class="btn-success fit button" disabled="disabled">Registrate</button>
           </div>
           </div>
         </div>

@@ -202,8 +202,8 @@
         <div class="container-btn">
           <button id="btn-orders-reset" class="fit orde cancel button">Cancelar Venta</button>
         </div>
-        <div class="container-btn button">
-          <button id="btn-order" class="fit orde set" disabled="disabled"><span>Realizar Pedido</span></button>
+        <div class="container-btn">
+          <button id="btn-order" class="fit orde set button" disabled="disabled"><span>Realizar Pedido</span></button>
         </div>
       </div>
     </div>
@@ -364,14 +364,14 @@ $(document).ready(function() {
    */
   function setTotalTicket(total) {
     let intTotalPrice = $('#int-total-price');
-
+    let decimalTotalPrice = $('#dec-total-price');
     // Checks if new total has decimals
     if (total % 1 === 0) {
       intTotalPrice.text(total);
-      intTotalPrice.text('00');
+      decimalTotalPrice.text('00');
     } else {
       intTotalPrice.text(total.toFixed(2).split('.')[0]);
-      intTotalPrice.text(total.toFixed(2).split('.')[1]);
+      decimalTotalPrice.text(total.toFixed(2).split('.')[1]);
     }
   }
 

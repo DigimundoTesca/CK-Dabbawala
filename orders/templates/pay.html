@@ -55,7 +55,9 @@
       </button>
       {% else %}
       <button id="btn-login-pay" class="show-overlay" data-type="zoomin">
-        <span class="btn-text">Login y Ordenar</span>
+        <a href="{% url 'users:login_customer' %}">
+          <span class="btn-text">Login y Ordenar</span>
+        </a>
       </button>
       {% endif %}
     </div>
