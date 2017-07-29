@@ -34,7 +34,7 @@
               {% for cartridge in package.package_recipe %}
                 {% if cartridge.category == 'FD' %}
                   <tr class="tr_id">
-                    <th scope="row" class="id_kitchen_table">{{ product.ticket_id }}</th>
+                    <th scope="row" class="id_kitchen_table">{{ product.ticket_order }}</th>
                     <td>{{ cartridge }}</td>
                     <td>{{ package.quantity }}</td>
                   </tr>
