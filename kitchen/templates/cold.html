@@ -11,7 +11,7 @@
     <table id="table-kitchen" class="table table-hoverable pl-1 pr-1 table-hover">
       <thead class="thead-inverse">
         <tr>
-          <th>Ticket ID</th>
+          <th>Orden</th>
           <th>Nombre</th>
           <th>Cantidad</th>
         </tr>
@@ -22,7 +22,7 @@
             {% for cartridge in product.cartridges %}
               {% if cartridge.cartridge.category == 'CO' %}
                 <tr>
-                  <th scope="row" class="id_kitchen_table">{{ product.ticket_id }}</th>
+                  <th scope="row" class="id_kitchen_table">{{ product.ticket_order }}</th>
                   <td>{{ cartridge.cartridge }}</td>
                   <td>{{ cartridge.quantity }}</td>
                 </tr>
