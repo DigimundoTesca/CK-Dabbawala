@@ -1,0 +1,44 @@
+{% load static %}
+<!-- Header -->
+<header id="header" class="alt">
+  <a href="{% url 'users:home' %}" class="logo">Dabbawala</a>
+  <img src="{% static 'images/bici.png' %}" alt="Logo de Dabbawalla">
+
+  <nav id="flomen">
+    <a href="#menu" title=""></a>
+  </nav>
+
+  <!-- Menu -->
+  <nav id="menu">
+    <ul class="links">
+      <li><a href="{% url 'users:home' %}">Home</a></li>
+      <li><a href="{% url 'products:menu'%}">Menú</a></li>
+      <li><a href="{% url 'branch_offices:contact' %}">Contacto</a></li>
+      <li><a href="" class="button nob" data-type="zoomin"><span>Inicia Sesión</span></a></li>
+      <li><a href="{% url 'users:register' %}">Registrate</a></li>
+      <li><a href="{% url 'orders:new_order' %}" class="button fit">Arma tu Dabba</a></li>
+      <li><a href="{% url 'orders:pay' %}" class="button fit"><span class="icon-container"><i class="material-icons">shopping_cart</i></span></a></li>
+    </ul>
+  </nav>
+
+  <nav id="mainmenu">
+    <ul>
+      <li><a href="{% url 'users:home' %}"><span>Home</span></a></li>
+      <li><a href="{% url 'products:menu'%}"><span>Menú</span></a></li>
+      <li><a href="{% url 'branch_offices:contact' %}"><span>Contacto</span></a></li>
+      {% if request.user.is_authenticated %}
+      <li><a href="{% url 'branch_offices:contact' %}"><span>{{ request.user }}</span></a></li>
+      <li><a href="{% url 'users:logout_customer' %}"><span>Cerrar Sesión</span></a></li>
+      {% else %}
+      <li><a class="show-overlay" href="{% url 'users:login_customer' %}" data-type="zoomin"><span>Inicia Sesión</span></a></li>
+      <li><a href="{% url 'users:register' %}"><span>Registrate</span></a></li>
+      {% endif %}
+      {% if request.session.cart %}
+      <li><a href="{% url 'orders:pay' %}"><span class="icon-container"><i class="material-icons">shopping_cart</i></span></a></li>
+      {% else %}
+      <li><a href="{% url 'orders:new_order' %}"><span>Arma tu Dabba</span></a></li>
+      {% endif %}
+    </ul>
+  </nav>
+</header>
+{{request.session.cart}}

@@ -1,0 +1,545 @@
+{% extends "dabbawala/base_nav_footer.html" %}
+{% load static %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{% static 'css/orders/cube-230617.css' %}">
+<link rel="stylesheet" href="{% static 'css/perfect-scroll/perfect-scrollbar.min.css' %}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+{% endblock stylesheets %}
+
+{% block content %}
+<div id="container-loader">
+  <div class="loader" id="loader"><p>Cargando Menú...</p></div>
+</div>
+<div id="infor">
+  <section id="banner" class="build major style3">
+    <div class="inner">
+      <header class="inner">
+        <h1>ARMA TU DABBA</h1>
+        <h2>ROTI + 2 Complementos <br>$ 59.00</h2>
+      </header>
+    </div>
+  </section>
+  <div id="main">
+    <img class="bord" src="{% static 'images/image/reverse.png' %}" alt="Borde de flechas">
+    <div id="sales-main" class="sales-section">
+      <div id="cartfloat">
+        <a id="cartref" href="#cart-container">
+          <div class="sale-circle rotis">
+            <p class="circle-cont">0</p>
+            <img class="circle-img" src="{% static 'images/image/rotimini.png' %}" alt="Sales image">
+          </div>
+        </a>
+        <a id="cartref" href="#cart-container">
+          <div class="sale-circle drinks">
+            <p class="circle-cont">0</p>
+            <img class="circle-img" src="{% static 'images/image/drinkmini.png' %}" alt="Sales image">
+          </div>
+        </a>
+        <a id="cartref" href="#cart-container">
+          <div class="sale-circle salads">
+            <p class="circle-cont">0</p>
+            <img class="circle-img" src="{% static 'images/image/saladmini.png' %}" alt="Sales image">
+          </div>
+        </a>
+        <a id="cartref" href="#cart-container">
+          <div class="sale-circle fruits">
+            <p class="circle-cont">0</p>
+            <img class="circle-img" src="{% static 'images/image/fruitmini.png' %}" alt="Sales image">
+          </div>
+        </a>
+      </div>
+      <div id="thecube">
+        <section id="btns-options">
+          <div id="show-buttons">
+            <button class="button show-front" onclick="visible()">Roti</button>
+            <button class="button show-back" onclick="visible1()">Ensaladas</button>
+            <button class="button show-right" onclick="visible2()">Bebidas</button>
+            <button class="button show-left" onclick="visible3()">Fruta</button>
+          </div>
+          <!-- <a id="make-dabba" href="#sales-main">Arma tu dabba</a> -->
+        </section>
+        <section id="group-complements" class="container-cube">
+          <div id="cube" class="show-front card-block">
+            <!-- Rotis -->
+            <figure id="frontdisplay" class="front">
+              <div class="container-scroll">
+                {% for product in products %}
+                {% if product.subcategory == 'RO' %}
+                <div id='1-{{product.pk}}' class="product">
+                  <div class="card-block product-container" id="cartridge-{{ product.pk }}">
+                    <img src="{{product.image.url}}" id="cartridge-img-{{ product.pk }}" class="product-img"  alt="Imagen para Roti">
+                    <p class="product-name">{{ product.name }}</p>
+                    <p class="description">
+                      {{ product.description }}
+                    </p>
+                    <div class="content-price">
+                      <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ product.price }}</span>
+                    </div>
+                  </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+              </div>
+            </figure>
+            <!-- Salads -->
+            <figure id="backdisplay" class="back panels-backface-invisible  ">
+              <div class="container-scroll">
+                {% for product in products %}
+                {% if product.subcategory == 'SA' %}
+                <div id='2-{{product.pk}}' class="product">
+                  <div class="card-block product-container" id="cartridge-{{ product.pk }}">
+                    <img src="{{product.image.url}}" id="cartridge-img-{{ product.pk }}" class="product-img"  alt="Imagen para Ensalada">
+                    <p class="product-name">{{ product.name }}</p>
+                    <p class="description">
+                      {{ product.description }}
+                    </p>
+                    <div class="content-price">
+                      <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ product.price }}</span>
+                    </div>
+                  </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+              </div>
+            </figure>
+            <!-- Smoothies and Drinks -->
+            <figure id="rightdisplay" class="right panels-backface-invisib  ">
+              <div class="container-scroll">
+                {% for product in products %}
+                {% if product.subcategory == 'SM' or product.subcategory == 'JU'  or product.subcategory == 'WA' %}
+                <div id='3-{{product.pk}}' class="product">
+                  <div class="card-block product-container" id="cartridge-{{ product.pk }}">
+                    <img src="{{product.image.url}}" id="cartridge-img-{{ product.pk }}" class="product-img"  alt="Imagen para Licuado">
+                    <p class="product-name">{{ product.name }}</p>
+                    <p class="description">
+                      {{ product.description }}
+                    </p>
+                    <div class="content-price">
+                      <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ product.price }}</span>
+                    </div>
+                  </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+              </div>
+            </figure>
+            <!-- Fruits -->
+            <figure id="leftdisplay" class="left panels-backface-invisible  ">
+              <div class="container-scroll">
+                {% for product in products %}
+                {% if product.subcategory == 'FR' %}
+                <div id='4-{{product.pk}}' class="product">
+                  <div class="card-block product-container" id="cartridge-{{ product.pk }}">
+                    <img src="{{product.image.url}}" id="cartridge-img-{{ product.pk }}" class="product-img"  alt="Imagen para Licuado">
+                    <p class="product-name">{{ product.name }}</p>
+                    <p class="description">
+                      {{ product.description }}
+                    </p>
+                    <div class="content-price">
+                      <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ product.price }}</span>
+                    </div>
+                  </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+              </div>
+            </figure>
+          </div>
+        </section>
+      </div>
+      <div id="cart-container">
+        <h3 class="order-total">Total</h3>
+        <div id="cart-header" class="card-float">
+          <p class="total-container">
+            <span class="text-price" id="s-total-price">$ </span>
+            <span id="total-price">
+              <span class="text-price" id="int-total-price">0</span>
+              <span class="point-total-price">.</span>
+              <span class="text-price-decimal" id="dec-total-price">00</span>
+            </span>
+          </p>
+        </div>
+        <h3 class="order-title" >Tu pedido</h3>
+        <div  id="cart-body"  class="card-float  container-scroll">
+          <div class="container-scroll">
+
+            <div class="card-block products-block">
+              <div class="row">
+              </div>
+            </div>
+            <ul class="list-group list-group-flush" id="sales-list">
+              <li class="li-separator li-prods">
+                <span class="separator-title">Productos</span>
+                <ul id="list-container-prods">
+                  <li class="prod-list-head list-item">
+                    <span class="prod-name">Producto</span>
+                    <span class="prod-unit">P. Unit</span>
+                    <span class="prod-quantity">Cant</span>
+                    <span class="prod-total">Total</span>
+                  </li>
+                </ul>
+              </li>
+              <!-- <li class="li-separator li-combos">
+                <span class="separator-title">Paquetes</span>
+                <ul>
+                  <li class="prod-list-head list-item">
+                    <span class="prod-name">Producto</span>
+                    <span class="prod-unit">P. Unit</span>
+                    <span class="prod-quantity">Cant</span>
+                    <span class="prod-total">Total</span>
+                  </li>
+                  <li class="list-item">
+                    Proximamente
+                  </li>
+                </ul>
+              </li> -->
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="container-btns">
+        <div class="container-btn">
+          <button id="btn-orders-reset" class="fit orde cancel button">Cancelar Venta</button>
+        </div>
+        <div class="container-btn">
+          <button id="btn-order" class="fit orde set button" disabled="disabled"><span>Realizar Pedido</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block alert %}
+<!-- New Dabba Modal -->
+<div id="modal-package" class="modal-hidde">
+  <div class="modal-content">
+    <span id="close-modal">
+      <i id="close" class="material-icons">close</i>
+    </span>
+    <!-- <h2>¡Arma tu dabba!</h2>-->
+    <h2>¡Proximamente!</h2>
+    <div id="modal-menu">
+      <div class="modal-content-menu">
+        <div id="modal-header-1" class="content-menu-header">
+          ROTI
+        </div>
+        <div class="modal-content-cartridges container-scroll">
+          {% for product in products %}
+            {% if  product.subcategory == 'RO' %}
+            <img src="{{ product.image.url }}" alt="">
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      <div class="modal-content-menu">
+        <div id="modal-header-2" class="content-menu-header">
+          Complemento 1
+        </div>
+        <div class="modal-content-cartridges container-scroll">
+          {% for product in products %}
+            {% if  product.subcategory == 'FR' or product.subcategory == 'JU' or product.subcategory == 'WA' %}
+            <img src="{{ product.image.url }}" alt="">
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      <div class="modal-content-menu">
+        <div id="modal-header-3" class="content-menu-header">
+          Complemento 2
+        </div>
+        <div class="modal-content-cartridges container-scroll">
+          {% for product in products %}
+            {% if  product.subcategory == 'FR' or product.subcategory == 'JU' or product.subcategory == 'WA' %}
+            <img src="{{ product.image.url }}" alt="">
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'js/cube/utils.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/cube/rotate-box-230617.js' %}"></script>
+<script src="{% static 'js/perfect-scroll/perfect-scrollbar.min.js' %}"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+
+  window.onload = document.getElementById("container-loader").style.display = "none";
+  window.onload = document.getElementById("infor").style.display = "initial";
+
+  let Ticket = {
+    packages: {},
+    cartridges: {}
+  };
+
+  /**
+   * Shows a Sweet alert meanwhile the loads the page
+   */
+  function showAlert() {
+    swal({
+      title: "Menú cargado!",
+      text: "Disfruta tus alimentos!",
+      type: "success",
+      timer: 2000,
+      showConfirmButton: false
+    }).then(
+      function(){},
+      function(dismiss){}
+    );
+    setTimeout(2100);
+  }
+
+  function initScrolls(){
+    let scrolls = document.getElementsByClassName('container-scroll');
+    let i = 0;
+    for (; i < scrolls.length; i++) {
+      let container = scrolls[i];
+      Ps.initialize(container, {
+        wheelSpeed: 0.2,
+        wheelPropagation: true,
+        swipePropagation: true,
+        swipeEasing: true,
+        minScrollbarLength: 40,
+        maxScrollbarLength: 120,
+        useBothWheelAxes: true,
+      });
+    }
+  }
+
+  /**
+   * Gets a cookie from cache
+   */
+  function get_cookie(name) {
+    let cookie_value = null;
+    if (document.cookie && document.cookie !== '') {
+      let cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        let cookie = jQuery.trim(cookies[i]);
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookie_value = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookie_value;
+  }
+
+
+  /**
+   * Returns the total ticket in cartridges
+   * @return {number} total cartridges ticket
+   */
+  function getTotalCartridges() {
+    let totalCartridges = 0;
+
+    for (let item in Ticket.cartridges) {
+      totalCartridges += Ticket.cartridges[item].total;
+    }
+
+    return totalCartridges;
+  }
+
+  /**
+   * Returns the total ticket in cartridges
+   * @return {number} total packages ticket
+   */
+  function getTotalPackages() {
+    let totalPackages = 0;
+
+    for (let item in Ticket.packages) {
+      totalPackages += Ticket.packages[item].total;
+    }
+
+    return totalPackages;
+  }
+
+  /**
+   * Changes the total ticket label
+   * @param {number} total new total ticket
+   */
+  function setTotalTicket(total) {
+    let intTotalPrice = $('#int-total-price');
+    let decimalTotalPrice = $('#dec-total-price');
+    // Checks if new total has decimals
+    if (total % 1 === 0) {
+      intTotalPrice.text(total);
+      decimalTotalPrice.text('00');
+    } else {
+      intTotalPrice.text(total.toFixed(2).split('.')[0]);
+      decimalTotalPrice.text(total.toFixed(2).split('.')[1]);
+    }
+  }
+
+  /**
+   * Updates the total ticket at JSON and DOM
+   */
+  function updateTotal() {
+    let total = getTotalCartridges() + getTotalPackages();
+    setTotalTicket(total);
+  }
+
+  /**
+   * Sets the data from Ticket Object in the cart
+   * @return {[type]} [description]
+   */
+  function updateTicketList() {
+      let newItem,
+          packagesListContainer;
+
+    packagesListContainer = $('ul#list-container-prods');
+
+    newItem = $("<li class='prod-list-head  list-item'>" +
+      "<span class='prod-name'>Producto</span>" +
+      "<span class='prod-unit'>P. Unit</span>" +
+      "<span class='prod-quantity'>Cant</span>" +
+      "<span class='prod-total'>Total</span>" +
+      "</li>");
+
+    packagesListContainer.empty();
+    packagesListContainer.append(newItem);
+
+    for (let key in Ticket.cartridges)  {
+      newItem = $("<li class='list-item'>" +
+        "<span class='prod-name'>" + Ticket.cartridges[key].name + "</span>" +
+        "<span class='prod-unit'>$ " + Ticket.cartridges[key].cost.toFixed(2) + "</span>" +
+        "<span class='prod-quantity'>" + Ticket.cartridges[key].quantity + "</span>" +
+        "<span class='prod-total'> $ " + Ticket.cartridges[key].total.toFixed(2) + "</span>" +
+        "</li>");
+        packagesListContainer.append(newItem);
+    }
+
+  }
+
+  /**
+   * Adds the elements to the ticket json
+   * @param {Number} id   Cartridge ticket id
+   * @param {String} name Cartridge ticket name
+   * @param {Number} cost Catridge ticket cost
+   */
+  function addProductToTicketObj(id, name, cost){
+     // Checks if there's a same product in the ticket json
+    if (Ticket.cartridges[id]) {
+      Ticket.cartridges[id].total += cost;
+      Ticket.cartridges[id].quantity++;
+    } else {
+      Ticket.cartridges[id] = {
+        id: parseInt(id),
+        name: name,
+        cost: cost,
+        quantity: 1,
+        total: cost
+      };
+    }
+    updateTicketList();
+    updateTotal();
+  }
+
+  $(this).on('click', '.product', function(event) {
+    let productId = +$(this).attr('id').split('-')[1];
+    let productName = $(this).find('.product-name').text();
+    let productCost = +$(this).find('.product-cost').text();
+
+    addProductToTicketObj(productId, productName, productCost);
+    $('#btn-order').attr('disabled', false)
+  });
+
+  $(this).on('click', '#btn-orders-reset', function(event) {
+    Ticket = {
+      cartridges: {},
+      packages: {}
+    };
+    updateTicketList();
+    $('#btn-order').attr('disabled', 'true');
+  });
+
+  $('#make-dabba').on('click', function(event) {
+    $('#modal-package').removeClass('modal-hidde');
+  });
+
+  $('#close-modal').on('click', function(event) {
+    $('#modal-package').addClass('modal-hidde');
+  });
+
+  $('#btn-order').on('click', function(event) {
+    let JSONTicket = JSON.stringify(Ticket);
+    $.ajax({
+      url: {% url 'orders:new_order' %},
+      type: 'POST',
+      data: {
+        'type': 'new_order',
+        'cart': JSONTicket,
+        csrfmiddlewaretoken: get_cookie('csrftoken'),
+      },
+      traditional: true,
+      datatype: 'jsonp',
+      success: function(result) {
+        swal({
+          title: "Éxito",
+          text: "Productos cargados",
+          type: "success",
+          showConfirmButton: false,
+          timer: 1000,
+        }).then(
+          function(){},
+          function(dismiss){
+            window.location.replace({% url 'orders:pay' %});
+          }
+        );
+      },
+      error: function(result, jqXHR, textStatus, errorThrown) {
+        swal({
+          title: "Orden no realizada!",
+          text: 'Contacte a soporte!\n ' + 'Errores: ' + textStatus + ', ' + jqXHR,
+          type: "error",
+          showConfirmButton: false
+        });
+        // setTimeout(rel, 1500);
+      },
+    });
+  });
+
+  initScrolls();
+  showAlert();
+});
+</script>
+<script type="text/javascript">
+  function visible() {
+    $('#frontdisplay').removeClass('panels-backface-invisible');
+    $('#backdisplay').addClass('panels-backface-invisible');
+    $('#rightdisplay').addClass('panels-backface-invisible');
+    $('#leftdisplay').addClass('panels-backface-invisible');
+    $('#topdisplay').addClass('panels-backface-invisible');
+    $('#bottomdisplay').addClass('panels-backface-invisible');
+  }
+
+  function visible1() {
+    $('#frontdisplay').addClass('panels-backface-invisible');
+    $('#backdisplay').removeClass('panels-backface-invisible');
+    $('#rightdisplay').addClass('panels-backface-invisible');
+    $('#leftdisplay').addClass('panels-backface-invisible');
+    $('#topdisplay').addClass('panels-backface-invisible');
+    $('#bottomdisplay').addClass('panels-backface-invisible');
+  }
+  function visible2() {
+    $('#frontdisplay').addClass('panels-backface-invisible');
+    $('#backdisplay').addClass('panels-backface-invisible');
+    $('#rightdisplay').removeClass('panels-backface-invisible');
+    $('#leftdisplay').addClass('panels-backface-invisible');
+    $('#topdisplay').addClass('panels-backface-invisible');
+    $('#bottomdisplay').addClass('panels-backface-invisible');
+  }
+  function visible3() {
+    $('#frontdisplay').addClass('panels-backface-invisible');
+    $('#backdisplay').addClass('panels-backface-invisible');
+    $('#rightdisplay').addClass('panels-backface-invisible');
+    $('#leftdisplay').removeClass('panels-backface-invisible');
+    $('#topdisplay').addClass('panels-backface-invisible');
+    $('#bottomdisplay').addClass('panels-backface-invisible');
+  }
+</script>
+{% endblock scripts %}

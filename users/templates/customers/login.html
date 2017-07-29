@@ -1,0 +1,55 @@
+{% extends "dabbawala/base_simple_nav.html" %}
+{% load static %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="{% static 'css/customers/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="main">
+<img class="bord2" src="/static/images/image/reverse.png" alt="Borde">
+<div class="login-customer-container">
+  <form id="form-login" class="form-login-customer" action="" method="POST">
+    <h2 class="login-text">Inicia Sesión</h2>
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="{{ form.username.name }}">
+        Nombre de Usuario
+      </label>
+      <input id="id_email"
+        name="username"
+        placeholder="Ingresa tu nombre de usuario"
+        maxlength="{{ form.username.field.max_length }}"
+        type="text"
+        class="form-control"
+        value="{% if form.username.value != None %}{{ form.username.value }}{% endif %}"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="{{ form.username.name }}">
+        Contraseña
+      </label>
+      <input id="id_email"
+        name="{{ form.password.name }}"
+        placeholder="Ingresa tu Contraseña"
+        maxlength="{{ form.password.field.max_length }}"
+        type="password"
+        class="form-control"
+        value="{% if form.password.value != None %}{{ form.password.value }}{% endif %}"
+        required
+      />
+    </div>
+    <button id="btn-login-customer" type="submit" name="login" class="button"><span>Inicia Sesión</span></button>
+    <div class="form-footer">
+      <span>¿No tienes Cuenta?</span>
+      <span>
+        <a id="register-customer" class="strong" href="{% url 'users:register' %}">REGÍSTRATE AQUÍ</a>
+        y obten tu primer dabba
+        <span class="strong">¡GRATIS!</span>
+      </span>
+    </div>
+  </form>
+</div>
+</div>
+{% endblock %}

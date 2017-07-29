@@ -6,6 +6,7 @@ from products.models import Supply, Cartridge, PackageCartridge
 from users.models import User as UserProfile
 
 
+# ----------------------------------- Supplier models ----------------------------------
 class SupplierOrder(models.Model):
     CANCELED = 'CA'
     IN_PROCESS = 'IP'

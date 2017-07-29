@@ -7,7 +7,7 @@ from products.models import Cartridge, PackageCartridge, ExtraIngredient
 from users.models import User as UserProfile
 
 
-class Ticket(models.Model):
+class TicketBase(models.Model):
     # Payment Type
     CASH = 'CA'
     CREDIT = 'CR'
@@ -24,8 +24,8 @@ class Ticket(models.Model):
         CashRegister, on_delete=models.CASCADE, default=1)
     payment_type = models.CharField(
         choices=PAYMENT_TYPE, default=CASH, max_length=2)
-    order_number = models.IntegerField(
-        null=True, blank=True)
+    order_number = models.IntegerField(default=1, blank=False, null=False)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return '%s' % self.id
@@ -34,7 +34,7 @@ class Ticket(models.Model):
         """ On save, update timestamps"""
         if not self.id:
             self.created_at = timezone.now()
-        return super(Ticket, self).save(*args, **kwargs)
+        return super(TicketBase, self).save(*args, **kwargs)
 
     def total(self):
         tickets_details = TicketDetail.objects.filter(ticket=self.id)
@@ -66,7 +66,7 @@ class Ticket(models.Model):
 
 
 class TicketDetail(models.Model):
-    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
+    ticket = models.ForeignKey(TicketBase, on_delete=models.CASCADE)
     cartridge = models.ForeignKey(
         Cartridge, on_delete=models.CASCADE, blank=True, null=True)
     package_cartridge = models.ForeignKey(
@@ -91,7 +91,7 @@ class TicketDetail(models.Model):
         return tag
 
     extra_ingredients.allow_tags = True
-    
+
     class Meta:
         ordering = ('id',)
         verbose_name = 'Ticket Details'

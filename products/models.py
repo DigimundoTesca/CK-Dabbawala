@@ -8,6 +8,7 @@ from django.db import models
 
 from branchoffices.models import BranchOffice, Supplier
 
+
 class SuppliesCategory(models.Model):
     name = models.CharField(validators=[MinLengthValidator(4)], max_length=125, unique=True)
     image = models.ImageField(blank=False, upload_to='supplies-categories')
@@ -107,14 +108,33 @@ class Cartridge(models.Model):
     FOOD_DISHES = 'FD'
     COMPLEMENTS = 'CO'
 
+    # Subcategories
+    FRUITS = 'FR'
+    JUICES = 'JU'
+    ROTIS = 'RO'
+    SALADS = 'SA'
+    SMOOTHIES = 'SM'
+    WATERS = 'WA'
+
     CATEGORIES = (
         (FOOD_DISHES, 'Platillos'),
         (COMPLEMENTS, 'Complementos'),
     )
 
+    SUBCATEGORIES = (
+        (FRUITS, 'Frutas'),
+        (JUICES, 'Jugos'),
+        (ROTIS, 'Rotis'),
+        (SALADS, 'Ensaladas'),
+        (SMOOTHIES, 'Licuados'),
+        (WATERS, 'Aguas'),
+    )
+
     name = models.CharField(max_length=128, default='')
+    description = models.CharField(max_length=255, default='Cartridge description')
     price = models.DecimalField(decimal_places=2, default=0, max_digits=12)
     category = models.CharField(choices=CATEGORIES, default=FOOD_DISHES, max_length=2)
+    subcategory = models.CharField(choices=SUBCATEGORIES, default=FRUITS, max_length=2)
     created_at = models.DateTimeField(auto_now=True)
     image = models.ImageField(blank=False, upload_to='cartridges')
     is_active = models.BooleanField(default=True)
@@ -126,7 +146,7 @@ class Cartridge(models.Model):
         return """
         <img src="%s" alt="Product image" height="80" >
 
-        """  % self.image.url
+        """ % self.image.url
 
     get_image.allow_tags = True
     get_image.short_description = 'Foto'
@@ -170,16 +190,17 @@ class ExtraIngredient(models.Model):
 
 
 class PackageCartridge(models.Model):
-    # Kinf of food
+    # Kind of food
     BREAKFAST = 'BF'
     FOOD = 'FO'
 
     name = models.CharField(max_length=90)
+    description = models.CharField(max_length=255, default='Package description')
     price = models.DecimalField(default=0, max_digits=12, decimal_places=2)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now=True)
     image = models.ImageField(blank=False, upload_to='cartridges', default='')
-    
+
     def __str__(self):
         return self.name
 
@@ -188,13 +209,11 @@ class PackageCartridge(models.Model):
         options = []
 
         for recipe in recipes:
-            options.append(("<option value=%s selected>%s</option>" %
-                                (recipe, recipe.cartridge)))
+            options.append(("<option value=%s selected>%s</option>" % (recipe, recipe.cartridge)))
         tag = """<select multiple disabled>%s</select>""" % str(options)
         return tag
 
     package_recipe.allow_tags = True
-
 
     class Meta:
         ordering = ('name',)

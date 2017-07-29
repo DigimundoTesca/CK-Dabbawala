@@ -1,0 +1,368 @@
+{% extends "dabbawala/base_nav_footer.html" %}
+{% load static %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="{% static 'css/customers/register.css' %}">
+{% endblock stylesheets%}
+
+{% block content %}
+  <div id="main1">
+    <img class="bord2" src="{% static 'images/image/reverse.png' %}" alt="Borde">
+    <h2>bienvenido a </h2>
+    <h1>Dabbawala</h1>
+    <div class="regis">
+      <p>Registrate y obtén<br>
+        <span>UN DESAYUNO GRATIS</span>
+      </p>
+    </div>
+  </div>
+  <div id="main2">
+    <img class="arr" src="{% static 'images/image/arrow.png' %}" alt="Borde">
+    <div class="form">
+      <form id="form-register" action="" method="POST" class="form-register-customer">
+        <div class="cols colr">
+          <div class="col1 formr">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="{{ form.username.name }}">
+                Nombre del usuario
+              </label>
+              <input id="username"
+                name="{{ form.username.name }}"
+                value="{% if form.username.value != None %}{{ form.username.value }}{% endif %}"
+                placeholder="Nombre de usuario"
+                maxlength="{{ form.username.field.max_length }}"
+                type="text"
+                class="form-control"
+                required autofocus
+                onkeypress="return pulsar(event)"
+              />
+              {% if form.username.errors %}
+              <div class="labels-error">
+                {% for error in form.username.errors %}
+                  <span class="form-feed">{{ error|escape }}</span>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+            <div class="form-group">
+              <label for="{{ form.password.name }}">
+                Contraseña
+              </label>
+              <input id="id_email"
+                name="{{ form.password.name }}"
+                placeholder="Ingresa una contreseña segura"
+                maxlength="{{ form.password.field.max_length }}"
+                type="password"
+                class="form-control"
+                required onkeypress="return pulsar(event)"
+              />
+              {% if form.password.errors %}
+              <div class="labels-error">
+                {% for error in form.password.errors %}
+                  <span class="form-feed">{{ error|escape }}</span>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+            <div class="form-group">
+              <label for="{{ form.password_confirm.name }}">
+                Repita su contraseña
+              </label>
+              <input id="id_email"
+                name="{{ form.password_confirm.name }}"
+                placeholder="La contraseña debe coincidir"
+                maxlength="{{ form.password_confirm.field.max_length }}"
+                type="password"
+                class="form-control"
+                required onkeypress="return pulsar(event)"
+              />
+              {% if form.password_confirm.errors %}
+              <div class="labels-error">
+                {% for error in form.password_confirm.errors %}
+                  <span class="form-feed">{{ error|escape }}</span>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+            <div class="form-group">
+              <label for="{{ form.email.name }}">
+                Ingrese un email
+              </label>
+              <input id="id_email"
+                name="{{ form.email.name }}"
+                value="{% if form.email.value != None %}{{ form.email.value }}{% endif %}"
+                placeholder="correo@ejemplo.com"
+                maxlength="{{ form.email.field.max_length }}"
+                type="email"
+                class="form-control"
+                required onkeypress="return pulsar(event)"
+              />
+              {% if form.email.errors %}
+              <div class="labels-error">
+                {% for error in form.email.errors %}
+                  <span class="form-feed">{{ error|escape }}</span>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+            <div class="form-group">
+              <label id="{{ form.phone_number.id_for_label }}" for="{{ form.phone_number.name }}">
+                Whatsapp
+              </label>
+              <input id="id_email"
+                name="{{ form.phone_number.name }}"
+                value="{% if form.phone_number.value != None %}{{ form.phone_number.value }}{% endif %}"
+                placeholder="Numero con Whatsapp"
+                maxlength="{{ form.phone_number.field.max_length }}"
+                type="text"
+                class="form-control"
+                required onkeypress="return pulsar(event)"
+              />
+              {% if form.phone_number.errors %}
+              <div class="labels-error">
+                {% for error in form.phone_number.errors %}
+                  <span class="form-feed">{{ error|escape }}</span>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+            <input type="hidden" class="form-control " id="id_longitude" name="longitude" value="{{ form.longitude.value }}">
+            <input type="hidden" class="form-control" id="id_latitude" name="latitude" value="{{ form.latitude.value }}">
+            <div class="form-group">
+              <label for="{{ form.addres.name }}">
+                Dirección
+              </label>
+              <div id="innerbtn">
+                <input id="id_address"
+                  value="{% if form.address.value != None %}{{ form.address.value }}{% endif %}"
+                  type="text"
+                  class="form-control"
+                  name="address"
+                  placeholder="Dirección donde llevaremos tu comida"
+                  maxlength="255"
+                  onkeypress="return search(event)"
+                  required=""
+                />
+                <a class="icon alt fa-search" type="" id="btn-search"></a>
+                {%  if form.address.errors %}
+                <div class="has-danger">
+                  {%  for error in form.address.errors %}
+                  <small class="form-control-feedback">{{ error|escape }}
+                  </small>
+                  {% endfor %}
+                </div>
+                {% endif %}
+                <div id="container-msj-alert" class="form-group container-hidden">
+                  <div class="alert alert-warning" role="alert">
+                    <strong>Oops! </strong><span id="msj-alert">mensaje</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col2 mapr map-container">
+            <div id="overmap" class="container-hidden">
+              <div class="alert alert-warning" role="alert">
+                <span id="msj-alert" class="alertmap">Arrastra el marcador a tu posición exacta.</span>
+              </div>
+            </div>
+            <div id="map" class=""></div>
+            <div class="formr">
+            <div class="form-group swaladdress">
+              <label for="{{ form.references.name }}">
+                Referencias extra a tu dirección de entrega.
+              </label>
+              <textarea id="id_reference"
+                rows="3"
+                type="text"
+                class="form-control areainput"
+                name="{{ form.references.name }}"
+                placeholder="No. 29 Zaguán blanco, enfrente de una tienda de abarrotes"
+              >{% if form.references.value != None %}{{ form.references.value }}{% endif %}</textarea>
+            </div>
+            <button id="btn-register" type="submit" class="btn-success fit button" disabled="disabled">Registrate</button>
+          </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div id="main">
+    <img class="arr" src="{% static 'images/image/arrow.png' %}" alt="Borde" height="60px">
+    <div class="form">
+      <h2>¿TIENES ALGUNA DUDA O SUGERENCIA?</h2>
+      <p>Envíanos tus dudas ó sugerencias; estamos siempre al pendiente de nuestros clientes.<br>Te estaremos respondiendo en poco tiempo.</p>
+      <form class="col sections" action="" method="post" accept-charset="utf-8">
+        <div class="col1">
+          <input type="text" name="email" id="email" placeholder="Email" />
+          <input type="submit" class="fit button" name="submit" value="Enviar" />
+        </div>
+        <div class="col2">
+          <textarea name="message" placeholder="Mensaje" id="message" rows="2"></textarea>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block scripts %}
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrITfQswCPmOPEBRM1Ufeiogh22FxQV5k" defer charset="utf-8"></script>
+  <script type="text/javascript">
+    var map;
+    var infoWindow;
+    var marker;
+
+    function drawMap (options) {
+      map = new google.maps.Map($("#map").get(0), options);
+    }
+
+    function setAddressValue (address) {
+      $('#id_address').val(address);
+    }
+
+    function setLatLng(lat, lng){
+      $('#id_latitude').val(lat);
+      $('#id_longitude').val(lng);
+    }
+
+    function openInfoWindow(marker) {
+      var markerLatLng;
+      var latitude = marker.getPosition().lat();
+      var longitude = marker.getPosition().lng();
+      markerLatLng = latitude+longitude;
+      infoWindow.setContent([
+        'Aquí enviaremos tu Dabba.'
+      ].join(''));
+
+      infoWindow.open(map, marker);
+
+      var Latitude = $('#id_latitude').val();
+      var Longitude = $('#id_longitude').val();
+
+      setLatLng(latitude, longitude);
+    }
+
+    function addMarkerLsteners (marker) {
+      google.maps.event.addListener(marker, 'dragend', function(){
+        openInfoWindow(marker);
+      });
+      google.maps.event.addListener(marker, 'click', function(){
+        openInfoWindow(marker);
+      });
+    }
+
+    function initMap() {
+      var LatLng = new google.maps.LatLng(19.5228008,-99.2291418);
+      var optionsMap = {
+        zoom: 18,
+        center: LatLng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+      }
+
+      infoWindow = new google.maps.InfoWindow();
+
+      drawMap(optionsMap);
+
+      marker = new google.maps.Marker({
+        animation: google.maps.Animation.DROP,
+        draggable: true,
+        map: map,
+        position: LatLng,
+      });
+
+      addMarkerLsteners(marker);
+      openInfoWindow(marker);
+    }
+
+    function swalYourAddress(){
+      var popup = document.getElementsByClassName("swaladdress")[0];
+      popup.style.visibility = "visible";
+      popup.style.height = "auto";
+      $("#overmap").fadeIn(1500);
+      setTimeout(function() {
+        $("#container-msj-alert").fadeOut(1500);
+      },6000);
+      ;  }
+
+    function pulsar(e) {
+      tecla = (document.all) ? e.keyCode :e.which;
+      return (tecla!=13);
+    }
+
+    function search(e) {
+      var code = (e.keyCode ? e.keyCode : e.which);
+      if(code == 13) {
+        var address = $('#id_address').val();
+        var geocoder = new google.maps.Geocoder();
+        geocoder.geocode({'address': address}, geocodeResult);
+      }
+
+      return (code!=13);
+    }
+
+    function geocodeResult(results, status) {
+      if (status == 'OK') {
+        var address = results[0].formatted_address;
+        setAddressValue(address);
+
+        var optionsMap = {
+          zoom: 18,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+        }
+
+        drawMap(optionsMap);
+        map.fitBounds(results[0].geometry.viewport);
+
+        var markerOptions = {
+          position: results[0].geometry.location,
+          draggable: true,
+          animation: google.maps.Animation.DROP,
+        }
+
+        marker = new google.maps.Marker(markerOptions);
+        marker.setMap(map);
+
+        var latitude = marker.position.lat();
+        var longitude = marker.position.lng();
+
+        setLatLng(latitude, longitude);
+
+        addMarkerLsteners(marker);
+
+        swalYourAddress();
+
+      } else {
+        /** If there's not results */
+        $("#msj-alert").text('No encontramos tu dirección');
+        $("#container-msj-alert").fadeIn(1500);
+        setTimeout(function() {
+          $("#container-msj-alert").fadeOut(1500);
+        },6000);
+      }
+    }
+
+    $('#btn-search').on('click', function() {
+      var address = $('#id_address').val();
+      var geocoder = new google.maps.Geocoder();
+      geocoder.geocode({'address': address}, geocodeResult);
+    });
+
+    $('#id_address').keyup(function(event) {
+      if($(this).val() !== '') {
+      }
+    });
+
+    $('#id_reference').keyup(function(event) {
+      if($(this).val() !== '') {
+        $('#btn-register').attr('disabled', false);
+      } else {
+        $('#btn-register').attr('disabled', true);
+      }
+    });
+
+    $(function() {
+      initMap();
+    });
+  </script>
+{% endblock scripts %}

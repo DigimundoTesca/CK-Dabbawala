@@ -1,0 +1,69 @@
+{% extends "dabbawala/base_nav_footer.html" %}
+{% load static %}
+
+{% block content %}
+<div>
+  <section id="banner" class="main major style2">
+    <div class="inner">
+      <header class="major">
+        <img src="{% static 'images/logo.png' %}" alt="Logo de Dabbawalla">
+        <h1>¡Registrate Ahora!</h1>
+        <h2>Y obtén muchos beneficios</h2>
+      </header>
+    </div>
+  </section>
+  <div id="main">
+    <img class="bord" src="{% static 'images/image/flechas.png' %}" alt="Borde de flechas">
+    <h3>BIENVENIDO A</h3>
+    <h1>Dabbawala</h1>
+    <div class="first">
+      <p>Dabbawala se especializa en desayunos nutritivos y que te llenarán de energía. Nuestro personal cuenta con una vasta experiencia y un gusto exquisito en la preparación de nuestros productos.<br>Utilizamos los mejores insumos y tenemos un gran control de calidad para ofrecerte una experiencia única de desayuno.
+      </p>
+    </div>
+  </div>
+  <div id="main2" class="index">
+    <div class="cols">
+      <div class="col1">
+        <img src="{% static 'images/image/menu.png' %}" alt="Menu">
+      </div>
+      <div class="col2">
+        <h2>Conoce nuestro</h2>
+        <h2>Variado <strong class="menustrong">MENÚ</strong></h2>
+        <p><br>Usamos ingredientes locales y frescos en formas imaginativas y creativas para servirte los mejores desayunos de la zona.<br>Te ofrecemos nuestros servicios desde las 5:00 de la mañana hasta las 13:00 horas.<br>Ofrecemos muchas opciones como desayunos veganos, ensaladas y jugos; así como muchas variaciones de nuestro plato estrella el "ROTI".
+        </p>
+        <a href="{% url 'products:menu'%}" class="button sec"><span>Menú</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div id="main3" class="index">
+    <div class="cols">
+      <div class="col1">
+        <h2>¿Tienes alguna duda?</h2>
+        <h2><strong class="menustrong">contáctanos</strong></h2>
+        <p><br>Para nosotros en Dabbawala, es muy importante saber la opinión y estar en constante contacto con nuestros clientes.<br>Accede a nuestra sección de contacto, donde ponemos a tus disposición nuestros métodos de contacto, así como nuestra ubicación.
+        </p>
+        <a href="{% url 'branch_offices:contact' %}" class="button sec"><span>Contacto</span></a>
+      </div>
+      <div class="col1">
+        <img src="{% static 'images/image/contacto.png' %}" alt="Contacto">
+      </div>
+    </div>
+  </div>
+  <div id="main4">
+    <img class="arr" src="{% static 'images/image/arrow.png'%}" alt="Borde de flechas">
+    <div class="form">
+      <h2>¿TIENES ALGUNA DUDA O SUGERENCIA?</h2>
+      <p>Envíanos tus dudas ó sugerencias; estamos siempre al pendiente de nuestros clientes.<br>Te estaremos respondiendo en poco tiempo.</p>
+      <form class="col sections" action="" method="post" accept-charset="utf-8">
+        <div class="col1">
+          <input class="inp1" type="text" name="email" id="email" placeholder="Email" />
+          <input type="submit" class="fit inp2 button" name="submit" value="Enviar" />
+        </div>
+        <div class="col2">
+          <textarea name="message" placeholder="Mensaje" id="message" rows="2"></textarea>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock content %}
