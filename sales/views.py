@@ -10,7 +10,7 @@ from django.utils import timezone
 from branchoffices.models import CashRegister
 from cloudkitchen.settings.base import PAGE_TITLE
 from products.models import Cartridge, PackageCartridge, PackageCartridgeRecipe
-from sales.models import TicketBase, TicketDetail
+from sales.models import TicketBase, TicketDetail, TicketPOS
 from users.models import User as UserProfile
 from helpers import Helper, SalesHelper, ProductsHelper
 
@@ -299,41 +299,25 @@ def new_sale(request):
 # -------------------------------- Test ------------------------------
 def test(request):
     template = 'sales/test.html'
-
-    tickets_details = TicketDetail.objects.select_related('ticket', 'ticket__seller', 'cartridge',
-                                                          'package_cartridge').filter()
     tickets = TicketBase.objects.all()
-    tickets_list = []
-
-    for ticket in tickets:
-        ticket_object = {
-            'ticket_parent': ticket,
-            'cartridges': [],
-            'packages': [],
-            'total': Decimal(0.00),
-        }
-
-        for ticket_details in tickets_details:
-            if ticket_details.ticket == ticket:
-                if ticket_details.cartridge:
-                    cartridge_object = {
-                        'cartridge': ticket_details.cartridge,
-                        'quantity': ticket_details.quantity
-                    }
-                    ticket_object['cartridges'].append(cartridge_object)
-                    ticket_object['total'] += ticket_details.price
-                elif ticket_details.package_cartridge:
-                    package_cartridge_object = {
-                        'package': ticket_details.package_cartridge,
-                        'quantity': ticket_details.quantity
-                    }
-                    ticket_object['packages'].append(package_cartridge_object)
-                    ticket_object['total'] += ticket_details.price
-
-        tickets_list.append(ticket_object)
-
+    ticket_pos = TicketPOS.objects.all()
     context = {
-        'tickets': tickets_list,
+        'tickets': tickets,
+        'ticket_pos': ticket_pos,
     }
 
+    for ticket in tickets:
+        exists = False
+        for pos in ticket_pos:
+            if ticket == pos.ticket:
+                exists = True
+
+        print('EXISTE: ', exists)
+        if not exists:
+            new_ticket_pos = TicketPOS(
+                ticket=ticket,
+                cashier=ticket.seller,
+                sale_point=ticket.cash_register
+            )
+            new_ticket_pos.save()
     return render(request, template, context)

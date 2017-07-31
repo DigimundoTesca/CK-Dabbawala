@@ -9,7 +9,8 @@ app_name = 'orders'
 urlpatterns = [
     # New Customer
     url(r'^arma-tu-dabba/$', views.new_order, name='new_order'),
-    url(r'^pay/$', views.pay, name='pay'),
+    url(r'^pagar/$', views.pay, name='pay'),
+    url(r'^ordenes/pendientes/$', views.customer_orders, name='customer_orders'),
 ]
 
 # Test
