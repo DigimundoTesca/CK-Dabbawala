@@ -77,7 +77,7 @@ class TicketPOS(models.Model):
         CashRegister, on_delete=models.CASCADE, default=1)
 
     def __str__(self):
-        return '%s Ticket POS' %  self.id
+        return '%s Ticket POS' %  self.ticket
 
 
 class TicketOrder(models.Model):
@@ -92,7 +92,7 @@ class TicketOrder(models.Model):
     )
 
     def __str__(self):
-        return '%s Ticket Order' %  self.id
+        return '%s Ticket Order' %  self.ticket
 
 class TicketDetail(models.Model):
     ticket = models.ForeignKey(TicketBase, on_delete=models.CASCADE)
