@@ -64,6 +64,7 @@ def new_order(request):
 
     return render(request, template, context)
 
+
 @ensure_csrf_cookie
 def pay(request):
     if not request.session.has_key('cart'):
@@ -81,4 +82,10 @@ def pay(request):
         'first_session':first_session,
     }
 
+    return render(request, template, context)
+
+
+def customer_orders(request):
+    template = 'customers/customer_orders.html'
+    context = {}
     return render(request, template, context)

@@ -1,0 +1,147 @@
+{% extends "dabbawala/base_nav_footer.html" %}
+{% load static %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{% static 'css/orders/pay.css' %}">
+{% endblock stylesheets %}
+
+{% block content %}
+<div id="main">
+  <img class="bord2" src="{% static 'images/image/reverse.png' %}" alt="Borde">
+  <h2 class="pay-title">Ordener pendientes</h2>
+  <div class="container-orders">
+    
+  </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script type="text/javascript">
+  $(document).ready(function($) {
+    let firstSession = true;
+    let totalItems = $('.total-item-cart');
+    let total = 0;
+
+    totalItems.each(function(index, item) {
+        total += parseFloat(item.innerHTML);
+    });
+
+    /**
+     * Gets a cookie from cache
+     */
+    function get_cookie(name) {
+      var cookie_value = null;
+      if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+          var cookie = jQuery.trim(cookies[i]);
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookie_value = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookie_value;
+    }
+
+    /**
+     * Reload the page every time
+     */
+    function rel(){
+      location.reload();
+    }
+
+    /**
+     * Shows a Sweet alert if is a new user
+     */
+    function showWelcomeAlert() {
+      $.ajax({
+        url: {% url 'orders:pay' %},
+        type: 'POST',
+        data: {
+          'type': 'welcomeReady',
+          csrfmiddlewaretoken: get_cookie('csrftoken'),
+        },
+        traditional: true,
+        datatype: 'jsonp',
+        success: function(result) {
+          swal({
+            title: "¡Bienvenido!",
+            text: "Ya puedes ordenar tu comida",
+            type: "success",
+            timer: 2000,
+            showConfirmButton: false
+          }).then(
+            function(){},
+            function(dismiss){}
+          );
+        },
+        error: function(result, jqXHR, textStatus, errorThrown) {
+          swal({
+            title: "Hubo un problema!",
+            text: 'Estamos teniendo problemas, recarga la paǵina o intenta más tarde',
+            type: "error",
+          });
+          // setTimeout(rel, 1500);
+        },
+      });
+    }
+
+    $('#total-cart').text(total);
+    if (firstSession) {
+      showWelcomeAlert();
+    }
+
+    $('#btn-cancel-pay').click(function(event) {
+      swal({
+        title: "Estás seguro!",
+        text: "¿Deseas cancelar esta orden?",
+        type: "warning",
+        cancelButtonColor: '#d02a2a',
+        confirmButtonText: 'Sí',
+        cancelButtonText: 'Cancelar',
+        showConfirmButton: true,
+        showCancelButton: true,
+      }).then(
+        function(){
+          $.ajax({
+            url: {% url 'orders:pay' %},
+            type: 'POST',
+            data: {
+              'type': 'cancelPay',
+              csrfmiddlewaretoken: get_cookie('csrftoken'),
+            },
+            traditional: true,
+            datatype: 'jsonp',
+            success: function(result) {
+              if(result.code === 1) {
+                swal({
+                  title: "Orden cancelar",
+                  text: "Puedes ordenar nuevamente",
+                  type: "success",
+                  timer: 1500,
+                  showConfirmButton: false
+                }).then(
+                  function(){},
+                  function(dismiss){
+                    setTimeout(rel, 300);
+                  }
+                );
+              }
+            },
+            error: function(result, jqXHR, textStatus, errorThrown) {
+              swal({
+                title: "Hubo un problema!",
+                text: 'Estamos teniendo problemas, recarga la paǵina o intenta más tarde',
+                type: "error",
+              });
+            },
+          });
+        },
+        function(dismiss){}
+      );
+
+    });
+  });
+</script>
+{% endblock %}

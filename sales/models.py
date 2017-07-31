@@ -4,7 +4,7 @@ from django.utils import timezone
 
 from branchoffices.models import CashRegister
 from products.models import Cartridge, PackageCartridge, ExtraIngredient
-from users.models import User as UserProfile
+from users.models import User as UserProfile, CustomerProfile
 
 
 class TicketBase(models.Model):
@@ -64,6 +64,35 @@ class TicketBase(models.Model):
         verbose_name = 'Ticket '
         verbose_name_plural = 'Tickets'
 
+
+class TicketPOS(models.Model):
+    ticket = models.OneToOneField(
+        TicketBase,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
+    cashier = models.ForeignKey(
+        UserProfile, default=1, on_delete=models.CASCADE)
+    sale_point = models.ForeignKey(
+        CashRegister, on_delete=models.CASCADE, default=1)
+
+    def __str__(self):
+        return '%s Ticket POS' %  self.id
+
+
+class TicketOrder(models.Model):
+    ticket = models.OneToOneField(
+        TicketBase,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
+    customer = models.OneToOneField(
+        CustomerProfile,
+        on_delete=models.CASCADE,
+    )
+
+    def __str__(self):
+        return '%s Ticket Order' %  self.id
 
 class TicketDetail(models.Model):
     ticket = models.ForeignKey(TicketBase, on_delete=models.CASCADE)
