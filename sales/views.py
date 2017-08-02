@@ -12,8 +12,9 @@ from cloudkitchen.settings.base import PAGE_TITLE
 from products.models import Cartridge, PackageCartridge, PackageCartridgeRecipe
 from sales.models import TicketBase, TicketDetail, TicketPOS
 from users.models import User as UserProfile
-from helpers import Helper, SalesHelper, ProductsHelper
-
+from helpers_origin import *
+from helpers.sales_helper import TicketPOSHelper
+from helpers.helpers import Helper
 
 # -------------------------------------  Sales -------------------------------------
 @permission_required('users.can_see_sales')
@@ -299,8 +300,9 @@ def new_sale(request):
 # -------------------------------- Test ------------------------------
 @permission_required('users.can_see_sales')
 def test_sales(request):
+    sales_helper = TicketPOSHelper()
     helper = Helper()
-    sales_helper = SalesHelper()
+
     if request.method == 'POST':
         if request.POST['type'] == 'sales_day':
             """
@@ -310,19 +312,19 @@ def test_sales(request):
             sales_day_list = []
             start_day = helper.naive_to_datetime(datetime.strptime(request.POST['date'], '%d-%m-%Y').date())
             end_date = helper.naive_to_datetime(start_day + timedelta(days=1))
-            tickets_objects = sales_helper.get_all_tickets().filter(created_at__range=[start_day, end_date])
+            tickets_objects = sales_helper.get_all_tickets().filter(ticket__created_at__range=[start_day, end_date])
 
-            for ticket in tickets_objects:
+            for ticket_pos in tickets_objects:
                 """
                 Filling in the sales list of the day
                 """
                 earnings_sale_object = {
-                    'id_ticket': ticket.id,
-                    'datetime': timezone.localtime(ticket.created_at),
+                    'id_ticket': ticket_pos.ticket.id,
+                    'datetime': timezone.localtime(ticket_pos.ticket.created_at),
                     'earnings': 0
                 }
                 for ticket_detail in sales_helper.get_all_tickets_details():
-                    if ticket_detail.ticket == ticket:
+                    if ticket_detail.ticket == ticket_pos:
                         earnings_sale_object['earnings'] += ticket_detail.price
                 sales_day_list.append(earnings_sale_object)
             return JsonResponse({'sales_day_list': sales_day_list})
@@ -366,16 +368,16 @@ def test_sales(request):
         if request.POST['type'] == 'tickets':
             tickets_objects_list = []
 
-            for ticket in sales_helper.get_all_tickets():
+            for ticket_pos in sales_helper.get_all_tickets():
                 for ticket_detail in sales_helper.get_all_tickets_details():
-                    if ticket_detail.ticket == ticket:
+                    if ticket_detail.ticket == ticket_pos:
                         ticket_object = {
-                            'ID': ticket.id,
-                            'Fecha': timezone.localtime(ticket.created_at).date(),
-                            'Hora': timezone.localtime(ticket.created_at).time(),
-                            'Vendedor': ticket.seller.username,
+                            'ID': ticket_pos.id,
+                            'Fecha': timezone.localtime(ticket_pos.created_at).date(),
+                            'Hora': timezone.localtime(ticket_pos.created_at).time(),
+                            'Vendedor': ticket_pos.ticket.seller.username,
                         }
-                        if ticket.payment_type == 'CA':
+                        if ticket_pos.payment_type == 'CA':
                             ticket_object['Tipo de Pago'] = 'Efectivo'
                         else:
                             ticket_object['Tipo de Pago'] = 'Crédito'
@@ -411,8 +413,9 @@ def test_sales(request):
             return JsonResponse(data)
 
     # Any other request method:
-    template = 'sales/sales.html'
+    template = 'test/test_sales.html'
     title = 'Registro de Ventas'
+
     context = {
         'title': PAGE_TITLE + ' | ' + title,
         'page_title': title,

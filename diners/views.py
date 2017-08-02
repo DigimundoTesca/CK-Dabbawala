@@ -12,7 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Max, Min
 
 from .models import AccessLog, Diner, ElementToEvaluate, SatisfactionRating
-from helpers import Helper, DinersHelper, RatesHelper
+from helpers_origin import Helper, DinersHelper, RatesHelper
 from cloudkitchen.settings.base import PAGE_TITLE
 
 

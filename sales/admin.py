@@ -12,9 +12,9 @@ class TicketDetailInline(admin.TabularInline):
 
 @admin.register(TicketBase)
 class TicketBaseAdmin(admin.ModelAdmin):
-    list_display = ('id', 'order_number','seller', 'created_at', 'ticket_details', 'payment_type', 'total', 'is_active')
-    list_filter = ('seller', 'created_at', 'payment_type',)
-    list_display_links = ('id', 'seller',)
+    list_display = ('id', 'order_number', 'created_at', 'ticket_details', 'payment_type', 'total', 'is_active')
+    list_filter = ('created_at', 'payment_type',)
+    list_display_links = ('id', 'order_number',)
     list_editable = ('created_at',)
     ordering = ('-created_at', )
     date_hierarchy = 'created_at'

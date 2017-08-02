@@ -7,7 +7,7 @@ from branchoffices.models import CashRegister
 from products.models import Cartridge
 from sales.models import TicketBase, TicketDetail
 from users.models import User as UserProfile
-from helpers import SalesHelper, CartHelper
+from helpers_origin import SalesHelper, CartHelper
 
 
 @ensure_csrf_cookie

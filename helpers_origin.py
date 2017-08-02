@@ -288,7 +288,6 @@ class SalesHelper(object):
         super(SalesHelper, self).__init__()
 
     def set_all_tickets(self):
-
         self.__all_tickets = TicketBase.objects.select_related('seller').all()
 
     def set_all_tickets_details(self):
