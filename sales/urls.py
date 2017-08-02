@@ -10,8 +10,12 @@ urlpatterns = [
     url(r'^sales/$', views.sales, name='sales'),
     url(r'^sales/new/$', views.new_sale, name='new_sale'),
     url(r'^sales/delete/$', views.delete_sale, name='delete-sale'),
+
 ]
 
 if settings.DEBUG:
-    urlpatterns.append(url('^sales/test/$', views.test, name='test'))
-
+    # NEW SALES UPGRADE
+    urlpatterns.append(url('^test/sales/$', views.test_sales, name='test_sales'))
+    urlpatterns.append(url('^test/sales/update/$', views.test_sales_update, name='test_sales_update'))
+    urlpatterns.append(url('^test/sales/new/$', views.test_sales_new, name='test_sales_new'))
+    urlpatterns.append(url('^test/sales/delete/$', views.test_sales_delete, name='test_sales_delete'))
