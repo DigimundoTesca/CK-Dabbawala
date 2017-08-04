@@ -19,7 +19,6 @@ from helpers.helpers import Helper
 
 # -------------------------------------  Sales -------------------------------------
 @permission_required('users.can_see_sales')
-@permission_required('users.can_see_sales')
 def sales(request):
     sales_helper = TicketPOSHelper()
     helper = Helper()
@@ -304,7 +303,6 @@ def test_sales_update(request):
     tickets = TicketBase.objects.all()
     ticket_pos = TicketPOS.objects.all()
     seller = UserProfile.objects.get(username='lucy')
-    print(seller)
     sale_point = CashRegister.objects.all()[0]
     for ticket in tickets:
         exists = False
