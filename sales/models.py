@@ -18,10 +18,6 @@ class TicketBase(models.Model):
     )
 
     created_at = models.DateTimeField(editable=True)
-    seller = models.ForeignKey(
-        UserProfile, default=1, on_delete=models.CASCADE)
-    cash_register = models.ForeignKey(
-        CashRegister, on_delete=models.CASCADE, default=1)
     payment_type = models.CharField(
         choices=PAYMENT_TYPE, default=CASH, max_length=2)
     order_number = models.IntegerField(default=1, blank=False, null=False)
