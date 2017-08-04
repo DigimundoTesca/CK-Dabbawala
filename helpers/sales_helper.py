@@ -93,6 +93,7 @@ class TicketPOSHelper(object):
                 'ticket_parent': ticket_pos.ticket,
                 'order_number': ticket_pos.ticket.order_number,
                 'cartridges': [],
+                'cashier': ticket_pos.cashier,
                 'packages': [],
                 'total': Decimal(0.00),
                 'is_active': ticket_pos.ticket.is_active,
