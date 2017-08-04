@@ -328,8 +328,8 @@ class TicketPOSHelper(object):
             self.set_all_tickets()
 
         order_numbers_list = []
-        for ticket in self.get_all_tickets():
-            order_numbers_list.append(ticket.order_number)
+        for ticket_pos in self.get_all_tickets():
+            order_numbers_list.append(ticket_pos.ticket.order_number)
 
         try:
             return max(order_numbers_list) +1
