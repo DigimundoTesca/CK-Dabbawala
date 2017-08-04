@@ -130,10 +130,6 @@ class TicketOrder(models.Model):
     def __str__(self):
         return '%s Ticket Order' %  self.ticket
 
-    class Meta:
-        ordering = ('-ticket__created_at',)
-        verbose_name = 'Ticket Order '
-        verbose_name_plural = 'Tickets Order'
     def ticket_details(self):
         tickets_details = TicketDetail.objects.filter(ticket=self.ticket)
         options = []
@@ -152,8 +148,8 @@ class TicketOrder(models.Model):
 
     class Meta:
         ordering = ('-ticket__created_at',)
-        verbose_name = 'Ticket POS '
-        verbose_name_plural = 'Tickets POS'
+        verbose_name = 'Ticket Order '
+        verbose_name_plural = 'Tickets Order'
 
 
 class TicketDetail(models.Model):
