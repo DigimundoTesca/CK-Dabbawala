@@ -134,6 +134,26 @@ class TicketOrder(models.Model):
         ordering = ('-ticket__created_at',)
         verbose_name = 'Ticket Order '
         verbose_name_plural = 'Tickets Order'
+    def ticket_details(self):
+        tickets_details = TicketDetail.objects.filter(ticket=self.ticket)
+        options = []
+
+        for ticket_detail in tickets_details:
+            if ticket_detail.cartridge:
+                options.append(("<option value=%s>%s</option>" %
+                                (ticket_detail, ticket_detail.cartridge)))
+            elif ticket_detail.package_cartridge:
+                options.append(("<option value=%s>%s</option>" %
+                                (ticket_detail, ticket_detail.package_cartridge)))
+        tag = """<select>%s</select>""" % str(options)
+        return tag
+
+    ticket_details.allow_tags = True
+
+    class Meta:
+        ordering = ('-ticket__created_at',)
+        verbose_name = 'Ticket POS '
+        verbose_name_plural = 'Tickets POS'
 
 
 class TicketDetail(models.Model):
