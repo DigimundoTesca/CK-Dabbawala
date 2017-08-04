@@ -12,10 +12,10 @@ from cloudkitchen.settings.base import PAGE_TITLE
 from products.models import Cartridge, PackageCartridge, PackageCartridgeRecipe
 from sales.models import TicketBase, TicketDetail, TicketPOS
 from users.models import User as UserProfile
-from helpers.products_helper import ProductsHelper
 from helpers.sales_helper import TicketPOSHelper
 from helpers.products_helper import ProductsHelper
 from helpers.helpers import Helper
+
 
 # -------------------------------------  Sales -------------------------------------
 @permission_required('users.can_see_sales')
@@ -302,8 +302,11 @@ def test_sales_update(request):
     template = 'sales/test.html'
     tickets = TicketBase.objects.all()
     ticket_pos = TicketPOS.objects.all()
-    seller = UserProfile.objects.get(username='lucy')
-    sale_point = CashRegister.objects.all()[0]
+    context = {
+        'tickets': tickets,
+        'ticket_pos': ticket_pos,
+    }
+
     for ticket in tickets:
         exists = False
         for pos in ticket_pos:
@@ -313,15 +316,8 @@ def test_sales_update(request):
         if not exists:
             new_ticket_pos = TicketPOS(
                 ticket=ticket,
-                cashier=seller,
-                sale_point=sale_point
+                cashier=ticket.seller,
+                sale_point=ticket.cash_register
             )
             new_ticket_pos.save()
 
-    tickets = TicketBase.objects.all()
-    ticket_pos = TicketPOS.objects.all()
-    context = {
-        'tickets': tickets,
-        'ticket_pos': ticket_pos,
-    }
-    return render(request, template, context)
