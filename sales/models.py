@@ -136,6 +136,35 @@ class TicketOrder(models.Model):
         verbose_name_plural = 'Tickets Order'
 
 
+class TicketPOS(models.Model):
+    ticket = models.OneToOneField(
+        TicketBase,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
+    cashier = models.ForeignKey(
+        UserProfile, default=1, on_delete=models.CASCADE)
+    sale_point = models.ForeignKey(
+        CashRegister, on_delete=models.CASCADE, default=1)
+
+    def __str__(self):
+        return '%s Ticket POS' %  self.ticket
+
+
+class TicketOrder(models.Model):
+    ticket = models.OneToOneField(
+        TicketBase,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
+    customer = models.OneToOneField(
+        CustomerProfile,
+        on_delete=models.CASCADE,
+    )
+
+    def __str__(self):
+        return '%s Ticket Order' %  self.ticket
+
 class TicketDetail(models.Model):
     ticket = models.ForeignKey(TicketBase, on_delete=models.CASCADE)
     cartridge = models.ForeignKey(
