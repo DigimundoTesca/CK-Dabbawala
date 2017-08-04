@@ -303,7 +303,9 @@ def test_sales_update(request):
     template = 'sales/test.html'
     tickets = TicketBase.objects.all()
     ticket_pos = TicketPOS.objects.all()
-
+    seller = UserProfile.objects.get(username='lucy')
+    print(seller)
+    sale_point = CashRegister.objects.all()[0]
     for ticket in tickets:
         exists = False
         for pos in ticket_pos:
@@ -313,8 +315,8 @@ def test_sales_update(request):
         if not exists:
             new_ticket_pos = TicketPOS(
                 ticket=ticket,
-                cashier=ticket.seller,
-                sale_point=ticket.cash_register
+                cashier=seller,
+                sale_point=sale_point
             )
             new_ticket_pos.save()
 
