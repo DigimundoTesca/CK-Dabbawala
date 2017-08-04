@@ -324,5 +324,4 @@ def test_sales_update(request):
         'tickets': tickets,
         'ticket_pos': ticket_pos,
     }
-
     return render(request, template, context)

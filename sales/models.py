@@ -130,40 +130,27 @@ class TicketOrder(models.Model):
     def __str__(self):
         return '%s Ticket Order' %  self.ticket
 
+    def ticket_details(self):
+        tickets_details = TicketDetail.objects.filter(ticket=self.ticket)
+        options = []
+
+        for ticket_detail in tickets_details:
+            if ticket_detail.cartridge:
+                options.append(("<option value=%s>%s</option>" %
+                                (ticket_detail, ticket_detail.cartridge)))
+            elif ticket_detail.package_cartridge:
+                options.append(("<option value=%s>%s</option>" %
+                                (ticket_detail, ticket_detail.package_cartridge)))
+        tag = """<select>%s</select>""" % str(options)
+        return tag
+
+    ticket_details.allow_tags = True
+
     class Meta:
         ordering = ('-ticket__created_at',)
         verbose_name = 'Ticket Order '
         verbose_name_plural = 'Tickets Order'
 
-
-class TicketPOS(models.Model):
-    ticket = models.OneToOneField(
-        TicketBase,
-        on_delete=models.CASCADE,
-        primary_key=True,
-    )
-    cashier = models.ForeignKey(
-        UserProfile, default=1, on_delete=models.CASCADE)
-    sale_point = models.ForeignKey(
-        CashRegister, on_delete=models.CASCADE, default=1)
-
-    def __str__(self):
-        return '%s Ticket POS' %  self.ticket
-
-
-class TicketOrder(models.Model):
-    ticket = models.OneToOneField(
-        TicketBase,
-        on_delete=models.CASCADE,
-        primary_key=True,
-    )
-    customer = models.OneToOneField(
-        CustomerProfile,
-        on_delete=models.CASCADE,
-    )
-
-    def __str__(self):
-        return '%s Ticket Order' %  self.ticket
 
 class TicketDetail(models.Model):
     ticket = models.ForeignKey(TicketBase, on_delete=models.CASCADE)
