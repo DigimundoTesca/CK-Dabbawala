@@ -12,9 +12,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Max, Min
 
 from .models import AccessLog, Diner, ElementToEvaluate, SatisfactionRating
-from helpers import Helper, DinersHelper, RatesHelper
 from cloudkitchen.settings.base import PAGE_TITLE
-
+from helpers.diners_helper import DinersHelper, RatesHelper
+from helpers.helpers import Helper
 
 def diners_paginator(request, queryset, num_pages):
     result_list = Paginator(queryset, num_pages)

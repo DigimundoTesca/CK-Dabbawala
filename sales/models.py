@@ -18,10 +18,6 @@ class TicketBase(models.Model):
     )
 
     created_at = models.DateTimeField(editable=True)
-    seller = models.ForeignKey(
-        UserProfile, default=1, on_delete=models.CASCADE)
-    cash_register = models.ForeignKey(
-        CashRegister, on_delete=models.CASCADE, default=1)
     payment_type = models.CharField(
         choices=PAYMENT_TYPE, default=CASH, max_length=2)
     order_number = models.IntegerField(default=1, blank=False, null=False)
@@ -61,8 +57,83 @@ class TicketBase(models.Model):
 
     class Meta:
         ordering = ('-created_at',)
-        verbose_name = 'Ticket '
-        verbose_name_plural = 'Tickets'
+        verbose_name = 'Ticket Base'
+        verbose_name_plural = 'Tickets Base'
+
+
+class TicketPOS(models.Model):
+    ticket = models.OneToOneField(
+        TicketBase,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
+    cashier = models.ForeignKey(
+        UserProfile, default=1, on_delete=models.CASCADE)
+    sale_point = models.ForeignKey(
+        CashRegister, on_delete=models.CASCADE, default=1)
+
+    def __str__(self):
+        return 'P%s' %  self.ticket
+
+    def order_number(self):
+        return self.ticket.order_number
+
+    def created_at(self):
+        return self.ticket.created_at
+
+    def payment_type(self):
+        return self.ticket.payment_type
+
+    def total(self):
+        tickets_details = TicketDetail.objects.filter(ticket=self.ticket.id)
+        total = 0
+        for x in tickets_details:
+            total += x.price
+        return total
+
+    def is_active(self):
+        return self.ticket.is_active
+
+    def ticket_details(self):
+        tickets_details = TicketDetail.objects.filter(ticket=self.ticket)
+        options = []
+
+        for ticket_detail in tickets_details:
+            if ticket_detail.cartridge:
+                options.append(("<option value=%s>%s</option>" %
+                                (ticket_detail, ticket_detail.cartridge)))
+            elif ticket_detail.package_cartridge:
+                options.append(("<option value=%s>%s</option>" %
+                                (ticket_detail, ticket_detail.package_cartridge)))
+        tag = """<select>%s</select>""" % str(options)
+        return tag
+
+    ticket_details.allow_tags = True
+
+    class Meta:
+        ordering = ('-ticket__created_at',)
+        verbose_name = 'Ticket POS '
+        verbose_name_plural = 'Tickets POS'
+
+
+class TicketOrder(models.Model):
+    ticket = models.OneToOneField(
+        TicketBase,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
+    customer = models.OneToOneField(
+        CustomerProfile,
+        on_delete=models.CASCADE,
+    )
+
+    def __str__(self):
+        return '%s Ticket Order' %  self.ticket
+
+    class Meta:
+        ordering = ('-ticket__created_at',)
+        verbose_name = 'Ticket Order '
+        verbose_name_plural = 'Tickets Order'
 
 
 class TicketPOS(models.Model):
@@ -125,6 +196,7 @@ class TicketDetail(models.Model):
         ordering = ('id',)
         verbose_name = 'Ticket Details'
         verbose_name_plural = 'Tickets Details'
+
 
 class TicketExtraIngredient(models.Model):
     ticket_detail = models.ForeignKey(TicketDetail, null=True)

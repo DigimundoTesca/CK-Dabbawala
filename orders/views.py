@@ -7,14 +7,15 @@ from branchoffices.models import CashRegister
 from products.models import Cartridge
 from sales.models import TicketBase, TicketDetail
 from users.models import User as UserProfile
-from helpers import SalesHelper, CartHelper
+from helpers_origin import CartHelper
+from helpers.sales_helper import TicketPOSHelper
 
 
 @ensure_csrf_cookie
 def new_order(request):
     if request.session.has_key('cart'):
         return redirect('orders:pay')
-    sales_helper = SalesHelper()
+    sales_helper = TicketPOSHelper()
     template = 'new_order.html'
     all_products = Cartridge.objects.all()
 

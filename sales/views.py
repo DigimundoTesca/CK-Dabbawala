@@ -12,14 +12,18 @@ from cloudkitchen.settings.base import PAGE_TITLE
 from products.models import Cartridge, PackageCartridge, PackageCartridgeRecipe
 from sales.models import TicketBase, TicketDetail, TicketPOS
 from users.models import User as UserProfile
-from helpers import Helper, SalesHelper, ProductsHelper
-
+from helpers.products_helper import ProductsHelper
+from helpers.sales_helper import TicketPOSHelper
+from helpers.products_helper import ProductsHelper
+from helpers.helpers import Helper
 
 # -------------------------------------  Sales -------------------------------------
 @permission_required('users.can_see_sales')
+@permission_required('users.can_see_sales')
 def sales(request):
+    sales_helper = TicketPOSHelper()
     helper = Helper()
-    sales_helper = SalesHelper()
+
     if request.method == 'POST':
         if request.POST['type'] == 'sales_day':
             """
@@ -29,19 +33,19 @@ def sales(request):
             sales_day_list = []
             start_day = helper.naive_to_datetime(datetime.strptime(request.POST['date'], '%d-%m-%Y').date())
             end_date = helper.naive_to_datetime(start_day + timedelta(days=1))
-            tickets_objects = sales_helper.get_all_tickets().filter(created_at__range=[start_day, end_date])
+            tickets_objects = sales_helper.get_all_tickets().filter(ticket__created_at__range=[start_day, end_date])
 
-            for ticket in tickets_objects:
+            for ticket_pos in tickets_objects:
                 """
                 Filling in the sales list of the day
                 """
                 earnings_sale_object = {
-                    'id_ticket': ticket.id,
-                    'datetime': timezone.localtime(ticket.created_at),
+                    'id_ticket': ticket_pos.ticket.id,
+                    'datetime': timezone.localtime(ticket_pos.ticket.created_at),
                     'earnings': 0
                 }
                 for ticket_detail in sales_helper.get_all_tickets_details():
-                    if ticket_detail.ticket == ticket:
+                    if ticket_detail.ticket == ticket_pos.ticket:
                         earnings_sale_object['earnings'] += ticket_detail.price
                 sales_day_list.append(earnings_sale_object)
             return JsonResponse({'sales_day_list': sales_day_list})
@@ -85,16 +89,16 @@ def sales(request):
         if request.POST['type'] == 'tickets':
             tickets_objects_list = []
 
-            for ticket in sales_helper.get_all_tickets():
+            for ticket_pos in sales_helper.get_all_tickets():
                 for ticket_detail in sales_helper.get_all_tickets_details():
-                    if ticket_detail.ticket == ticket:
+                    if ticket_detail.ticket == ticket_pos.ticket:
                         ticket_object = {
-                            'ID': ticket.id,
-                            'Fecha': timezone.localtime(ticket.created_at).date(),
-                            'Hora': timezone.localtime(ticket.created_at).time(),
-                            'Vendedor': ticket.seller.username,
+                            'ID': ticket_pos.ticket.id,
+                            'Fecha': timezone.localtime(ticket_pos.ticket.created_at).date(),
+                            'Hora': timezone.localtime(ticket_pos.ticket.created_at).time(),
+                            'Vendedor': ticket_pos.cashier.username,
                         }
-                        if ticket.payment_type == 'CA':
+                        if ticket_pos.ticket.payment_type == 'CA':
                             ticket_object['Tipo de Pago'] = 'Efectivo'
                         else:
                             ticket_object['Tipo de Pago'] = 'Crédito'
@@ -132,6 +136,7 @@ def sales(request):
     # Any other request method:
     template = 'sales/sales.html'
     title = 'Registro de Ventas'
+
     context = {
         'title': PAGE_TITLE + ' | ' + title,
         'page_title': title,
@@ -142,7 +147,6 @@ def sales(request):
         'week_number': helper.get_week_number(date.today()),
         'tickets': sales_helper.get_tickets_today_list(),
         'dates_range': sales_helper.get_dates_range_json(),
-
     }
     return render(request, template, context)
 
@@ -153,37 +157,35 @@ def delete_sale(request):
         ticket_id = request.POST['ticket_id']
         ticket = TicketBase.objects.get(id=ticket_id)
         ticket.delete()
-        return JsonResponse({'result': 'excelente!'})
+        return JsonResponse({'result': 'success'})
 
 
 @permission_required('users.can_sell')
 def new_sale(request):
     helper = Helper()
-    sales_helper = SalesHelper()
+    sales_helper = TicketPOSHelper()
     products_helper = ProductsHelper()
     if request.method == 'POST':
         if request.POST['ticket']:
             """
             Gets the tickets in the week and returns n + 1
-            where n is the Ticket.order_number biggest for the current week
-            TODO:
-            1. Get tickets in the current week range
-            2. Search the ticket with the largest order_number attribute
-            3. save the 'new_ticket_object' with the new attribute (n + 1)
-            4. Save the new object
+            where n is the Ticket.order_number biggest for the current weeks
             """
-
             username = request.user
             user_profile_object = get_object_or_404(UserProfile, username=username)
-            cash_register = CashRegister.objects.first()
+            sale_point = CashRegister.objects.first()
             ticket_detail_json_object = json.loads(request.POST.get('ticket'))
             payment_type = ticket_detail_json_object['payment_type']
             new_ticket_object = TicketBase(
-                cash_register=cash_register,
-                seller=user_profile_object,
                 payment_type=payment_type,
                 order_number=sales_helper.get_new_order_number())
             new_ticket_object.save()
+            new_ticket_pos = TicketPOS(
+                ticket=new_ticket_object,
+                cashier=user_profile_object,
+                sale_point=sale_point,
+            )
+            new_ticket_pos.save()
 
             """
             Saves the tickets details for cartridges
@@ -297,14 +299,10 @@ def new_sale(request):
 
 
 # -------------------------------- Test ------------------------------
-def test(request):
+def test_sales_update(request):
     template = 'sales/test.html'
     tickets = TicketBase.objects.all()
     ticket_pos = TicketPOS.objects.all()
-    context = {
-        'tickets': tickets,
-        'ticket_pos': ticket_pos,
-    }
 
     for ticket in tickets:
         exists = False
@@ -312,7 +310,6 @@ def test(request):
             if ticket == pos.ticket:
                 exists = True
 
-        print('EXISTE: ', exists)
         if not exists:
             new_ticket_pos = TicketPOS(
                 ticket=ticket,
@@ -320,4 +317,12 @@ def test(request):
                 sale_point=ticket.cash_register
             )
             new_ticket_pos.save()
+
+    tickets = TicketBase.objects.all()
+    ticket_pos = TicketPOS.objects.all()
+    context = {
+        'tickets': tickets,
+        'ticket_pos': ticket_pos,
+    }
+
     return render(request, template, context)
