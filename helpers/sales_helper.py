@@ -20,7 +20,7 @@ class TicketPOSHelper(object):
         super(TicketPOSHelper, self).__init__()
 
     def set_all_tickets(self):
-        self.__all_tickets = TicketPOS.objects.select_related('ticket').all()
+        self.__all_tickets = TicketPOS.objects.select_related('ticket')
 
     def set_all_tickets_details(self):
         self.__all_tickets_details = TicketDetail.objects. \
@@ -74,9 +74,9 @@ class TicketPOSHelper(object):
         """
         years_list = []
 
-        for ticket in self.get_all_tickets():
-            if ticket.created_at.year not in years_list:
-                years_list.append(ticket.created_at.year)
+        for ticket_pos in self.get_all_tickets():
+            if ticket_pos.ticket.created_at.year not in years_list:
+                years_list.append(ticket_pos.ticket.created_at.year)
 
         return years_list
 
@@ -128,10 +128,12 @@ class TicketPOSHelper(object):
         """
         helper = Helper()
         try:
-            min_year = self.get_all_tickets().aggregate(Min('created_at'))['created_at__min'].year
-            max_year = self.get_all_tickets().aggregate(Max('created_at'))['created_at__max'].year
+            min_year = self.get_all_tickets().\
+                aggregate(Min('ticket__created_at'))['ticket__created_at__min'].year
+            max_year = self.get_all_tickets().\
+                aggregate(Max('ticket__created_at'))['ticket__created_at__max'].year
             years_list = []  # [2015:object, 2016:object, 2017:object, ...]
-        except:
+        except Exception as e:
             min_year = datetime.now().year
             max_year = datetime.now().year
             years_list = []  # [2015:object, 2016:object, 2017:object, ...]
@@ -167,11 +169,9 @@ class TicketPOSHelper(object):
                     """
                     existing_week = False
                     for week_object in year_object['weeks_list']:
-
                         if week_object['week_number'] == ticket_item.ticket.created_at.isocalendar()[1]:
                             # There's a same week number
-                            if datetime.strptime(week_object['start_date'],
-                                                 "%d-%m-%Y").date() > ticket_item.ticket.created_at.date():
+                            if datetime.strptime(week_object['start_date'],"%d-%m-%Y").date() > ticket_item.ticket.created_at.date():
                                 week_object['start_date'] = ticket_item.ticket.created_at.date().strftime("%d-%m-%Y")
                             elif datetime.strptime(week_object['end_date'],
                                                    "%d-%m-%Y").date() < ticket_item.ticket.created_at.date():

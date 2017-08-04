@@ -12,7 +12,7 @@ from cloudkitchen.settings.base import PAGE_TITLE
 from products.models import Cartridge, PackageCartridge, PackageCartridgeRecipe
 from sales.models import TicketBase, TicketDetail, TicketPOS
 from users.models import User as UserProfile
-from helpers_origin import *
+from helpers_origin import SalesHelper, ProductsHelper
 from helpers.sales_helper import TicketPOSHelper
 from helpers.helpers import Helper
 
@@ -324,7 +324,7 @@ def test_sales(request):
                     'earnings': 0
                 }
                 for ticket_detail in sales_helper.get_all_tickets_details():
-                    if ticket_detail.ticket == ticket_pos:
+                    if ticket_detail.ticket == ticket_pos.ticket:
                         earnings_sale_object['earnings'] += ticket_detail.price
                 sales_day_list.append(earnings_sale_object)
             return JsonResponse({'sales_day_list': sales_day_list})
@@ -426,7 +426,6 @@ def test_sales(request):
         'week_number': helper.get_week_number(date.today()),
         'tickets': sales_helper.get_tickets_today_list(),
         'dates_range': sales_helper.get_dates_range_json(),
-
     }
     return render(request, template, context)
 
