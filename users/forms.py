@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth import password_validation
 
-from .models import CustomerProfile, User as UserProfile
+from .models.users import User as UserProfile
+from .models.customers import CustomerProfile
 
 
 class UserForm(forms.ModelForm):

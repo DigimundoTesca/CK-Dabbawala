@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from users.models import User as UserProfile
+from users.models.users import User as UserProfile
 
 
 class BranchOffice(models.Model):

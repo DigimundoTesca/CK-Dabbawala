@@ -6,7 +6,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from branchoffices.models import CashRegister
 from products.models import Cartridge
 from sales.models import TicketBase, TicketDetail
-from users.models import User as UserProfile
+from users.models.customers import User as UserProfile
 from helpers_origin import CartHelper
 from helpers.sales_helper import TicketPOSHelper
 

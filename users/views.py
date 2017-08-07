@@ -9,10 +9,12 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as login_django
 from django.contrib.auth import logout as logout_django
 
-from users.forms import UserForm
-from users.models import UserMovements, CustomerProfile
-
+from .forms import UserForm
 from .forms import CustomerProfileForm
+
+from .models.users import UserMovements
+from .models.customers import CustomerProfile
+
 
 from cloudkitchen.settings.base import PAGE_TITLE
 
