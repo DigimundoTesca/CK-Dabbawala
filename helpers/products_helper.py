@@ -1,5 +1,12 @@
+import math
+from datetime import date, timedelta
+
+from helpers.helpers import Helper
+from helpers.sales_helper import TicketPOSHelper
+from kitchen.models import Warehouse
 from products.models import Cartridge, CartridgeRecipe, PackageCartridge, \
-    PackageCartridgeRecipe, Supply
+    PackageCartridgeRecipe, Supply, ExtraIngredient
+from sales.models import TicketDetail
 
 
 class ProductsHelper(object):
@@ -83,7 +90,7 @@ class ProductsHelper(object):
         :rtype: list
         """
         required_supplies_list = []
-        all_cartridges = self.all_cartridges()
+        all_cartridges = self.all_cartridges
         predictions = self.get_predictions_supplies()
         supplies_on_stock = self.get_all_elements_in_warehouse().filter(status="ST")
 
@@ -229,7 +236,7 @@ class ProductsHelper(object):
             all()
 
     def set_predictions(self):
-        sales_helper = SalesHelper()
+        sales_helper = TicketPOSHelper()
         all_tickets_details = sales_helper.get_all_tickets_details()
 
         prediction_list = []
@@ -249,9 +256,9 @@ class ProductsHelper(object):
             'ticket').select_related('cartridge').select_related('package_cartridge').all()
 
     def set_always_popular_cartridge(self):
-        sales_helper = SalesHelper()
+        sales_helper = TicketPOSHelper()
         cartridges_frequency_dict = {}
-        for cartridge in self.all_cartridges():
+        for cartridge in self.all_cartridges:
             cartridges_frequency_dict[cartridge.id] = {
                 'frequency': 0,
                 'name': cartridge.name,
@@ -282,14 +289,14 @@ class ProductsHelper(object):
         self.__elements_in_warehouse = Warehouse.objects.select_related('supply').all().order_by('supply__name')
 
     def set_today_popular_cartridge(self):
-        sales_helper = SalesHelper()
+        sales_helper = TicketPOSHelper()
         cartridges_frequency_dict = {}
         helper = Helper()
         start_date = helper.naive_to_datetime(date.today())
         limit_day = helper.naive_to_datetime(start_date + timedelta(days=1))
         filtered_ticket_details = sales_helper.get_tickets_details(start_date, limit_day)
 
-        for cartridge in self.all_cartridges():
+        for cartridge in self.all_cartridges:
             cartridges_frequency_dict[cartridge.id] = {
                 'frequency': 0,
                 'name': cartridge.name,

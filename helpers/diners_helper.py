@@ -1,8 +1,12 @@
 import json
 from datetime import datetime, date, timedelta
 
+from django.db.models import Min, Max
+from django.utils import timezone
+
 from diners.models import AccessLog, Diner, SatisfactionRating, ElementToEvaluate
 from helpers.helpers import Helper
+
 
 class DinersHelper(object):
     def __init__(self):
