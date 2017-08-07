@@ -1,6 +1,6 @@
 var init = function() {
   var box = document.querySelector('.container-cube').children[0],
-      showPanelButtons = document.querySelectorAll('#show-buttons'),
+      showPanelButtons = document.querySelectorAll('#show-buttons button'),
       panelClassName = 'show-front',
       onButtonClick = function( event ){
         box.removeClassName('button');
@@ -15,3 +15,5 @@ var init = function() {
 };
 
 window.addEventListener( 'DOMContentLoaded', init, false);
+
+console.log(document.querySelector('.container-cube').children[0])
