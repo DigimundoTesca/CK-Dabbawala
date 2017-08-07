@@ -3,9 +3,8 @@ var init = function() {
       showPanelButtons = document.querySelectorAll('#show-buttons button'),
       panelClassName = 'show-front',
       onButtonClick = function( event ){
-        box.removeClassName('button');
         box.removeClassName( panelClassName );
-        panelClassName = event.target.className;
+        panelClassName = event.target.id;
         box.addClassName( panelClassName );
       };
 
@@ -16,4 +15,3 @@ var init = function() {
 
 window.addEventListener( 'DOMContentLoaded', init, false);
 
-console.log(document.querySelector('.container-cube').children[0])
