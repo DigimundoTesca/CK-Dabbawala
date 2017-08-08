@@ -170,27 +170,6 @@ def register(request):
     return render(request, template, context)
 
 
-def thanks(request):
-    if request.method == 'POST':
-        form = CustomerProfileForm(request.POST, request.FILES)
-        if form.is_valid():
-            customer = form.save(commit=False)
-            customer.save()
-            return redirect('users:new_customer')
-    else:
-        form = CustomerProfileForm()
-
-    template = 'register/thanks.html'
-    title = 'Dabbawala - Registro de clientes'
-
-    context = {
-        'form': form,
-        'title': title,
-    }
-
-    return render(request, template, context)
-
-
 @login_required(login_url='users:login')
 def customers_list(request):
     if request.method == 'POST':
@@ -214,6 +193,14 @@ def customers_list(request):
         'customers': customers,
     }
 
+    return render(request, template, context)
+
+
+@login_required(login_url='users:login_customer')
+def profile(request):
+    
+    template = 'customers/profile.html'
+    context = {}
     return render(request, template, context)
 
 

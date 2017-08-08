@@ -16,7 +16,7 @@ class CustomerProfile(User):
             'unique': "Este número ya está registrado.",
         },
     )
-
+    avatar = models.ImageField(upload_to='customer/', blank=True, null=True)
     address = models.CharField(max_length=255, default='')
     longitude = models.CharField(default='0.0', max_length=30, blank=True)
     latitude = models.CharField(default='0.0', max_length=30, blank=True)
