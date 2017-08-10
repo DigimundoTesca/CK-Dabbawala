@@ -5,12 +5,12 @@ from django.contrib.auth import logout as logout_django
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import UserForm
-from .forms import CustomerProfileForm
+from .forms import CustomerUserProfileForm, CustomerProfileForm
 
-from .models.users import UserMovements
+from .models.users import UserMovements, User
 from .models.customers import CustomerProfile
 
 from cloudkitchen.settings.base import PAGE_TITLE
@@ -151,11 +151,13 @@ def logout_check(user):
 # CUSTOMERS
 # ---------------------------------------------------------------------------------------------------------------------
 def register(request):
-    form_customer = CustomerProfileForm(request.POST or None)
+    if request.user.is_authenticated:
+        return redirect('users:profile')
+    customer_form = CustomerUserProfileForm(request.POST or None)
     if request.method == 'POST':
-        if form_customer.is_valid():
-            new_customer = form_customer.save(commit=False)
-            new_customer.set_password(form_customer.cleaned_data['password'])
+        if customer_form.is_valid():
+            new_customer = customer_form.save(commit=False)
+            new_customer.set_password(customer_form.cleaned_data['password'])
             new_customer.save()
 
             if request.session.has_key('cart'):
@@ -165,7 +167,7 @@ def register(request):
 
     template = 'customers/register.html'
     context = {
-        'form': form_customer,
+        'customer-form': customer_form,
     }
     return render(request, template, context)
 
@@ -198,16 +200,25 @@ def customers_list(request):
 
 @login_required(login_url='users:login_customer')
 def profile(request):
-    
     template = 'customers/profile.html'
+    customer_form = CustomerProfileForm(request.POST or None)
+
     context = {}
+
+    try:
+        user_profile = CustomerProfile.objects.get(user_ptr=request.user)
+        context['user_profile'] = user_profile
+    except CustomerProfile.DoesNotExist:
+        context['customer_form'] = customer_form
+        return render(request, template, context)
+
     return render(request, template, context)
 
 
 # TEST
 # ---------------------------------------------------------------------------------------------------------------------
 def test(request):
-    form_user = CustomerProfileForm(request.POST or None)
+    form_user = CustomerUserProfileForm(request.POST or None)
 
     if request.method == 'POST':
         if form_user.is_valid():

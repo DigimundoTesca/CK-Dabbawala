@@ -24,7 +24,36 @@
     html5up.net | @ajlkn
     Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
     */
-
+    .alert {
+        padding: .75rem 1.25rem;
+        margin-bottom: 1rem;
+        border: 1px solid transparent;
+        border-radius: .25rem;
+    }
+    .alert-success {
+        background-color: #dff0d8;
+        border-color: #d0e9c6;
+        color: #3c763d;
+    }
+    .alert-info {
+        background-color: #d9edf7;
+        border-color: #bcdff1;
+        color: #31708f;
+    }
+    .alert-warning {
+        background-color: #fcf8e3;
+        border-color: #faf2cc;
+        color: #8a6d3b;
+    }
+    .alert-danger {
+        background-color: #f2dede;
+        border-color: #ebcccc;
+        color: #a94442;
+    }
+    .center {
+        display: flex;
+        justify-content: center;
+    }
     .container-scroll {
       position: relative;
       height: 100%; /* Or whatever you want (eg. 400px) */
