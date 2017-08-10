@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block stylesheets %}
-  <link rel="stylesheet" href="{% static 'css/customers/profile.css' %}">
+  <link rel="stylesheet" href="{% static 'css/customers/register.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -15,17 +15,18 @@
         {{ user_profile }}
       {% else %}
         <div class="alert alert-info">
-        <strong>No has configurado tu perfil</strong>
+        <strong>Añade tu perfil de cliente.</strong>
           Añade tus datos para poder disfrutar tus alimentos.
         </div>
         <div id="customer-form" class="form">
           <form action="" method="POST">
             {% csrf_token %}
+            <!-- Whatsapp -->
             <div class="form-group">
               <label id="{{ form.phone_number.id_for_label }}" for="{{ form.phone_number.name }}">
                 Whatsapp
               </label>
-              <input id="id_email"
+              <input id="id_phone_number"
                 name="{{ form.phone_number.name }}"
                 value="{% if form.phone_number.value != None %}{{ form.phone_number.value }}{% endif %}"
                 placeholder="Numero con Whatsapp"
@@ -42,61 +43,61 @@
               </div>
               {% endif %}
             </div>
+            <!-- Address -->
             <div class="form-group">
-              <label for="{{ form.addres.name }}">
-                Dirección
+              <label for="{{ form.address.name }}">
+                Busca tu Dirección
               </label>
-              <div id="innerbtn">
+              <div class="innerbtn">
                 <input id="id_address"
-                value="{% if form.address.value != None %}{{ form.address.value }}{% endif %}"
-                type="text"
-                class="form-control"
-                name="address"
-                placeholder="Dirección donde llevaremos tu comida"
-                maxlength="255"
-                onkeypress="return search(event)"
-                required=""
+                  value="{% if form.address.value != None %}{{ form.address.value }}{% endif %}"
+                  type="text"
+                  class="form-control"
+                  name="address"
+                  placeholder="Dirección donde llevaremos tu comida"
+                  maxlength="255"
+                  onkeypress="return search(event)"
+                  required=""
                 />
                 <a class="icon alt fa-search" type="" id="btn-search"></a>
-                {%  if form.address.errors %}
-                <div class="has-danger">
-                  {%  for error in form.address.errors %}
-                  <small class="form-control-feedback">{{ error|escape }}
-                  </small>
-                  {% endfor %}
-                </div>
-                {% endif %}
-                <div id="container-msj-alert" class="form-group container-hidden">
-                  <div class="alert alert-warning" role="alert">
-                    <strong>Oops! </strong><span id="msj-alert">mensaje</span>
-                  </div>
-                </div>
               </div>
-            </div>
-            <div class="col2 mapr map-container">
-              <div id="overmap" class="container-hidden">
+              {%  if form.address.errors %}
+              <div class="has-danger">
+                {%  for error in form.address.errors %}
+                <small class="form-control-feedback">{{ error|escape }}
+                </small>
+                {% endfor %}
+              </div>
+              {% endif %}
+              <div id="container-msj-alert" class="form-group container-hidden">
                 <div class="alert alert-warning" role="alert">
-                  <span id="msj-alert" class="alertmap">Arrastra el marcador a tu posición exacta.</span>
+                  <strong>Oops! </strong><span id="msj-alert">mensaje</span>
                 </div>
-              </div>
-              <div id="map" class=""></div>
-              <div class="formr">
-                <div class="form-group swaladdress">
-                  <label for="{{ form.references.name }}">
-                    Referencias extra a tu dirección de entrega.
-                  </label>
-                  <textarea id="id_reference"
-                  rows="3"
-                  type="text"
-                  class="form-control areainput"
-                  name="{{ form.references.name }}"
-                  placeholder="No. 29 Zaguán blanco, enfrente de una tienda de abarrotes"
-                  >{% if form.references.value != None %}{{ form.references.value }}{% endif %}</textarea>
-                </div>
-                {{ customer_form.as_p }}
-                <button class="button" type="submit" name="submit">Enviar</button>
               </div>
             </div>
+            <!-- Latitude -->
+            <input type="hidden" class="form-control" id="id_latitude" name="latitude" value="{{ form.latitude.value }}">
+            <!-- Longitude -->
+            <input type="hidden" class="form-control " id="id_longitude" name="longitude" value="{{ form.longitude.value }}">
+            <div id="overmap" class="container-hidden">
+              <div class="alert alert-warning" role="alert">
+                <span id="msj-alert" class="alertmap">Arrastra el marcador a tu posición exacta.</span>
+              </div>
+            </div>
+            <div id="map" class=""></div>
+            <div class="form-group swaladdress">
+              <label for="{{ form.references.name }}">
+                Referencias extra a tu dirección de entrega.
+              </label>
+              <textarea id="id_reference"
+                rows="3"
+                type="text"
+                class="form-control areainput"
+                name="{{ form.references.name }}"
+                placeholder="No. 29 Zaguán blanco, enfrente de una tienda de abarrotes"
+              >{% if form.references.value != None %}{{ form.references.value }}{% endif %}</textarea>
+            </div>
+            <button type="submit" class="button btn-success fit">Actualizar Perfil</button>
           </form>
         </div>
       {% endif %}

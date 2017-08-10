@@ -167,7 +167,7 @@ def register(request):
 
     template = 'customers/register.html'
     context = {
-        'customer-form': customer_form,
+        'form': customer_form,
     }
     return render(request, template, context)
 

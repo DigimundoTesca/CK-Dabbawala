@@ -1,11 +1,19 @@
-button.btn-success {
-    height: 2.5rem;
-}
 
-.form-group {
-  margin-bottom: 1rem;
+strong {
+    font-weight: bold;
 }
-
+img#avatar {
+    height: 160px;
+}
+.button {
+  width: 8rem;
+}
+.container {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 1rem;
+}
 .form-group .labels-error {
   padding-left: 1rem;
   padding-top: .5rem;
@@ -15,23 +23,8 @@ button.btn-success {
   color: #e42c27;
 }
 
-#innerbtn {
-    display: flex;
-    align-items: center;
+@media screen and (min-width: 768px) {
+    .container {
+        max-width: 640px;
+    }
 }
-#innerbtn input {
-    margin: 0;
-    width: 90%;
-}
-#innerbtn a {
-    margin: 0;
-    width: 10%;
-    cursor: pointer;
-    justify-content: flex-end;
-}
-
-#map {
-    height: 400px;
-    width: 100%;
-    margin-top: 15px;
-  }

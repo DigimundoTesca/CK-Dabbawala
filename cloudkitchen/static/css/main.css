@@ -41,8 +41,8 @@
         color: #31708f;
     }
     .alert-warning {
-        background-color: #fcf8e3;
-        border-color: #faf2cc;
+        background-color: #fff6ca;
+        border-color: #e8d474;
         color: #8a6d3b;
     }
     .alert-danger {
@@ -57,6 +57,10 @@
     .container-scroll {
       position: relative;
       height: 100%; /* Or whatever you want (eg. 400px) */
+    }
+    .form-group {
+      margin-bottom: 1.3rem;
+      margin-top: .2rem;
     }
 
     /* Box Model */
@@ -1778,12 +1782,12 @@
     }
 
     @media screen and (max-width: 430px) {
-      #innerbtn {
+      .innerbtn {
         width: 100%;
         margin: 0.5em !important;
       }
 
-      #innerbtn input {
+      .innerbtn input {
         width: 100% !important;
       }
 
@@ -2076,7 +2080,6 @@
     }
 
     @media screen and (max-width: 360px) {
-
       body, input, select, textarea {
         font-size: 11pt;
       }
@@ -2294,6 +2297,20 @@
 
     form > .actions {
       margin: 2.5em 0 0 0 !important;
+    }
+
+    form .innerbtn {
+        display: flex;
+    }
+    form .innerbtn input {
+        margin: 0;
+        width: 100%;
+    }
+    form .innerbtn a {
+      margin: 0;
+      padding-left: .5rem;
+      cursor: pointer;
+      align-self: center;
     }
 
     @media screen and (max-width: 736px) {
@@ -3019,6 +3036,10 @@
     text-decoration: none;
     text-transform: uppercase;
     white-space: nowrap;
+  }
+
+  .btn-success {
+      height: 2.7rem;
   }
 
   .nob {
@@ -4312,7 +4333,7 @@
     text-align: center;
   }
 
-  #innerbtn {
+  .innerbtn {
     width: 100%;
     margin: 0;
   }
@@ -4324,7 +4345,6 @@
   }
 
   #main .form, #main1 .form, #main2 .form, #main3 .form, #main4 .form {
-    width: 80%;
     margin: 0 auto;
     padding-top: 1.5em;
     color:black;
@@ -4346,19 +4366,19 @@
   }
 
   input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-    color: #D3D3D3;
+    color: #969696;
     opacity: 1;
   }
   input::-moz-placeholder { /* Firefox 19+ */
-    color: #D3D3D3;
+    color: #969696;
     opacity: 1;
   }
   input:-ms-input-placeholder { /* IE 10+ */
-    color: #D3D3D3;
+    color: #969696;
     opacity: 1;
   }
   input:-moz-placeholder { /* Firefox 18- */
-    color: #D3D3D3;
+    color: #969696;
     opacity: 1;
   }
 
@@ -5245,13 +5265,13 @@
   }
   #overmap {
     margin: 0 auto;
-    width: 95%;
-    margin-bottom: 10px;
   }
   #map {
-    width: 80%;
+    height: 400px;
+    margin-bottom: 1.5rem;
+    margin-top: 1.5px;
+    width: 100%;
   }
-
 /**
  * MediaQueries by Ramses
  */
