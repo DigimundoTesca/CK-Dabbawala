@@ -1,4 +1,16 @@
-
+form .formr {
+  display: flex;
+}
+form #form-gr-birthday,
+form #form-gr-gender {
+  width: 50%;
+}
+form #form-gr-birthday {
+  padding-right: .5rem;
+}
+form #form-gr-gender {
+  padding-left: .5rem;
+}
 strong {
     font-weight: bold;
 }

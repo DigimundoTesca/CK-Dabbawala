@@ -2361,7 +2361,7 @@
     input[type="tel"],
     input[type="search"],
     input[type="url"],
-    select,
+    select:not(.ui-datepicker-year),
     textarea {
       -moz-appearance: none;
       -webkit-appearance: none;
@@ -2374,6 +2374,17 @@
       display: block;
       outline: 0;
       padding: 0 1em;
+      text-decoration: none;
+      width: 100%;
+    }
+    select.ui-datepicker-year {
+      background: #ffffff;
+      border: none;
+      border-radius: 0;
+      color: #000000;
+      height: inherit;
+      outline: 0;
+      padding-left: .5rem;
       text-decoration: none;
       width: 100%;
     }
@@ -4340,7 +4351,7 @@
 
   #main .formr, #main1 .formr, #main2 .formr, #main3 .formr, #main4 .formr {
     padding: 0;
-    padding-top: 1rem;
+    padding-top: .5rem;
     padding-right: 0;
   }
 
@@ -5268,7 +5279,7 @@
   }
   #map {
     height: 400px;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     margin-top: 1.5px;
     width: 100%;
   }

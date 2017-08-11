@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block stylesheets %}
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="{% static 'css/customers/register.css' %}">
 {% endblock %}
 
@@ -21,6 +22,67 @@
         <div id="customer-form" class="form">
           <form action="" method="POST">
             {% csrf_token %}
+            <!-- Birthdate and Gender -->
+            <div class="formr">
+              <!-- Birthday -->
+              <div id="form-gr-birthday" class="form-group">
+                <label for="{{ form.birthdate.name }}">
+                  Fecha de Nacimiento
+                </label>
+                <input id="id_birthdate"
+                  value="{% if form.birthdate.value != None %}{{ form.birthdate.value }}{% endif %}"
+                  type="text"
+                  class="form-control"
+                  name="birthdate"
+                  placeholder="dd/mm/aaaa"
+                  maxlength="255"
+                  onkeypress="return search(event)"
+                  required=""
+                />
+                {%  if form.birthdate.errors %}
+                <div class="has-danger">
+                  {%  for error in form.birthdate.errors %}
+                  <small class="form-control-feedback">{{ error|escape }}
+                  </small>
+                  {% endfor %}
+                </div>
+                {% endif %}
+                <div id="container-msj-alert" class="form-group container-hidden">
+                  <div class="alert alert-warning" role="alert">
+                    <strong>Oops! </strong><span id="msj-alert">mensaje</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Gender -->
+              <div id="form-gr-gender" class="form-group">
+                <label for="{{ form.gender.name }}">
+                  Género
+                </label>
+                <input id="id_gender"
+                  value="{% if form.gender.value != None %}{{ form.gender.value }}{% endif %}"
+                  type="text"
+                  class="form-control"
+                  name="gender"
+                  placeholder="Hombre / Mujer"
+                  maxlength="255"
+                  onkeypress="return search(event)"
+                  required=""
+                />
+                {%  if form.gender.errors %}
+                <div class="has-danger">
+                  {%  for error in form.gender.errors %}
+                  <small class="form-control-feedback">{{ error|escape }}
+                  </small>
+                  {% endfor %}
+                </div>
+                {% endif %}
+                <div id="container-msj-alert" class="form-group container-hidden">
+                  <div class="alert alert-warning" role="alert">
+                    <strong>Oops! </strong><span id="msj-alert">mensaje</span>
+                  </div>
+                </div>
+              </div>
+            </div>
             <!-- Whatsapp -->
             <div class="form-group">
               <label id="{{ form.phone_number.id_for_label }}" for="{{ form.phone_number.name }}">
@@ -85,6 +147,7 @@
               </div>
             </div>
             <div id="map" class=""></div>
+            <!-- References -->
             <div class="form-group swaladdress">
               <label for="{{ form.references.name }}">
                 Referencias extra a tu dirección de entrega.
@@ -107,6 +170,7 @@
 
 {% block scripts %}
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrITfQswCPmOPEBRM1Ufeiogh22FxQV5k" defer charset="utf-8"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script type="text/javascript">
     var map;
     var infoWindow;
@@ -263,5 +327,25 @@
     $(function() {
       initMap();
     });
+
+    /** Jquery Datepicker */
+    $('#id_birthdate').datepicker({
+      dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves',
+        'Viernes', 'Sábado' ],
+      dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+      monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+      dateFormat: 'dd/mm/yy',
+      changeYear: true,
+      showOtherMonths: true,
+      showAnim: "fadeIn",
+      navigationAsDateFormat: true,
+    });
+
+    // Datepicker Setter
+    $('#id_birthdate').datepicker('option', 'defaultDate', '01/01/2000' );
+    $('#id_birthdate').datepicker('option', 'yearRange',
+      ( (new Date).getFullYear() - 100 ) + ':' + ( (new Date).getFullYear() - 13 )
+    );
   </script>
 {% endblock scripts %}

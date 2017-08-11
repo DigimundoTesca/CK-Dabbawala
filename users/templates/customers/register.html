@@ -3,6 +3,7 @@
 
 {% block stylesheets %}
   <link rel="stylesheet" href="{% static 'css/customers/register.css' %}">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 {% endblock stylesheets%}
 
 {% block content %}
@@ -178,20 +179,20 @@
             </div>
             <div id="map" class=""></div>
             <div class="formr">
-            <div class="form-group swaladdress">
-              <label for="{{ form.references.name }}">
-                Referencias extra a tu dirección de entrega.
-              </label>
-              <textarea id="id_reference"
-                rows="3"
-                type="text"
-                class="form-control areainput"
-                name="{{ form.references.name }}"
-                placeholder="No. 29 Zaguán blanco, enfrente de una tienda de abarrotes"
-              >{% if form.references.value != None %}{{ form.references.value }}{% endif %}</textarea>
+              <div class="form-group swaladdress">
+                <label for="{{ form.references.name }}">
+                  Referencias extra a tu dirección de entrega.
+                </label>
+                <textarea id="id_reference"
+                  rows="3"
+                  type="text"
+                  class="form-control areainput"
+                  name="{{ form.references.name }}"
+                  placeholder="No. 29 Zaguán blanco, enfrente de una tienda de abarrotes"
+                >{% if form.references.value != None %}{{ form.references.value }}{% endif %}</textarea>
+              </div>
+              <button id="btn-register" type="submit" class="btn-success fit button" disabled="disabled">Registrate</button>
             </div>
-            <button id="btn-register" type="submit" class="btn-success fit button" disabled="disabled">Registrate</button>
-          </div>
           </div>
         </div>
       </form>
@@ -372,6 +373,11 @@
 
     $(function() {
       initMap();
+    });
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('#datepicker').datepicker();
     });
   </script>
 {% endblock scripts %}

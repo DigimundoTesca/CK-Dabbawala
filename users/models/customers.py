@@ -1,10 +1,17 @@
 from django.core.validators import RegexValidator
 from django.db import models
-
+from datetime import date
 from users.models.users import User
 
 
 class CustomerProfile(User):
+    MEN = 'MA'
+    WOMEN = 'FE'
+
+    GENDER = (
+        (MEN, 'Hombre'),
+        (WOMEN, 'Mujer'),
+    )
     phone_regex = RegexValidator(
         regex=r'^\d{10}$',
         message="Debe ingresar un número telefónico de 10 dígitos.")
@@ -17,6 +24,8 @@ class CustomerProfile(User):
         },
     )
     avatar = models.ImageField(upload_to='customer/', blank=True, null=True)
+    gender = models.CharField(choices=GENDER, default=MEN, max_length=2)
+    birthdate = models.DateField(default=date(2000,1,1))
     address = models.CharField(max_length=255, default='')
     longitude = models.CharField(default='0.0', max_length=30, blank=True)
     latitude = models.CharField(default='0.0', max_length=30, blank=True)

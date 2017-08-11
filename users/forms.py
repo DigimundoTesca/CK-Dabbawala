@@ -31,6 +31,8 @@ class CustomerProfileForm(forms.ModelForm):
         model = CustomerProfile
         fields = [
             'phone_number',
+            'birthdate',
+            'gender',
             'longitude',
             'latitude',
             'address',
