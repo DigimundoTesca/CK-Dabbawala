@@ -104,7 +104,16 @@ class Supply(models.Model):
 
 
 class KitchenAssembly(models.Model):
-    name = models.CharField(max_length=48, default='')
+    # Kitchens
+    COLD = 'CO'
+    HOT = 'HO'
+
+    KITCHENS = (
+        (COLD, 'Caliente'),
+        (HOT, 'Fría'),
+    )
+
+    name = models.CharField(choices=KITCHENS, default=COLD, max_length=2)
 
     def __str__(self):
         return '%s' % self.name

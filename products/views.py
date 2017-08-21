@@ -82,9 +82,8 @@ class Delete_Cartridge(DeleteView):
 def test(request):
     template = 'cartridges_test/test.html'
     cartridges = Cartridge.objects.all()
-    kitchen_assembly_cold = KitchenAssembly.objects.get(name='cold')
-    kitchen_assembly_hot = KitchenAssembly.objects.get(name='hot')
-
+    kitchen_assembly_cold = KitchenAssembly.objects.get(name='co')
+    kitchen_assembly_hot = KitchenAssembly.objects.get(name='ho')
     for cartridge in cartridges:
         if cartridge.category == 'FD':
             cartridge.kitchen_assembly = kitchen_assembly_hot

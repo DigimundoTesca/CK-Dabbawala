@@ -20,7 +20,7 @@
         {% for product in products %}
           {% if product.cartridges %}
             {% for cartridge in product.cartridges %}
-              {% if cartridge.cartridge.category == 'FD' %}
+              {% if cartridge.cartridge.kitchen_assembly.name == 'ho' %}
                 <tr class="tr_id">
                   <th scope="row" class="id_kitchen_table">{{ product.ticket_order }}</th>
                   <td>{{ cartridge.cartridge }}</td>
@@ -32,7 +32,7 @@
           {% if product.packages %}
             {% for package in product.packages %}
               {% for cartridge in package.package_recipe %}
-                {% if cartridge.category == 'FD' %}
+                {% if cartridge.kitchen_assembly.name == 'ho' %}
                   <tr class="tr_id">
                     <th scope="row" class="id_kitchen_table">{{ product.ticket_order }}</th>
                     <td>{{ cartridge }}</td>
