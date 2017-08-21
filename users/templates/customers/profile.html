@@ -55,6 +55,7 @@
               </div>
               <!-- Gender -->
               <div id="form-gr-gender" class="form-group">
+                {{form.gender}}
                 <label for="{{ form.gender.name }}">
                   Género
                 </label>
@@ -222,11 +223,8 @@
         center: LatLng,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
       }
-
       infoWindow = new google.maps.InfoWindow();
-
       drawMap(optionsMap);
-
       marker = new google.maps.Marker({
         animation: google.maps.Animation.DROP,
         draggable: true,

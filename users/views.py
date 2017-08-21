@@ -25,6 +25,7 @@ def home(request):
 
 
 def temporal_index(request):
+    print('PRODUCTS TEST')
     template = 'temporal-index.html'
     context = {}
     return render(request, template, context)
@@ -160,9 +161,9 @@ def register(request):
             new_customer.set_password(customer_form.cleaned_data['password'])
             new_customer.save()
 
-            if request.session.has_key('cart'):
-                request.session['first_session'] = True
-                return redirect('orders:pay')
+            # if request.session.has_key('cart'):
+                # request.session['first_session'] = True
+                # return redirect('orders:login_customer')
             return redirect('users:login_customer')
 
     template = 'customers/register.html'
