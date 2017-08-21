@@ -4,7 +4,6 @@ import pytz
 from datetime import datetime, date, timedelta, time
 from decimal import Decimal
 from django.db.models import Min, Max
-from django.utils import timezone
 from diners.models import AccessLog, Diner, SatisfactionRating, ElementToEvaluate
 from kitchen.models import Warehouse, ProcessedProduct
 from products.models import Supply, Cartridge, PackageCartridge, CartridgeRecipe, PackageCartridgeRecipe, \

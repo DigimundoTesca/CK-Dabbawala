@@ -11,7 +11,7 @@ from branchoffices.models import CashRegister
 from cloudkitchen.settings.base import PAGE_TITLE
 from products.models import Cartridge, PackageCartridge, PackageCartridgeRecipe
 from sales.models import TicketBase, TicketDetail, TicketPOS
-from users.models import User as UserProfile
+from users.models.users import User as UserProfile
 from helpers.sales_helper import TicketPOSHelper
 from helpers.products_helper import ProductsHelper
 from helpers.helpers import Helper

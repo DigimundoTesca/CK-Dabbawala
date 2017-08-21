@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth import password_validation
 
-from .models import CustomerProfile, User as UserProfile
+from .models.users import User
+from .models.customers import CustomerProfile
 
 
 class UserForm(forms.ModelForm):
@@ -9,7 +10,7 @@ class UserForm(forms.ModelForm):
     password_confirm = forms.CharField(widget=forms.PasswordInput())
 
     class Meta:
-        model = UserProfile
+        model = User
         fields = ['username', 'email', 'password', 'is_active']
 
     def __init__(self, *args, **kwargs):
@@ -26,6 +27,20 @@ class UserForm(forms.ModelForm):
 
 
 class CustomerProfileForm(forms.ModelForm):
+    class Meta:
+        model = CustomerProfile
+        fields = [
+            'phone_number',
+            'birthdate',
+            'gender',
+            'longitude',
+            'latitude',
+            'address',
+            'references',
+        ]
+
+
+class CustomerUserProfileForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
     password_confirm = forms.CharField(widget=forms.PasswordInput())
 
@@ -44,11 +59,11 @@ class CustomerProfileForm(forms.ModelForm):
         ]
 
     def __init__(self, *args, **kwargs):
-        super(CustomerProfileForm, self).__init__(*args, **kwargs)
+        super(CustomerUserProfileForm, self).__init__(*args, **kwargs)
         self.fields['email'].required = True
 
     def clean(self):
-        cleaned_data = super(CustomerProfileForm, self).clean()
+        cleaned_data = super(CustomerUserProfileForm, self).clean()
         password = cleaned_data.get("password")
         password_confirm = cleaned_data.get("password_confirm")
         password_validation.validate_password(password, self.instance)

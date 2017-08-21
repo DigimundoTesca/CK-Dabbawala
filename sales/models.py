@@ -1,10 +1,10 @@
 from django.db import models
-from django.db.models import Avg, Sum
 from django.utils import timezone
 
 from branchoffices.models import CashRegister
 from products.models import Cartridge, PackageCartridge, ExtraIngredient
-from users.models import User as UserProfile, CustomerProfile
+from users.models.users import User as UserProfile
+from users.models.customers import CustomerProfile
 
 
 class TicketBase(models.Model):

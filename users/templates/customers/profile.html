@@ -1,0 +1,351 @@
+{% extends "dabbawala/base_nav_footer.html" %}
+{% load static %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="{% static 'css/customers/register.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div id="main1">
+    <img class="bord2" src="{% static 'images/image/reverse.png' %}" alt="Borde">
+    <div class="container">
+      <h2>Hola {{ request.user }}</h2>
+      <img id="avatar" src="{% static 'images/user/person-flat.png' %}" alt="Avatar">
+      {% if user_profile %}
+        {{ user_profile }}
+      {% else %}
+        <div class="alert alert-info">
+        <strong>Añade tu perfil de cliente.</strong>
+          Añade tus datos para poder disfrutar tus alimentos.
+        </div>
+        <div id="customer-form" class="form">
+          <form action="" method="POST">
+            {% csrf_token %}
+            <!-- Birthdate and Gender -->
+            <div class="formr">
+              <!-- Birthday -->
+              <div id="form-gr-birthday" class="form-group">
+                <label for="{{ form.birthdate.name }}">
+                  Fecha de Nacimiento
+                </label>
+                <input id="id_birthdate"
+                  value="{% if form.birthdate.value != None %}{{ form.birthdate.value }}{% endif %}"
+                  type="text"
+                  class="form-control"
+                  name="birthdate"
+                  placeholder="dd/mm/aaaa"
+                  maxlength="255"
+                  onkeypress="return search(event)"
+                  required=""
+                />
+                {%  if form.birthdate.errors %}
+                <div class="has-danger">
+                  {%  for error in form.birthdate.errors %}
+                  <small class="form-control-feedback">{{ error|escape }}
+                  </small>
+                  {% endfor %}
+                </div>
+                {% endif %}
+                <div id="container-msj-alert" class="form-group container-hidden">
+                  <div class="alert alert-warning" role="alert">
+                    <strong>Oops! </strong><span id="msj-alert">mensaje</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Gender -->
+              <div id="form-gr-gender" class="form-group">
+                <label for="{{ form.gender.name }}">
+                  Género
+                </label>
+                <input id="id_gender"
+                  value="{% if form.gender.value != None %}{{ form.gender.value }}{% endif %}"
+                  type="text"
+                  class="form-control"
+                  name="gender"
+                  placeholder="Hombre / Mujer"
+                  maxlength="255"
+                  onkeypress="return search(event)"
+                  required=""
+                />
+                {%  if form.gender.errors %}
+                <div class="has-danger">
+                  {%  for error in form.gender.errors %}
+                  <small class="form-control-feedback">{{ error|escape }}
+                  </small>
+                  {% endfor %}
+                </div>
+                {% endif %}
+                <div id="container-msj-alert" class="form-group container-hidden">
+                  <div class="alert alert-warning" role="alert">
+                    <strong>Oops! </strong><span id="msj-alert">mensaje</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Whatsapp -->
+            <div class="form-group">
+              <label id="{{ form.phone_number.id_for_label }}" for="{{ form.phone_number.name }}">
+                Whatsapp
+              </label>
+              <input id="id_phone_number"
+                name="{{ form.phone_number.name }}"
+                value="{% if form.phone_number.value != None %}{{ form.phone_number.value }}{% endif %}"
+                placeholder="Numero con Whatsapp"
+                maxlength="{{ form.phone_number.field.max_length }}"
+                type="text"
+                class="form-control"
+                required onkeypress="return pulsar(event)"
+              />
+              {% if form.phone_number.errors %}
+              <div class="labels-error">
+                {% for error in form.phone_number.errors %}
+                  <span class="form-feed">{{ error|escape }}</span>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+            <!-- Address -->
+            <div class="form-group">
+              <label for="{{ form.address.name }}">
+                Busca tu Dirección
+              </label>
+              <div class="innerbtn">
+                <input id="id_address"
+                  value="{% if form.address.value != None %}{{ form.address.value }}{% endif %}"
+                  type="text"
+                  class="form-control"
+                  name="address"
+                  placeholder="Dirección donde llevaremos tu comida"
+                  maxlength="255"
+                  onkeypress="return search(event)"
+                  required=""
+                />
+                <a class="icon alt fa-search" type="" id="btn-search"></a>
+              </div>
+              {%  if form.address.errors %}
+              <div class="has-danger">
+                {%  for error in form.address.errors %}
+                <small class="form-control-feedback">{{ error|escape }}
+                </small>
+                {% endfor %}
+              </div>
+              {% endif %}
+              <div id="container-msj-alert" class="form-group container-hidden">
+                <div class="alert alert-warning" role="alert">
+                  <strong>Oops! </strong><span id="msj-alert">mensaje</span>
+                </div>
+              </div>
+            </div>
+            <!-- Latitude -->
+            <input type="hidden" class="form-control" id="id_latitude" name="latitude" value="{{ form.latitude.value }}">
+            <!-- Longitude -->
+            <input type="hidden" class="form-control " id="id_longitude" name="longitude" value="{{ form.longitude.value }}">
+            <div id="overmap" class="container-hidden">
+              <div class="alert alert-warning" role="alert">
+                <span id="msj-alert" class="alertmap">Arrastra el marcador a tu posición exacta.</span>
+              </div>
+            </div>
+            <div id="map" class=""></div>
+            <!-- References -->
+            <div class="form-group swaladdress">
+              <label for="{{ form.references.name }}">
+                Referencias extra a tu dirección de entrega.
+              </label>
+              <textarea id="id_reference"
+                rows="3"
+                type="text"
+                class="form-control areainput"
+                name="{{ form.references.name }}"
+                placeholder="No. 29 Zaguán blanco, enfrente de una tienda de abarrotes"
+              >{% if form.references.value != None %}{{ form.references.value }}{% endif %}</textarea>
+            </div>
+            <button type="submit" class="button btn-success fit">Actualizar Perfil</button>
+          </form>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrITfQswCPmOPEBRM1Ufeiogh22FxQV5k" defer charset="utf-8"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script type="text/javascript">
+    var map;
+    var infoWindow;
+    var marker;
+
+    function drawMap (options) {
+      map = new google.maps.Map($("#map").get(0), options);
+    }
+
+    function setAddressValue (address) {
+      $('#id_address').val(address);
+    }
+
+    function setLatLng(lat, lng){
+      $('#id_latitude').val(lat);
+      $('#id_longitude').val(lng);
+    }
+
+    function openInfoWindow(marker) {
+      var markerLatLng;
+      var latitude = marker.getPosition().lat();
+      var longitude = marker.getPosition().lng();
+      markerLatLng = latitude+longitude;
+      infoWindow.setContent([
+        'Aquí enviaremos tu Dabba.'
+      ].join(''));
+
+      infoWindow.open(map, marker);
+
+      var Latitude = $('#id_latitude').val();
+      var Longitude = $('#id_longitude').val();
+
+      setLatLng(latitude, longitude);
+    }
+
+    function addMarkerLsteners (marker) {
+      google.maps.event.addListener(marker, 'dragend', function(){
+        openInfoWindow(marker);
+      });
+      google.maps.event.addListener(marker, 'click', function(){
+        openInfoWindow(marker);
+      });
+    }
+
+    function initMap() {
+      var LatLng = new google.maps.LatLng(19.5228008,-99.2291418);
+      var optionsMap = {
+        zoom: 18,
+        center: LatLng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+      }
+
+      infoWindow = new google.maps.InfoWindow();
+
+      drawMap(optionsMap);
+
+      marker = new google.maps.Marker({
+        animation: google.maps.Animation.DROP,
+        draggable: true,
+        map: map,
+        position: LatLng,
+      });
+
+      addMarkerLsteners(marker);
+      openInfoWindow(marker);
+    }
+
+    function swalYourAddress(){
+      var popup = document.getElementsByClassName("swaladdress")[0];
+      popup.style.visibility = "visible";
+      popup.style.height = "auto";
+      $("#overmap").fadeIn(1500);
+      setTimeout(function() {
+        $("#container-msj-alert").fadeOut(1500);
+      },6000);
+      ;  }
+
+    function pulsar(e) {
+      tecla = (document.all) ? e.keyCode :e.which;
+      return (tecla!=13);
+    }
+
+    function search(e) {
+      var code = (e.keyCode ? e.keyCode : e.which);
+      if(code == 13) {
+        var address = $('#id_address').val();
+        var geocoder = new google.maps.Geocoder();
+        geocoder.geocode({'address': address}, geocodeResult);
+      }
+
+      return (code!=13);
+    }
+
+    function geocodeResult(results, status) {
+      if (status == 'OK') {
+        var address = results[0].formatted_address;
+        setAddressValue(address);
+
+        var optionsMap = {
+          zoom: 18,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+        }
+
+        drawMap(optionsMap);
+        map.fitBounds(results[0].geometry.viewport);
+
+        var markerOptions = {
+          position: results[0].geometry.location,
+          draggable: true,
+          animation: google.maps.Animation.DROP,
+        }
+
+        marker = new google.maps.Marker(markerOptions);
+        marker.setMap(map);
+
+        var latitude = marker.position.lat();
+        var longitude = marker.position.lng();
+
+        setLatLng(latitude, longitude);
+
+        addMarkerLsteners(marker);
+
+        swalYourAddress();
+
+      } else {
+        /** If there's not results */
+        $("#msj-alert").text('No encontramos tu dirección');
+        $("#container-msj-alert").fadeIn(1500);
+        setTimeout(function() {
+          $("#container-msj-alert").fadeOut(1500);
+        },6000);
+      }
+    }
+
+    $('#btn-search').on('click', function() {
+      var address = $('#id_address').val();
+      var geocoder = new google.maps.Geocoder();
+      geocoder.geocode({'address': address}, geocodeResult);
+    });
+
+    $('#id_address').keyup(function(event) {
+      if($(this).val() !== '') {
+      }
+    });
+
+    $('#id_reference').keyup(function(event) {
+      if($(this).val() !== '') {
+        $('#btn-register').attr('disabled', false);
+      } else {
+        $('#btn-register').attr('disabled', true);
+      }
+    });
+
+    $(function() {
+      initMap();
+    });
+
+    /** Jquery Datepicker */
+    $('#id_birthdate').datepicker({
+      dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves',
+        'Viernes', 'Sábado' ],
+      dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+      monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+      dateFormat: 'dd/mm/yy',
+      changeYear: true,
+      showOtherMonths: true,
+      showAnim: "fadeIn",
+      navigationAsDateFormat: true,
+    });
+
+    // Datepicker Setter
+    $('#id_birthdate').datepicker('option', 'defaultDate', '01/01/2000' );
+    $('#id_birthdate').datepicker('option', 'yearRange',
+      ( (new Date).getFullYear() - 100 ) + ':' + ( (new Date).getFullYear() - 13 )
+    );
+  </script>
+{% endblock scripts %}

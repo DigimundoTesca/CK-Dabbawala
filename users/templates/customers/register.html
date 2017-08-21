@@ -3,6 +3,7 @@
 
 {% block stylesheets %}
   <link rel="stylesheet" href="{% static 'css/customers/register.css' %}">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 {% endblock stylesheets%}
 
 {% block content %}
@@ -23,6 +24,7 @@
         <div class="cols colr">
           <div class="col1 formr">
             {% csrf_token %}
+            <!-- Username -->
             <div class="form-group">
               <label for="{{ form.username.name }}">
                 Nombre del usuario
@@ -45,6 +47,7 @@
               </div>
               {% endif %}
             </div>
+            <!-- Password -->
             <div class="form-group">
               <label for="{{ form.password.name }}">
                 Contraseña
@@ -65,11 +68,12 @@
               </div>
               {% endif %}
             </div>
+            <!-- Password Validation -->
             <div class="form-group">
               <label for="{{ form.password_confirm.name }}">
                 Repita su contraseña
               </label>
-              <input id="id_email"
+              <input id="id_phone"
                 name="{{ form.password_confirm.name }}"
                 placeholder="La contraseña debe coincidir"
                 maxlength="{{ form.password_confirm.field.max_length }}"
@@ -85,6 +89,7 @@
               </div>
               {% endif %}
             </div>
+            <!-- Email -->
             <div class="form-group">
               <label for="{{ form.email.name }}">
                 Ingrese un email
@@ -106,11 +111,12 @@
               </div>
               {% endif %}
             </div>
+            <!-- Phone Number -->
             <div class="form-group">
               <label id="{{ form.phone_number.id_for_label }}" for="{{ form.phone_number.name }}">
                 Whatsapp
               </label>
-              <input id="id_email"
+              <input id="id_phone_number"
                 name="{{ form.phone_number.name }}"
                 value="{% if form.phone_number.value != None %}{{ form.phone_number.value }}{% endif %}"
                 placeholder="Numero con Whatsapp"
@@ -127,13 +133,16 @@
               </div>
               {% endif %}
             </div>
-            <input type="hidden" class="form-control " id="id_longitude" name="longitude" value="{{ form.longitude.value }}">
+            <!-- Latitude -->
             <input type="hidden" class="form-control" id="id_latitude" name="latitude" value="{{ form.latitude.value }}">
+            <!-- Longitude -->
+            <input type="hidden" class="form-control " id="id_longitude" name="longitude" value="{{ form.longitude.value }}">
+            <!-- Address -->
             <div class="form-group">
-              <label for="{{ form.addres.name }}">
+              <label for="{{ form.address.name }}">
                 Dirección
               </label>
-              <div id="innerbtn">
+              <div class="innerbtn">
                 <input id="id_address"
                   value="{% if form.address.value != None %}{{ form.address.value }}{% endif %}"
                   type="text"
@@ -161,6 +170,7 @@
               </div>
             </div>
           </div>
+          <!-- Google Map -->
           <div class="col2 mapr map-container">
             <div id="overmap" class="container-hidden">
               <div class="alert alert-warning" role="alert">
@@ -169,20 +179,20 @@
             </div>
             <div id="map" class=""></div>
             <div class="formr">
-            <div class="form-group swaladdress">
-              <label for="{{ form.references.name }}">
-                Referencias extra a tu dirección de entrega.
-              </label>
-              <textarea id="id_reference"
-                rows="3"
-                type="text"
-                class="form-control areainput"
-                name="{{ form.references.name }}"
-                placeholder="No. 29 Zaguán blanco, enfrente de una tienda de abarrotes"
-              >{% if form.references.value != None %}{{ form.references.value }}{% endif %}</textarea>
+              <div class="form-group swaladdress">
+                <label for="{{ form.references.name }}">
+                  Referencias extra a tu dirección de entrega.
+                </label>
+                <textarea id="id_reference"
+                  rows="3"
+                  type="text"
+                  class="form-control areainput"
+                  name="{{ form.references.name }}"
+                  placeholder="No. 29 Zaguán blanco, enfrente de una tienda de abarrotes"
+                >{% if form.references.value != None %}{{ form.references.value }}{% endif %}</textarea>
+              </div>
+              <button id="btn-register" type="submit" class="btn-success fit button" disabled="disabled">Registrate</button>
             </div>
-            <button id="btn-register" type="submit" class="btn-success fit button" disabled="disabled">Registrate</button>
-          </div>
           </div>
         </div>
       </form>
@@ -363,6 +373,11 @@
 
     $(function() {
       initMap();
+    });
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('#datepicker').datepicker();
     });
   </script>
 {% endblock scripts %}

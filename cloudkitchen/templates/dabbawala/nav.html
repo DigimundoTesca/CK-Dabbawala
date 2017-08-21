@@ -27,7 +27,7 @@
       <li><a href="{% url 'products:menu'%}"><span>Menú</span></a></li>
       <li><a href="{% url 'branch_offices:contact' %}"><span>Contacto</span></a></li>
       {% if request.user.is_authenticated %}
-      <li><a href="{% url 'branch_offices:contact' %}"><span>{{ request.user }}</span></a></li>
+      <li><a href="{% url 'users:profile' %}"><span>{{ request.user }}</span></a></li>
       <li><a href="{% url 'users:logout_customer' %}"><span>Cerrar Sesión</span></a></li>
       {% else %}
       <li><a class="show-overlay" href="{% url 'users:login_customer' %}" data-type="zoomin"><span>Inicia Sesión</span></a></li>

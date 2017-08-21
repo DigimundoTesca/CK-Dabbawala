@@ -1,42 +1,23 @@
 import json
-from django.conf import settings
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render, redirect
-
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as login_django
 from django.contrib.auth import logout as logout_django
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
 
-from users.forms import UserForm
-from users.models import UserMovements, CustomerProfile
+from .forms import UserForm
+from .forms import CustomerUserProfileForm, CustomerProfileForm
 
-from .forms import CustomerProfileForm
+from .models.users import UserMovements, User
+from .models.customers import CustomerProfile
 
 from cloudkitchen.settings.base import PAGE_TITLE
 
 
-# -------------------------------------  Index -------------------------------------
-def test(request):
-    form_user = CustomerProfileForm(request.POST or None)
-
-    if request.method == 'POST':
-        if form_user.is_valid():
-            new_user = form_user.save(commit=False)
-            new_user.set_password(form_user.cleaned_data['password'])
-            new_user.save()
-            form_user = None
-            return HttpResponse('EXITO')
-
-    template = 'test.html'
-    context = {
-        'form': form_user,
-    }
-    return render(request, template, context)
-
-
-# -------------------------------------  Index -------------------------------------
+# HOME
+# ---------------------------------------------------------------------------------------------------------------------
 def home(request):
     template = 'home.html'
     context = {}
@@ -49,7 +30,8 @@ def temporal_index(request):
     return render(request, template, context)
 
 
-# -------------------------------------  Auth -------------------------------------
+# AUTH
+# ---------------------------------------------------------------------------------------------------------------------
 def login(request):
     if request.user.is_authenticated():
         if request.user.has_perm('users.can_see_sales'):
@@ -166,13 +148,16 @@ def logout_check(user):
     movement.save()
 
 
-# -------------------------------------  Customers -------------------------------------
+# CUSTOMERS
+# ---------------------------------------------------------------------------------------------------------------------
 def register(request):
-    form_customer = CustomerProfileForm(request.POST or None)
+    if request.user.is_authenticated:
+        return redirect('users:profile')
+    customer_form = CustomerUserProfileForm(request.POST or None)
     if request.method == 'POST':
-        if form_customer.is_valid():
-            new_customer = form_customer.save(commit=False)
-            new_customer.set_password(form_customer.cleaned_data['password'])
+        if customer_form.is_valid():
+            new_customer = customer_form.save(commit=False)
+            new_customer.set_password(customer_form.cleaned_data['password'])
             new_customer.save()
 
             if request.session.has_key('cart'):
@@ -182,31 +167,9 @@ def register(request):
 
     template = 'customers/register.html'
     context = {
-        'form': form_customer,
+        'form': customer_form,
     }
     return render(request, template, context)
-
-
-def thanks(request):
-    if request.method == 'POST':
-        form = CustomerProfileForm(request.POST, request.FILES)
-        if form.is_valid():
-            customer = form.save(commit=False)
-            customer.save()
-            return redirect('users:new_customer')
-    else:
-        form = CustomerProfileForm()
-
-    template = 'register/thanks.html'
-    title = 'Dabbawala - Registro de clientes'
-
-    context = {
-        'form': form,
-        'title': title,
-    }
-
-    return render(request, template, context)
-
 
 
 @login_required(login_url='users:login')
@@ -232,4 +195,41 @@ def customers_list(request):
         'customers': customers,
     }
 
+    return render(request, template, context)
+
+
+@login_required(login_url='users:login_customer')
+def profile(request):
+    template = 'customers/profile.html'
+    customer_form = CustomerProfileForm(request.POST or None)
+
+    context = {}
+
+    try:
+        user_profile = CustomerProfile.objects.get(user_ptr=request.user)
+        context['user_profile'] = user_profile
+    except CustomerProfile.DoesNotExist:
+        context['customer_form'] = customer_form
+        return render(request, template, context)
+
+    return render(request, template, context)
+
+
+# TEST
+# ---------------------------------------------------------------------------------------------------------------------
+def test(request):
+    form_user = CustomerUserProfileForm(request.POST or None)
+
+    if request.method == 'POST':
+        if form_user.is_valid():
+            new_user = form_user.save(commit=False)
+            new_user.set_password(form_user.cleaned_data['password'])
+            new_user.save()
+            form_user = None
+            return HttpResponse('EXITO')
+
+    template = 'test.html'
+    context = {
+        'form': form_user,
+    }
     return render(request, template, context)

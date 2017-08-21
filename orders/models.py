@@ -3,7 +3,7 @@ from django.db import models
 
 from branchoffices.models import Supplier
 from products.models import Supply, Cartridge, PackageCartridge
-from users.models import User as UserProfile
+from users.models.users import User as UserProfile
 
 
 # ----------------------------------- Supplier models ----------------------------------

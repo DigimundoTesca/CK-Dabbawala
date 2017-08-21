@@ -52,10 +52,10 @@
       <div id="thecube">
         <section id="btns-options">
           <div id="show-buttons">
-            <button class="button show-front" onclick="visible()">Roti</button>
-            <button class="button show-back" onclick="visible1()">Ensaladas</button>
-            <button class="button show-right" onclick="visible2()">Bebidas</button>
-            <button class="button show-left" onclick="visible3()">Fruta</button>
+            <button id="show-front" class="button" onclick="visible()">Roti</button>
+            <button id="show-back" class="button" onclick="visible1()">Ensaladas</button>
+            <button id="show-right" class="button" onclick="visible2()">Bebidas</button>
+            <button id="show-left" class="button" onclick="visible3()">Fruta</button>
           </div>
           <!-- <a id="make-dabba" href="#sales-main">Arma tu dabba</a> -->
         </section>
@@ -104,7 +104,7 @@
               </div>
             </figure>
             <!-- Smoothies and Drinks -->
-            <figure id="rightdisplay" class="right panels-backface-invisib  ">
+            <figure id="rightdisplay" class="right panels-backface-invisible  ">
               <div class="container-scroll">
                 {% for product in products %}
                 {% if product.subcategory == 'SM' or product.subcategory == 'JU'  or product.subcategory == 'WA' %}
@@ -163,7 +163,6 @@
         <h3 class="order-title" >Tu pedido</h3>
         <div  id="cart-body"  class="card-float  container-scroll">
           <div class="container-scroll">
-
             <div class="card-block products-block">
               <div class="row">
               </div>
@@ -180,20 +179,6 @@
                   </li>
                 </ul>
               </li>
-              <!-- <li class="li-separator li-combos">
-                <span class="separator-title">Paquetes</span>
-                <ul>
-                  <li class="prod-list-head list-item">
-                    <span class="prod-name">Producto</span>
-                    <span class="prod-unit">P. Unit</span>
-                    <span class="prod-quantity">Cant</span>
-                    <span class="prod-total">Total</span>
-                  </li>
-                  <li class="list-item">
-                    Proximamente
-                  </li>
-                </ul>
-              </li> -->
             </ul>
           </div>
         </div>
@@ -508,38 +493,34 @@ $(document).ready(function() {
 });
 </script>
 <script type="text/javascript">
+
   function visible() {
+    /** ROTI */
     $('#frontdisplay').removeClass('panels-backface-invisible');
     $('#backdisplay').addClass('panels-backface-invisible');
     $('#rightdisplay').addClass('panels-backface-invisible');
     $('#leftdisplay').addClass('panels-backface-invisible');
-    $('#topdisplay').addClass('panels-backface-invisible');
-    $('#bottomdisplay').addClass('panels-backface-invisible');
   }
-
+  /** ENSALADA */
   function visible1() {
     $('#frontdisplay').addClass('panels-backface-invisible');
     $('#backdisplay').removeClass('panels-backface-invisible');
     $('#rightdisplay').addClass('panels-backface-invisible');
     $('#leftdisplay').addClass('panels-backface-invisible');
-    $('#topdisplay').addClass('panels-backface-invisible');
-    $('#bottomdisplay').addClass('panels-backface-invisible');
   }
+  /** BEBIDAS */
   function visible2() {
     $('#frontdisplay').addClass('panels-backface-invisible');
     $('#backdisplay').addClass('panels-backface-invisible');
     $('#rightdisplay').removeClass('panels-backface-invisible');
     $('#leftdisplay').addClass('panels-backface-invisible');
-    $('#topdisplay').addClass('panels-backface-invisible');
-    $('#bottomdisplay').addClass('panels-backface-invisible');
   }
+  /** FRUTAS */
   function visible3() {
     $('#frontdisplay').addClass('panels-backface-invisible');
     $('#backdisplay').addClass('panels-backface-invisible');
     $('#rightdisplay').addClass('panels-backface-invisible');
     $('#leftdisplay').removeClass('panels-backface-invisible');
-    $('#topdisplay').addClass('panels-backface-invisible');
-    $('#bottomdisplay').addClass('panels-backface-invisible');
   }
 </script>
 {% endblock scripts %}

@@ -3,7 +3,7 @@ from django.utils import timezone
 
 from orders.models import CustomerOrderDetail, CustomerOrder
 from products.models import Cartridge, PackageCartridgeRecipe, PackageCartridge
-from users.models import User as UserProfile
+from users.models.users import User as UserProfile
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
