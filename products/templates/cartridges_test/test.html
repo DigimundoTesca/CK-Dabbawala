@@ -1,0 +1,10 @@
+{% extends "base/base_nav_footer.html" %}
+
+{% block content %}
+<ul>
+{% for cartridge in cartridges %}
+  <li>{{ cartridge }}</li>
+{% endfor %}
+</ul>
+
+{% endblock %}

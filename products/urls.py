@@ -1,12 +1,12 @@
 from django.conf import settings
 from django.conf.urls import url
 
-from products import views
-from products.views import *
+from . import views
+from .views import *
 
-from products.views import Update_Cartridge
-from products.views import Delete_Cartridge
-from products.views import Create_Cartridge
+from .views import Update_Cartridge
+from .views import Delete_Cartridge
+from .views import Create_Cartridge
 
 app_name = 'products'
 
@@ -40,4 +40,4 @@ urlpatterns = [
 
 # test
 if settings.DEBUG:
-    urlpatterns.append(url(r'^test/$', views.test, name='test'))
+    urlpatterns.append(url(r'^products/test/$', views.test, name='test'))
