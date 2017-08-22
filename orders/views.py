@@ -1,5 +1,6 @@
 import json
 
+from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -13,7 +14,8 @@ from helpers.sales_helper import TicketPOSHelper
 
 @ensure_csrf_cookie
 def new_order(request):
-    return redirect('users:index')
+    if not settings.DEBUG:
+        return redirect('users:index')
     if request.session.has_key('cart'):
         return redirect('orders:pay')
     sales_helper = TicketPOSHelper()
