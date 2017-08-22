@@ -13,6 +13,7 @@ from helpers.sales_helper import TicketPOSHelper
 
 @ensure_csrf_cookie
 def new_order(request):
+    return redirect('users:index')
     if request.session.has_key('cart'):
         return redirect('orders:pay')
     sales_helper = TicketPOSHelper()
