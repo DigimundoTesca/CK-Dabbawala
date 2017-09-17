@@ -26,7 +26,7 @@ class AdminSupplyLocation(admin.ModelAdmin):
 @admin.register(Supply)
 class AdminSupply(admin.ModelAdmin):
     list_display = ('id', 'name', 'category', 'supplier', 'presentation_unit', 'presentation_cost', 'measurement_unit',
-        'measurement_quantity',)
+                    'measurement_quantity',)
     list_display_links = ('id', 'name')
     ordering = ['name']
 
@@ -44,7 +44,7 @@ class ExtraIngredientInline(admin.TabularInline):
 @admin.register(Cartridge)
 class AdminCartridge(admin.ModelAdmin):
     list_display = ('id', 'name', 'description', 'price', 'category', 'subcategory', 'kitchen_assembly', 'is_active',
-        'created_at','get_image', 'image')
+                    'created_at','get_image', 'image')
     list_display_links = ('id', 'name')
     list_editable = ('price', 'image', 'category', 'subcategory', 'is_active')
     inlines = [CartridgeRecipeInline, ExtraIngredientInline]
