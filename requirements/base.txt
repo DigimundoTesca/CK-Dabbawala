@@ -25,4 +25,4 @@ tablib==0.11.4
 pytz==2017.2
 
 # XLS Files
-openpyxls==2.4.8
+openpyxl==2.4.8
