@@ -1,10 +1,9 @@
-# -*- encoding: utf-8 -*-
 from __future__ import unicode_literals
 from django.contrib import admin
+from actions import export_as_excel
 
-from .models import PackageCartridge, PackageCartridgeRecipe, \
-    CartridgeRecipe, Supply, SupplyLocation, SuppliesCategory, Cartridge, \
-    ExtraIngredient, KitchenAssembly
+from .models import PackageCartridge, PackageCartridgeRecipe, CartridgeRecipe, Supply, SupplyLocation, \
+    SuppliesCategory, Cartridge, ExtraIngredient, KitchenAssembly
 
 
 @admin.register(SuppliesCategory)
@@ -49,6 +48,7 @@ class AdminCartridge(admin.ModelAdmin):
     list_editable = ('price', 'image', 'category', 'subcategory', 'is_active')
     inlines = [CartridgeRecipeInline, ExtraIngredientInline]
     ordering = ['name']
+    actions = (export_as_excel,)
 
 
 class PackageCartridgeRecipeInline(admin.TabularInline):
