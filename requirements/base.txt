@@ -23,3 +23,6 @@ tablib==0.11.4
 # World Timezone Detinitions for Python
 # -------------------------------------------------------
 pytz==2017.2
+
+# XLS Files
+openpyxls==2.4.8
