@@ -327,6 +327,13 @@
         },
         traditional: true,
         datatype: 'jsonp',
+        beforeSend: function(){
+          // swal({
+          //     title: "Generando gráficas",
+          //     text: "Espere mientras se calculan los datos",
+          //   });
+          // swal.enableLoading();
+        },
         success: function(result) {
           let sales_day_earnings_list;
           let initial_hour = '06:00',
@@ -373,7 +380,7 @@
           );
       });
 
-      selected_year = $('#dates-range-form').find('#dt-year').val();
+      selected_year = parseInt($('#dates-range-form').find('#dt-year').val());
 
       $.each(dates_range, function(index, item) {
         if (dates_range[index].year ===  selected_year) {
@@ -647,6 +654,7 @@
      */
     $(this).on('click', '.print-ticket', function(event) {
       let id_element = $(this).parent().siblings('.header-id').text();
+      let products_list = $(this).parent().siblings('.header-products');
       let btn_printer = $('.btn-printer');
       let ticket_details;
       let sales_list_modal = $('#sales-list-modal');
