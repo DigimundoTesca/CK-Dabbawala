@@ -15,7 +15,7 @@
           <label for="dt-year" hidden></label>
           <select class="custom-select" id="dt-year">
           </select>
-          <select class="custom-select" id="dt-week" >
+          <select class="custom-select" id="dt-week"  title="dt-week">
           </select>
         </form>
       </div>
@@ -202,10 +202,11 @@
      * returns a list with the earnings of the week per day with the days to set
      */
     function get_earnings_week_range(sales_list) {
-      let week_list = [0, 0, 0, 0, 0, 0, 0,]
+      let week_list = [0, 0, 0, 0, 0, 0, 0,];
+
       for (let i = 0; i < 7; i++) {
         for (let j = 0; j < sales_list.length; j++) {
-          if (sales_list[j].number_day == i) {
+          if (sales_list[j].number_day === i) {
             week_list[i] = sales_list[j]['earnings']
           }
         }
@@ -260,46 +261,11 @@
     }
 
     /**
-     * Receives two hours with the next format: hh:mm
-     * Returns the diference of the hours given with the following format: hh:mm
-     */
-    function get_time_differences(initial_time, final_time){
-      let hours,
-          minutes;
-      let initial_mins = parseInt(initial_time.substr(3,2)),
-          initial_hours = parseInt(initial_time.substr(0,2));
-
-      let final_mins = parseInt(final_time.substr(3,2)),
-          final_hours = parseInt(final_time.substr(0,2));
-
-      let elapsed_mins = final_mins - initial_mins,
-          elapsed_hours = final_hours - initial_hours;
-
-      if (elapsed_mins < 0) {
-        elapsed_hours--;
-        elapsed_mins = 60 + elapsed_mins;
-      }
-
-      hours = elapsed_hours.toString();
-      minutes = elapsed_mins.toString();
-
-      if (hours.length < 2) {
-        hours = "0"+hours;
-      }
-
-      if (minutes.length < 2) {
-        minutes = "0"+minutes;
-      }
-      return hours + ':' + minutes;
-    }
-
-    /**
      * Receives a datetime with format from python.
      * Returns an hour converted into 24-hours format: hh:mm ith Timezone +06:00
      */
     function convert_datetime_to_hour(original_datetime){
-      let hour_formated = original_datetime.split('T')[1].split('.')[0].substr(0,5);
-      return hour_formated;
+      return original_datetime.split('T')[1].split('.')[0].substr(0, 5);
     }
 
     /**
@@ -336,7 +302,7 @@
 
       // Searches the times outside the time range
       for(let i = 0; i < sales_list.length; i++) {
-        if(elements_ok.indexOf(sales_list[i]) == -1) {
+        if(elements_ok.indexOf(sales_list[i]) === -1) {
           earnings += parseFloat(sales_list[i].earnings);
         }
       }
@@ -361,13 +327,6 @@
         },
         traditional: true,
         datatype: 'jsonp',
-        beforeSend: function(){
-          // swal({
-          //     title: "Generando gráficas",
-          //     text: "Espere mientras se calculan los datos",
-          //   });
-          // swal.enableLoading();
-        },
         success: function(result) {
           let sales_day_earnings_list;
           let initial_hour = '06:00',
@@ -417,7 +376,7 @@
       selected_year = $('#dates-range-form').find('#dt-year').val();
 
       $.each(dates_range, function(index, item) {
-        if (dates_range[index].year ==  selected_year) {
+        if (dates_range[index].year ===  selected_year) {
           $.each(dates_range[index].weeks_list, function(index, item) {
             $('#dates-range-form').find('#dt-week').append(
               "<option value=" + item.start_date + "," + item.end_date + ">" +
@@ -469,7 +428,7 @@
           try {
             let selected_day = legendItem[0]._index;
             for (let i = 0; i < sales_week.length; i++) {
-              if (sales_week[i].number_day == selected_day) {
+              if (sales_week[i].number_day === selected_day) {
                 set_sales_day_chart(sales_week[i].date);
               }
             }
@@ -545,7 +504,7 @@
           regexp = /(\d+)(\d{3})/;
 
       amount += '';
-      amount = parseFloat(amount.replace(/[^0-9\.]/g, ''));
+      amount = parseFloat(amount.replace(/[^0-9.]/g, ''));
       decimals = decimals || 0;
 
       if (isNaN(amount) || amount === 0)
@@ -599,11 +558,12 @@
         traditional: true,
         datatype: 'jsonp',
         success: function(result, status, XHR) {
-          let tickets_objects = result['tickets']
-          sales_week = result['sales']
-          let week_number = result['week_number']
-          let sales_details_table = $('#sales-details-table').find('tbody');
-          let week_earnings = 0;
+          let tickets_objects = result['tickets'],
+              sales_week = result['sales'],
+              week_number = result['week_number'],
+              sales_details_table = $('#sales-details-table').find('tbody'),
+              week_earnings = 0;
+
           sales_details_table.empty();
 
           swal({
@@ -667,15 +627,11 @@
             "");
           }
 
-          /**
-           * Filling the sales chart
-           */
-          let sales_week_earnings_list = get_earnings_week_range(sales_week);
-          earnings_week_chart.data.datasets[0].data = sales_week_earnings_list;
+          earnings_week_chart.data.datasets[0].data = get_earnings_week_range(sales_week);
           earnings_week_chart.update();
 
-          $('#total-earnings-text').text(week_earnings.toFixed(2))
-          $('#week-number').text(week_number)
+          $('#total-earnings-text').text(week_earnings.toFixed(2));
+          $('#week-number').text(week_number);
 
         },
         error: function(result, jqXHR, textStatus, errorThrown) {
@@ -691,7 +647,6 @@
      */
     $(this).on('click', '.print-ticket', function(event) {
       let id_element = $(this).parent().siblings('.header-id').text();
-      let products_list = $(this).parent().siblings('.header-products');
       let btn_printer = $('.btn-printer');
       let ticket_details;
       let sales_list_modal = $('#sales-list-modal');
