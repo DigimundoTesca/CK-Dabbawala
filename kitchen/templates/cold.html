@@ -18,6 +18,7 @@
       </thead>
       <tbody>
         {% for product in products %}
+          {{ product }}
           {% if product.cartridges %}
             {% for cartridge in product.cartridges %}
               {% if cartridge.cartridge.kitchen_assembly.name == 'CO' %}
@@ -32,7 +33,7 @@
           {% if product.packages %}
             {% for package in product.packages %}
               {% for cartridge in package.package_recipe %}
-                {% if cartridge.cartridge.kitchen_assembly.name == 'CO' %}
+                {% if cartridge.kitchen_assembly.name == 'CO' %}
                 <tr>
                   <th scope="row" class="id_kitchen_table">{{ product.ticket_order }}</th>
                   <td>{{ cartridge }}</td>
