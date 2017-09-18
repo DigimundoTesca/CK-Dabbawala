@@ -55,9 +55,9 @@
   <div class="row sales-details">
     <div class="col-xs-12">
       <h4 class="col-xs-12 col-sm-8 col-xl-10">Ventas de hoy</h4>
-      <button id="btn-save-ticket-csv" class="col-xs-12 col-sm-4 col-xl-2 btn btn-primary d-flex">
+      <a id="save-reports" href="{% url 'sales:sales_report' %}" class="col-xs-12 col-sm-4 col-xl-2 btn btn-primary d-flex" download>
         <span class="btn-reports d-flex align-items-center"><i class="material-icons">file_download</i>Generar Reporte</span>
-      </button>
+      </a>
     </div>
     <div class="col-xs-12">
       <div class="card card-scroll-x mt-1">
@@ -860,12 +860,6 @@
           function(dismiss){});
     });
 
-    /**
-     * Saves the tickets as a xml file
-     */
-    $(this).on('click', '#btn-save-ticket-csv', function(event) {
-
-    });
 
     /**
      * Functions to initialize the graphs
