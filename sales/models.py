@@ -185,6 +185,33 @@ class TicketDetail(models.Model):
         verbose_name_plural = 'Tickets Details'
 
 
+class TicketCartridgeDetail(models.Model):
+    ticket = models.ForeignKey(TicketBase)
+    quantity = models.IntegerField(default=1)
+    price = models.DecimalField(default=0, max_digits=12, decimal_places=2)
+
+    class Meta:
+        verbose_name = 'Detalle del Ticket para Cartuchos'
+        verbose_name_plural = 'Detalles de Tickets para Cartuchos'
+
+    def __str__(self):
+        return '%s' % self.ticket
+
+
+class TicketPackageCartridgeDetail(models.Model):
+    ticket = models.ForeignKey(TicketBase)
+    package_cartridge = models.ForeignKey(PackageCartridge)
+    quantity = models.IntegerField(default=1)
+    price = models.DecimalField(default=0, max_digits=12, decimal_places=2)
+
+    class Meta:
+        verbose_name = 'Detalle del Ticket para Paquetes'
+        verbose_name_plural = 'Detalles de Tickets para Paquetes'
+
+    def __str__(self):
+        return '%s' % self.ticket
+
+
 class TicketExtraIngredient(models.Model):
     ticket_detail = models.ForeignKey(TicketDetail, null=True)
     extra_ingredient = models.ForeignKey(ExtraIngredient, on_delete=models.CASCADE, blank=True, null=True)
