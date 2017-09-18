@@ -54,7 +54,6 @@ def cold_kitchen(request):
         'products': get_processed_products(),
         'tickets': tickets,
     }
-
     return render(request, template, context)
 
 
