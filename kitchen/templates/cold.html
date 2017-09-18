@@ -18,7 +18,6 @@
       </thead>
       <tbody>
         {% for product in products %}
-          {{ product }}
           {% if product.cartridges %}
             {% for cartridge in product.cartridges %}
               {% if cartridge.cartridge.kitchen_assembly.name == 'CO' %}
