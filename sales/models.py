@@ -17,10 +17,10 @@ class TicketBase(models.Model):
         (CREDIT, 'Crédito'),
     )
 
+    order_number = models.IntegerField(default=1)
     created_at = models.DateTimeField(editable=True)
     payment_type = models.CharField(
         choices=PAYMENT_TYPE, default=CASH, max_length=2)
-    order_number = models.IntegerField(default=1, blank=False, null=False)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
@@ -152,12 +152,11 @@ class TicketOrder(models.Model):
         verbose_name_plural = 'Tickets Order'
 
 
+# Deprecated class to new pre-release
 class TicketDetail(models.Model):
     ticket = models.ForeignKey(TicketBase, on_delete=models.CASCADE)
-    cartridge = models.ForeignKey(
-        Cartridge, on_delete=models.CASCADE, blank=True, null=True)
-    package_cartridge = models.ForeignKey(
-        PackageCartridge, on_delete=models.CASCADE, blank=True, null=True)
+    cartridge = models.ForeignKey(Cartridge, on_delete=models.CASCADE, blank=True, null=True)
+    package_cartridge = models.ForeignKey(PackageCartridge, on_delete=models.CASCADE, blank=True, null=True)
     quantity = models.IntegerField(default=0)
     price = models.DecimalField(default=0, max_digits=12, decimal_places=2)
 
@@ -185,8 +184,9 @@ class TicketDetail(models.Model):
         verbose_name_plural = 'Tickets Details'
 
 
-class TicketCartridgeDetail(models.Model):
-    ticket = models.ForeignKey(TicketBase)
+class CartridgeTicketDetail(models.Model):
+    cartridge = models.ForeignKey(Cartridge, on_delete=models.CASCADE)
+    ticket_base = models.ForeignKey(TicketBase, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
     price = models.DecimalField(default=0, max_digits=12, decimal_places=2)
 
@@ -195,26 +195,28 @@ class TicketCartridgeDetail(models.Model):
         verbose_name_plural = 'Detalles de Tickets para Cartuchos'
 
     def __str__(self):
-        return '%s' % self.ticket
+        return '%s' % self.ticket_base
 
 
-class TicketPackageCartridgeDetail(models.Model):
-    ticket = models.ForeignKey(TicketBase)
+class PackageCartridgeTicketDetail(models.Model):
+    ticket_base = models.ForeignKey(TicketBase, on_delete=models.CASCADE)
     package_cartridge = models.ForeignKey(PackageCartridge)
-    quantity = models.IntegerField(default=1)
+    quantity = models.PositiveSmallIntegerField(default=1)
     price = models.DecimalField(default=0, max_digits=12, decimal_places=2)
-
+    
     class Meta:
         verbose_name = 'Detalle del Ticket para Paquetes'
         verbose_name_plural = 'Detalles de Tickets para Paquetes'
 
     def __str__(self):
-        return '%s' % self.ticket
+        return '%s' % self.ticket_base
 
 
 class TicketExtraIngredient(models.Model):
-    ticket_detail = models.ForeignKey(TicketDetail, null=True)
-    extra_ingredient = models.ForeignKey(ExtraIngredient, on_delete=models.CASCADE, blank=True, null=True)
+    ticket_detail = models.ForeignKey(TicketDetail)  # Will be deleted the next pre-release
+    cartridge_ticket_detail = models.ForeignKey(CartridgeTicketDetail, on_delete=models.CASCADE)
+    extra_ingredient = models.ForeignKey(ExtraIngredient, on_delete=models.CASCADE)
+    quantity = models.PositiveSmallIntegerField(default=1)
     price = models.DecimalField(default=0, max_digits=12, decimal_places=2)
 
     def __str__(self):
