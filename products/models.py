@@ -205,7 +205,7 @@ class ExtraIngredient(models.Model):
         return '%s' % self.ingredient
 
     class Meta:
-        ordering = ('cartridge', 'ingredient')
+        ordering = ('ingredient', 'ingredient')
         verbose_name = 'Ingrediente Extra'
         verbose_name_plural = 'Ingredientes Extra'
 
