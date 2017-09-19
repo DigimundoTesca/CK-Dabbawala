@@ -78,20 +78,20 @@ class Supply(models.Model):
     )
 
     name = models.CharField(validators=[MinLengthValidator(2)], max_length=125, unique=True)
+    created_at = models.DateTimeField(editable=False, auto_now=True)
     category = models.ForeignKey(SuppliesCategory, default=1, on_delete=models.CASCADE)
     barcode = models.PositiveIntegerField(
         help_text='(Código de barras de 13 dígitos)',
         validators=[MaxValueValidator(9999999999999)], blank=True, null=True)
-    supplier = models.ForeignKey(Supplier, default=1, on_delete=models.CASCADE)
     storage_required = models.CharField(choices=STORAGE_REQUIREMENTS, default=DRY_ENVIRONMENT, max_length=2)
+    supplier = models.ForeignKey(Supplier, default=1, on_delete=models.CASCADE)
     presentation_unit = models.CharField(max_length=10, choices=PRESENTATION_UNIT, default=PACKAGE)
     presentation_cost = models.FloatField(default=0)
-    measurement_quantity = models.FloatField(default=0)
     measurement_unit = models.CharField(max_length=10, choices=METRICS, default=PACKAGE)
+    measurement_quantity = models.FloatField(default=0)
     optimal_duration = models.IntegerField(default=0)
     optimal_duration_unit = models.CharField(choices=OPTIMAL_DURATION, max_length=2, default=DAYS)
     location = models.ForeignKey(SupplyLocation, default=1, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(editable=False, auto_now=True)
     image = models.ImageField(blank=False, upload_to='supplies')
 
     def __str__(self):
@@ -153,13 +153,13 @@ class Cartridge(models.Model):
 
     name = models.CharField(max_length=128, default='')
     description = models.CharField(max_length=255, default='Cartridge description')
-    price = models.DecimalField(decimal_places=2, default=0, max_digits=12)
+    created_at = models.DateTimeField(auto_now=True)
     category = models.CharField(choices=CATEGORIES, default=FOOD_DISHES, max_length=2)
     subcategory = models.CharField(choices=SUBCATEGORIES, default=FRUITS, max_length=2)
+    price = models.DecimalField(decimal_places=2, default=0, max_digits=12)
     kitchen_assembly = models.ForeignKey(KitchenAssembly, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now=True)
-    image = models.ImageField(blank=False, upload_to='cartridges')
     is_active = models.BooleanField(default=True)
+    image = models.ImageField(blank=False, upload_to='cartridges')
 
     def __str__(self):
         return self.name
@@ -197,10 +197,9 @@ class ExtraIngredient(models.Model):
     """
     Description: Extra ingredients that could have the cartridges in a new sale
     """
-    cartridge = models.ForeignKey(Cartridge)
-    ingredient = models.ForeignKey(Supply)
+    ingredient = models.ForeignKey(Cartridge, null=True, blank=True)
+    quantity = models.PositiveSmallIntegerField(default=1)
     cost = models.DecimalField(default=0, max_digits=12, decimal_places=2)
-    image = models.ImageField(blank=False, upload_to='extra-ingredients')
 
     def __str__(self):
         return '%s' % self.ingredient
@@ -218,9 +217,9 @@ class PackageCartridge(models.Model):
 
     name = models.CharField(max_length=90)
     description = models.CharField(max_length=255, default='Package description')
+    created_at = models.DateTimeField(auto_now=True)
     price = models.DecimalField(default=0, max_digits=12, decimal_places=2)
     is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now=True)
     image = models.ImageField(blank=False, upload_to='cartridges', default='')
 
     def __str__(self):
