@@ -203,7 +203,7 @@ class PackageCartridgeTicketDetail(models.Model):
     package_cartridge = models.ForeignKey(PackageCartridge)
     quantity = models.PositiveSmallIntegerField(default=1)
     price = models.DecimalField(default=0, max_digits=12, decimal_places=2)
-    
+
     class Meta:
         verbose_name = 'Detalle del Ticket para Paquetes'
         verbose_name_plural = 'Detalles de Tickets para Paquetes'
@@ -221,3 +221,17 @@ class TicketExtraIngredient(models.Model):
 
     def __str__(self):
         return '%s' % self.extra_ingredient
+
+
+class SalesCartridge(models.Model):
+    cartridge = models.ForeignKey(Cartridge, on_delete=models.CASCADE)
+    quantity = models.PositiveSmallIntegerField(default=0)
+    created_at = models.DateTimeField(editable=True)
+    simulated_quantity = models.PositiveSmallIntegerField(null=True
+        
+    class Meta:
+        verbose_name = 'Venta por dia de cartucho'
+        verbose_name_plural = 'Ventas por dia de cartuchos'
+
+    def __str__(self):
+        return '%s' % self.cartridge
