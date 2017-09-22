@@ -3,13 +3,16 @@
 {% block content %}
   <div class="container-fluid">
     <div class="card">
-      {% for ticket in tickets %}
-      {{ticket}} <br>
-      {% endfor %}
-    </div>
-    <div class="card">
-      {% for pos in ticket_pos %}
-        {{pos}} <br>
+      {% for ticket_detail in tickets %}
+
+        {% if ticket_detail.cartridge %}
+          CARTUCHO
+          {{ ticket_detail.cartridge }} <br>
+        {% elif ticket_detail.package_cartridge %}
+          PAQUETE
+          {{ ticket_detail.package_cartridge }} <br>
+        {% endif %}
+
       {% endfor %}
     </div>
   </div>

@@ -273,7 +273,6 @@ def new_sale(request):
     products_helper = ProductsHelper()
     if request.method == 'POST':
         if request.POST['ticket']:
-            print(request.POST)
             username = request.user
             user_profile_object = get_object_or_404(UserProfile, username=username)
             ticket_detail_json_object = json.loads(request.POST.get('ticket'))
@@ -399,23 +398,28 @@ def new_sale(request):
 # -------------------------------- Test ------------------------------
 def test_sales_update(request):
     template = 'sales/test.html'
-    tickets = TicketBase.objects.all()
-    ticket_pos = TicketPOS.objects.all()
-    context = {
-        'tickets': tickets,
-        'ticket_pos': ticket_pos,
-    }
-
-    for ticket in tickets:
-        exists = False
-        for pos in ticket_pos:
-            if ticket == pos.ticket:
-                exists = True
-
-        if not exists:
-            new_ticket_pos = TicketPOS(
-                ticket=ticket,
-                cashier=ticket.seller,
+    all_previous_tickets_details = TicketDetail.objects.all()
+    for ticket_detail in all_previous_tickets_details:
+        ticket_base = TicketBase.objects.get(id=ticket_detail.ticket.id)
+        if ticket_detail.cartridge:  # Is Cartridge
+            new_cartridge_ticket_detail = CartridgeTicketDetail(
+                ticket_base=ticket_base,
+                cartridge=ticket_detail.cartridge,
+                quantity=ticket_detail.quantity,
+                price=ticket_detail.price
             )
-            new_ticket_pos.save()
+            new_cartridge_ticket_detail.save()
+        elif ticket_detail.package_cartridge:  # Is Package
+            new_package_cartridge_ticket_detail = PackageCartridgeTicketDetail(
+                ticket_base=ticket_base,
+                package_cartridge=ticket_detail.package_cartridge,
+                quantity=ticket_detail.quantity,
+                price=ticket_detail.price
+            )
+            new_package_cartridge_ticket_detail.save()
+
+    context = {
+        'tickets': all_previous_tickets_details
+    }
+    return render(request, template, context)
 
