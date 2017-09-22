@@ -16,10 +16,10 @@ class ProcessedProduct(models.Model):
         (ASSEMBLED, 'Ensamblado'),
     )
 
+    ticket = models.OneToOneField(TicketBase, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     prepared_at = models.DateTimeField(editable=True, null=True, blank=True)
     status = models.CharField(max_length=10, choices=STATUS, default=ASSEMBLED)
-    ticket = models.OneToOneField(TicketBase, on_delete=models.CASCADE)
 
     def __str__(self):
         return '%s' % self.created_at
@@ -60,9 +60,9 @@ class Warehouse(models.Model):
     status = models.CharField(choices=STATUS, default=PROVIDER, max_length=15)
     created_at = models.DateField(editable=False, auto_now_add=True)
     expiry_date = models.DateField(editable=True, auto_now_add=True)
+    cost = models.FloatField(default=0)
     quantity = models.FloatField(default=0)
     waste = models.FloatField(default=0)
-    cost = models.FloatField(default=0)
 
     def __str__(self):
         return '%s' % self.id
