@@ -1,14 +1,8 @@
-import json
 import math
-import pytz
 from datetime import datetime, date, timedelta, time
-from decimal import Decimal
-from django.db.models import Min, Max
-from diners.models import AccessLog, Diner, SatisfactionRating, ElementToEvaluate
 from kitchen.models import Warehouse, ProcessedProduct
-from products.models import Supply, Cartridge, PackageCartridge, CartridgeRecipe, PackageCartridgeRecipe, \
-    ExtraIngredient
-from sales.models import TicketBase, TicketDetail, TicketExtraIngredient
+from products.models import Cartridge
+from sales.models import TicketOrder, TicketPOS, TicketBase
 
 
 class LeastSquares(object):
@@ -153,7 +147,7 @@ class KitchenHelper(object):
                             'quantity': ticket_detail.quantity,
                             'cartridge': ticket_detail.cartridge,
                         }
-                        for extra_ingredient in sales_helper.get_all_extra_ingredients():
+                        for extra_ingredient in sales_helper.get_extra_ingredients():
                             if extra_ingredient.ticket_detail == ticket_detail:
                                 try:
                                     cartridge['name'] += extra_ingredient['extra_ingredient']

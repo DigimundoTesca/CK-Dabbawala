@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from cloudkitchen.settings.base import PAGE_TITLE
 from kitchen.models import ProcessedProduct
 from products.models import PackageCartridgeRecipe, Cartridge, PackageCartridge
-from sales.models import TicketBase, TicketDetail, TicketExtraIngredient
+from sales.models import TicketBase
 
 
 @login_required(login_url='users:login')

@@ -11,7 +11,7 @@ from openpyxl.styles import Alignment
 
 from cloudkitchen.settings.base import PAGE_TITLE
 from products.models import Cartridge, PackageCartridge, PackageCartridgeRecipe
-from sales.models import TicketBase, TicketDetail, TicketPOS, CartridgeTicketDetail, PackageCartridgeTicketDetail
+from sales.models import TicketBase, TicketPOS, CartridgeTicketDetail, PackageCartridgeTicketDetail
 from users.models.users import User as UserProfile
 from helpers.sales_helper import TicketPOSHelper
 from helpers.products_helper import ProductsHelper
@@ -139,7 +139,7 @@ def sales(request):
             sales_day_list = []
             start_day = helper.naive_to_datetime(datetime.strptime(request.POST['date'], '%d-%m-%Y').date())
             end_date = helper.naive_to_datetime(start_day + timedelta(days=1))
-            tickets_objects = sales_helper.get_all_tickets().filter(ticket__created_at__range=[start_day, end_date])
+            tickets_objects = sales_helper.get_tickets().filter(ticket__created_at__range=[start_day, end_date])
 
             for ticket_pos in tickets_objects:
                 """
@@ -150,9 +150,17 @@ def sales(request):
                     'datetime': timezone.localtime(ticket_pos.ticket.created_at),
                     'earnings': 0
                 }
-                for ticket_detail in sales_helper.get_all_tickets_details():
-                    if ticket_detail.ticket == ticket_pos.ticket:
-                        earnings_sale_object['earnings'] += ticket_detail.price
+
+                # Cartridge Ticket Detail
+                for cartridge_ticket_detail in sales_helper.get_cartridges_tickets_details():
+                    if cartridge_ticket_detail.ticket_base == ticket_pos.ticket:
+                        earnings_sale_object['earnings'] += cartridge_ticket_detail.price
+
+                # Package Ticket Detail
+                for package_ticket_detail in sales_helper.get_packages_tickets_details():
+                    if package_ticket_detail.ticket_base == ticket_pos.ticket:
+                        earnings_sale_object['earnings'] += package_ticket_detail.price
+
                 sales_day_list.append(earnings_sale_object)
             return JsonResponse({'sales_day_list': sales_day_list})
 
@@ -195,7 +203,7 @@ def sales(request):
         if request.POST['type'] == 'tickets':
             tickets_objects_list = []
 
-            for ticket_pos in sales_helper.get_all_tickets():
+            for ticket_pos in sales_helper.get_tickets():
                 for ticket_detail in sales_helper.get_all_tickets_details():
                     if ticket_detail.ticket == ticket_pos.ticket:
                         ticket_object = {

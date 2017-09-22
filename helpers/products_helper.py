@@ -6,7 +6,7 @@ from helpers.sales_helper import TicketPOSHelper
 from kitchen.models import Warehouse
 from products.models import Cartridge, CartridgeRecipe, PackageCartridge, \
     PackageCartridgeRecipe, Supply, ExtraIngredient
-from sales.models import TicketDetail
+from sales.models import PackageCartridgeTicketDetail, CartridgeTicketDetail
 
 
 class ProductsHelper(object):

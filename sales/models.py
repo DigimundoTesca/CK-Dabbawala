@@ -155,38 +155,6 @@ class TicketOrder(models.Model):
         verbose_name_plural = 'Tickets Order'
 
 
-# Deprecated class to new pre-release
-class TicketDetail(models.Model):
-    ticket = models.ForeignKey(TicketBase, on_delete=models.CASCADE)
-    cartridge = models.ForeignKey(Cartridge, on_delete=models.CASCADE, blank=True, null=True)
-    package_cartridge = models.ForeignKey(PackageCartridge, on_delete=models.CASCADE, blank=True, null=True)
-    quantity = models.IntegerField(default=0)
-    price = models.DecimalField(default=0, max_digits=12, decimal_places=2)
-
-    def created_at(self):
-        return self.ticket.created_at
-
-    def __str__(self):
-        return '%s' % self.id
-
-    def extra_ingredients(self):
-        ingredients = TicketExtraIngredient.objects.filter(ticket_detail=self.id)
-        options = []
-
-        for ingredient in ingredients:
-            options.append(("<option value=%s selected>%s</option>" %
-                                (ingredient, ingredient)))
-        tag = """<select multiple disabled>%s</select>""" % str(options)
-        return tag
-
-    extra_ingredients.allow_tags = True
-
-    class Meta:
-        ordering = ('id',)
-        verbose_name = 'Ticket Details'
-        verbose_name_plural = 'Tickets Details'
-
-
 class CartridgeTicketDetail(models.Model):
     cartridge = models.ForeignKey(Cartridge, on_delete=models.CASCADE)
     ticket_base = models.ForeignKey(TicketBase, on_delete=models.CASCADE)
@@ -216,7 +184,6 @@ class PackageCartridgeTicketDetail(models.Model):
 
 
 class TicketExtraIngredient(models.Model):
-    ticket_detail = models.ForeignKey(TicketDetail, null=True, blank=True)  # Will be deleted the next pre-release
     cartridge_ticket_detail = models.ForeignKey(CartridgeTicketDetail, on_delete=models.CASCADE, null=True, blank=True)
     extra_ingredient = models.ForeignKey(ExtraIngredient, on_delete=models.CASCADE, default=1)
     quantity = models.PositiveSmallIntegerField(default=1)
