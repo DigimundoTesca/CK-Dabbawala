@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.db.models import Sum
 
 from sales.models import *
 from actions import export_as_excel
@@ -32,15 +31,16 @@ class TicketBaseAdmin(admin.ModelAdmin):
 
 @admin.register(TicketPOS)
 class TicketPOSAdmin(admin.ModelAdmin):
-    list_display = ('ticket',
+    list_display = (
+        'ticket',
         'order_number',
         'created_at',
-        'ticket_details',
+        'cartridges',
+        'packages',
         'payment_type',
         'total',
         'is_active',
         'cashier',
-        'sale_point',
     )
     list_display_links = ('ticket', 'cashier',)
 
