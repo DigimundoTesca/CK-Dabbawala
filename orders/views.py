@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from products.models import Cartridge
-from sales.models import TicketBase, TicketDetail
+from sales.models import TicketBase, TicketOrder
 from users.models.customers import User as UserProfile
 from helpers_origin import CartHelper
 from helpers.sales_helper import TicketPOSHelper

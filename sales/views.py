@@ -11,7 +11,7 @@ from openpyxl.styles import Alignment
 
 from cloudkitchen.settings.base import PAGE_TITLE
 from products.models import Cartridge, PackageCartridge, PackageCartridgeRecipe
-from sales.models import TicketBase, TicketDetail, TicketPOS, CartridgeTicketDetail, PackageCartridgeTicketDetail
+from sales.models import TicketBase, TicketPOS, CartridgeTicketDetail, PackageCartridgeTicketDetail
 from users.models.users import User as UserProfile
 from helpers.sales_helper import TicketPOSHelper
 from helpers.products_helper import ProductsHelper
@@ -139,7 +139,7 @@ def sales(request):
             sales_day_list = []
             start_day = helper.naive_to_datetime(datetime.strptime(request.POST['date'], '%d-%m-%Y').date())
             end_date = helper.naive_to_datetime(start_day + timedelta(days=1))
-            tickets_objects = sales_helper.get_all_tickets().filter(ticket__created_at__range=[start_day, end_date])
+            tickets_objects = sales_helper.get_tickets().filter(ticket__created_at__range=[start_day, end_date])
 
             for ticket_pos in tickets_objects:
                 """
@@ -150,9 +150,17 @@ def sales(request):
                     'datetime': timezone.localtime(ticket_pos.ticket.created_at),
                     'earnings': 0
                 }
-                for ticket_detail in sales_helper.get_all_tickets_details():
-                    if ticket_detail.ticket == ticket_pos.ticket:
-                        earnings_sale_object['earnings'] += ticket_detail.price
+
+                # Cartridge Ticket Detail
+                for cartridge_ticket_detail in sales_helper.get_cartridges_tickets_details():
+                    if cartridge_ticket_detail.ticket_base == ticket_pos.ticket:
+                        earnings_sale_object['earnings'] += cartridge_ticket_detail.price
+
+                # Package Ticket Detail
+                for package_ticket_detail in sales_helper.get_packages_tickets_details():
+                    if package_ticket_detail.ticket_base == ticket_pos.ticket:
+                        earnings_sale_object['earnings'] += package_ticket_detail.price
+
                 sales_day_list.append(earnings_sale_object)
             return JsonResponse({'sales_day_list': sales_day_list})
 
@@ -165,39 +173,47 @@ def sales(request):
                 'packages': [],
             }
 
-            # Get cartridges details
-            for ticket_detail in sales_helper.get_all_tickets_details():
-                if ticket_detail.ticket.id == ticket_id:
-                    ticket_object['ticket_order'] = ticket_detail.ticket.order_number
-                    if ticket_detail.cartridge:
-                        cartridge_object = {
-                            'name': ticket_detail.cartridge.name,
-                            'quantity': ticket_detail.quantity,
-                            'total': ticket_detail.price
-                        }
-                        ticket_object['cartridges'].append(cartridge_object)
-                    elif ticket_detail.package_cartridge:
-                        cartridges_list = []
-                        package_cartridge_recipe = PackageCartridgeRecipe.objects.filter(
-                            package_cartridge=ticket_detail.package_cartridge)
+            # Cartridge Ticket Details
+            for cartridge_ticket_detail in sales_helper.get_cartridges_tickets_details():
+                if cartridge_ticket_detail.ticket_base.id == ticket_id:
+                    ticket_object['ticket_order'] = cartridge_ticket_detail.ticket_base.order_number
 
-                        for cartridge_recipe in package_cartridge_recipe:
-                            cartridges_list.append(cartridge_recipe.cartridge.name)
-                        package_cartridge_object = {
-                            'cartridges': cartridges_list,
-                            'quantity': ticket_detail.quantity,
-                            'total': ticket_detail.price
-                        }
-                        ticket_object['packages'].append(package_cartridge_object)
+                    cartridge_object = {
+                        'name': cartridge_ticket_detail.cartridge.name,
+                        'quantity': cartridge_ticket_detail.quantity,
+                        'total': cartridge_ticket_detail.price
+                    }
+
+                    ticket_object['cartridges'].append(cartridge_object)
+
+            # Package Ticket Details
+            for package_ticket_detail in sales_helper.get_packages_tickets_details():
+                if package_ticket_detail.ticket_base.id == ticket_id:
+                    ticket_object['ticket_order'] = package_ticket_detail.ticket_base.order_number
+                    cartridges_list = []
+
+                    package_cartridge_recipe = PackageCartridgeRecipe.objects.filter(
+                        package_cartridge=package_ticket_detail.package_cartridge)
+
+                    for cartridge_recipe in package_cartridge_recipe:
+                        cartridges_list.append(cartridge_recipe.cartridge.name)
+
+                    package_cartridge_object = {
+                        'cartridges': cartridges_list,
+                        'quantity': package_ticket_detail.quantity,
+                        'total': package_ticket_detail.price
+                    }
+
+                    ticket_object['packages'].append(package_cartridge_object)
 
             return JsonResponse({'ticket_details': ticket_object})
 
         if request.POST['type'] == 'tickets':
             tickets_objects_list = []
 
-            for ticket_pos in sales_helper.get_all_tickets():
-                for ticket_detail in sales_helper.get_all_tickets_details():
-                    if ticket_detail.ticket == ticket_pos.ticket:
+            for ticket_pos in sales_helper.get_tickets():
+                for cartridge_ticket_detail in sales_helper.get_all_tickets_details():
+                    if cartridge_ticket_detail.ticket == ticket_pos.ticket:
                         ticket_object = {
                             'ID': ticket_pos.ticket.id,
                             'Fecha': timezone.localtime(ticket_pos.ticket.created_at).date(),
@@ -208,17 +224,17 @@ def sales(request):
                             ticket_object['Tipo de Pago'] = 'Efectivo'
                         else:
                             ticket_object['Tipo de Pago'] = 'Crédito'
-                        if ticket_detail.cartridge:
-                            ticket_object['Producto'] = ticket_detail.cartridge.name
+                        if cartridge_ticket_detail.cartridge:
+                            ticket_object['Producto'] = cartridge_ticket_detail.cartridge.name
                         else:
                             ticket_object['Producto'] = None
-                        if ticket_detail.package_cartridge:
-                            ticket_object['Paquete'] = ticket_detail.package_cartridge.name
+                        if cartridge_ticket_detail.package_cartridge:
+                            ticket_object['Paquete'] = cartridge_ticket_detail.package_cartridge.name
                         else:
                             ticket_object['Paquete'] = None
-                        ticket_object['Cantidad'] = ticket_detail.quantity
-                        ticket_object['Total'] = ticket_detail.price
-                        ticket_object['Precio Unitario'] = ticket_detail.price / ticket_detail.quantity
+                        ticket_object['Cantidad'] = cartridge_ticket_detail.quantity
+                        ticket_object['Total'] = cartridge_ticket_detail.price
+                        ticket_object['Precio Unitario'] = cartridge_ticket_detail.price / cartridge_ticket_detail.quantity
 
                         tickets_objects_list.append(ticket_object)
 
@@ -382,7 +398,7 @@ def new_sale(request):
         return JsonResponse({'status': 'error'})
 
     else:
-        cartridges_list = products_helper.all_cartridges
+        cartridges_list = products_helper.cartridges
         package_cartridges = PackageCartridge.objects.all()
         template = 'sales/new_sale.html'
         title = 'Nueva venta'
