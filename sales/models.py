@@ -227,8 +227,8 @@ class SalesCartridge(models.Model):
     cartridge = models.ForeignKey(Cartridge, on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField(default=0)
     created_at = models.DateTimeField(editable=True)
-    simulated_quantity = models.PositiveSmallIntegerField(null=True
-        
+    simulated_quantity = models.PositiveSmallIntegerField(null=True)
+
     class Meta:
         verbose_name = 'Venta por dia de cartucho'
         verbose_name_plural = 'Ventas por dia de cartuchos'

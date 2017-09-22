@@ -443,6 +443,10 @@ class PredictionSale:
         self.__sd_cartridge = None
         self.__mean_cartridge = None
         self.__estimated_amount = None
+        self.__simulated_sale = None
+
+    def set_id_prediction_cartridge(self):
+        pass
 
     def set_all_sales_cartridges_prediction(self):
         self.__all_cartridges_sales = get_all_sales_cartridges_real() + get_all_sales_cartridges_simulated()
@@ -501,3 +505,13 @@ class PredictionSale:
         if self.__estimated_amount is None:
             self.set_estimated_amount()
         return self.__estimated_amount
+
+
+class AddSale:
+    def __init__(self):
+        super(AddSale, self).__init__()
+        self.__id_prediction_cartridge = None
+
+    def add_simuleted_sale(self):
+        predition_sale = PredictionSale()
+        if get_estimated_amount
