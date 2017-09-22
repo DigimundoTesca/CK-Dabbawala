@@ -31,9 +31,17 @@ class TicketBaseAdmin(admin.ModelAdmin):
 
 @admin.register(TicketPOS)
 class TicketPOSAdmin(admin.ModelAdmin):
-    list_display = ('ticket', 'order_number', 'created_at', 'ticket_details', 'payment_type', 'total', 'is_active',
-                    'cashier',
-                    )
+    list_display = (
+        'ticket',
+        'order_number',
+        'created_at',
+        'cartridges',
+        'packages',
+        'payment_type',
+        'total',
+        'is_active',
+        'cashier',
+    )
     list_display_links = ('ticket', 'cashier',)
 
 

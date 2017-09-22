@@ -91,21 +91,27 @@ class TicketPOS(models.Model):
     def is_active(self):
         return self.ticket.is_active
 
-    def ticket_details(self):
-        tickets_details = TicketDetail.objects.filter(ticket=self.ticket)
+    def cartridges(self):
+        tickets_details = CartridgeTicketDetail.objects.filter(ticket_base=self.ticket)
         options = []
 
         for ticket_detail in tickets_details:
-            if ticket_detail.cartridge:
-                options.append(("<option value=%s>%s</option>" %
+                options.append(("<option value=%s selected>%s</option>" %
                                 (ticket_detail, ticket_detail.cartridge)))
-            elif ticket_detail.package_cartridge:
-                options.append(("<option value=%s>%s</option>" %
-                                (ticket_detail, ticket_detail.package_cartridge)))
-        tag = """<select>%s</select>""" % str(options)
-        return tag
+        return """<select multiple disabled>%s</select>""" % str(options)
 
-    ticket_details.allow_tags = True
+    cartridges.allow_tags = True
+
+    def packages(self):
+        tickets_details = PackageCartridgeTicketDetail.objects.filter(ticket_base=self.ticket)
+        options = []
+
+        for ticket_detail in tickets_details:
+            options.append(("<option value=%s selected>%s</option>" %(ticket_detail, ticket_detail.package_cartridge)))
+
+        return """<select multiple disabled>%s</select>""" % str(options)
+
+    packages.allow_tags = True
 
     class Meta:
         ordering = ('-ticket__created_at',)
@@ -125,10 +131,10 @@ class TicketOrder(models.Model):
     )
 
     def __str__(self):
-        return '%s Ticket Order' %  self.ticket
+        return '%s Ticket Order' % self.ticket
 
     def ticket_details(self):
-        tickets_details = TicketDetail.objects.filter(ticket=self.ticket)
+        tickets_details = TicketCartridgeDetail.objects.filter(ticket=self.ticket)
         options = []
 
         for ticket_detail in tickets_details:
