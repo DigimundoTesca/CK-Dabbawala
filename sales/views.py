@@ -11,7 +11,7 @@ from openpyxl.styles import Alignment
 
 from cloudkitchen.settings.base import PAGE_TITLE
 from products.models import Cartridge, PackageCartridge, PackageCartridgeRecipe
-from sales.models import TicketBase, TicketDetail, TicketPOS
+from sales.models import TicketBase, TicketDetail, TicketPOS, CartridgeTicketDetail, PackageCartridgeTicketDetail
 from users.models.users import User as UserProfile
 from helpers.sales_helper import TicketPOSHelper
 from helpers.products_helper import ProductsHelper
@@ -273,20 +273,18 @@ def new_sale(request):
     products_helper = ProductsHelper()
     if request.method == 'POST':
         if request.POST['ticket']:
-            """
-            Gets the tickets in the week and returns n + 1
-            where n is the Ticket.order_number biggest for the current weeks
-            """
+            print(request.POST)
             username = request.user
             user_profile_object = get_object_or_404(UserProfile, username=username)
             ticket_detail_json_object = json.loads(request.POST.get('ticket'))
             payment_type = ticket_detail_json_object['payment_type']
-            new_ticket_object = TicketBase(
+            new_ticket_base = TicketBase(
+                order_number=sales_helper.get_new_order_number(),
                 payment_type=payment_type,
-                order_number=sales_helper.get_new_order_number())
-            new_ticket_object.save()
+            )
+            new_ticket_base.save()
             new_ticket_pos = TicketPOS(
-                ticket=new_ticket_object,
+                ticket=new_ticket_base,
                 cashier=user_profile_object,
             )
             new_ticket_pos.save()
@@ -295,26 +293,21 @@ def new_sale(request):
             Saves the tickets details for cartridges
             """
             for ticket_detail in ticket_detail_json_object['cartridges']:
-                cartridge_object = get_object_or_404(Cartridge, id=ticket_detail['id'])
+                cartridge = get_object_or_404(Cartridge, id=ticket_detail['id'])
                 quantity = ticket_detail['quantity']
                 price = ticket_detail['price']
-                new_ticket_detail_object = TicketDetail(
-                    ticket=new_ticket_object,
-                    cartridge=cartridge_object,
+                new_cartridge_ticket_detail = CartridgeTicketDetail(
+                    ticket_base=new_ticket_base,
+                    cartridge=cartridge,
                     quantity=quantity,
                     price=price
                 )
-                new_ticket_detail_object.save()
+                new_cartridge_ticket_detail.save()
 
+            """
+            Saves the tickets details for packages
+            """
             for ticket_detail_packages in ticket_detail_json_object['packages']:
-                """
-                Saves the tickets details for package cartridges
-                    1. Iterates each package
-                    2. For each package, gets the list of cartridges tha make up each recipe
-                    3. Compares the cartridge's list obtained with the corresponding list in the JSON
-                    4. Depending on the result on th result creates a new item in the package table and the new
-                        ticket or just creates the new ticket
-                """
                 quantity = ticket_detail_packages['quantity']
                 price = ticket_detail_packages['price']
                 packages_id_list = ticket_detail_packages['id_list']
@@ -341,17 +334,17 @@ def new_sale(request):
                 if is_new_package:
                     package_name = ticket_detail_packages['name']
                     package_price = ticket_detail_packages['price']
-                    new_package_object = PackageCartridge(name=package_name, price=package_price, is_active=True)
-                    new_package_object.save()
+                    new_package_cartridge = PackageCartridge(name=package_name, price=package_price, is_active=True)
+                    new_package_cartridge.save()
 
                     """
                     Creates a new package
                     """
                     for id_cartridge in packages_id_list:
-                        cartridge_object = get_object_or_404(Cartridge, id=id_cartridge)
+                        cartridge = get_object_or_404(Cartridge, id=id_cartridge)
                         new_package_recipe_object = PackageCartridgeRecipe(
-                            package_cartridge=new_package_object,
-                            cartridge=cartridge_object,
+                            package_cartridge=new_package_cartridge,
+                            cartridge=cartridge,
                             quantity=1
                         )
                         new_package_recipe_object.save()
@@ -359,30 +352,31 @@ def new_sale(request):
                     """
                     Creates the ticket detail
                     """
-                    new_ticket_detail_object = TicketDetail(
-                        ticket=new_ticket_object,
-                        package_cartridge=new_package_object,
+                    new_cartridge_ticket_detail = PackageCartridgeTicketDetail(
+                        ticket_base=new_ticket_base,
+                        package_cartridge=new_package_cartridge,
                         quantity=quantity,
                         price=price
                     )
-                    new_ticket_detail_object.save()
+                    new_cartridge_ticket_detail.save()
 
                 else:
                     """
                     Uses an existent package
                     """
-                    package_object = get_object_or_404(PackageCartridge, id=package_id)
-                    new_ticket_detail_object = TicketDetail(
-                        ticket=new_ticket_object,
-                        package_cartridge=package_object,
+                    package_cartridge = get_object_or_404(PackageCartridge, id=package_id)
+                    new_cartridge_ticket_detail = PackageCartridgeTicketDetail(
+                        ticket_base=new_ticket_base,
+                        package_cartridge=package_cartridge,
                         quantity=quantity,
                         price=price,
                     )
-                    new_ticket_detail_object.save()
+                    new_cartridge_ticket_detail.save()
+
             json_response = {
                 'status': 'ready',
-                'ticket_id': new_ticket_object.id,
-                'ticket_order': new_ticket_object.order_number,
+                'ticket_id': new_ticket_base.id,
+                'ticket_order': new_ticket_base.order_number,
             }
             return JsonResponse(json_response)
 
