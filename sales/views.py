@@ -398,7 +398,7 @@ def new_sale(request):
         return JsonResponse({'status': 'error'})
 
     else:
-        cartridges_list = products_helper.all_cartridges
+        cartridges_list = products_helper.cartridges
         package_cartridges = PackageCartridge.objects.all()
         template = 'sales/new_sale.html'
         title = 'Nueva venta'

@@ -161,7 +161,7 @@ class KitchenHelper(object):
                             'quantity': ticket_detail.quantity,
                             'package_recipe': []
                         }
-                        package_recipe = products_helper.get_all_packages_cartridges_recipes().filter(
+                        package_recipe = products_helper.get_packages_cartridges_recipes().filter(
                             package_cartridge=ticket_detail.package_cartridge)
 
                         for recipe in package_recipe:

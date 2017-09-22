@@ -32,25 +32,31 @@ class TicketBase(models.Model):
         return super(TicketBase, self).save(*args, **kwargs)
 
     def total(self):
-        tickets_details = TicketDetail.objects.filter(ticket=self.id)
+        cartridge_tickets_details = CartridgeTicketDetail.objects.filter(ticket_base=self.id)
+        package_tickets_details = PackageCartridgeTicketDetail.objects.filter(ticket_base=self.id)
         total = 0
-        for x in tickets_details:
-            total += x.price
+
+        for c in cartridge_tickets_details:
+            total += c.price
+
+        for p in package_tickets_details:
+            total += p.price
         return total
 
     def ticket_details(self):
-        tickets_details = TicketDetail.objects.filter(ticket=self.id)
+        cartridge_tickets_details = CartridgeTicketDetail.objects.filter(ticket_base=self.id)
+        package_tickets_details = PackageCartridgeTicketDetail.objects.filter(ticket_base=self.id)
         options = []
 
-        for ticket_detail in tickets_details:
-            if ticket_detail.cartridge:
-                options.append(("<option value=%s>%s</option>" %
-                                (ticket_detail, ticket_detail.cartridge)))
-            elif ticket_detail.package_cartridge:
-                options.append(("<option value=%s>%s</option>" %
-                                (ticket_detail, ticket_detail.package_cartridge)))
-        tag = """<select>%s</select>""" % str(options)
-        return tag
+        for cartridge_ticket_detail in cartridge_tickets_details:
+                options.append(("<option value=%s selected>%s</option>" %
+                                (cartridge_ticket_detail, cartridge_ticket_detail.cartridge)))
+
+        for package_ticket_detail in package_tickets_details:
+                options.append(("<option value=%s selected>%s</option>" %
+                                (package_ticket_detail, package_ticket_detail.package_cartridge)))
+
+        return """<select multiple>%s</select>""" % str(options)
 
     ticket_details.allow_tags = True
 

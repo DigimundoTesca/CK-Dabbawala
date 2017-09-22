@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 
 # -------------------------------------  Kitchen -------------------------------------
 from cloudkitchen.settings.base import PAGE_TITLE
+from helpers.products_helper import ProductsHelper
 from helpers.sales_helper import TicketPOSHelper
 from kitchen.models import ProcessedProduct
 from products.models import PackageCartridgeRecipe, Cartridge, PackageCartridge
@@ -137,7 +138,8 @@ def assembly(request):
     else:
         template = 'assembly.html'
         title = 'Ensamblado'
-
+        sales_helper = TicketPOSHelper()
+        products_helper = ProductsHelper()
         pending_orders = ProcessedProduct.objects.filter(status='PE')[:10]
         orders_list = []
 
@@ -149,24 +151,25 @@ def assembly(request):
                 'packages': [],
             }
 
-            ticket_details = TicketDetail.objects.filter(ticket=order.ticket)
-            cartridges = Cartridge.objects.all()
-            packages = PackageCartridge.objects.all()
-
-            for ticket_detail in ticket_details:
-                for cartridge in cartridges:
-                    if ticket_detail.cartridge == cartridge:
+            # Cartridge Ticket Detail
+            for cartridge_ticket_detail in sales_helper.get_cartridges_tickets_details().filter(
+                    ticket_base=order.ticket):
+                for cartridge in products_helper.cartridges:
+                    if cartridge_ticket_detail.cartridge == cartridge:
                         product_object = {
-                            'name': ticket_detail.cartridge.name,
-                            'quantity': ticket_detail.quantity,
+                            'name': cartridge_ticket_detail.cartridge.name,
+                            'quantity': cartridge_ticket_detail.quantity,
                         }
                         order_object['products'].append(product_object)
 
-                for package in packages:
-                    if ticket_detail.package_cartridge == package:
+            # Package Ticket Detail
+            for package_ticket_detail in sales_helper.get_packages_tickets_details().filter(
+                    ticket_base=order.ticket):
+                for package in products_helper.packages_cartridges:
+                    if package_ticket_detail.package_cartridge == package:
                         package_object = {
-                            'name': ticket_detail.package_cartridge.name,
-                            'quantity': ticket_detail.quantity,
+                            'name': package_ticket_detail.package_cartridge.name,
+                            'quantity': package_ticket_detail.quantity,
                         }
                         order_object['packages'].append(package_object)
 

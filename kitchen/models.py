@@ -21,6 +21,11 @@ class ProcessedProduct(models.Model):
     prepared_at = models.DateTimeField(editable=True, null=True, blank=True)
     status = models.CharField(max_length=10, choices=STATUS, default=ASSEMBLED)
 
+    class Meta:
+        ordering = ('id',)
+        verbose_name = 'Productos'
+        verbose_name_plural = 'Productos Procesados'
+
     def __str__(self):
         return '%s' % self.created_at
 
@@ -38,10 +43,9 @@ class ProcessedProduct(models.Model):
 
             processed_product.save()
 
-    class Meta:
-        ordering = ('id',)
-        verbose_name = 'Productos'
-        verbose_name_plural = 'Productos Procesados'
+    def order_number(self):
+        return '%s' % self.ticket.order_number
+
 
 
 class Warehouse(models.Model):
