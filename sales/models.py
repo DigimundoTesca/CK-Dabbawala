@@ -216,9 +216,9 @@ class PackageCartridgeTicketDetail(models.Model):
 
 
 class TicketExtraIngredient(models.Model):
-    ticket_detail = models.ForeignKey(TicketDetail)  # Will be deleted the next pre-release
-    cartridge_ticket_detail = models.ForeignKey(CartridgeTicketDetail, on_delete=models.CASCADE)
-    extra_ingredient = models.ForeignKey(ExtraIngredient, on_delete=models.CASCADE)
+    ticket_detail = models.ForeignKey(TicketDetail, null=True, blank=True)  # Will be deleted the next pre-release
+    cartridge_ticket_detail = models.ForeignKey(CartridgeTicketDetail, on_delete=models.CASCADE, null=True, blank=True)
+    extra_ingredient = models.ForeignKey(ExtraIngredient, on_delete=models.CASCADE, default=1)
     quantity = models.PositiveSmallIntegerField(default=1)
     price = models.DecimalField(default=0, max_digits=12, decimal_places=2)
 
