@@ -9,7 +9,6 @@ from django.views.generic import TemplateView
 from openpyxl import Workbook
 from openpyxl.styles import Alignment
 
-from branchoffices.models import CashRegister
 from cloudkitchen.settings.base import PAGE_TITLE
 from products.models import Cartridge, PackageCartridge, PackageCartridgeRecipe
 from sales.models import TicketBase, TicketDetail, TicketPOS
@@ -280,7 +279,6 @@ def new_sale(request):
             """
             username = request.user
             user_profile_object = get_object_or_404(UserProfile, username=username)
-            sale_point = CashRegister.objects.first()
             ticket_detail_json_object = json.loads(request.POST.get('ticket'))
             payment_type = ticket_detail_json_object['payment_type']
             new_ticket_object = TicketBase(
@@ -290,7 +288,6 @@ def new_sale(request):
             new_ticket_pos = TicketPOS(
                 ticket=new_ticket_object,
                 cashier=user_profile_object,
-                sale_point=sale_point,
             )
             new_ticket_pos.save()
 
@@ -425,7 +422,6 @@ def test_sales_update(request):
             new_ticket_pos = TicketPOS(
                 ticket=ticket,
                 cashier=ticket.seller,
-                sale_point=ticket.cash_register
             )
             new_ticket_pos.save()
 

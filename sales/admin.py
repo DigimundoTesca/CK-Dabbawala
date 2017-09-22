@@ -32,7 +32,7 @@ class TicketBaseAdmin(admin.ModelAdmin):
 @admin.register(TicketPOS)
 class TicketPOSAdmin(admin.ModelAdmin):
     list_display = ('ticket', 'order_number', 'created_at', 'ticket_details', 'payment_type', 'total', 'is_active',
-                    'cashier', 'sale_point',
+                    'cashier',
                     )
     list_display_links = ('ticket', 'cashier',)
 

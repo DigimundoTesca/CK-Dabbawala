@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils import timezone
 
-from branchoffices.models import CashRegister
 from products.models import Cartridge, PackageCartridge, ExtraIngredient
 from users.models.users import User as UserProfile
 from users.models.customers import CustomerProfile
@@ -69,8 +68,6 @@ class TicketPOS(models.Model):
     )
     cashier = models.ForeignKey(
         UserProfile, default=1, on_delete=models.CASCADE)
-    sale_point = models.ForeignKey(
-        CashRegister, on_delete=models.CASCADE, default=1)
 
     def __str__(self):
         return 'P%s' %  self.ticket
