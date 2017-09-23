@@ -25,7 +25,6 @@ def home(request):
 
 
 def temporal_index(request):
-    print('PRODUCTS TEST')
     template = 'temporal-index.html'
     context = {}
     return render(request, template, context)
