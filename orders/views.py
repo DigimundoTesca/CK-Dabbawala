@@ -4,9 +4,8 @@ from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
-from branchoffices.models import CashRegister
 from products.models import Cartridge
-from sales.models import TicketBase, TicketDetail
+from sales.models import TicketBase, TicketOrder
 from users.models.customers import User as UserProfile
 from helpers_origin import CartHelper
 from helpers.sales_helper import TicketPOSHelper
@@ -31,13 +30,10 @@ def new_order(request):
             request.session['cart'] = cart
             return JsonResponse({'result': 'cart_filled'})
 
-
         username = request.user
         user_profile_object = get_object_or_404(UserProfile, username=username)
-        cash_register = CashRegister.objects.first()
         ticket_detail_json_object = json.loads(request.POST.get('cart'))
         new_ticket_object = TicketBase(
-            cash_register=cash_register,
             seller=user_profile_object,
             payment_type='CA',
             order_number=sales_helper.get_new_order_number())
@@ -46,7 +42,6 @@ def new_order(request):
         """
         Saves the tickets details for cartridges
         """
-        print(ticket_detail_json_object)
         for ticket_detail in ticket_detail_json_object['cartridges']:
             cartridge_object = get_object_or_404(Cartridge, id=ticket_detail)
             quantity = ticket_detail_json_object['cartridges'][ticket_detail]['quantity']
@@ -80,10 +75,10 @@ def pay(request):
             return JsonResponse({'code': 1})
     all_products = Cartridge.objects.all()
     template = 'pay.html'
-    first_session = request.session.has_key('first_session')
+    first_session = 'first_session' in request.session
     context = {
         'products': all_products,
-        'first_session':first_session,
+        'first_session': first_session,
     }
 
     return render(request, template, context)
