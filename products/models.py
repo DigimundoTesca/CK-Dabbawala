@@ -197,7 +197,7 @@ class ExtraIngredient(models.Model):
     """
     Description: Extra ingredients that could have the cartridges in a new sale
     """
-    ingredient = models.ForeignKey(Cartridge, null=True, blank=True)
+    ingredient = models.ForeignKey(Cartridge, null=True, blank=True, default=None)
     quantity = models.PositiveSmallIntegerField(default=1)
     cost = models.DecimalField(default=0, max_digits=12, decimal_places=2)
 
