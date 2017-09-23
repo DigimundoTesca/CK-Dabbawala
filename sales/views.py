@@ -11,7 +11,7 @@ from openpyxl.styles import Alignment
 
 from cloudkitchen.settings.base import PAGE_TITLE
 from products.models import Cartridge, PackageCartridge, PackageCartridgeRecipe
-from sales.models import TicketBase, TicketDetail, TicketPOS, CartridgeTicketDetail, PackageCartridgeTicketDetail
+from sales.models import TicketBase, TicketPOS, CartridgeTicketDetail, PackageCartridgeTicketDetail
 from users.models.users import User as UserProfile
 from helpers.sales_helper import TicketPOSHelper
 from helpers.products_helper import ProductsHelper
@@ -20,27 +20,25 @@ from helpers.helpers import Helper
 
 # -------------------------------------  Sales -------------------------------------
 class SalesReport(TemplateView):
-
     def get(self, request, *args, **kwargs):
-        all_tickets_details = TicketDetail.objects.select_related('ticket', 'cartridge', 'package_cartridge')
-        all_packages_recipes = PackageCartridgeRecipe.objects.select_related('package_cartridge', 'cartridge')
-        all_cartridges = Cartridge.objects.all()
-
-        count = 4
+        sales_helper = TicketPOSHelper()
+        products_helper = ProductsHelper()
+        package_recipes = products_helper.get_packages_cartridges_recipes()
         workbook = Workbook()
+        count = 4
+
         ws1 = workbook.active
-        ws1.title = 'Reporte de Tickets'
+        ws1.title = "Reporte de Ventas"
         ws1['B1'] = 'Reporte General de Ventas'
         ws1['B1'].alignment = Alignment(horizontal='center')
         ws1.merge_cells('B1:R1')
-
-        ws1['A3'] = 'Subticket ID'
-        ws1['B3'] = 'Ticket Padre ID'
+        ws1['A3'] = 'ID'
+        ws1['B3'] = 'ID Venta'
         ws1['C3'] = 'Núm. Orden'
         ws1['D3'] = 'Fecha'
         ws1['E3'] = 'Hora'
         ws1['F3'] = 'Horas'
-        ws1['G3'] = 'Paquete ID'
+        ws1['G3'] = 'ID Paquete'
         ws1['H3'] = 'Paquete'
         ws1['I3'] = 'Roti'
         ws1['J3'] = 'Ensalada'
@@ -53,63 +51,68 @@ class SalesReport(TemplateView):
         ws1['Q3'] = 'Precio Unitario'
         ws1['R3'] = 'Total'
 
-        # Styles
-        """
-        for ticket_details in all_tickets_details:
-            if ticket_details.package_cartridge:
-                aux = count
-                for cartridge_recipe in all_packages_recipes:
+        for cartridge_ticket_detail in sales_helper.get_cartridges_tickets_details():
+            ws1.cell(row=count, column=1, value=cartridge_ticket_detail.id)
+            ws1.cell(row=count, column=2, value=cartridge_ticket_detail.ticket_base.id)
+            ws1.cell(row=count, column=3, value=cartridge_ticket_detail.ticket_base.order_number)
+            ws1.cell(row=count, column=4, value=cartridge_ticket_detail.ticket_base.created_at)
+            ws1.cell(row=count, column=4).number_format = 'DD-MM-YYYY'
+            ws1.cell(row=count, column=5, value=cartridge_ticket_detail.ticket_base.created_at)
+            ws1.cell(row=count, column=5).number_format = 'h:mm AM/PM'
+            ws1.cell(row=count, column=6, value=cartridge_ticket_detail.ticket_base.created_at)
+            ws1.cell(row=count, column=6).number_format = 'hh AM/PM'
+            ws1.cell(row=count, column=9, value=cartridge_ticket_detail.cartridge.name if cartridge_ticket_detail.
+                     cartridge.subcategory == 'RO' else '')
+            ws1.cell(row=count, column=10, value=cartridge_ticket_detail.cartridge.name if cartridge_ticket_detail.
+                     cartridge.subcategory == 'SA' else '')
+            ws1.cell(row=count, column=11, value=cartridge_ticket_detail.cartridge.name if cartridge_ticket_detail.
+                     cartridge.subcategory == 'SM' else '')
+            ws1.cell(row=count, column=12, value=cartridge_ticket_detail.cartridge.name if cartridge_ticket_detail.
+                     cartridge.subcategory == 'FR' else '')
+            ws1.cell(row=count, column=13, value=cartridge_ticket_detail.cartridge.name if cartridge_ticket_detail.
+                     cartridge.subcategory == 'JU' else '')
+            ws1.cell(row=count, column=14, value=cartridge_ticket_detail.cartridge.name if cartridge_ticket_detail.
+                     cartridge.subcategory == 'WA' else '')
+            ws1.cell(row=count, column=15, value=cartridge_ticket_detail.quantity)
+            ws1.cell(row=count, column=16, value='Efectivo' if cartridge_ticket_detail.ticket_base.
+                     payment_type == 'CA' else 'Tarjeta')
+            ws1.cell(row=count, column=17, value=cartridge_ticket_detail.cartridge.price)
+            ws1.cell(row=count, column=18, value=cartridge_ticket_detail.price * cartridge_ticket_detail.quantity)
 
-                    if cartridge_recipe.package_cartridge == ticket_details.package_cartridge:
+            count += 1
 
-                        cartridge_name = cartridge_recipe.cartridge.name
-                        subcategory = cartridge_recipe.cartridge.subcategory
-                        ws1.cell(row=count, column=1, value=ticket_details.id)
-                        ws1.cell(row=count, column=2, value=ticket_details.ticket.id)
-                        ws1.cell(row=count, column=3, value=ticket_details.ticket.order_number)
-                        ws1.cell(row=count, column=4, value=ticket_details.ticket.created_at)
-                        ws1.cell(row=count, column=4).number_format = 'DD-MM-YYYY'
-                        ws1.cell(row=count, column=5, value=ticket_details.ticket.created_at)
-                        ws1.cell(row=count, column=5).number_format = 'h:mm AM/PM'
-                        ws1.cell(row=count, column=6, value=ticket_details.ticket.created_at)
-                        ws1.cell(row=count, column=6).number_format = 'hh AM/PM'
-                        ws1.cell(row=count, column=7, value=ticket_details.package_cartridge.id)
-                        ws1.cell(row=count, column=8, value=ticket_details.package_cartridge.name)
-                        ws1.cell(row=count, column=9, value=cartridge_name if subcategory == 'RO' else None)
-                        ws1.cell(row=count, column=12, value=cartridge_name if subcategory == 'FR' else None)
-                        ws1.cell(row=count, column=13, value=cartridge_name if subcategory == 'JU' else None)
-                        ws1.cell(row=count, column=14, value=cartridge_name if subcategory == 'WA' else None)
-                        ws1.cell(row=count, column=15, value=cartridge_name if subcategory == 'WA' else None)
-                        ws1.cell(row=count, column=16, value=cartridge_name if subcategory == 'WA' else None)
-                        ws1.cell(row=count, column=17, value=cartridge_name if subcategory == 'WA' else None)
-                        ws1.cell(row=count, column=18, value=cartridge_name if subcategory == 'WA' else None)
-                        count += 1
-                ws1.merge_cells(start_row=aux, start_column=1, end_row=count-1, end_column=1)
+        # Only Packages
+        for package_ticket_detail in sales_helper.get_packages_tickets_details():
+            ws1.cell(row=count, column=1, value=package_ticket_detail.id)
+            ws1.cell(row=count, column=2, value=package_ticket_detail.ticket_base.id)
+            ws1.cell(row=count, column=3, value=package_ticket_detail.ticket_base.order_number)
+            ws1.cell(row=count, column=4, value=package_ticket_detail.ticket_base.created_at)
+            ws1.cell(row=count, column=4).number_format = 'DD-MM-YYYY'
+            ws1.cell(row=count, column=5, value=package_ticket_detail.ticket_base.created_at)
+            ws1.cell(row=count, column=5).number_format = 'h:mm AM/PM'
+            ws1.cell(row=count, column=6, value=package_ticket_detail.ticket_base.created_at)
+            ws1.cell(row=count, column=6).number_format = 'hh AM/PM'
+            ws1.cell(row=count, column=7, value=package_ticket_detail.package_cartridge.id)
+            ws1.cell(row=count, column=8, value=package_ticket_detail.package_cartridge.name)
+            # Fill cartridge rows
+            packages = products_helper.get_packages_cartridges_recipes().filter(
+                package_cartridge=package_ticket_detail.package_cartridge)
+            for package in packages:
+                if package.cartridge.subcategory == 'RO':
+                    ws1.cell(row=count, column=9, value=package.cartridge.name)
+                if package.cartridge.subcategory == 'FR':
+                    ws1.cell(row=count, column=12, value=package.cartridge.name)
+                if package.cartridge.subcategory == 'JU':
+                    ws1.cell(row=count, column=13, value=package.cartridge.name)
+                if package.cartridge.subcategory == 'WA':
+                    ws1.cell(row=count, column=14, value=package.cartridge.name)
+            ws1.cell(row=count, column=15, value=package_ticket_detail.quantity)
+            ws1.cell(row=count, column=16, value='Efectivo' if package_ticket_detail.ticket_base.
+                     payment_type == 'CA' else 'Tarjeta')
+            ws1.cell(row=count, column=17, value=package_ticket_detail.package_cartridge.price)
+            ws1.cell(row=count, column=18, value=package_ticket_detail.price * package_ticket_detail.quantity)
 
-            else:
-                cartridge_name = ticket_details.cartridge.name
-                subcategory = ticket_details.cartridge.subcategory
-                ws1.cell(row=count, column=1, value=ticket_details.id)
-                ws1.cell(row=count, column=2, value=ticket_details.ticket.id)
-                ws1.cell(row=count, column=3, value=ticket_details.ticket.order_number)
-                ws1.cell(row=count, column=4, value=ticket_details.ticket.created_at)
-                ws1.cell(row=count, column=4).number_format = 'DD-MM-YYYY'
-                ws1.cell(row=count, column=5, value=ticket_details.ticket.created_at)
-                ws1.cell(row=count, column=5).number_format = 'h:mm AM/PM'
-                ws1.cell(row=count, column=6, value=ticket_details.ticket.created_at)
-                ws1.cell(row=count, column=6).number_format = 'hh AM/PM'
-                ws1.cell(row=count, column=9, value=cartridge_name if subcategory == 'RO' else None)
-                ws1.cell(row=count, column=10, value=cartridge_name if subcategory == 'SA' else None)
-                ws1.cell(row=count, column=11, value=cartridge_name if subcategory == 'SM' else None)
-                ws1.cell(row=count, column=12, value=cartridge_name if subcategory == 'FR' else None)
-                ws1.cell(row=count, column=13, value=cartridge_name if subcategory == 'JU' else None)
-                ws1.cell(row=count, column=14, value=cartridge_name if subcategory == 'WA' else None)
-
-                count += 1
-        """
-
-        for ticket_detail in all_tickets_details:
-            ws1.cell(row=count, column=1).value = ticket_detail
+            count += 1
 
         file_name = 'Reporte_General_De_Ventas_{0}.xlsx'.format(datetime.now().strftime("%I-%M%p_%d-%m-%Y"))
         response = HttpResponse(content_type='application/ms-excel')
@@ -118,11 +121,6 @@ class SalesReport(TemplateView):
         workbook.save(response)
 
         return response
-
-    def get_context_data(self, **kwargs):
-        context = super(SalesReport, self).get_context_data(**kwargs)
-        print(context)
-        return context
 
 
 @permission_required('users.can_see_sales')
@@ -139,7 +137,7 @@ def sales(request):
             sales_day_list = []
             start_day = helper.naive_to_datetime(datetime.strptime(request.POST['date'], '%d-%m-%Y').date())
             end_date = helper.naive_to_datetime(start_day + timedelta(days=1))
-            tickets_objects = sales_helper.get_all_tickets().filter(ticket__created_at__range=[start_day, end_date])
+            tickets_objects = sales_helper.tickets.filter(ticket__created_at__range=[start_day, end_date])
 
             for ticket_pos in tickets_objects:
                 """
@@ -150,9 +148,17 @@ def sales(request):
                     'datetime': timezone.localtime(ticket_pos.ticket.created_at),
                     'earnings': 0
                 }
-                for ticket_detail in sales_helper.get_all_tickets_details():
-                    if ticket_detail.ticket == ticket_pos.ticket:
-                        earnings_sale_object['earnings'] += ticket_detail.price
+
+                # Cartridge Ticket Detail
+                for cartridge_ticket_detail in sales_helper.get_cartridges_tickets_details():
+                    if cartridge_ticket_detail.ticket_base == ticket_pos.ticket:
+                        earnings_sale_object['earnings'] += cartridge_ticket_detail.price
+
+                # Package Ticket Detail
+                for package_ticket_detail in sales_helper.get_packages_tickets_details():
+                    if package_ticket_detail.ticket_base == ticket_pos.ticket:
+                        earnings_sale_object['earnings'] += package_ticket_detail.price
+
                 sales_day_list.append(earnings_sale_object)
             return JsonResponse({'sales_day_list': sales_day_list})
 
@@ -165,39 +171,47 @@ def sales(request):
                 'packages': [],
             }
 
-            # Get cartridges details
-            for ticket_detail in sales_helper.get_all_tickets_details():
-                if ticket_detail.ticket.id == ticket_id:
-                    ticket_object['ticket_order'] = ticket_detail.ticket.order_number
-                    if ticket_detail.cartridge:
-                        cartridge_object = {
-                            'name': ticket_detail.cartridge.name,
-                            'quantity': ticket_detail.quantity,
-                            'total': ticket_detail.price
-                        }
-                        ticket_object['cartridges'].append(cartridge_object)
-                    elif ticket_detail.package_cartridge:
-                        cartridges_list = []
-                        package_cartridge_recipe = PackageCartridgeRecipe.objects.filter(
-                            package_cartridge=ticket_detail.package_cartridge)
+            # Cartridge Ticket Details
+            for cartridge_ticket_detail in sales_helper.get_cartridges_tickets_details():
+                if cartridge_ticket_detail.ticket_base.id == ticket_id:
+                    ticket_object['ticket_order'] = cartridge_ticket_detail.ticket_base.order_number
 
-                        for cartridge_recipe in package_cartridge_recipe:
-                            cartridges_list.append(cartridge_recipe.cartridge.name)
-                        package_cartridge_object = {
-                            'cartridges': cartridges_list,
-                            'quantity': ticket_detail.quantity,
-                            'total': ticket_detail.price
-                        }
-                        ticket_object['packages'].append(package_cartridge_object)
+                    cartridge_object = {
+                        'name': cartridge_ticket_detail.cartridge.name,
+                        'quantity': cartridge_ticket_detail.quantity,
+                        'total': cartridge_ticket_detail.price
+                    }
+
+                    ticket_object['cartridges'].append(cartridge_object)
+
+            # Package Ticket Details
+            for package_ticket_detail in sales_helper.get_packages_tickets_details():
+                if package_ticket_detail.ticket_base.id == ticket_id:
+                    ticket_object['ticket_order'] = package_ticket_detail.ticket_base.order_number
+                    cartridges_list = []
+
+                    package_cartridge_recipe = PackageCartridgeRecipe.objects.filter(
+                        package_cartridge=package_ticket_detail.package_cartridge)
+
+                    for cartridge_recipe in package_cartridge_recipe:
+                        cartridges_list.append(cartridge_recipe.cartridge.name)
+
+                    package_cartridge_object = {
+                        'cartridges': cartridges_list,
+                        'quantity': package_ticket_detail.quantity,
+                        'total': package_ticket_detail.price
+                    }
+
+                    ticket_object['packages'].append(package_cartridge_object)
 
             return JsonResponse({'ticket_details': ticket_object})
 
         if request.POST['type'] == 'tickets':
             tickets_objects_list = []
 
-            for ticket_pos in sales_helper.get_all_tickets():
-                for ticket_detail in sales_helper.get_all_tickets_details():
-                    if ticket_detail.ticket == ticket_pos.ticket:
+            for ticket_pos in sales_helper.tickets:
+                for cartridge_ticket_detail in sales_helper.get_all_tickets_details():
+                    if cartridge_ticket_detail.ticket == ticket_pos.ticket:
                         ticket_object = {
                             'ID': ticket_pos.ticket.id,
                             'Fecha': timezone.localtime(ticket_pos.ticket.created_at).date(),
@@ -208,17 +222,18 @@ def sales(request):
                             ticket_object['Tipo de Pago'] = 'Efectivo'
                         else:
                             ticket_object['Tipo de Pago'] = 'Crédito'
-                        if ticket_detail.cartridge:
-                            ticket_object['Producto'] = ticket_detail.cartridge.name
+                        if cartridge_ticket_detail.cartridge:
+                            ticket_object['Producto'] = cartridge_ticket_detail.cartridge.name
                         else:
                             ticket_object['Producto'] = None
-                        if ticket_detail.package_cartridge:
-                            ticket_object['Paquete'] = ticket_detail.package_cartridge.name
+                        if cartridge_ticket_detail.package_cartridge:
+                            ticket_object['Paquete'] = cartridge_ticket_detail.package_cartridge.name
                         else:
                             ticket_object['Paquete'] = None
-                        ticket_object['Cantidad'] = ticket_detail.quantity
-                        ticket_object['Total'] = ticket_detail.price
-                        ticket_object['Precio Unitario'] = ticket_detail.price / ticket_detail.quantity
+                        ticket_object['Cantidad'] = cartridge_ticket_detail.quantity
+                        ticket_object['Total'] = cartridge_ticket_detail.price
+                        ticket_object[
+                            'Precio Unitario'] = cartridge_ticket_detail.price / cartridge_ticket_detail.quantity
 
                         tickets_objects_list.append(ticket_object)
 
@@ -382,7 +397,7 @@ def new_sale(request):
         return JsonResponse({'status': 'error'})
 
     else:
-        cartridges_list = products_helper.all_cartridges
+        cartridges_list = products_helper.cartridges
         package_cartridges = PackageCartridge.objects.all()
         template = 'sales/new_sale.html'
         title = 'Nueva venta'
@@ -422,4 +437,3 @@ def test_sales_update(request):
         'tickets': all_previous_tickets_details
     }
     return render(request, template, context)
-
