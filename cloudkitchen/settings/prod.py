@@ -41,12 +41,10 @@ AWS_SECRET_ACCESS_KEY = os.getenv('DABBANET_S3_SECRET_ACCESS_KEY')
 STATICFILES_STORAGE = 'custom_storages.StaticStorage'
 DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
 AWS_S3_CUSTOM_DOMAIN = '%s.s3-us-west-2.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-AWS_S3_SECURE_URLS = False
+AWS_S3_SECURE_URLS = True
 
 AWS_S3_CALLING_FORMAT = ProtocolIndependentOrdinaryCallingFormat()
 S3Connection.DefaultHost = 's3-us-west-2.amazonaws.com'
 
 STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, STATICFILES_LOCATION)
 MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
-
-print(STATIC_URL)
