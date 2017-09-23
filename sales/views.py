@@ -22,14 +22,13 @@ from helpers.helpers import Helper
 class SalesReport(TemplateView):
     def get(self, request, *args, **kwargs):
         sales_helper = TicketPOSHelper()
-
+        products_helper = ProductsHelper()
+        package_recipes = products_helper.get_packages_cartridges_recipes()
         workbook = Workbook()
-
         count = 4
 
         ws1 = workbook.active
         ws1.title = "Reporte de Ventas"
-
         ws1['B1'] = 'Reporte General de Ventas'
         ws1['B1'].alignment = Alignment(horizontal='center')
         ws1.merge_cells('B1:R1')
@@ -62,22 +61,21 @@ class SalesReport(TemplateView):
             ws1.cell(row=count, column=5).number_format = 'h:mm AM/PM'
             ws1.cell(row=count, column=6, value=cartridge_ticket_detail.ticket_base.created_at)
             ws1.cell(row=count, column=6).number_format = 'hh AM/PM'
-            ws1.cell(row=count, column=9, value=cartridge_ticket_detail.cartridge.name
-            if cartridge_ticket_detail.cartridge.subcategory == 'RO' else '')
-            ws1.cell(row=count, column=10, value=cartridge_ticket_detail.cartridge.name
-            if cartridge_ticket_detail.cartridge.subcategory == 'SA' else '')
-            ws1.cell(row=count, column=11, value=cartridge_ticket_detail.cartridge.name
-            if cartridge_ticket_detail.cartridge.subcategory == 'SM' else '')
-            ws1.cell(row=count, column=12, value=cartridge_ticket_detail.cartridge.name
-            if cartridge_ticket_detail.cartridge.subcategory == 'FR' else '')
-            ws1.cell(row=count, column=13, value=cartridge_ticket_detail.cartridge.name
-            if cartridge_ticket_detail.cartridge.subcategory == 'JU' else '')
-            ws1.cell(row=count, column=14, value=cartridge_ticket_detail.cartridge.name
-            if cartridge_ticket_detail.cartridge.subcategory == 'WA' else '')
+            ws1.cell(row=count, column=9, value=cartridge_ticket_detail.cartridge.name if cartridge_ticket_detail.
+                     cartridge.subcategory == 'RO' else '')
+            ws1.cell(row=count, column=10, value=cartridge_ticket_detail.cartridge.name if cartridge_ticket_detail.
+                     cartridge.subcategory == 'SA' else '')
+            ws1.cell(row=count, column=11, value=cartridge_ticket_detail.cartridge.name if cartridge_ticket_detail.
+                     cartridge.subcategory == 'SM' else '')
+            ws1.cell(row=count, column=12, value=cartridge_ticket_detail.cartridge.name if cartridge_ticket_detail.
+                     cartridge.subcategory == 'FR' else '')
+            ws1.cell(row=count, column=13, value=cartridge_ticket_detail.cartridge.name if cartridge_ticket_detail.
+                     cartridge.subcategory == 'JU' else '')
+            ws1.cell(row=count, column=14, value=cartridge_ticket_detail.cartridge.name if cartridge_ticket_detail.
+                     cartridge.subcategory == 'WA' else '')
             ws1.cell(row=count, column=15, value=cartridge_ticket_detail.quantity)
-            ws1.cell(row=count, column=16,
-                     value='Efectivo' if cartridge_ticket_detail.ticket_base.payment_type == 'CA'
-                     else 'Tarjeta')
+            ws1.cell(row=count, column=16, value='Efectivo' if cartridge_ticket_detail.ticket_base.
+                     payment_type == 'CA' else 'Tarjeta')
             ws1.cell(row=count, column=17, value=cartridge_ticket_detail.cartridge.price)
             ws1.cell(row=count, column=18, value=cartridge_ticket_detail.price * cartridge_ticket_detail.quantity)
 
@@ -96,10 +94,21 @@ class SalesReport(TemplateView):
             ws1.cell(row=count, column=6).number_format = 'hh AM/PM'
             ws1.cell(row=count, column=7, value=package_ticket_detail.package_cartridge.id)
             ws1.cell(row=count, column=8, value=package_ticket_detail.package_cartridge.name)
+            # Fill cartridge rows
+            packages = products_helper.get_packages_cartridges_recipes().filter(
+                package_cartridge=package_ticket_detail.package_cartridge)
+            for package in packages:
+                if package.cartridge.subcategory == 'RO':
+                    ws1.cell(row=count, column=9, value=package.cartridge.name)
+                if package.cartridge.subcategory == 'FR':
+                    ws1.cell(row=count, column=12, value=package.cartridge.name)
+                if package.cartridge.subcategory == 'JU':
+                    ws1.cell(row=count, column=13, value=package.cartridge.name)
+                if package.cartridge.subcategory == 'WA':
+                    ws1.cell(row=count, column=14, value=package.cartridge.name)
             ws1.cell(row=count, column=15, value=package_ticket_detail.quantity)
-            ws1.cell(row=count, column=16,
-                     value='Efectivo' if package_ticket_detail.ticket_base.payment_type == 'CA'
-                     else 'Tarjeta')
+            ws1.cell(row=count, column=16, value='Efectivo' if package_ticket_detail.ticket_base.
+                     payment_type == 'CA' else 'Tarjeta')
             ws1.cell(row=count, column=17, value=package_ticket_detail.package_cartridge.price)
             ws1.cell(row=count, column=18, value=package_ticket_detail.price * package_ticket_detail.quantity)
 
