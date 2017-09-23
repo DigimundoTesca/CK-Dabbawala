@@ -42,7 +42,8 @@ class TicketPOSHelper(object):
             select_related('extra_ingredient__ingredient'). \
             all()
 
-    def get_tickets(self):
+    @property
+    def tickets(self):
         """
         :rtype: django.db.models.query.QuerySet
         """
@@ -90,7 +91,7 @@ class TicketPOSHelper(object):
         """
         years_list = []
 
-        for ticket_pos in self.get_tickets():
+        for ticket_pos in self.tickets:
             if ticket_pos.ticket.created_at.year not in years_list:
                 years_list.append(ticket_pos.ticket.created_at.year)
 
@@ -100,7 +101,7 @@ class TicketPOSHelper(object):
         helper = Helper()
 
         tickets_list = []
-        filtered_tickets = self.get_tickets().\
+        filtered_tickets = self.tickets.\
             filter(ticket__created_at__gte=helper.naive_to_datetime(date.today())).\
             order_by('-ticket__created_at')
 
@@ -147,9 +148,9 @@ class TicketPOSHelper(object):
         """
         helper = Helper()
         try:
-            min_year = self.get_tickets().\
+            min_year = self.tickets.\
                 aggregate(Min('ticket__created_at'))['ticket__created_at__min'].year
-            max_year = self.get_tickets().\
+            max_year = self.tickets.\
                 aggregate(Max('ticket__created_at'))['ticket__created_at__max'].year
             years_list = []  # [2015:object, 2016:object, 2017:object, ...]
         except Exception as e:
@@ -163,7 +164,7 @@ class TicketPOSHelper(object):
                 'weeks_list': [],
             }
 
-            tickets_per_year = self.get_tickets().filter(
+            tickets_per_year = self.tickets.filter(
                 ticket__created_at__range=[helper.naive_to_datetime(date(max_year, 1, 1)),
                                    helper.naive_to_datetime(date(max_year, 12, 31))])
             for ticket_item in tickets_per_year:
@@ -226,7 +227,7 @@ class TicketPOSHelper(object):
         total_earnings = 0
 
         while count <= total_days:
-            day_tickets = self.get_tickets().filter(ticket__created_at__range=[start_dt, limit_day])
+            day_tickets = self.tickets.filter(ticket__created_at__range=[start_dt, limit_day])
             day_object = {
                 'date': str(start_dt.date().strftime('%d-%m-%Y')),
                 'day_name': None,
@@ -274,7 +275,7 @@ class TicketPOSHelper(object):
                 'number_day': helper.get_number_day(helper.start_datetime(days_to_count).date()),
             }
 
-            day_tickets = self.get_tickets().filter(
+            day_tickets = self.tickets.filter(
                 ticket__created_at__range=[helper.start_datetime(days_to_count), helper.end_datetime(days_to_count)])
 
             for ticket_item in day_tickets:
@@ -303,7 +304,7 @@ class TicketPOSHelper(object):
         :param initial_date: datetime
         :param final_date: datetime
         """
-        all_tickets = self.get_tickets().filter(
+        all_tickets = self.tickets.filter(
             ticket__created_at__range=(initial_date, final_date)).order_by('-ticket__created_at')
         all_cartridges_tickets_details = self.get_cartridges_tickets_details()
         all_packages_tickets_details = self.get_packages_tickets_details()
@@ -365,7 +366,7 @@ class TicketPOSHelper(object):
             self.set_tickets()
 
         order_numbers_list = []
-        for ticket_pos in self.get_tickets():
+        for ticket_pos in self.tickets:
             order_numbers_list.append(ticket_pos.ticket.order_number)
 
         try:
