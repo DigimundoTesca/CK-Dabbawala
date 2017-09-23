@@ -2,8 +2,8 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from products.models import Supply, Cartridge, PackageCartridge
-from sales.models import TicketBase, TicketDetail
+from products.models import Supply
+from sales.models import TicketBase
 
 
 class ProcessedProduct(models.Model):
@@ -16,10 +16,15 @@ class ProcessedProduct(models.Model):
         (ASSEMBLED, 'Ensamblado'),
     )
 
+    ticket = models.OneToOneField(TicketBase, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     prepared_at = models.DateTimeField(editable=True, null=True, blank=True)
     status = models.CharField(max_length=10, choices=STATUS, default=ASSEMBLED)
-    ticket = models.OneToOneField(TicketBase, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ('id',)
+        verbose_name = 'Productos'
+        verbose_name_plural = 'Productos Procesados'
 
     def __str__(self):
         return '%s' % self.created_at
@@ -38,10 +43,9 @@ class ProcessedProduct(models.Model):
 
             processed_product.save()
 
-    class Meta:
-        ordering = ('id',)
-        verbose_name = 'Productos'
-        verbose_name_plural = 'Productos Procesados'
+    def order_number(self):
+        return '%s' % self.ticket.order_number
+
 
 
 class Warehouse(models.Model):
@@ -60,9 +64,9 @@ class Warehouse(models.Model):
     status = models.CharField(choices=STATUS, default=PROVIDER, max_length=15)
     created_at = models.DateField(editable=False, auto_now_add=True)
     expiry_date = models.DateField(editable=True, auto_now_add=True)
+    cost = models.FloatField(default=0)
     quantity = models.FloatField(default=0)
     waste = models.FloatField(default=0)
-    cost = models.FloatField(default=0)
 
     def __str__(self):
         return '%s' % self.id

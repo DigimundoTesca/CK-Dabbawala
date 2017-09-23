@@ -1,12 +1,17 @@
 from django.contrib import admin
-from django.db.models import Sum
 
-from sales.models import *
 from actions import export_as_excel
+from sales.models import CartridgeTicketDetail, PackageCartridgeTicketDetail, TicketBase, TicketPOS, TicketOrder, \
+    TicketExtraIngredient
 
 
-class TicketDetailInline(admin.TabularInline):
-    model = TicketDetail
+class CartridgeTicketDetailInline(admin.TabularInline):
+    model = CartridgeTicketDetail
+    extra = 1
+
+
+class PackageCartridgeDetailInline(admin.TabularInline):
+    model = PackageCartridgeTicketDetail
     extra = 1
 
 
@@ -26,21 +31,22 @@ class TicketBaseAdmin(admin.ModelAdmin):
     list_editable = ('created_at',)
     ordering = ('-created_at', )
     date_hierarchy = 'created_at'
-    inlines = [TicketDetailInline, ]
+    inlines = [CartridgeTicketDetailInline, PackageCartridgeDetailInline]
     actions = (export_as_excel,)
 
 
 @admin.register(TicketPOS)
 class TicketPOSAdmin(admin.ModelAdmin):
-    list_display = ('ticket',
+    list_display = (
+        'ticket',
         'order_number',
         'created_at',
-        'ticket_details',
+        'cartridges',
+        'packages',
         'payment_type',
         'total',
         'is_active',
         'cashier',
-        'sale_point',
     )
     list_display_links = ('ticket', 'cashier',)
 
@@ -55,14 +61,3 @@ class TicketExtraIngredientInline(admin.TabularInline):
     model = TicketExtraIngredient
     extra = 0
 
-
-@admin.register(TicketDetail)
-class TicketDetailAdmin(admin.ModelAdmin):
-    list_display = ('id', 'ticket', 'created_at', 'cartridge',
-                    'package_cartridge', 'extra_ingredients', 'quantity', 'price',)
-    list_display_links = ('id', 'ticket', 'created_at')
-    list_filter = ('ticket',)
-    ordering = ('-ticket__created_at', )
-    search_fields = ('ticket__created_at',)
-    actions = (export_as_excel,)
-    inlines = [TicketExtraIngredientInline, ]

@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils import timezone
 
-from branchoffices.models import CashRegister
 from products.models import Cartridge, PackageCartridge, ExtraIngredient
 from users.models.users import User as UserProfile
 from users.models.customers import CustomerProfile
@@ -17,10 +16,10 @@ class TicketBase(models.Model):
         (CREDIT, 'Crédito'),
     )
 
+    order_number = models.IntegerField(default=1)
     created_at = models.DateTimeField(editable=True)
     payment_type = models.CharField(
         choices=PAYMENT_TYPE, default=CASH, max_length=2)
-    order_number = models.IntegerField(default=1, blank=False, null=False)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
@@ -33,25 +32,31 @@ class TicketBase(models.Model):
         return super(TicketBase, self).save(*args, **kwargs)
 
     def total(self):
-        tickets_details = TicketDetail.objects.filter(ticket=self.id)
+        cartridge_tickets_details = CartridgeTicketDetail.objects.filter(ticket_base=self.id)
+        package_tickets_details = PackageCartridgeTicketDetail.objects.filter(ticket_base=self.id)
         total = 0
-        for x in tickets_details:
-            total += x.price
+
+        for c in cartridge_tickets_details:
+            total += c.price
+
+        for p in package_tickets_details:
+            total += p.price
         return total
 
     def ticket_details(self):
-        tickets_details = TicketDetail.objects.filter(ticket=self.id)
+        cartridge_tickets_details = CartridgeTicketDetail.objects.filter(ticket_base=self.id)
+        package_tickets_details = PackageCartridgeTicketDetail.objects.filter(ticket_base=self.id)
         options = []
 
-        for ticket_detail in tickets_details:
-            if ticket_detail.cartridge:
-                options.append(("<option value=%s>%s</option>" %
-                                (ticket_detail, ticket_detail.cartridge)))
-            elif ticket_detail.package_cartridge:
-                options.append(("<option value=%s>%s</option>" %
-                                (ticket_detail, ticket_detail.package_cartridge)))
-        tag = """<select>%s</select>""" % str(options)
-        return tag
+        for cartridge_ticket_detail in cartridge_tickets_details:
+                options.append(("<option value=%s selected>%s</option>" %
+                                (cartridge_ticket_detail, cartridge_ticket_detail.cartridge)))
+
+        for package_ticket_detail in package_tickets_details:
+                options.append(("<option value=%s selected>%s</option>" %
+                                (package_ticket_detail, package_ticket_detail.package_cartridge)))
+
+        return """<select multiple>%s</select>""" % str(options)
 
     ticket_details.allow_tags = True
 
@@ -69,8 +74,6 @@ class TicketPOS(models.Model):
     )
     cashier = models.ForeignKey(
         UserProfile, default=1, on_delete=models.CASCADE)
-    sale_point = models.ForeignKey(
-        CashRegister, on_delete=models.CASCADE, default=1)
 
     def __str__(self):
         return 'P%s' %  self.ticket
@@ -94,21 +97,27 @@ class TicketPOS(models.Model):
     def is_active(self):
         return self.ticket.is_active
 
-    def ticket_details(self):
-        tickets_details = TicketDetail.objects.filter(ticket=self.ticket)
+    def cartridges(self):
+        tickets_details = CartridgeTicketDetail.objects.filter(ticket_base=self.ticket)
         options = []
 
         for ticket_detail in tickets_details:
-            if ticket_detail.cartridge:
-                options.append(("<option value=%s>%s</option>" %
+                options.append(("<option value=%s selected>%s</option>" %
                                 (ticket_detail, ticket_detail.cartridge)))
-            elif ticket_detail.package_cartridge:
-                options.append(("<option value=%s>%s</option>" %
-                                (ticket_detail, ticket_detail.package_cartridge)))
-        tag = """<select>%s</select>""" % str(options)
-        return tag
+        return """<select multiple disabled>%s</select>""" % str(options)
 
-    ticket_details.allow_tags = True
+    cartridges.allow_tags = True
+
+    def packages(self):
+        tickets_details = PackageCartridgeTicketDetail.objects.filter(ticket_base=self.ticket)
+        options = []
+
+        for ticket_detail in tickets_details:
+            options.append(("<option value=%s selected>%s</option>" %(ticket_detail, ticket_detail.package_cartridge)))
+
+        return """<select multiple disabled>%s</select>""" % str(options)
+
+    packages.allow_tags = True
 
     class Meta:
         ordering = ('-ticket__created_at',)
@@ -128,10 +137,10 @@ class TicketOrder(models.Model):
     )
 
     def __str__(self):
-        return '%s Ticket Order' %  self.ticket
+        return '%s Ticket Order' % self.ticket
 
     def ticket_details(self):
-        tickets_details = TicketDetail.objects.filter(ticket=self.ticket)
+        tickets_details = TicketCartridgeDetail.objects.filter(ticket=self.ticket)
         options = []
 
         for ticket_detail in tickets_details:
@@ -152,42 +161,38 @@ class TicketOrder(models.Model):
         verbose_name_plural = 'Tickets Order'
 
 
-class TicketDetail(models.Model):
-    ticket = models.ForeignKey(TicketBase, on_delete=models.CASCADE)
-    cartridge = models.ForeignKey(
-        Cartridge, on_delete=models.CASCADE, blank=True, null=True)
-    package_cartridge = models.ForeignKey(
-        PackageCartridge, on_delete=models.CASCADE, blank=True, null=True)
-    quantity = models.IntegerField(default=0)
+class CartridgeTicketDetail(models.Model):
+    cartridge = models.ForeignKey(Cartridge, on_delete=models.CASCADE)
+    ticket_base = models.ForeignKey(TicketBase, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
     price = models.DecimalField(default=0, max_digits=12, decimal_places=2)
 
-    def created_at(self):
-        return self.ticket.created_at
+    class Meta:
+        verbose_name = 'Detalle del Ticket para Cartuchos'
+        verbose_name_plural = 'Detalles de Tickets para Cartuchos'
 
     def __str__(self):
-        return '%s' % self.id
+        return '%s' % self.ticket_base
 
-    def extra_ingredients(self):
-        ingredients = TicketExtraIngredient.objects.filter(ticket_detail=self.id)
-        options = []
 
-        for ingredient in ingredients:
-            options.append(("<option value=%s selected>%s</option>" %
-                                (ingredient, ingredient)))
-        tag = """<select multiple disabled>%s</select>""" % str(options)
-        return tag
-
-    extra_ingredients.allow_tags = True
-
+class PackageCartridgeTicketDetail(models.Model):
+    ticket_base = models.ForeignKey(TicketBase, on_delete=models.CASCADE)
+    package_cartridge = models.ForeignKey(PackageCartridge)
+    quantity = models.PositiveSmallIntegerField(default=1)
+    price = models.DecimalField(default=0, max_digits=12, decimal_places=2)
+    
     class Meta:
-        ordering = ('id',)
-        verbose_name = 'Ticket Details'
-        verbose_name_plural = 'Tickets Details'
+        verbose_name = 'Detalle del Ticket para Paquetes'
+        verbose_name_plural = 'Detalles de Tickets para Paquetes'
+
+    def __str__(self):
+        return '%s' % self.ticket_base
 
 
 class TicketExtraIngredient(models.Model):
-    ticket_detail = models.ForeignKey(TicketDetail, null=True)
-    extra_ingredient = models.ForeignKey(ExtraIngredient, on_delete=models.CASCADE, blank=True, null=True)
+    cartridge_ticket_detail = models.ForeignKey(CartridgeTicketDetail, on_delete=models.CASCADE, null=True, blank=True)
+    extra_ingredient = models.ForeignKey(ExtraIngredient, on_delete=models.CASCADE, default=1)
+    quantity = models.PositiveSmallIntegerField(default=1)
     price = models.DecimalField(default=0, max_digits=12, decimal_places=2)
 
     def __str__(self):
