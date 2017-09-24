@@ -21,9 +21,9 @@ from helpers.helpers import Helper
 # -------------------------------------  Sales -------------------------------------
 class SalesReport(TemplateView):
     def get(self, request, *args, **kwargs):
+        helpers = Helper()
         sales_helper = TicketPOSHelper()
         products_helper = ProductsHelper()
-        package_recipes = products_helper.get_packages_cartridges_recipes()
         workbook = Workbook()
         count = 4
 
@@ -52,63 +52,67 @@ class SalesReport(TemplateView):
         ws1['R3'] = 'Total'
 
         for cartridge_ticket_detail in sales_helper.get_cartridges_tickets_details():
+            created_at = helpers.naive_to_datetime(cartridge_ticket_detail.ticket_base.created_at)
+            cartridge_name = cartridge_ticket_detail.cartridge.name
+            subcategory = cartridge_ticket_detail.cartridge.subcategory
+            payment_type = cartridge_ticket_detail.ticket_base.payment_type
+
             ws1.cell(row=count, column=1, value=cartridge_ticket_detail.id)
             ws1.cell(row=count, column=2, value=cartridge_ticket_detail.ticket_base.id)
             ws1.cell(row=count, column=3, value=cartridge_ticket_detail.ticket_base.order_number)
-            ws1.cell(row=count, column=4, value=cartridge_ticket_detail.ticket_base.created_at)
-            ws1.cell(row=count, column=4).number_format = 'DD-MM-YYYY'
-            ws1.cell(row=count, column=5, value=cartridge_ticket_detail.ticket_base.created_at)
-            ws1.cell(row=count, column=5).number_format = 'h:mm AM/PM'
-            ws1.cell(row=count, column=6, value=cartridge_ticket_detail.ticket_base.created_at)
+            ws1.cell(row=count, column=4, value=created_at.date())
+            ws1.cell(row=count, column=5, value=created_at.time())
+            ws1.cell(row=count, column=5).number_format = 'hh:mm:ss AM/PM'
+            ws1.cell(row=count, column=6, value=created_at.time())
             ws1.cell(row=count, column=6).number_format = 'hh AM/PM'
-            ws1.cell(row=count, column=9, value=cartridge_ticket_detail.cartridge.name if cartridge_ticket_detail.
-                     cartridge.subcategory == 'RO' else '')
-            ws1.cell(row=count, column=10, value=cartridge_ticket_detail.cartridge.name if cartridge_ticket_detail.
-                     cartridge.subcategory == 'SA' else '')
-            ws1.cell(row=count, column=11, value=cartridge_ticket_detail.cartridge.name if cartridge_ticket_detail.
-                     cartridge.subcategory == 'SM' else '')
-            ws1.cell(row=count, column=12, value=cartridge_ticket_detail.cartridge.name if cartridge_ticket_detail.
-                     cartridge.subcategory == 'FR' else '')
-            ws1.cell(row=count, column=13, value=cartridge_ticket_detail.cartridge.name if cartridge_ticket_detail.
-                     cartridge.subcategory == 'JU' else '')
-            ws1.cell(row=count, column=14, value=cartridge_ticket_detail.cartridge.name if cartridge_ticket_detail.
-                     cartridge.subcategory == 'WA' else '')
+            ws1.cell(row=count, column=9, value=cartridge_name if subcategory == 'RO' else '')
+            ws1.cell(row=count, column=10, value=cartridge_name if subcategory == 'SA' else '')
+            ws1.cell(row=count, column=11, value=cartridge_name if subcategory == 'SM' else '')
+            ws1.cell(row=count, column=12, value=cartridge_name if subcategory == 'FR' else '')
+            ws1.cell(row=count, column=13, value=cartridge_name if subcategory == 'JU' else '')
+            ws1.cell(row=count, column=14, value=cartridge_name if subcategory == 'WA' else '')
             ws1.cell(row=count, column=15, value=cartridge_ticket_detail.quantity)
-            ws1.cell(row=count, column=16, value='Efectivo' if cartridge_ticket_detail.ticket_base.
-                     payment_type == 'CA' else 'Tarjeta')
+            ws1.cell(row=count, column=16, value='Efectivo' if payment_type == 'CA' else 'Tarjeta')
             ws1.cell(row=count, column=17, value=cartridge_ticket_detail.cartridge.price)
             ws1.cell(row=count, column=18, value=cartridge_ticket_detail.price * cartridge_ticket_detail.quantity)
 
             count += 1
 
         # Only Packages
+
         for package_ticket_detail in sales_helper.get_packages_tickets_details():
+            created_at = helpers.naive_to_datetime(package_ticket_detail.ticket_base.created_at)
+
+            payment_type = package_ticket_detail.ticket_base.payment_type
             ws1.cell(row=count, column=1, value=package_ticket_detail.id)
             ws1.cell(row=count, column=2, value=package_ticket_detail.ticket_base.id)
             ws1.cell(row=count, column=3, value=package_ticket_detail.ticket_base.order_number)
-            ws1.cell(row=count, column=4, value=package_ticket_detail.ticket_base.created_at)
-            ws1.cell(row=count, column=4).number_format = 'DD-MM-YYYY'
-            ws1.cell(row=count, column=5, value=package_ticket_detail.ticket_base.created_at)
-            ws1.cell(row=count, column=5).number_format = 'h:mm AM/PM'
-            ws1.cell(row=count, column=6, value=package_ticket_detail.ticket_base.created_at)
-            ws1.cell(row=count, column=6).number_format = 'hh AM/PM'
+            ws1.cell(row=count, column=4, value=created_at.date())
+            ws1.cell(row=count, column=5, value=created_at.time())
+            ws1.cell(row=count, column=5).number_format = 'hh:mm:ss AM/PM'
+            ws1.cell(row=count, column=6, value=created_at.time())
+            ws1.cell(row=count, column=6).number_format = 'HH AM/PM'
             ws1.cell(row=count, column=7, value=package_ticket_detail.package_cartridge.id)
             ws1.cell(row=count, column=8, value=package_ticket_detail.package_cartridge.name)
+
             # Fill cartridge rows
             packages = products_helper.get_packages_cartridges_recipes().filter(
                 package_cartridge=package_ticket_detail.package_cartridge)
+
             for package in packages:
-                if package.cartridge.subcategory == 'RO':
-                    ws1.cell(row=count, column=9, value=package.cartridge.name)
-                if package.cartridge.subcategory == 'FR':
-                    ws1.cell(row=count, column=12, value=package.cartridge.name)
-                if package.cartridge.subcategory == 'JU':
-                    ws1.cell(row=count, column=13, value=package.cartridge.name)
-                if package.cartridge.subcategory == 'WA':
-                    ws1.cell(row=count, column=14, value=package.cartridge.name)
+                subcategory = package.cartridge.subcategory
+                cartridge_name = package.cartridge.name
+                if subcategory == 'RO':
+                    ws1.cell(row=count, column=9, value=cartridge_name)
+                if subcategory == 'FR':
+                    ws1.cell(row=count, column=12, value=cartridge_name)
+                if subcategory == 'JU':
+                    ws1.cell(row=count, column=13, value=cartridge_name)
+                if subcategory == 'WA':
+                    ws1.cell(row=count, column=14, value=cartridge_name)
+
             ws1.cell(row=count, column=15, value=package_ticket_detail.quantity)
-            ws1.cell(row=count, column=16, value='Efectivo' if package_ticket_detail.ticket_base.
-                     payment_type == 'CA' else 'Tarjeta')
+            ws1.cell(row=count, column=16, value='Efectivo' if payment_type == 'CA' else 'Tarjeta')
             ws1.cell(row=count, column=17, value=package_ticket_detail.package_cartridge.price)
             ws1.cell(row=count, column=18, value=package_ticket_detail.price * package_ticket_detail.quantity)
 
@@ -244,11 +248,10 @@ def sales(request):
             final_date = request.POST['dt_week'].split(',')[1]
             initial_date = helper.parse_to_datetime(initial_date)
             final_date = helper.parse_to_datetime(final_date) + timedelta(days=1)
-
-            sales = sales_helper.get_sales_list(initial_date, final_date)
+            week_sales = sales_helper.get_sales_list(initial_date, final_date)
             tickets = sales_helper.get_tickets_list(initial_date, final_date)
             data = {
-                'sales': sales,
+                'sales': week_sales,
                 'tickets': tickets,
                 'week_number': helper.get_week_number(initial_date)
             }
@@ -258,6 +261,8 @@ def sales(request):
     template = 'sales/sales.html'
     title = 'Registro de Ventas'
 
+    initial_date, final_date = helper.get_initial_final_week_datetime()
+
     context = {
         'title': PAGE_TITLE + ' | ' + title,
         'page_title': title,
@@ -266,9 +271,10 @@ def sales(request):
         'today_name': helper.get_name_day(datetime.now()),
         'today_number': helper.get_number_day(datetime.now()),
         'week_number': helper.get_week_number(date.today()),
-        'tickets': sales_helper.get_tickets_today_list(),
+        'tickets': sales_helper.get_tickets_list(initial_date, final_date),
         'dates_range': sales_helper.get_dates_range_json(),
     }
+
     return render(request, template, context)
 
 

@@ -3,6 +3,7 @@ from datetime import date, datetime, timedelta
 from decimal import Decimal
 
 from django.db.models import Min, Max
+from django.utils.timezone import utc
 
 from helpers.helpers import Helper
 from sales.models import TicketPOS, CartridgeTicketDetail, PackageCartridgeTicketDetail, TicketExtraIngredient
@@ -97,44 +98,64 @@ class TicketPOSHelper(object):
 
         return years_list
 
-    def get_tickets_today_list(self):
+    def get_tickets_list(self, initial_date=None, final_date=None):
+        """
+        :returns: tickets pos details
+        :rtype: list
+        :param initial_date: datetime
+        :param final_date: datetime
+        """
+        if initial_date is None and final_date is None:
+            tickets_pos = self.tickets_pos.order_by('-ticket__created_at')
+        else:
+
+            tickets_pos = self.tickets_pos.filter(
+                ticket__created_at__range=(initial_date, final_date)).order_by('-ticket__created_at')
         helper = Helper()
+        cartridges_tickets_details = self.get_cartridges_tickets_details()
+        packages_tickets_details = self.get_packages_tickets_details()
 
         tickets_list = []
-        filtered_tickets = self.tickets_pos.\
-            filter(ticket__created_at__gte=helper.naive_to_datetime(date.today())).\
-            order_by('-ticket__created_at')
 
-        for ticket_pos in filtered_tickets:
+        for ticket_pos in tickets_pos:
+
             ticket_object = {
-                'ticket_parent': ticket_pos.ticket,
+                'id': ticket_pos.ticket.id,
                 'order_number': ticket_pos.ticket.order_number,
+                'created_at': datetime.strftime(
+                    helper.naive_to_datetime(ticket_pos.ticket.created_at), "%B %d, %Y, %H:%M:%S %p"),
+                'cashier': ticket_pos.cashier.username,
                 'cartridges': [],
-                'cashier': ticket_pos.cashier,
                 'packages': [],
                 'total': Decimal(0.00),
                 'is_active': ticket_pos.ticket.is_active,
             }
-
-            # Cartridge Ticket Details
-            for cartridge_ticket_detail in self.get_cartridges_tickets_details():
+            # Cartridges Tickets Details
+            for cartridge_ticket_detail in cartridges_tickets_details:
                 if cartridge_ticket_detail.ticket_base == ticket_pos.ticket:
-                        cartridge_object = {
-                            'cartridge': cartridge_ticket_detail.cartridge,
-                            'quantity': cartridge_ticket_detail.quantity
-                        }
-                        ticket_object['cartridges'].append(cartridge_object)
-                        ticket_object['total'] += cartridge_ticket_detail.price
-            # Package Ticket Details
-            for package_ticket_detail in self.get_packages_tickets_details():
-                if package_ticket_detail.ticket_base == ticket_pos.ticket:
-                        package_cartridge_object = {
-                            'package': package_ticket_detail.package_cartridge,
-                            'quantity': package_ticket_detail.quantity
-                        }
-                        ticket_object['packages'].append(package_cartridge_object)
-                        ticket_object['total'] += package_ticket_detail.price
+                    ticket_detail_object = {
+                        'name': cartridge_ticket_detail.cartridge.name,
+                        'quantity': cartridge_ticket_detail.quantity,
+                        'price': Decimal(cartridge_ticket_detail.price),
+                    }
 
+                    ticket_object['cartridges'].append(ticket_detail_object)
+                    ticket_object['total'] += Decimal(cartridge_ticket_detail.price)
+
+            # Packages Tickets Details
+            for package_ticket_detail in packages_tickets_details:
+                if package_ticket_detail.ticket_base == ticket_pos.ticket:
+
+                    ticket_detail_object = {
+                        'name': package_ticket_detail.package_cartridge.name,
+                        'quantity': package_ticket_detail.quantity,
+                        'price': Decimal(package_ticket_detail.price),
+                    }
+                    ticket_object['packages'].append(ticket_detail_object)
+
+                    ticket_object['total'] += Decimal(package_ticket_detail.price)
+
+            ticket_object['total'] = str(ticket_object['total'])
             tickets_list.append(ticket_object)
 
         return tickets_list
@@ -297,69 +318,6 @@ class TicketPOSHelper(object):
             start_date_number += 1
 
         return json.dumps(week_sales_list)
-
-    def get_tickets_list(self, initial_date, final_date):
-        """
-        :rtype: list
-        :param initial_date: datetime
-        :param final_date: datetime
-        """
-        all_tickets = self.tickets_pos.filter(
-            ticket__created_at__range=(initial_date, final_date)).order_by('-ticket__created_at')
-        all_cartridges_tickets_details = self.get_cartridges_tickets_details()
-        all_packages_tickets_details = self.get_packages_tickets_details()
-        tickets_list = []
-        for ticket_pos in all_tickets:
-
-            ticket_object = {
-                'id': ticket_pos.ticket.id,
-                'order_number': ticket_pos.ticket.order_number,
-                'created_at': datetime.strftime(ticket_pos.ticket.created_at, "%B %d, %Y, %H:%M:%S %p"),
-                'cashier': ticket_pos.cashier.username,
-                'ticket_details': {
-                    'cartridges': [],
-                    'packages': [],
-                },
-                'total': 0,
-            }
-            # Cartridges Tickets Details
-            for cartridge_ticket_detail in all_cartridges_tickets_details:
-                if cartridge_ticket_detail.ticket_base == ticket_pos.ticket:
-                    ticket_detail_object = {
-                        'name': cartridge_ticket_detail.cartridge.name,
-                        'quantity': cartridge_ticket_detail.quantity,
-                        'price': float(cartridge_ticket_detail.price),
-                    }
-                    ticket_object['ticket_details']['cartridges'].append(ticket_detail_object)
-
-                    ticket_object['total'] += float(cartridge_ticket_detail.price)
-
-                    try:
-                        ticket_object['ticket_details'].append(ticket_detail_object)
-                    except Exception as e:
-                        pass
-
-            # Packages Tickets Details
-            for package_ticket_detail in all_packages_tickets_details:
-                if package_ticket_detail.ticket_base == ticket_pos.ticket:
-
-                    ticket_detail_object = {
-                        'name': package_ticket_detail.package_cartridge.name,
-                        'quantity': package_ticket_detail.quantity,
-                        'price': float(package_ticket_detail.price),
-                    }
-                    ticket_object['ticket_details']['packages'].append(ticket_detail_object)
-
-                    ticket_object['total'] += float(package_ticket_detail.price)
-
-                    try:
-                        ticket_object['ticket_details'].append(ticket_detail_object)
-                    except Exception as e:
-                        pass
-
-            ticket_object['total'] = str(ticket_object['total'])
-            tickets_list.append(ticket_object)
-        return tickets_list
 
     def get_new_order_number(self):
         if self.__tickets_pos is None:
