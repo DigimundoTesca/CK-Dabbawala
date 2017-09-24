@@ -14,14 +14,14 @@ class TicketPOSHelper(object):
     from the web page.
     """
     def __init__(self):
-        self.__tickets = None
+        self.__tickets_pos = None
         self.__cartridges_tickets_details = None
         self.__packages_tickets_details = None
         self.__extra_ingredients = None
         super(TicketPOSHelper, self).__init__()
 
-    def set_tickets(self):
-        self.__tickets = TicketPOS.objects.select_related('ticket')
+    def set_tickets_pos(self):
+        self.__tickets_pos = TicketPOS.objects.select_related('ticket')
 
     def set_cartridges_tickets_details(self):
         self.__cartridges_tickets_details = CartridgeTicketDetail.objects. \
@@ -43,13 +43,13 @@ class TicketPOSHelper(object):
             all()
 
     @property
-    def tickets(self):
+    def tickets_pos(self):
         """
         :rtype: django.db.models.query.QuerySet
         """
-        if self.__tickets is None:
-            self.set_tickets()
-        return self.__tickets
+        if self.__tickets_pos is None:
+            self.set_tickets_pos()
+        return self.__tickets_pos
 
     def get_cartridges_tickets_details(self, initial_date=None, final_date=None):
         """
@@ -91,7 +91,7 @@ class TicketPOSHelper(object):
         """
         years_list = []
 
-        for ticket_pos in self.tickets:
+        for ticket_pos in self.tickets_pos:
             if ticket_pos.ticket.created_at.year not in years_list:
                 years_list.append(ticket_pos.ticket.created_at.year)
 
@@ -101,7 +101,7 @@ class TicketPOSHelper(object):
         helper = Helper()
 
         tickets_list = []
-        filtered_tickets = self.tickets.\
+        filtered_tickets = self.tickets_pos.\
             filter(ticket__created_at__gte=helper.naive_to_datetime(date.today())).\
             order_by('-ticket__created_at')
 
@@ -148,9 +148,9 @@ class TicketPOSHelper(object):
         """
         helper = Helper()
         try:
-            min_year = self.tickets.\
+            min_year = self.tickets_pos.\
                 aggregate(Min('ticket__created_at'))['ticket__created_at__min'].year
-            max_year = self.tickets.\
+            max_year = self.tickets_pos.\
                 aggregate(Max('ticket__created_at'))['ticket__created_at__max'].year
             years_list = []  # [2015:object, 2016:object, 2017:object, ...]
         except Exception as e:
@@ -164,7 +164,7 @@ class TicketPOSHelper(object):
                 'weeks_list': [],
             }
 
-            tickets_per_year = self.tickets.filter(
+            tickets_per_year = self.tickets_pos.filter(
                 ticket__created_at__range=[helper.naive_to_datetime(date(max_year, 1, 1)),
                                    helper.naive_to_datetime(date(max_year, 12, 31))])
             for ticket_item in tickets_per_year:
@@ -227,7 +227,7 @@ class TicketPOSHelper(object):
         total_earnings = 0
 
         while count <= total_days:
-            day_tickets = self.tickets.filter(ticket__created_at__range=[start_dt, limit_day])
+            day_tickets = self.tickets_pos.filter(ticket__created_at__range=[start_dt, limit_day])
             day_object = {
                 'date': str(start_dt.date().strftime('%d-%m-%Y')),
                 'day_name': None,
@@ -275,7 +275,7 @@ class TicketPOSHelper(object):
                 'number_day': helper.get_number_day(helper.start_datetime(days_to_count).date()),
             }
 
-            day_tickets = self.tickets.filter(
+            day_tickets = self.tickets_pos.filter(
                 ticket__created_at__range=[helper.start_datetime(days_to_count), helper.end_datetime(days_to_count)])
 
             for ticket_item in day_tickets:
@@ -304,7 +304,7 @@ class TicketPOSHelper(object):
         :param initial_date: datetime
         :param final_date: datetime
         """
-        all_tickets = self.tickets.filter(
+        all_tickets = self.tickets_pos.filter(
             ticket__created_at__range=(initial_date, final_date)).order_by('-ticket__created_at')
         all_cartridges_tickets_details = self.get_cartridges_tickets_details()
         all_packages_tickets_details = self.get_packages_tickets_details()
@@ -362,11 +362,11 @@ class TicketPOSHelper(object):
         return tickets_list
 
     def get_new_order_number(self):
-        if self.__tickets is None:
-            self.set_tickets()
+        if self.__tickets_pos is None:
+            self.set_tickets_pos()
 
         order_numbers_list = []
-        for ticket_pos in self.tickets:
+        for ticket_pos in self.tickets_pos:
             order_numbers_list.append(ticket_pos.ticket.order_number)
 
         try:

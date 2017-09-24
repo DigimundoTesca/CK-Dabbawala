@@ -137,7 +137,7 @@ def sales(request):
             sales_day_list = []
             start_day = helper.naive_to_datetime(datetime.strptime(request.POST['date'], '%d-%m-%Y').date())
             end_date = helper.naive_to_datetime(start_day + timedelta(days=1))
-            tickets_objects = sales_helper.tickets.filter(ticket__created_at__range=[start_day, end_date])
+            tickets_objects = sales_helper.tickets_pos.filter(ticket__created_at__range=[start_day, end_date])
 
             for ticket_pos in tickets_objects:
                 """
@@ -209,8 +209,8 @@ def sales(request):
         if request.POST['type'] == 'tickets':
             tickets_objects_list = []
 
-            for ticket_pos in sales_helper.tickets:
-                for cartridge_ticket_detail in sales_helper.get_all_tickets_details():
+            for ticket_pos in sales_helper.tickets_pos:
+                for cartridge_ticket_detail in sales_helper.get_cartridges_tickets_details():
                     if cartridge_ticket_detail.ticket == ticket_pos.ticket:
                         ticket_object = {
                             'ID': ticket_pos.ticket.id,
@@ -413,27 +413,5 @@ def new_sale(request):
 # -------------------------------- Test ------------------------------
 def test_sales_update(request):
     template = 'sales/test.html'
-    all_previous_tickets_details = TicketDetail.objects.all()
-    for ticket_detail in all_previous_tickets_details:
-        ticket_base = TicketBase.objects.get(id=ticket_detail.ticket.id)
-        if ticket_detail.cartridge:  # Is Cartridge
-            new_cartridge_ticket_detail = CartridgeTicketDetail(
-                ticket_base=ticket_base,
-                cartridge=ticket_detail.cartridge,
-                quantity=ticket_detail.quantity,
-                price=ticket_detail.price
-            )
-            new_cartridge_ticket_detail.save()
-        elif ticket_detail.package_cartridge:  # Is Package
-            new_package_cartridge_ticket_detail = PackageCartridgeTicketDetail(
-                ticket_base=ticket_base,
-                package_cartridge=ticket_detail.package_cartridge,
-                quantity=ticket_detail.quantity,
-                price=ticket_detail.price
-            )
-            new_package_cartridge_ticket_detail.save()
 
-    context = {
-        'tickets': all_previous_tickets_details
-    }
-    return render(request, template, context)
+    return render(request, template)
