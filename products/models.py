@@ -159,7 +159,7 @@ class Cartridge(models.Model):
     price = models.DecimalField(decimal_places=2, default=0, max_digits=12)
     kitchen_assembly = models.ForeignKey(KitchenAssembly, blank=True, null=True)
     is_active = models.BooleanField(default=True)
-    image = models.ImageField(blank=False, upload_to='cartridges')
+    image = models.ImageField(blank=False, upload_to='cartridges', max_length=255)
 
     def __str__(self):
         return self.name
