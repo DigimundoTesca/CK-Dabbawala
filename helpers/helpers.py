@@ -1,10 +1,10 @@
-import pytz
+from pytz import timezone
 from datetime import datetime, date, timedelta, time
 
 
 class Helper(object):
     def __init__(self):
-        self.tz = pytz.timezone('America/Mexico_City')
+        self.tz = timezone('America/Mexico_City')
         self.days_dict = {
             'MONDAY': 'Lunes',
             'TUESDAY': 'Martes',
@@ -28,7 +28,7 @@ class Helper(object):
     def naive_to_datetime(self, nd):
         if type(nd) == datetime:
             if nd.tzinfo is not None and nd.tzinfo.utcoffset(nd) is not None:  # Is Aware
-                return nd
+                return nd.astimezone(self.tz)
             else:  # Is Naive
                 return self.tz.localize(nd)
 
@@ -39,13 +39,27 @@ class Helper(object):
             return self.tz.localize(new_date)
 
     def get_name_day(self, datetime_now):
-        name_day = date(datetime_now.year, datetime_now.month, datetime_now.day)
-        return self.days_dict[name_day.strftime('%A').upper()]
+        """
+        :param datetime_now: the datetime to get its name
+        :type datetime_now: datetime, date
+        :return: datetime name
+        :rtype: str
+        """
+        if type(datetime_now) == datetime:
+            date_now = date(datetime_now.year, datetime_now.month, datetime_now.day)
+            return self.days_dict[date_now.strftime('%A').upper()]
+        else:
+            return self.days_dict[datetime_now.strftime('%A').upper()]
 
     def get_number_day(self, dt):
         return self.number_days_dict[self.get_name_day(dt)]
 
     def start_datetime(self, back_days):
+        """
+        :param back_days: int
+        :return: obtained datetime
+        :rtype: datetime
+        """
         start_date = date.today() - timedelta(days=back_days)
         return self.naive_to_datetime(start_date)
 
@@ -78,6 +92,16 @@ class Helper(object):
                     return False
 
         return True
+
+    def get_initial_final_week_datetime(self):
+        """
+        :rtype: (datetime, datetime)
+        :returns: returns the monday datetime and today datetime in actual week
+        """
+        final_datetime = datetime.now(self.tz)
+        initial_datetime = self.start_datetime(self.get_number_day(final_datetime))
+        print(initial_datetime, final_datetime)
+        return initial_datetime, final_datetime
 
     @staticmethod
     def get_week_number(dt):
