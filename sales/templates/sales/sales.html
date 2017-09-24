@@ -77,14 +77,14 @@
           <tbody>
             {% for ticket in tickets %}
             <tr>
-              <th class="header-id">{{ ticket.ticket_parent }}</th>
+              <th class="header-id">{{ ticket.id }}</th>
               <th>{{ ticket.order_number }}</th>
-              <td class="header-date">{{ ticket.ticket_parent.created_at }}</td>
+              <td class="header-date">{{ ticket.created_at }}</td>
               <td class="header-products">
                 {% for cartridge in ticket.cartridges %}
                 <span class="badge badge-success">
                   <span class="badge badge-info" >{{ cartridge.quantity }}</span>
-                  <span class="badge badge-success ">{{ cartridge.cartridge }}</span>
+                  <span class="badge badge-success ">{{ cartridge.name }}</span>
                 </span>
                 {% endfor %}
               </td>
@@ -92,7 +92,7 @@
                 {% for package in ticket.packages %}
                 <span class="badge badge-primary">
                   <span class="badge badge-info">{{ package.quantity}}</span>
-                  <span class="badge badge-primary">{{ package.package }}</span>
+                  <span class="badge badge-primary">{{ package.name }}</span>
                 </span>
                 {% endfor %}
               </td>
@@ -591,27 +591,27 @@
             let cartridges_list = "";
             let packages_list = "";
 
-            for (let j = 0; j < tickets_objects[i].ticket_details['cartridges'].length; j++) {
+            for (let j = 0; j < tickets_objects[i]['cartridges'].length; j++) {
               cartridges_list += "" +
               "<span class='badge badge-success'>" +
                 "<span class='badge badge-info'>" +
-                tickets_objects[i].ticket_details['cartridges'][j].quantity +
+                tickets_objects[i]['cartridges'][j].quantity +
                 "</span>" +
                 "<span class='badge badge-success'>" +
-                tickets_objects[i].ticket_details['cartridges'][j].name +
+                tickets_objects[i]['cartridges'][j].name +
                 "</span>" +
               "</span>" +
               "";
             }
 
-            for (let j = 0; j < tickets_objects[i].ticket_details['packages'].length; j++) {
+            for (let j = 0; j < tickets_objects[i]['packages'].length; j++) {
               packages_list += "" +
               "<span class='badge badge-primary'>" +
                 "<span class='badge badge-info'>" +
-                tickets_objects[i].ticket_details['packages'][j].quantity +
+                tickets_objects[i]['packages'][j].quantity +
                 "</span>" +
                 "<span class='badge badge-primary'>" +
-                tickets_objects[i].ticket_details['packages'][j].name +
+                tickets_objects[i]['packages'][j].name +
                 "</span>" +
               "</span>" +
               "";
