@@ -12,7 +12,7 @@ from sales.models import TicketBase
 
 
 @login_required(login_url="users:login")
-def kitchen_test(request, kitchen=None):
+def kitchen(request, kitchen=None):
     if kitchen == 'cold':
         template = 'cold.html'
         title = 'Cocina Fría'
