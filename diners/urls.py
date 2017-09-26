@@ -11,8 +11,10 @@ urlpatterns = [
     url(r'^diners/rfid/$', views.RFID, name='rfid'),
     url(r'^diners/$', views.diners, name='diners'),
     url(r'^login/$', views.diners_login, name='diners_login'),
+
+    # Suggestions
+    url(r'^tuopinion/$', views.satisfaction_rating, name='satisfaction_rating'),
     url(r'^diners/logs/$', views.diners_logs, name='diners_logs'),
-    url(r'^diners/satisfaction-rating/$', views.satisfaction_rating, name='satisfaction_rating'),
     url(r'^diners/analytics/$', views.analytics, name='analytics'),
     url(r'^diners/suggestions/$', views.suggestions, name='suggestions'),
 ]
