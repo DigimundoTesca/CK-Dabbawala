@@ -12,8 +12,8 @@ from sales.models import TicketBase
 
 
 @login_required(login_url="users:login")
-def kitchen(request, kitchen=None):
-    if kitchen == 'cold':
+def kitchen(request, kitchen_type=None):
+    if kitchen_type == 'cold':
         template = 'cold.html'
         title = 'Cocina Fría'
     else:
@@ -21,7 +21,7 @@ def kitchen(request, kitchen=None):
         template = 'hot.html'
 
     kitchen_helper = KitchenHelper()
-    tickets= TicketBase.objects.all()
+    tickets = TicketBase.objects.all()
 
     context = {
         'title': PAGE_TITLE + ' | ' + title,
