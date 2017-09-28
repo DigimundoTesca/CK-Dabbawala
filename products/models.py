@@ -254,3 +254,9 @@ class PackageCartridgeRecipe(models.Model):
         ordering = ('id',)
         verbose_name = 'Receta del Paquete'
         verbose_name_plural = 'Recetas de Paquetes'
+
+
+class SimulatedSale(models.Model):
+    cartridge = models.ForeignKey(Cartridge, default=1, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    created_at = models.DateTimeField(auto_now=True)
