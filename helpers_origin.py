@@ -502,12 +502,9 @@ class PredictionSale:
             self.set_estimated_amount()
         return self.__estimated_amount
 
-
-class AddSale:
-    def __init__(self):
-        super(AddSale, self).__init__()
-        self.__id_prediction_cartridge = None
-
     def add_simuleted_sale(self):
-        predition_sale = PredictionSale()
-        if get_estimated_amount
+        if self.get_estimated_amount >=  self.get_all_sales_cartridges_real
+            return True
+        else
+            return False
+
