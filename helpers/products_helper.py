@@ -107,3 +107,82 @@ class ProductsHelper(object):
 
     def set_elements_in_warehouse(self):
         self.__elements_in_warehouse = Warehouse.objects.select_related('supply').all().order_by('supply__name')
+
+class PredictionSale:
+    def __init__(self):
+        super(PredictionSale, self).__init__()
+        self.__id_prediction_cartridge = None
+        self.__all_sales_cartridges_prediction = None
+        self.__all_sales_cartridges_real = None
+        self.__all_sales_cartridges_simulated = None
+        self.__sd_cartridge = None
+        self.__mean_cartridge = None
+        self.__estimated_amount = None
+        self.__simulated_sale = None
+
+    def set_id_prediction_cartridge(self):
+        pass
+
+    def set_all_sales_cartridges_prediction(self):
+        self.__all_sales_cartridges_prediction = get_all_sales_cartridges_real() + get_all_sales_cartridges_simulated()
+
+    def set_all_sales_cartridges_real(self):
+        self.__all_sales_cartridges_real = Cartridge.object. \
+            filter(cartridge__id=self.__id_prediction_cartridge). \
+            filter(simulated_quantity=0)
+
+    def set_all_sales_cartridges_simulated(self):
+        self.__all_sales_cartridges_real = Cartridge.object. \
+            filter(cartridge__id=self.__id_prediction_cartridge). \
+            exclude(simulated_quantity=0)
+
+    def set_mean_cartridge(self):
+        self.__mean_cartridge = stats.mean(self.get_all_sales_cartridge_prediction())
+
+    def set_sd_cartridge(self):
+        self.__sd_cartridge = stats.pstdev(self.get_all_sales_cartridge_prediction())
+
+    def set_estimated_amount(self):
+        self.__estimated_amount =
+            get_mean_cartridge()+(2*get_sd_cartridge())
+
+    def get_id_prediction_cartridge(self):
+        if self.__id_prediction_cartridge is None:
+            self.set_id_prediction_cartridge()
+        return self.__id_prediction_cartridge
+
+    def get_all_sales_cartridges_prediction(self):
+        if self.__all_sales_cartridges_prediction is None:
+            self.set_all_sales_cartridges_prediction()
+        return self.__all_sales_cartridges_prediction
+
+    def get_all_sales_cartridges_real(self):
+        if self.__all_sales_cartridges_real is None:
+            self.set_all_sales_cartridges_real()
+        return self.__all_sales_cartridges_real
+
+    def get_all_sales_cartridges_simulated(self):
+        if self.__all_sales_cartridges_simulated is None:
+            self.set_all_sales_cartridges_simulated()
+        return self.__all_sales_cartridges_simulated
+
+    def get_mean_cartridge(self):
+        if self.__mean_cartridge is None:
+            self.set_mean_cartridge()
+        return self.__mean_cartridge
+
+    def get_sd_cartridge(self):
+        if self.__sd_cartridge is None:
+            self.set_sd_cartridge()
+        return self.__sd_cartridge
+
+    def get_estimated_amount(self):
+        if self.__estimated_amount is None:
+            self.set_estimated_amount()
+        return self.__estimated_amount
+
+    def add_simuleted_sale(self):
+        if self.get_estimated_amount >=  self.get_all_sales_cartridges_real:
+            return True
+        else:
+            return False
