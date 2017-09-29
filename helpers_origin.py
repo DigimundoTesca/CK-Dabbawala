@@ -1,5 +1,6 @@
 import math
 from datetime import datetime, date, timedelta, time
+import statistics as stats
 from kitchen.models import Warehouse, ProcessedProduct
 from products.models import Supply, Cartridge, PackageCartridge, CartridgeRecipe, PackageCartridgeRecipe, \
     ExtraIngredient
@@ -445,23 +446,23 @@ class PredictionSale:
         pass
 
     def set_all_sales_cartridges_prediction(self):
-        self.__all_cartridges_sales = get_all_sales_cartridges_real() + get_all_sales_cartridges_simulated()
+        self.__all_sales_cartridges_prediction = get_all_sales_cartridges_real() + get_all_sales_cartridges_simulated()
 
     def set_all_sales_cartridges_real(self):
-        self.__all_sales_cartridges_real = cartridge.object. \
+        self.__all_sales_cartridges_real = Cartridge.object. \
             filter(cartridge__id=self.__id_prediction_cartridge). \
             filter(simulated_quantity=0)
 
     def set_all_sales_cartridges_simulated(self):
-        self.__all_sales_cartridges_real = cartridge.object. \
+        self.__all_sales_cartridges_real = Cartridge.object. \
             filter(cartridge__id=self.__id_prediction_cartridge). \
             exclude(simulated_quantity=0)
 
     def set_mean_cartridge(self):
-        self.__mean_cartridge = stats.mean(get_all_sales_cartridge_prediction())
+        self.__mean_cartridge = stats.mean(self.get_all_sales_cartridge_prediction())
 
     def set_sd_cartridge(self):
-        self.__sd_cartridge = stats.pstdev(get_all_sales_cartridge_prediction())
+        self.__sd_cartridge = stats.pstdev(self.get_all_sales_cartridge_prediction())
 
     def set_estimated_amount(self):
         self.__estimated_amount =
@@ -503,8 +504,8 @@ class PredictionSale:
         return self.__estimated_amount
 
     def add_simuleted_sale(self):
-        if self.get_estimated_amount >=  self.get_all_sales_cartridges_real
+        if self.get_estimated_amount >=  self.get_all_sales_cartridges_real:
             return True
-        else
+        else:
             return False
 
