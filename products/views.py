@@ -1,45 +1,67 @@
-
-# -*- encoding: utf-8 -*-
 from __future__ import unicode_literals
 
 from django.shortcuts import get_object_or_404, render, redirect
-
 from django.contrib.auth.decorators import login_required
 
 from branchoffices.models import Supplier
 from cloudkitchen.settings.base import PAGE_TITLE
 from products.forms import SupplyForm, SuppliesCategoryForm, CartridgeForm
-from products.models import Cartridge, Supply, SuppliesCategory, KitchenAssembly
-from django.urls import reverse
-from django.http import HttpResponseRedirect
-from django.urls import reverse_lazy
+from products.models import Cartridge, Supply, SuppliesCategory
 
 from django.views.generic import UpdateView
 from django.views.generic import DeleteView
 from django.views.generic import CreateView
 
-class Create_Supply(CreateView):
+
+class CreateSupply(CreateView):
     model = Supply
-    fields = ['name','category','barcode','supplier','storage_required','presentation_unit','presentation_cost',
-        'measurement_quantity','measurement_unit','optimal_duration','optimal_duration_unit','location','image']
+    fields = [
+        'name',
+        'category',
+        'barcode',
+        'supplier',
+        'storage_required',
+        'presentation_unit',
+        'presentation_cost',
+        'measurement_quantity',
+        'measurement_unit',
+        'optimal_duration',
+        'optimal_duration_unit',
+        'location',
+        'image'
+    ]
+    template_name = 'new_supply.html'
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return redirect('/supplies/')
+
+
+class UpdateSupply(UpdateView):
+    model = Supply
+    fields = [
+        'name',
+        'category',
+        'barcode',
+        'supplier',
+        'storage_required',
+        'presentation_unit',
+        'presentation_cost',
+        'measurement_quantity',
+        'measurement_unit',
+        'optimal_duration',
+        'optimal_duration_unit',
+        'location',
+        'image'
+    ]
     template_name = 'new_supply.html'
 
     def form_valid(self,form):
         self.object = form.save()
         return redirect('/supplies/')
 
-class Update_Supply(UpdateView):
-    model = Supply
-    fields = ['name','category','barcode','supplier','storage_required','presentation_unit','presentation_cost',
-        'measurement_quantity','measurement_unit','optimal_duration','optimal_duration_unit','location','image']
-    template_name = 'new_supply.html'
 
-    def form_valid(self,form):
-        self.object = form.save()
-        return redirect('/supplies/')
-
-
-class Delete_Supply(DeleteView):
+class DeleteSupply(DeleteView):
     model = Supply
     template_name = 'delete_supply.html'
 
@@ -49,27 +71,37 @@ class Delete_Supply(DeleteView):
         return redirect('/supplies/')
 
 
-class Create_Cartridge(CreateView):
+class CreateCartridge(CreateView):
     model = Cartridge
-    fields = ['name','price','category','image']
+    fields = [
+        'name',
+        'price',
+        'category',
+        'image'
+    ]
     template_name = 'new_cartridge.html'
 
-    def form_valid(self,form):
+    def form_valid(self, form):
         self.object = form.save()
         return redirect('/cartridges/')
 
 
-class Update_Cartridge(UpdateView):
+class UpdateCartridge(UpdateView):
     model = Cartridge
-    fields = ['name','price','category','image']
+    fields = [
+        'name',
+        'price',
+        'category',
+        'image'
+    ]
     template_name = 'new_cartridge.html'
 
-    def form_valid(self,form):
+    def form_valid(self, form):
         self.object = form.save()
         return redirect('/cartridges/')
 
 
-class Delete_Cartridge(DeleteView):
+class DeleteCartridge(DeleteView):
     model = Cartridge
     template_name = 'delete_cartridge.html'
 
@@ -81,18 +113,8 @@ class Delete_Cartridge(DeleteView):
 
 def test(request):
     template = 'cartridges_test/test.html'
-    cartridges = Cartridge.objects.all()
-    kitchen_assembly_cold = KitchenAssembly.objects.get(name='CO')
-    kitchen_assembly_hot = KitchenAssembly.objects.get(name='HO')
-    for cartridge in cartridges:
-        if cartridge.category == 'FD':
-            cartridge.kitchen_assembly = kitchen_assembly_hot
-        else:
-            cartridge.kitchen_assembly = kitchen_assembly_cold
-        cartridge.save()
-    context = {
-        'cartridges': cartridges
-    }
+
+    context = {}
     return render(request, template, context)
 
 
@@ -176,6 +198,7 @@ def supply_detail(request, pk):
     }
     return render(request, template, context)
 
+
 @login_required(login_url='users:login')
 def supply_modify(request,pk):
     supply = get_object_or_404(Supply, pk=pk)
@@ -204,19 +227,19 @@ def supply_modify(request,pk):
 
     else:
         dic = {
-            'name' : supply.name,
-            'category' : supply.category ,
-            'barcode' : supply.barcode,
-            'supplier' : supply.supplier,
-            'storage_required' : supply.storage_required,
-            'presentation_unit' : supply.presentation_unit,
-            'presentation_cost' : supply.presentation_cost,
-            'quantity' : supply.measurement_quantity,
-            'measurement_unit' : supply.measurement_unit,
-            'optimal_duration' : supply.optimal_duration,
-            'optimal_duration_unit' : supply.optimal_duration_unit,
-            'location' : supply.location,
-            'image' : supply.image,
+            'name': supply.name,
+            'category': supply.category ,
+            'barcode': supply.barcode,
+            'supplier':supply.supplier,
+            'storage_required': supply.storage_required,
+            'presentation_unit': supply.presentation_unit,
+            'presentation_cost': supply.presentation_cost,
+            'quantity': supply.measurement_quantity,
+            'measurement_unit': supply.measurement_unit,
+            'optimal_duration': supply.optimal_duration,
+            'optimal_duration_unit': supply.optimal_duration_unit,
+            'location': supply.location,
+            'image': supply.image,
         }
         form = SupplyForm(initial=dic)
 
@@ -229,6 +252,7 @@ def supply_modify(request,pk):
         'page_title': PAGE_TITLE
     }
     return render(request, template, context)
+
 
 # ------------------------------------- Categories -------------------------------------
 @login_required(login_url='users:login')
@@ -326,6 +350,7 @@ def cartridge_detail(request, pk):
     }
     return render(request, template, context)
 
+
 def cartridge_modify(request, pk):
     cartridge = get_object_or_404(Cartridge, pk=pk)
 
@@ -342,10 +367,10 @@ def cartridge_modify(request, pk):
 
     else:
         dic = {
-            'name' : cartridge.name,
-            'price' : cartridge.price,
-            'category' : cartridge.category,
-            'image' : cartridge.image
+            'name': cartridge.name,
+            'price': cartridge.price,
+            'category': cartridge.category,
+            'image': cartridge.image
         }
         form = CartridgeForm(initial=dic)
 
