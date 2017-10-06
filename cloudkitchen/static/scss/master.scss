@@ -1,0 +1,113 @@
+@import "variables";
+
+a {
+  transition: all .3s;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+body {
+  display: flex;
+  font-family: 'Mandali', sans-serif;
+  font-size: 18px;
+  flex-direction: column;
+  min-height: 100vh;
+}
+main {
+  flex: 1;
+  margin-top: $header-height;
+  padding-top: 1rem;
+}
+
+.bg-dark {
+  background-color: $color-dark !important;
+}
+
+.bg-light {
+  background-color: $color-muted !important;
+}
+
+.footer {
+  .header {
+    height: 5rem;
+    padding: .5rem 2rem;
+    display: flex;
+
+    .row {
+      align-items: center;
+      padding: 0;
+    }
+
+    p {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.navbar {
+  height: $header-height;
+}
+
+.light {
+  font-weight: 300;
+}
+.primary-color {
+  background-color: $primary-color;
+}
+
+.popout {
+  position: fixed;
+  bottom: 3rem;
+  right: 6rem;
+  .FAB {
+    display: inline-block;
+    position: relative;
+    outline: none;
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    width: 5rem;
+    height: 5rem;
+    line-height: 7rem;
+    text-align: center;
+    z-index: 1;
+    background: $success-color;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(0,0,0,0.15);
+    transition:0.2s opacity ease-in-out;
+    -webkit-transition:0.2s opacity ease-in-out;
+    i {
+      font-size: 3rem !important;
+      color: #fff;
+    }
+    &.active {
+      visibility: hidden;
+      opacity: 0;
+    }
+    &:after {
+      cursor: pointer;
+      display: block;
+      position: absolute;
+      top: 0;
+      content: "";
+      border-radius: 50%;
+      width: 5rem;
+      height: 5rem;
+      background: $success-color-dark;
+      z-index: -1;
+      -webkit-transition: -webkit-transform 0.2s, opacity 0.2s;
+      -moz-transition: -moz-transform 0.2s, opacity 0.2s;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+    &:active:after {
+      -webkit-transform: scale(1.3);
+      -moz-transform: scale(1.3);
+      -ms-transform: scale(1.3);
+      transform: scale(1.3);
+      opacity: 0;
+    }
+  }
+}
+
+

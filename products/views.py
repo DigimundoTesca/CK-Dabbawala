@@ -151,7 +151,7 @@ def suppliers(request):
 @login_required(login_url='users:login')
 def supplies(request):
     supplies_objects = Supply.objects.order_by('id')
-    template = 'supplies/supplies.html'
+    template = 'test/supplies/supplies.html'
     title = 'Insumos'
     context = {
         'supplies': supplies_objects,
