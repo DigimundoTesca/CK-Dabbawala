@@ -1,4 +1,6 @@
+@import "functions";
 @import "variables";
+@import "mixins";
 
 a {
   transition: all .3s;
@@ -14,6 +16,7 @@ body {
   flex-direction: column;
   min-height: 100vh;
 }
+
 main {
   flex: 1;
   margin-top: $header-height;
@@ -26,6 +29,13 @@ main {
 
 .bg-light {
   background-color: $color-muted !important;
+}
+
+.card {
+  margin-bottom: 1rem;
+  .card-img-top {
+    overflow: hidden;
+  }
 }
 
 .footer {

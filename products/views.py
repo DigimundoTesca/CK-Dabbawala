@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from branchoffices.models import Supplier
 from cloudkitchen.settings.base import PAGE_TITLE
 from products.forms import SupplyForm, SuppliesCategoryForm, CartridgeForm
-from products.models import Cartridge, Supply, SuppliesCategory
+from products.models import Cartridge, Supply, SuppliesCategory, SubcategoryCartridge
 
 from django.views.generic import UpdateView
 from django.views.generic import DeleteView
@@ -79,7 +79,7 @@ class CreateCartridge(CreateView):
         'category',
         'image'
     ]
-    template_name = 'new_cartridge.html'
+    template_name = 'cartridges/new_cartridge.html'
 
     def form_valid(self, form):
         self.object = form.save()
@@ -306,13 +306,15 @@ def categories_supplies(request, categ):
 # -------------------------------------  Cartridges -------------------------------------
 @login_required(login_url='users:login')
 def cartridges(request):
-    cartridges_list = Cartridge.objects.order_by('id')
-    template = 'cartridges/cartridges.html'
+    cartridges_list = Cartridge.objects.order_by('name')
+    subcategories = SubcategoryCartridge.objects.order_by('name')
+    template = 'test/cartridges/cartridges.html'
     title = 'Cartuchos'
     context = {
         'cartridges': cartridges_list,
         'title': title,
-        'page_title': PAGE_TITLE
+        'page_title': PAGE_TITLE,
+        'subcategories': subcategories
     }
     return render(request, template, context)
 

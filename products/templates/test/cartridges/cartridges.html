@@ -1,0 +1,50 @@
+{% extends "test/nav_footer.html" %}
+{% block content %}
+  <div class="container">
+
+    {% for subcategory in subcategories %}
+      <div class="jumbotron text-center">
+        <h1 class="display-3">{{ subcategory }}</h1>
+      </div>
+
+      <div class="row">
+        {% for cartridge in cartridges %}
+          {% if  cartridge.subcategory_fk.name == subcategory.name %}
+            <div class="col-sm-6 col-md-4 col-lg-3">
+              <div class="card">
+                <img class="card-img-top img-fluid" src="{{ cartridge.image.url }}" alt="Cartridge image">
+                <div class="card-body">
+                  <h4 class="card-title">{{ cartridge.name }}</h4>
+                  <p class="card-text">
+                    <small class="text-muted">
+                      Lorem ipsum dolor sit amet
+                    </small>
+                  </p>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+
+        {% endfor %}
+      </div>
+
+    {% endfor %}
+
+  </div>
+
+  <div class="popout">
+    <div class="FAB" id="fab-add-supply">
+      <i class="material-icons">add</i>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block javascript %}
+  <script type="text/javascript">
+    $(function() {
+      $('#fab-add-supply').click(function(event) {
+        location.href = "{% url 'products:new_cartridge' %}";
+      });
+    });
+  </script>
+{% endblock javascript %}

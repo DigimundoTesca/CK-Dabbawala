@@ -124,6 +124,18 @@ class KitchenAssembly(models.Model):
         verbose_name_plural = 'Cocinas de Ensamble'
 
 
+class SubcategoryCartridge(models.Model):
+    name = models.CharField(max_length=24, unique=True)
+    
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ('name',)
+        verbose_name = 'Subcategoria de Cartucho'
+        verbose_name_plural = 'Subcategorias de Cartuchos'
+
+
 class Cartridge(models.Model):
     # Categories
     FOOD_DISHES = 'FD'
@@ -155,7 +167,8 @@ class Cartridge(models.Model):
     description = models.CharField(max_length=255, default='Cartridge description')
     created_at = models.DateTimeField(auto_now=True)
     category = models.CharField(choices=CATEGORIES, default=FOOD_DISHES, max_length=2)
-    subcategory = models.CharField(choices=SUBCATEGORIES, default=FRUITS, max_length=2)
+    subcategory_fk = models.ForeignKey(SubcategoryCartridge, null=True)  
+    subcategory = models.CharField(choices=SUBCATEGORIES, default=FRUITS, max_length=2)  # Deprecated 
     price = models.DecimalField(decimal_places=2, default=0, max_digits=12)
     kitchen_assembly = models.ForeignKey(KitchenAssembly, blank=True, null=True)
     is_active = models.BooleanField(default=True)

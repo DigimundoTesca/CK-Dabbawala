@@ -3,7 +3,7 @@ from django.contrib import admin
 from actions import export_as_excel
 
 from .models import PackageCartridge, PackageCartridgeRecipe, CartridgeRecipe, Supply, SupplyLocation, \
-    SuppliesCategory, Cartridge, ExtraIngredient, KitchenAssembly
+    SuppliesCategory, Cartridge, ExtraIngredient, KitchenAssembly, SubcategoryCartridge
 
 
 @admin.register(SuppliesCategory)
@@ -40,12 +40,18 @@ class ExtraIngredientInline(admin.TabularInline):
     extra = 0
 
 
+@admin.register(SubcategoryCartridge)
+class AdminCartridge(admin.ModelAdmin):
+    list_display = ('id', 'name', )
+    list_editable = ('name', )
+
+
 @admin.register(Cartridge)
 class AdminCartridge(admin.ModelAdmin):
-    list_display = ('id', 'name', 'description', 'price', 'category', 'subcategory', 'kitchen_assembly', 'is_active',
-                    'created_at','get_image', 'image')
+    list_display = ('id', 'name', 'description', 'price', 'category', 'subcategory_fk', 'kitchen_assembly', 'is_active',
+                    'created_at', 'get_image', 'image')
     list_display_links = ('id', 'name')
-    list_editable = ('price', 'image', 'category', 'subcategory', 'is_active')
+    list_editable = ('price', 'image', 'category', 'subcategory_fk', 'is_active')
     inlines = [CartridgeRecipeInline, ExtraIngredientInline]
     ordering = ['name']
     actions = (export_as_excel,)

@@ -12,23 +12,21 @@
 
   <title>{{ title }}</title>
 
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Mandali" rel="stylesheet">
+<!-- New Bootstrap Version CSS -->
+  <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
 
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.3.8/sweetalert2.min.css">
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css?family=Mandali" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <!-- Icon font styles -->
   <link rel="stylesheet" href="{% static 'css/fonts.css' %}">
-  {% block link %}
-  {% endblock link %}
-
-  <!-- New Bootstrap Version CSS -->
-
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-
 
   <link rel="stylesheet" href="{% static 'css/master.css' %}">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.3.8/sweetalert2.min.css">
+
+  {% block link %}
+  {% endblock link %}
 
 </head>
 <body>
