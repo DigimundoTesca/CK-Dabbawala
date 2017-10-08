@@ -311,9 +311,9 @@ def cartridges(request):
     template = 'test/cartridges/cartridges.html'
     title = 'Cartuchos'
     context = {
+        'title': PAGE_TITLE + ' | ' + title,
+        'page_title': title,
         'cartridges': cartridges_list,
-        'title': title,
-        'page_title': PAGE_TITLE,
         'subcategories': subcategories
     }
     return render(request, template, context)
