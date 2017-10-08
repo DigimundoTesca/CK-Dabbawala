@@ -11,19 +11,29 @@
         {% for cartridge in cartridges %}
           {% if  cartridge.subcategory_fk.name == subcategory.name %}
             <div class="col-sm-6 col-md-4 col-lg-3">
+
               <div class="card">
-                <a href="{% url 'products:cartridge_detail' cartridge.pk %}">
-                <img class="card-img-top img-fluid" src="{{ cartridge.image.url }}" alt="Cartridge image">
-                </a>
-                <div class="card-body">
+                <div class="card-header">
                   <h4 class="card-title">{{ cartridge.name }}</h4>
-                  <p class="card-text">
+                </div>
+                <div class="card-img-container">
+                  <a href="{% url 'products:cartridge_detail' cartridge.pk %}">
+                    <img class="card-img-top img-fluid" src="{{ cartridge.image.url }}" alt="Cartridge image">
+                  </a>
+                  <div class="card-img-overlay">
                     <small class="text-muted">
-                      Lorem ipsum dolor sit amet
+                      <a class="mx-1" href=""><i class="material-icons">mode_edit</i></a>
+                      <a class="mx-1" href=""><i class="material-icons">delete</i></a>
                     </small>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <p class="card-text text-right text-muted">
+                    {{ cartridge.description }}
                   </p>
                 </div>
               </div>
+
             </div>
           {% endif %}
 

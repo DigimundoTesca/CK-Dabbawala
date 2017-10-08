@@ -33,8 +33,55 @@ main {
 
 .card {
   margin-bottom: 1rem;
-  .card-img-top {
+
+  &-img-container {
+    position: relative;
+    height: 140px;
     overflow: hidden;
+
+    .card-img-overlay {
+      background-color: rgba(35, 35, 35, .6);
+      height: 3rem;
+      padding: 0 1.25rem;
+      top: inherit;
+
+      display: flex;
+      align-items: center;
+      align-self: flex-end;
+      justify-content: flex-end;
+    }
+
+    a {
+      color: $color-muted;
+      cursor: pointer;
+      transition: all .3s ease;
+      &:hover {
+      color: $cyan;
+      }
+    }
+  }
+}
+
+.card-header {
+  height: 68px;
+  display: flex;
+  align-items: center;
+
+  .card-title {
+    align-items: center;
+    margin-bottom: 0;
+    font-size: 1.5rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    transition: all .3s;
+
+    &:hover {
+      text-overflow: initial;
+      white-space: initial;
+      overflow: visible;
+      cursor: pointer;
+    }
   }
 }
 
