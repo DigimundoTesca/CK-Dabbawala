@@ -97,7 +97,7 @@ class TicketPOS(models.Model):
 
         for x in package_tickets_details:
             total += x.price
-        
+
         return total
 
     def is_active(self):
