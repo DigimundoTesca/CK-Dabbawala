@@ -74,7 +74,7 @@ class SalesReport(TemplateView):
             ws1.cell(row=count, column=15, value=cartridge_ticket_detail.quantity)
             ws1.cell(row=count, column=16, value='Efectivo' if payment_type == 'CA' else 'Tarjeta')
             ws1.cell(row=count, column=17, value=cartridge_ticket_detail.cartridge.price)
-            ws1.cell(row=count, column=18, value=cartridge_ticket_detail.price * cartridge_ticket_detail.quantity)
+            ws1.cell(row=count, column=18, value=cartridge_ticket_detail.cartridge.price * cartridge_ticket_detail.quantity)
 
             count += 1
 

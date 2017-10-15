@@ -24,7 +24,7 @@ urlpatterns = [
     url(r'^clientes/$', views.customers_list, name='customers_list'),
     url(r'^login/$', views.login_customer, name='login_customer'),
     url(r'^logout/$', views.logout_customer, name='logout_customer'),
-    url(r'^registro/$', views.register, name='register'),
+    url(r'^primeravez/$', views.register, name='register'),
     url(r'^perfil/$', views.profile, name='profile')
 ]
 
