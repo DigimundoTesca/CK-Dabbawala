@@ -15,5 +15,5 @@ class AdminProcessedCartridge(admin.ModelAdmin):
 
 @admin.register(Warehouse)
 class AdminWarehouse(admin.ModelAdmin):
-    list_display = ('supply', 'status', 'quantity', 'waste', 'cost')
+    list_display = ('supply', 'status', 'quantity')
 
