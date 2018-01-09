@@ -278,7 +278,15 @@ class Presentation(models.Model):
     PACKAGE = 'PA'
     BOX = 'BO'
     PIECE = 'PZ'
-    PRESENTATION_UNIT = ((PACKAGE, 'Paquete'), (BOX, 'Caja'), (PIECE, 'Pieza'))
+    GRANEL = 'GR'
+    CARTON = 'CT'    
+    BAG = 'BA'
+    PRESENTATION_UNIT = ((PACKAGE, 'Paquete'), 
+                         (BOX, 'Caja'), 
+                         (PIECE, 'Pieza'), 
+                         (GRANEL, 'Granel'), 
+                         (CARTON, 'Carton'),
+                         (BAG, 'Bolsa'))
 
     GRAM = 'GR'
     MILLILITER = 'MI'
