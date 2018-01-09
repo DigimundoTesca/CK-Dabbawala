@@ -15,7 +15,7 @@ urlpatterns = [
     # Supplies
     url(r'^supplies/$', views.supplies, name='supplies'),
     url(r'^supplies/new/$', Create_Supply.as_view(), name='new_supply'),
-    url(r'^supplies/(?P<pk>[0-9]+)/$', views.supply_detail, name='supply_detail'),
+    url(r'^supplies/details/(?P<pk>[0-9]+)/$', views.supply_detail, name='supply_detail'),
     url(r'^supplies/modify/(?P<pk>[0-9]+)/$', Update_Supply.as_view(), name='supply_modify'),
     url(r'^supplies/delete/(?P<pk>[0-9]+)/$', Delete_Supply.as_view(), name='supply_delete'),
 
