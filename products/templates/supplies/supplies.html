@@ -3,17 +3,21 @@
 <div class="container container-main col-lg-10 push-lg-1">
   <div class="row">
     {% for sp in supplies %}
-    <div class="card col-lg-4 col-xl-2">
-      <figure>
-        <img class="card-img-top" src="{{ sp.image.url }}" alt="Card image cap" style="max-width: 100%;max-height: 150px" >
-      </figure>
+    <div class="card col-md-4 col-lg-4 col-xl-2 ">
+      <div class="col-12">
+        <figure>  
+          <img class="card-img-top" src="{{ sp.image.url }}" alt="Card image cap" style="max-width: 100%;max-height: 150px;margin: 0 auto; display:block;" >
+        </figure>
+      </div>
       <div class="card-block">
         <h4 class="card-title">{{ sp.name }}</h4>
-        <h6 class="card-subtitle text-muted">{{ sp.category }}</h6>
+        <h6 class="card-subtitle text-muted">Categoria: {{ sp.category }}</h6>
         <div class="card-bloc text-xs-right">
-          <a href="{% url 'products:supply_detail' sp.pk %}">Detalles</a> <br>
-          <a href="{% url 'products:supply_modify' sp.pk %}">Modificar</a> <br>
-          <a href="{% url 'products:supply_delete' sp.pk %}">Delete</a>
+          <div class="row">
+            <a title="Detalles" class="col-md-4 material-icons" href="{% url 'products:supply_detail' sp.pk %}">dehaze</a> <br>
+            <a title="Modificar" class="col-md-4 material-icons" href="{% url 'products:supply_modify' sp.pk %}">create</a> <br>
+            <a title="Eliminar" class="col-md-4 material-icons" href="{% url 'products:supply_delete' sp.pk %}">delete</a>
+          </div>
         </div>
       </div>
     </div>
