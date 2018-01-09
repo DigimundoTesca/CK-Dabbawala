@@ -18,13 +18,13 @@ from django.views.generic import UpdateView
 from django.views.generic import DeleteView
 from django.views.generic import CreateView
 from .forms import PresentationForm
- 
+
 
 class Create_Supply(CreateView):
     model = Supply
     fields = ['name','category','barcode','supplier','storage_required','presentation_unit','presentation_cost',
         'measurement_quantity','measurement_unit','optimal_duration','optimal_duration_unit','location','image']
-    template_name = 'new_supply.html'
+    template_name = 'supplies/new_supply.html'
 
     def form_valid(self, form):
         self.object = form.save()
@@ -35,7 +35,7 @@ class Update_Supply(UpdateView):
     model = Supply
     fields = ['name','category','barcode','supplier','storage_required','presentation_unit','presentation_cost',
         'measurement_quantity','measurement_unit','optimal_duration','optimal_duration_unit','location','image']
-    template_name = 'new_supply.html'
+    template_name = 'supplies/new_supply.html'
 
     def form_valid(self, form):
         self.object = form.save()
@@ -44,7 +44,7 @@ class Update_Supply(UpdateView):
 
 class Delete_Supply(DeleteView):
     model = Supply
-    template_name = 'delete_supply.html'
+    template_name = 'supplies/delete_supply.html'
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -55,7 +55,7 @@ class Delete_Supply(DeleteView):
 class Create_Cartridge(CreateView):
     model = Cartridge
     fields = ['name', 'price', 'category', 'image']
-    template_name = 'new_cartridge.html'
+    template_name = 'cartridges/new_cartridge.html'
 
     def form_valid(self, form):
         self.object = form.save()
@@ -65,7 +65,7 @@ class Create_Cartridge(CreateView):
 class Update_Cartridge(UpdateView):
     model = Cartridge
     fields = ['name', 'price', 'category', 'image']
-    template_name = 'new_cartridge.html'
+    template_name = 'cartridges/new_cartridge.html'
 
     def form_valid(self, form):
         self.object = form.save()
@@ -74,7 +74,7 @@ class Update_Cartridge(UpdateView):
 
 class Delete_Cartridge(DeleteView):
     model = Cartridge
-    template_name = 'delete_cartridge.html'
+    template_name = 'cartridges/delete_cartridge.html'
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -168,9 +168,16 @@ def new_supply(request):
 @login_required(login_url='users:login')
 def supply_detail(request, pk):
     supply = get_object_or_404(Supply, pk=pk)
+    presentations = Presentation.objects.all().filter(supply=supply);
+    print(presentations)
     template = 'supplies/supply_detail.html'
     title = 'DabbaNet - Detalles del insumo'
-    context = {'page_title': PAGE_TITLE, 'supply': supply, 'title': title}
+    context = {
+        'page_title': PAGE_TITLE,
+        'supply': supply,
+        'title': title,
+        'presentations': presentations,
+    }
     return render(request, template, context)
 
 
@@ -499,7 +506,6 @@ def new_shoplist(request):
         form = PresentationForm()
 
     for sup in supps:
-        print(sup)
         element_object = {
             'pk': sup.pk,
             'name': sup.name,
