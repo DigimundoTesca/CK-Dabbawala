@@ -1,6 +1,7 @@
 from kitchen.models import Warehouse
 from products.models import Cartridge, CartridgeRecipe, PackageCartridge, \
     PackageCartridgeRecipe, Supply, ExtraIngredient
+from sales.models import CartridgeTicketDetail
 
 
 class ProductsHelper(object):
@@ -13,6 +14,7 @@ class ProductsHelper(object):
         self.__all_cartridges_recipes = None
         self.__elements_in_warehouse = None
         self.__all_packages_cartridges_recipes = None
+        self.__cartridges_sales = None        
 
     def get_all_supplies(self):
         """
@@ -75,6 +77,11 @@ class ProductsHelper(object):
             self.set_elements_in_warehouse()
         return self.__elements_in_warehouse
 
+    def get_cartridges_sales(self):
+        if self.__cartridges_sales_by_dates() is None:
+            self.set_cartridges_sales()
+        return self.__cartridges_sales_by
+
     def set_supplies(self):
         self.__supplies = Supply.objects. \
             select_related('category'). \
@@ -107,3 +114,6 @@ class ProductsHelper(object):
 
     def set_elements_in_warehouse(self):
         self.__elements_in_warehouse = Warehouse.objects.select_related('supply').all().order_by('supply__name')
+
+    def set_cartridges_sales(self):
+        self.__elements_in_warehouse = Cartridge.objects.select_related('supply').all().order_by('supply__name')
