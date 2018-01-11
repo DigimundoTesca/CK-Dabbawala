@@ -1,0 +1,168 @@
+{% extends "base/base_nav_footer.html" %} 
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <canvas id="myChart1" width="400" height="300"></canvas>
+        </div>
+        <div class="col-md-6">
+            <canvas id="myChart2" width="400" height="300"></canvas>
+        </div>        
+    </div>
+</div>
+<div class="container date-container">
+    <div class="row">
+        <div class="col-md-2">
+            <input type='date' class='initial_date' data-language='en' placeholder="Fecha inicial" value="{{ initial_date }}">
+        </div>
+        <div class="offset-md-1 col-md-2">
+            <input type='date' class='final_date' data-language='en' placeholder="Fecha Final" value="{{ final_date }}">
+        </div>
+        <div class="offset-md-1 col-md-2">
+            <button class='get_dates'>Generar</button>
+        </div>
+        <div class="offset-md-1 col-md-2">
+            <button class='empty_set'>Vaciar fechas</button>
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock content %} 
+{% block javascript %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script type="text/javascript" charset="utf-8" defer>
+
+    function get_cookie(name) {
+        let cookie_value = null;
+        if (document.cookie && document.cookie !== '') {
+            let cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = jQuery.trim(cookies[i]);
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookie_value = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookie_value;/**/
+    }
+    
+    function random_rgba() {
+        var o = Math.round, r = Math.random, s = 255;
+        return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
+    }
+
+    function get_colors(sales_data) {
+        let sale_list = [];
+        let count = 0;
+        while (count < sales_data.length) {
+            sale_list.push(random_rgba());
+            count++;
+        }
+        return sale_list;
+    }
+
+    sales_data = JSON.parse('{{ sales_data | safe }}');    
+    console.log(sales_data.tick_sales)
+
+    $(".initial_date").on('change', function () {
+        initial_date = $(this).val();
+    });
+
+    $(".final_date").on('change', function () {
+        final_date = $(this).val();
+    });
+
+    $("get_dates").on('click', function(){
+        get_new_data();
+    });  
+
+    colors = get_colors(sales_data.names)
+
+    var ctx1 = document.getElementById("myChart1");
+    var myChart = new Chart(ctx1, {
+        type: 'bar',
+        data: {
+            labels: sales_data.names,
+            datasets: [{
+                label: '# de Ventas',
+                data: sales_data.tick_sales,                
+                borderColor: colors,
+                backgroundColor: colors,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+    var ctx2 = document.getElementById("myChart2");
+    var myChart = new Chart(ctx2, {
+        type: 'line',
+        data: {
+            labels: ["Lunes", "Martes", "Miercoles", "Juevez", "Viernes", "Sabado","Domingo"],
+            datasets: [{
+                borderWidth: 1,
+                borderColor: "red",
+                pointRadius: 4,
+                label: "lol",
+                data: [100, 20, 30, 40],
+                fill: false,
+            }, {
+                borderWidth: 1,
+                borderColor: "blue",
+                pointRadius: 4,
+                label: "lol2",
+                data: [10, 20, 30, 40],
+                fill: false,
+            },
+            ]
+        },
+    });    
+
+    function get_new_data() {
+        var csrf_token = get_cookie('csrftoken');
+        $.ajax({
+            url: '{% url "products:warehouse_analytics" %}',
+            type: 'POST',
+            data: {
+                'type': 'load_date',
+                'initial_date': initial_date,
+                'final_date': final_date,
+                'category': selected_category,
+                csrfmiddlewaretoken: csrf_token
+            },
+            datatype: "html",
+            success: function (result) {
+                current_nq_data = JSON.parse(result['sales_quantity_selected']);
+
+                set_colors = get_colors(current_nq_data);
+
+                current_NQ_char.destroy();
+                current_NQ_char = setUpNQChart(current_nq_data);
+
+                current_dq_data = JSON.parse(result['sales_date_selected']);
+                current_DQ_char.destroy();
+                current_DQ_char = setUpDQChart(current_dq_data);
+
+                $("#table_NQ tbody tr").remove();
+                setUpNQTable(current_nq_data);
+
+                $("#table_DQ tbody tr").remove();
+                setUpDQTable(current_dq_data);
+            }
+        });
+    }
+</script>
+
+{% endblock javascript %}
