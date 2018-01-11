@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
 from __future__ import unicode_literals
+import json
 
 from django.shortcuts import get_object_or_404, render, redirect
-
+from datetime import timedelta, datetime, date
 from django.contrib.auth.decorators import login_required
-
 from branchoffices.models import Supplier
 from cloudkitchen.settings.base import PAGE_TITLE
 from products.forms import SupplyForm, SuppliesCategoryForm, CartridgeForm
@@ -14,10 +14,13 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from helpers.products_helper import ProductsHelper
+from helpers.sales_helper import TicketPOSHelper
+from helpers.helpers import Helper
 from django.views.generic import UpdateView
 from django.views.generic import DeleteView
 from django.views.generic import CreateView
 from .forms import PresentationForm
+from django.db.models import Count
 
 
 class Create_Supply(CreateView):
@@ -125,6 +128,50 @@ def suppliers(request):
     }
     return render(request, template, context)
 
+# -------------------------------------  Providers -------------------------------------
+@login_required(login_url='users:login')
+def warehouse_analytics(request):
+
+    sales_helper = TicketPOSHelper()
+    helper = Helper()
+    today = helper.naive_to_datetime(date.today())
+    firs_dat = helper.naive_to_datetime(date.today().replace(day=1))
+    ini_date = str(firs_dat).split(" ")[0]
+    fin_date = str(today).split(" ")[0]
+    initial_date_naive = helper.naive_to_datetime(ini_date)
+    final_date_naive = helper.naive_to_datetime(fin_date)
+    all_cartridges_ticket_details = Cartridge.objects.filter(cartridgeticketdetail__ticket_base__created_at__range=["2017-07-01", "2017-07-30"]) \
+                                    .annotate(num_sales=Count('cartridgeticketdetail__quantity'))
+
+    if request.method == 'POST':
+        if request.POST['type'] == 'load_date':
+            initial_date_naive = helper.naive_to_datetime("2017-07-01")
+            final_date_naive = helper.naive_to_datetime("2017-07-30")
+            all_cartridges_ticket_details = Cartridge.objects.filter(cartridgeticketdetail__ticket_base__created_at__range=["2017-07-01", "2017-07-30"]) \
+                                    .annotate(num_sales=Count('cartridgeticketdetail__quantity'))
+
+    names = []
+    tick_sales = []
+    for tick_cartridges in all_cartridges_ticket_details:
+        tick_sales.append(tick_cartridges.num_sales)
+        names.append(tick_cartridges.name)
+
+    obj = {
+        'names': names,
+        'tick_sales': tick_sales,
+    }
+    sales_data = json.dumps(obj)
+
+    template = 'catering/analytics.html'
+    title = 'Almacen - Analytics'
+    context = {
+        'sales_data': sales_data,
+        'initial_date': ini_date,
+        'final_date': fin_date,
+        'title': title,
+        'page_title': PAGE_TITLE
+    }
+    return render(request, template, context)
 
 # -------------------------------------  Supplies -------------------------------------
 @login_required(login_url='users:login')
