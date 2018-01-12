@@ -19,10 +19,15 @@ urlpatterns = [
     url(r'^supplies/modify/(?P<pk>[0-9]+)/$', Update_Supply.as_view(), name='supply_modify'),
     url(r'^supplies/delete/(?P<pk>[0-9]+)/$', Delete_Supply.as_view(), name='supply_delete'),
 
+    # Supplies
+    url(r'^presentation/new/$', Create_Presentation.as_view(), name='new_presentation'),
+    url(r'^presentation/modify/(?P<pk>[0-9]+)/$', Update_Presentation.as_view(), name='update_presentation'),
+    url(r'^presentation/delete/(?P<pk>[0-9]+)/$', Delete_Presentation.as_view(), name='delete_presentation'),    
+
     # Cartridges
     url(r'^cartridges/$', views.cartridges, name='cartridges'),
     url(r'^cartridges/new/$', Create_Cartridge.as_view(), name='new_cartridge'),
-    url(r'^cartridges/(?P<pk>[0-9]+)/$', views.cartridge_detail, name='cartridge_detail'),
+    url(r'^cartridges/detail/(?P<pk>[0-9]+)/$', views.cartridge_detail, name='cartridge_detail'),
     url(r'^cartridges/modify/(?P<pk>[0-9]+)/$', Update_Cartridge.as_view(), name='cartridge_modify'),
     url(r'^cartridges/delete/(?P<pk>[0-9]+)/$', Delete_Cartridge.as_view(), name='cartridge_delete'),
 
