@@ -5,14 +5,16 @@
     {% for cartridge in cartridges %}
     <div class="card col-lg-4 col-xl-2 col-md-4">
       <figure>
-        <img class="card-img-top" src="{{ cartridge.image.url }}" alt="Card image cap" style="max-width: 100%;max-height: 150px">
+        <img class="card-img-top" src="{{ cartridge.image.url }}" alt="Card image cap" style="max-width: 100%;max-height: 150px;margin: 0 auto; display:block;">
       </figure>
       <div class="card-block">
         <h4 class="card-title">{{ cartridge.name }}</h4>
         <div class="card-bloc text-xs-right">
-          <a href="{% url 'products:cartridge_detail' cartridge.pk %}">Detalles</a><br>
-          <a href="{% url 'products:cartridge_modify' cartridge.pk %}">Modificar</a><br>
-          <a href="{% url 'products:cartridge_delete' cartridge.pk %}">Delete</a>
+          <div class="row">
+            <a title="Detalles" class="col-md-4 material-icons" href="{% url 'products:cartridge_detail' cartridge.pk %}">dehaze</a>            
+            <a title="Modificar" class="col-md-4 material-icons" href="{% url 'products:cartridge_modify' cartridge.pk %}">create</a>            
+            <a title="Eliminar" class="col-md-4 material-icons" href="{% url 'products:cartridge_delete' cartridge.pk %}">delete</a>
+          </div>
         </div>
       </div>
     </div>
