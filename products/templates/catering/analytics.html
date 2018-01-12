@@ -1,34 +1,41 @@
 {% extends "base/base_nav_footer.html" %} 
 {% block content %}
 
-<div class="container-fluid">
+<div class="container-fluid">    
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-5">            
             <canvas id="myChart1" width="400" height="300"></canvas>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-5">
             <canvas id="myChart2" width="400" height="300"></canvas>
         </div>        
-    </div>
-</div>
-<div class="container date-container">
-    <div class="row">
         <div class="col-md-2">
-            <input type='date' class='initial_date' data-language='en' placeholder="Fecha inicial" value="{{ initial_date }}">
+            <select class="year_select" id="cat-sold">
+                <option value="2017">2017</option>                
+                <option value="2018">2018</option>
+            </select><br><br>
+            <select class="month_select" id="cat-sold">
+                <option value="1">Enero</option>
+                <option value="2">Febrero</option>
+                <option value="3">Marzo</option>
+                <option value="4">Abril</option>
+                <option value="5">Mayo</option>
+                <option value="6">Junio</option>
+                <option value="7">Julio</option>
+                <option value="8">Agosto</option>
+                <option value="9">Septiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+            </select><br><br>
+            <select class="type_select" id="cat-sold">
+                <option value="select">General</option>
+                <option value="drinks_sold" id="drinksValue">Bebidas</option>
+                <option value="food_sold" id="food_value">Platillos</option>
+            </select>            
         </div>
-        <div class="offset-md-1 col-md-2">
-            <input type='date' class='final_date' data-language='en' placeholder="Fecha Final" value="{{ final_date }}">
-        </div>
-        <div class="offset-md-1 col-md-2">
-            <button class='get_dates'>Generar</button>
-        </div>
-        <div class="offset-md-1 col-md-2">
-            <button class='empty_set'>Vaciar fechas</button>
-        </div>
-
     </div>
 </div>
-
 
 {% endblock content %} 
 {% block javascript %}
@@ -36,6 +43,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <script type="text/javascript" charset="utf-8" defer>
 
+    var sales_data = JSON.parse('{{ sales_data | safe }}');  
+    var year = "{{today.year}}"
+    var month = "{{today.month}}"
+    var day = "{{today.day}}"
+    var category = "select"
+
+    $(".year_select").val(year);
+    $(".month_select").val(month);
+    
     function get_cookie(name) {
         let cookie_value = null;
         if (document.cookie && document.cookie !== '') {
@@ -66,26 +82,30 @@
         return sale_list;
     }
 
-    sales_data = JSON.parse('{{ sales_data | safe }}');    
-    console.log(sales_data.tick_sales)
-
-    $(".initial_date").on('change', function () {
-        initial_date = $(this).val();
-    });
-
-    $(".final_date").on('change', function () {
-        final_date = $(this).val();
-    });
-
-    $("get_dates").on('click', function(){
-        get_new_data();
-    });  
+    function get_new_data() {
+        var csrf_token = get_cookie('csrftoken');
+        $.ajax({
+            url: '{% url "products:warehouse_analytics" %}',
+            type: 'POST',
+            data: {
+                'type': 'load_date',
+                'year': year,
+                'month': month,
+                'category': selected_category,
+                csrfmiddlewaretoken: csrf_token
+            },
+            datatype: "html",
+            success: function (result) {
+                
+            }
+        });
+    }
 
     colors = get_colors(sales_data.names)
 
     var ctx1 = document.getElementById("myChart1");
     var myChart = new Chart(ctx1, {
-        type: 'bar',
+        type: 'horizontalBar',
         data: {
             labels: sales_data.names,
             datasets: [{
@@ -93,7 +113,19 @@
                 data: sales_data.tick_sales,                
                 borderColor: colors,
                 backgroundColor: colors,
-                borderWidth: 1
+                borderWidth: 1,
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    },
+                    legend: {
+                        position: "left",
+                    }
+                }
             }]
         },
         options: {
@@ -103,14 +135,15 @@
                         beginAtZero: true
                     }
                 }]
-            }
+            },            
         }
     });
     var ctx2 = document.getElementById("myChart2");
     var myChart = new Chart(ctx2, {
         type: 'line',
         data: {
-            labels: ["Lunes", "Martes", "Miercoles", "Juevez", "Viernes", "Sabado","Domingo"],
+            labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15",
+                     "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27","28","29","30"],
             datasets: [{
                 borderWidth: 1,
                 borderColor: "red",
@@ -130,39 +163,22 @@
         },
     });    
 
-    function get_new_data() {
-        var csrf_token = get_cookie('csrftoken');
-        $.ajax({
-            url: '{% url "products:warehouse_analytics" %}',
-            type: 'POST',
-            data: {
-                'type': 'load_date',
-                'initial_date': initial_date,
-                'final_date': final_date,
-                'category': selected_category,
-                csrfmiddlewaretoken: csrf_token
-            },
-            datatype: "html",
-            success: function (result) {
-                current_nq_data = JSON.parse(result['sales_quantity_selected']);
+    $(".year_select").on('change', function () {
+        yaer = $(this).val();
+        get_new_data()
+    });
 
-                set_colors = get_colors(current_nq_data);
+    $(".month_select").on('change', function () {
+        month = $(this).val();
+        get_new_data()
+    });
 
-                current_NQ_char.destroy();
-                current_NQ_char = setUpNQChart(current_nq_data);
+    $(".type_select").on('change', function () {
+        type = $(this).val();
+        get_new_data()
+    });
 
-                current_dq_data = JSON.parse(result['sales_date_selected']);
-                current_DQ_char.destroy();
-                current_DQ_char = setUpDQChart(current_dq_data);
-
-                $("#table_NQ tbody tr").remove();
-                setUpNQTable(current_nq_data);
-
-                $("#table_DQ tbody tr").remove();
-                setUpDQTable(current_dq_data);
-            }
-        });
-    }
+    
 </script>
 
 {% endblock javascript %}
