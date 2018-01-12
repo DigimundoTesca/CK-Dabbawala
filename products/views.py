@@ -21,6 +21,8 @@ from django.views.generic import DeleteView
 from django.views.generic import CreateView
 from .forms import PresentationForm
 from django.db.models import Count
+from sales.models import TicketBase
+from django.db.models.functions import TruncMonth, TruncYear
 
 
 class Create_Supply(CreateView):
@@ -85,6 +87,43 @@ class Delete_Cartridge(DeleteView):
         return redirect('/cartridges/')
 
 
+class Create_Presentation(CreateView):
+    model = Presentation
+    fields = [
+        'name', 'measurement_quantity', 'measurement_unit',
+        'presentation_unit', 'presentation_cost'
+    ]
+    template_name = 'presentations/new_presentations.html'
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return redirect('/presentation/')
+
+
+class Update_Presentation(UpdateView):
+    model = Presentation
+    fields = [
+        'name', 'measurement_quantity', 'measurement_unit',
+        'presentation_unit', 'presentation_cost'
+    ]
+    template_name = 'presentations/new_presentations.html'
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return redirect('/presentation/')
+
+
+class Delete_Presentation(DeleteView):
+    model = Presentation
+    template_name = 'presentations/delete_presentations.html'
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()
+        return redirect('/presentation/')
+
+
+
 def test(request):
     template = 'cartridges_test/test.html'
     cartridges = Cartridge.objects.all()
@@ -134,27 +173,22 @@ def warehouse_analytics(request):
 
     sales_helper = TicketPOSHelper()
     helper = Helper()
-    today = helper.naive_to_datetime(date.today())
-    firs_dat = helper.naive_to_datetime(date.today().replace(day=1))
-    ini_date = str(firs_dat).split(" ")[0]
-    fin_date = str(today).split(" ")[0]
-    initial_date_naive = helper.naive_to_datetime(ini_date)
-    final_date_naive = helper.naive_to_datetime(fin_date)
+    today = datetime.today()
+
     all_cartridges_ticket_details = Cartridge.objects.filter(cartridgeticketdetail__ticket_base__created_at__range=["2017-07-01", "2017-07-30"]) \
-                                    .annotate(num_sales=Count('cartridgeticketdetail__quantity'))
+                                    .annotate(num_sales=Count('cartridgeticketdetail__quantity')).order_by('name')
 
     if request.method == 'POST':
         if request.POST['type'] == 'load_date':
-            initial_date_naive = helper.naive_to_datetime("2017-07-01")
-            final_date_naive = helper.naive_to_datetime("2017-07-30")
             all_cartridges_ticket_details = Cartridge.objects.filter(cartridgeticketdetail__ticket_base__created_at__range=["2017-07-01", "2017-07-30"]) \
-                                    .annotate(num_sales=Count('cartridgeticketdetail__quantity'))
+                                    .annotate(num_sales=Count('cartridgeticketdetail__quantity')).order_by('name')
 
     names = []
     tick_sales = []
     for tick_cartridges in all_cartridges_ticket_details:
         tick_sales.append(tick_cartridges.num_sales)
         names.append(tick_cartridges.name)
+
 
     obj = {
         'names': names,
@@ -166,12 +200,12 @@ def warehouse_analytics(request):
     title = 'Almacen - Analytics'
     context = {
         'sales_data': sales_data,
-        'initial_date': ini_date,
-        'final_date': fin_date,
+        'today': today,
         'title': title,
         'page_title': PAGE_TITLE
     }
     return render(request, template, context)
+
 
 # -------------------------------------  Supplies -------------------------------------
 @login_required(login_url='users:login')
@@ -215,8 +249,7 @@ def new_supply(request):
 @login_required(login_url='users:login')
 def supply_detail(request, pk):
     supply = get_object_or_404(Supply, pk=pk)
-    presentations = Presentation.objects.all().filter(supply=supply);
-    print(presentations)
+    presentations = Presentation.objects.all().filter(supply=supply);    
     template = 'supplies/supply_detail.html'
     title = 'DabbaNet - Detalles del insumo'
     context = {
