@@ -20,9 +20,10 @@ from django.views.generic import UpdateView
 from django.views.generic import DeleteView
 from django.views.generic import CreateView
 from .forms import PresentationForm
-from django.db.models import Count
+from django.db.models import Count, Sum
 from sales.models import TicketBase
 from django.db.models.functions import TruncMonth, TruncYear
+from django.http import JsonResponse
 
 
 class Create_Supply(CreateView):
@@ -174,14 +175,14 @@ def warehouse_analytics(request):
     sales_helper = TicketPOSHelper()
     helper = Helper()
     today = datetime.today()
+    current_year = today.year
+    current_month = today.month
 
-    all_cartridges_ticket_details = Cartridge.objects.filter(cartridgeticketdetail__ticket_base__created_at__range=["2017-07-01", "2017-07-30"]) \
-                                    .annotate(num_sales=Count('cartridgeticketdetail__quantity')).order_by('name')
+    all_cartridges_ticket_details = Cartridge.objects.filter(cartridgeticketdetail__ticket_base__created_at__year=current_year,cartridgeticketdetail__ticket_base__created_at__month=current_month) \
+                                    .annotate(num_sales=Sum('cartridgeticketdetail__quantity')).order_by('name')
 
-    if request.method == 'POST':
-        if request.POST['type'] == 'load_date':
-            all_cartridges_ticket_details = Cartridge.objects.filter(cartridgeticketdetail__ticket_base__created_at__range=["2017-07-01", "2017-07-30"]) \
-                                    .annotate(num_sales=Count('cartridgeticketdetail__quantity')).order_by('name')
+    for i in range(31):
+        print(i)
 
     names = []
     tick_sales = []
@@ -189,12 +190,32 @@ def warehouse_analytics(request):
         tick_sales.append(tick_cartridges.num_sales)
         names.append(tick_cartridges.name)
 
-
     obj = {
         'names': names,
         'tick_sales': tick_sales,
     }
     sales_data = json.dumps(obj)
+
+    if request.method == 'POST':
+        if request.POST['type'] == 'load_date':
+            selected_year = request.POST['year']
+            selected_month = request.POST['month']
+            all_cartridges_ticket_details = Cartridge.objects.filter(cartridgeticketdetail__ticket_base__created_at__year=selected_year,cartridgeticketdetail__ticket_base__created_at__month=selected_month) \
+                                    .annotate(num_sales=Sum('cartridgeticketdetail__quantity')).order_by('name')
+            names = []
+            tick_sales = []
+            for tick_cartridges in all_cartridges_ticket_details:
+                tick_sales.append(tick_cartridges.num_sales)
+                names.append(tick_cartridges.name)
+
+            obj = {
+                'names': names,
+                'tick_sales': tick_sales,
+            }
+            sales_data = json.dumps(obj)
+
+            return JsonResponse({'sales_response':sales_data})
+
 
     template = 'catering/analytics.html'
     title = 'Almacen - Analytics'
@@ -249,7 +270,7 @@ def new_supply(request):
 @login_required(login_url='users:login')
 def supply_detail(request, pk):
     supply = get_object_or_404(Supply, pk=pk)
-    presentations = Presentation.objects.all().filter(supply=supply);    
+    presentations = Presentation.objects.all().filter(supply=supply);
     template = 'supplies/supply_detail.html'
     title = 'DabbaNet - Detalles del insumo'
     context = {

@@ -28,7 +28,7 @@
                 <option value="11">Noviembre</option>
                 <option value="12">Diciembre</option>
             </select><br><br>
-            <select class="type_select" id="cat-sold">
+            <select class="category_select" id="cat-sold">
                 <option value="select">General</option>
                 <option value="drinks_sold" id="drinksValue">Bebidas</option>
                 <option value="food_sold" id="food_value">Platillos</option>
@@ -91,12 +91,15 @@
                 'type': 'load_date',
                 'year': year,
                 'month': month,
-                'category': selected_category,
+                'category': category,
                 csrfmiddlewaretoken: csrf_token
             },
             datatype: "html",
-            success: function (result) {
-                
+            success: function (result) {            
+                data = JSON.parse(result['sales_response']);
+                removeData(myChart1,sales_data.names);
+                addData(myChart1,data.names,data.tick_sales);
+                sales_data = data;
             }
         });
     }
@@ -104,7 +107,7 @@
     colors = get_colors(sales_data.names)
 
     var ctx1 = document.getElementById("myChart1");
-    var myChart = new Chart(ctx1, {
+    var myChart1 = new Chart(ctx1, {
         type: 'horizontalBar',
         data: {
             labels: sales_data.names,
@@ -139,7 +142,7 @@
         }
     });
     var ctx2 = document.getElementById("myChart2");
-    var myChart = new Chart(ctx2, {
+    var myChart2 = new Chart(ctx2, {
         type: 'line',
         data: {
             labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15",
@@ -164,7 +167,7 @@
     });    
 
     $(".year_select").on('change', function () {
-        yaer = $(this).val();
+        year = $(this).val();
         get_new_data()
     });
 
@@ -173,11 +176,31 @@
         get_new_data()
     });
 
-    $(".type_select").on('change', function () {
-        type = $(this).val();
+    $(".category_select").on('change', function () {
+        category = $(this).val();
         get_new_data()
     });
 
+    function removeData(chart,past_data) {        
+        chart.data.datasets.forEach((dataset) => {
+            for(x=-1;x<=past_data.length;x++){
+                chart.data.labels.pop();
+                dataset.data.pop();
+            }            
+        });
+        chart.update();
+    }
+
+    function addData(chart, label, data) {        
+        chart.data.datasets.forEach((dataset) => {
+            for (x = 0; x <= data.length; x++) {
+                console.log(data[x])
+                dataset.data.push(data[x]);
+                chart.data.labels.push(label[x]);
+            }
+        });
+        chart.update();
+    }
     
 </script>
 
