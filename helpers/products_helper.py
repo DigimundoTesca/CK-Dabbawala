@@ -14,7 +14,7 @@ class ProductsHelper(object):
         self.__all_cartridges_recipes = None
         self.__elements_in_warehouse = None
         self.__all_packages_cartridges_recipes = None
-        self.__cartridges_sales = None        
+        self.__cartridges_sales = None
 
     def get_all_supplies(self):
         """
@@ -81,6 +81,37 @@ class ProductsHelper(object):
         if self.__cartridges_sales_by_dates() is None:
             self.set_cartridges_sales()
         return self.__cartridges_sales_by
+
+    def get_cartridges_sales_by_date(self,month,year):
+        all_cartridges_ticket_details = Cartridge.objects.filter(cartridgeticketdetail__ticket_base__created_at__year=current_year,cartridgeticketdetail__ticket_base__created_at__month=current_month) \
+                                .annotate(num_sales=Sum('cartridgeticketdetail__quantity')).order_by('name')
+
+        names = []
+        tick_sales = []
+        for tick_cartridges in all_cartridges_ticket_details:
+            tick_sales.append(tick_cartridges.num_sales)
+            names.append(tick_cartridges.name)
+
+        all_cartridges_pack_ticket_details = PackageCartridge.objects.filter(packagecartridgeticketdetail__ticket_base__created_at__year=current_year,packagecartridgeticketdetail__ticket_base__created_at__month=current_month) \
+                                            .annotate(num_sales=Sum('packagecartridgeticketdetail__quantity')).order_by('name')
+
+        recipes = PackageCartridgeRecipe.objects.select_related(
+            'cartridge').select_related('package_cartridge')
+
+        for tick_pack in all_cartridges_pack_ticket_details:
+            cartridges_in_pack = recipes.filter(package_cartridge=tick_pack)
+            for cart in cartridges_in_pack:
+                if cart.cartridge.name in names:
+                    tick_sales[names.index(
+                        cart.cartridge.name)] += tick_pack.num_sales
+                else:
+                    names.append(cart.cartridge.name)
+                    tick_sales.append(tick_pack.num_sales)
+
+        obj = {
+            'names': names,
+            'tick_sales': tick_sales,
+        }
 
     def set_supplies(self):
         self.__supplies = Supply.objects. \
