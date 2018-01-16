@@ -8,7 +8,8 @@ from django.contrib.auth.decorators import login_required
 from branchoffices.models import Supplier
 from cloudkitchen.settings.base import PAGE_TITLE
 from products.forms import SupplyForm, SuppliesCategoryForm, CartridgeForm
-from products.models import Cartridge, Supply, SuppliesCategory, KitchenAssembly
+from products.models import Cartridge, Supply, SuppliesCategory, KitchenAssembly, PackageCartridge, PackageCartridgeRecipe
+
 from kitchen.models import Presentation, ShopList, ShopListDetail
 from django.urls import reverse
 from django.http import HttpResponseRedirect
@@ -21,9 +22,10 @@ from django.views.generic import DeleteView
 from django.views.generic import CreateView
 from .forms import PresentationForm
 from django.db.models import Count, Sum
-from sales.models import TicketBase
+from sales.models import TicketBase, CartridgeTicketDetail, PackageCartridgeTicketDetail
 from django.db.models.functions import TruncMonth, TruncYear
 from django.http import JsonResponse
+import calendar
 
 
 class Create_Supply(CreateView):
@@ -181,20 +183,103 @@ def warehouse_analytics(request):
     all_cartridges_ticket_details = Cartridge.objects.filter(cartridgeticketdetail__ticket_base__created_at__year=current_year,cartridgeticketdetail__ticket_base__created_at__month=current_month) \
                                     .annotate(num_sales=Sum('cartridgeticketdetail__quantity')).order_by('name')
 
-    for i in range(31):
-        print(i)
-
     names = []
     tick_sales = []
     for tick_cartridges in all_cartridges_ticket_details:
         tick_sales.append(tick_cartridges.num_sales)
         names.append(tick_cartridges.name)
 
+    all_cartridges_pack_ticket_details = PackageCartridge.objects.filter(packagecartridgeticketdetail__ticket_base__created_at__year=current_year,packagecartridgeticketdetail__ticket_base__created_at__month=current_month) \
+                                         .annotate(num_sales=Sum('packagecartridgeticketdetail__quantity')).order_by('name')
+
+    recipes = PackageCartridgeRecipe.objects.select_related(
+        'cartridge').select_related('package_cartridge')
+
+    for tick_pack in all_cartridges_pack_ticket_details:
+        cartridges_in_pack = recipes.filter(package_cartridge=tick_pack)
+        for cart in cartridges_in_pack:
+            if cart.cartridge.name in names:
+                tick_sales[names.index(
+                    cart.cartridge.name)] += tick_pack.num_sales
+            else:
+                names.append(cart.cartridge.name)
+                tick_sales.append(tick_pack.num_sales)
+
     obj = {
         'names': names,
         'tick_sales': tick_sales,
     }
+
     sales_data = json.dumps(obj)
+
+    
+    range_day = calendar.monthrange(current_year,current_month)
+
+    sales_data_by_date = []
+    for i in range(range_day[0]+1,range_day[1]+1):
+        name_d = []
+        num_d = []
+
+        cartridge_per_day = Cartridge.objects.filter(cartridgeticketdetail__ticket_base__created_at__year=current_year,
+                                                     cartridgeticketdetail__ticket_base__created_at__month=current_month,
+                                                     cartridgeticketdetail__ticket_base__created_at__day=i)\
+                                    .annotate(num_sales=Sum('cartridgeticketdetail__quantity')).order_by('name')
+
+        for tick_cartridges in cartridge_per_day:
+            name_d.append(tick_cartridges.name)
+            num_d.append(tick_cartridges.num_sales)
+
+        packagecartridge_per_day = PackageCartridge.objects.filter(packagecartridgeticketdetail__ticket_base__created_at__year=current_year,
+                                                                             packagecartridgeticketdetail__ticket_base__created_at__month=current_month,
+                                                                             packagecartridgeticketdetail__ticket_base__created_at__day=i)\
+                                         .annotate(num_sales=Sum('packagecartridgeticketdetail__quantity')).order_by('name')
+
+        recipes = PackageCartridgeRecipe.objects.select_related(
+            'cartridge').select_related('package_cartridge')
+
+        for tick_pack in packagecartridge_per_day:
+            cartridges_in_pack = recipes.filter(package_cartridge=tick_pack)
+            for cart in cartridges_in_pack:
+                if cart.cartridge.name in name_d:
+                    num_d[name_d.index(
+                        cart.cartridge.name)] += tick_pack.num_sales
+                else:
+                    name_d.append(cart.cartridge.name)
+                    num_d.append(tick_pack.num_sales)
+
+        obj = {
+            'names': name_d,
+            'tick_sales': num_d,
+        }
+
+        sales_data_by_date.append(obj)
+
+    final_dates = []
+    final_names = []
+    
+    for sale_data_bd in sales_data_by_date:                
+        a = sale_data_bd['names']                
+        for name in a:
+            if name not in final_names:
+                final_names.append(name);
+    
+    for name in final_names:                    
+        dates = []              
+        for sale_data_bd in sales_data_by_date:                    
+            a = sale_data_bd['names']
+            b = sale_data_bd['tick_sales']              
+            if name in a:                
+                dates.append(b[a.index(name)])
+            else:
+                dates.append(0)
+        final_dates.append(dates)
+
+    modify_sales_data_by_date={
+        'final_name':final_names,
+        'final_dates':final_dates,
+    }
+    
+    json_sales_data_by_date = json.dumps(modify_sales_data_by_date)
 
     if request.method == 'POST':
         if request.POST['type'] == 'load_date':
@@ -202,24 +287,111 @@ def warehouse_analytics(request):
             selected_month = request.POST['month']
             all_cartridges_ticket_details = Cartridge.objects.filter(cartridgeticketdetail__ticket_base__created_at__year=selected_year,cartridgeticketdetail__ticket_base__created_at__month=selected_month) \
                                     .annotate(num_sales=Sum('cartridgeticketdetail__quantity')).order_by('name')
+
             names = []
             tick_sales = []
             for tick_cartridges in all_cartridges_ticket_details:
                 tick_sales.append(tick_cartridges.num_sales)
                 names.append(tick_cartridges.name)
 
+            all_cartridges_pack_ticket_details = PackageCartridge.objects.filter(packagecartridgeticketdetail__ticket_base__created_at__year=selected_year,packagecartridgeticketdetail__ticket_base__created_at__month=selected_month) \
+                                                .annotate(num_sales=Sum('packagecartridgeticketdetail__quantity')).order_by('name')
+
+            recipes = PackageCartridgeRecipe.objects.select_related(
+                'cartridge').select_related('package_cartridge')
+
+            for tick_pack in all_cartridges_pack_ticket_details:
+                cartridges_in_pack = recipes.filter(package_cartridge=tick_pack)
+                for cart in cartridges_in_pack:
+                    if cart.cartridge.name in names:
+                        tick_sales[names.index(
+                            cart.cartridge.name)] += tick_pack.num_sales
+                    else:
+                        names.append(cart.cartridge.name)
+                        tick_sales.append(tick_pack.num_sales)
+
             obj = {
                 'names': names,
                 'tick_sales': tick_sales,
             }
-            sales_data = json.dumps(obj)
 
-            return JsonResponse({'sales_response':sales_data})
+            sales_data = json.dumps(obj)
+            
+            range_day = calendar.monthrange(int(selected_year),int(selected_month))
+
+            sales_data_by_date = []
+            for i in range(range_day[0]+1,range_day[1]+1):
+                name_d = []
+                num_d = []
+
+                cartridge_per_day = Cartridge.objects.filter(cartridgeticketdetail__ticket_base__created_at__year=selected_year,
+                                                            cartridgeticketdetail__ticket_base__created_at__month=selected_month,
+                                                            cartridgeticketdetail__ticket_base__created_at__day=i)\
+                                            .annotate(num_sales=Sum('cartridgeticketdetail__quantity')).order_by('name')
+
+                for tick_cartridges in cartridge_per_day:
+                    name_d.append(tick_cartridges.name)
+                    num_d.append(tick_cartridges.num_sales)
+
+                packagecartridge_per_day = PackageCartridge.objects.filter(packagecartridgeticketdetail__ticket_base__created_at__year=selected_year,
+                                                                                    packagecartridgeticketdetail__ticket_base__created_at__month=selected_month,
+                                                                                    packagecartridgeticketdetail__ticket_base__created_at__day=i)\
+                                                .annotate(num_sales=Sum('packagecartridgeticketdetail__quantity')).order_by('name')
+
+                recipes = PackageCartridgeRecipe.objects.select_related(
+                    'cartridge').select_related('package_cartridge')
+
+                for tick_pack in packagecartridge_per_day:
+                    cartridges_in_pack = recipes.filter(package_cartridge=tick_pack)
+                    for cart in cartridges_in_pack:
+                        if cart.cartridge.name in name_d:
+                            num_d[name_d.index(
+                                cart.cartridge.name)] += tick_pack.num_sales
+                        else:
+                            name_d.append(cart.cartridge.name)
+                            num_d.append(tick_pack.num_sales)
+
+                obj = {
+                    'names': name_d,
+                    'tick_sales': num_d,
+                }
+
+                sales_data_by_date.append(obj)
+
+            final_dates = []
+            final_names = []
+            
+            for sale_data_bd in sales_data_by_date:                
+                a = sale_data_bd['names']                
+                for name in a:
+                    if name not in final_names:
+                        final_names.append(name);
+            
+            for name in final_names:                    
+                dates = []              
+                for sale_data_bd in sales_data_by_date:                    
+                    a = sale_data_bd['names']
+                    b = sale_data_bd['tick_sales']              
+                    if name in a:                
+                        dates.append(b[a.index(name)])
+                    else:
+                        dates.append(0)
+                final_dates.append(dates)
+
+            modify_sales_data_by_date={
+                'final_name':final_names,
+                'final_dates':final_dates,
+            }
+            
+            json_sales_data_by_date = json.dumps(modify_sales_data_by_date)
+
+            return JsonResponse({'sales_data':sales_data,'json_sales_data_by_date':json_sales_data_by_date})
 
 
     template = 'catering/analytics.html'
     title = 'Almacen - Analytics'
     context = {
+        'sales_data_by_date':json_sales_data_by_date,
         'sales_data': sales_data,
         'today': today,
         'title': title,
