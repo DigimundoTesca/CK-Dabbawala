@@ -45,10 +45,10 @@
 
     var sales_data = JSON.parse('{{ sales_data | safe }}');  
     var sales_data_by_date = JSON.parse('{{ sales_data_by_date | safe }}');  
-    var year = "{{today.year}}"
-    var month = "{{today.month}}"
-    var day = "{{today.day}}"
-    var category = "select"
+    let year = "{{today.year}}"
+    let month = "{{today.month}}"
+    let day = "{{today.day}}"
+    let category = "select"
 
     $(".year_select").val(year);
     $(".month_select").val(month);
@@ -74,17 +74,18 @@
     }
 
     function get_colors(sales_data) {
-        let sale_list = [];
+        let color_list = [];
         let count = 0;
         while (count < sales_data.length) {
-            sale_list.push(random_rgba());
+            color_list.push(random_rgba());
             count++;
         }
-        return sale_list;
+        return color_list;
     }
 
     function get_new_data() {
         var csrf_token = get_cookie('csrftoken');
+
         $.ajax({
             url: '{% url "products:warehouse_analytics" %}',
             type: 'POST',
@@ -97,70 +98,47 @@
             },
             datatype: "html",
             success: function (result) {            
-                data = JSON.parse(result['sales_data']);                
-                removeData(myChart1,sales_data.names);
-                addData(myChart1,data.names,data.tick_sales);
-                sales_data = data;
+                data = JSON.parse(result['sales_data']);       
+                colors = get_colors(data.names);
+
+                myChart1.destroy()
+                myChart1 = new Chart(ctx1, {
+                    type: 'horizontalBar',
+                    data: {
+                        labels: data.names,
+                        datasets: getDataset(data,colors)
+                    },     
+                });                
 
                 data_by_date = JSON.parse(result['json_sales_data_by_date']);
                 myChart2.destroy()
                 myChart2 = new Chart(ctx2, {
                     type: 'line',
                     data: {
-                        labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15",
-                            "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"],
-                        datasets: getDatasets(data_by_date),
+                        labels: getLabels(data_by_date),
+                        datasets: getDatasets(data_by_date,colors),
                     },
                 });   
-                
             }
         });
     }
 
-    colors = get_colors(sales_data.names)
+    var colors = get_colors(sales_data.names)
 
     var ctx1 = document.getElementById("myChart1");
     var myChart1 = new Chart(ctx1, {
         type: 'horizontalBar',
         data: {
             labels: sales_data.names,
-            datasets: [{
-                label: '# de Ventas',
-                data: sales_data.tick_sales,                
-                borderColor: colors,
-                backgroundColor: colors,
-                borderWidth: 1,
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    },
-                    legend: {
-                        position: "left",
-                    }
-                }
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            },            
-        }
+            datasets: getDataset(sales_data,colors)
+        },        
     });
     var ctx2 = document.getElementById("myChart2");
     var myChart2 = new Chart(ctx2, {
         type: 'line',
         data: {
-            labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15",
-                     "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27","28","29","30"],
-            datasets: getDatasets(sales_data_by_date),
+            labels: getLabels(sales_data_by_date),
+            datasets: getDatasets(sales_data_by_date,colors),
         },
     });    
 
@@ -176,15 +154,41 @@
 
     $(".category_select").on('change', function () {
         category = $(this).val();
+        console.log(category)
         get_new_data()
     });
 
-    function getDatasets(data){
+    function getDataset(data,colors){
+        dataset = [];
+        obj = {
+            label: '# de Ventas',
+            data: data.tick_sales,
+            borderColor: colors,
+            backgroundColor: colors,
+            borderWidth: 1,
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                legend: {
+                    position: "left",
+                }
+            }
+        }
+        dataset.push(obj)
+        return dataset
+    }
+
+    function getDatasets(data,colors){
         datasets = [];
-        for(x=0;x< data.final_name.length;x++){
+        for(x=0;x<data.final_name.length;x++){
             object = {
                 borderWidth: 2,
-                borderColor: random_rgba(),
+                borderColor: colors[x],
                 pointRadius: 4,
                 label: data.final_name[x],
                 data: data.final_dates[x],
@@ -194,27 +198,17 @@
         }
         return datasets;
     }
-    
 
-    function removeData(chart,past_data) {        
-        chart.data.datasets.forEach((dataset) => {
-            for(x=-1;x<=past_data.length;x++){
-                chart.data.labels.pop();
-                dataset.data.pop();
-            }            
-        });
-        chart.update();
-    }
-
-    function addData(chart, label, data) {        
-        chart.data.datasets.forEach((dataset) => {
-            for (x = 0; x <= data.length; x++) {
-                console.log(data[x])
-                dataset.data.push(data[x]);
-                chart.data.labels.push(label[x]);
+    function getLabels(data){
+        dates = []
+        try{
+            for (x = 1; x <= data.final_dates[0].length; x++) {
+                dates.push(x.toString());
             }
-        });
-        chart.update();
+            return dates
+        }catch(TypeError){
+            console.log("No hay Ventas")
+        }
     }
     
 </script>
