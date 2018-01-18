@@ -92,38 +92,39 @@ class Delete_Cartridge(DeleteView):
 
 class Create_Presentation(CreateView):
     model = Presentation
+    print(model)
     fields = [
-        'name', 'measurement_quantity', 'measurement_unit',
+        'supply', 'measurement_quantity', 'measurement_unit',
         'presentation_unit', 'presentation_cost'
     ]
-    template_name = 'presentations/new_presentations.html'
+    template_name = 'presentations/new_presentation.html'
 
     def form_valid(self, form):
         self.object = form.save()
-        return redirect('/presentation/')
+        return redirect('/supplies/details/'+self.kwargs['suppk'])
 
 
 class Update_Presentation(UpdateView):
     model = Presentation
     fields = [
-        'name', 'measurement_quantity', 'measurement_unit',
+        'supply', 'measurement_quantity', 'measurement_unit',
         'presentation_unit', 'presentation_cost'
     ]
-    template_name = 'presentations/new_presentations.html'
+    template_name = 'presentations/new_presentation.html'
 
     def form_valid(self, form):
         self.object = form.save()
-        return redirect('/presentation/')
+        return redirect('/supplies/details/' + self.kwargs['suppk'])
 
 
 class Delete_Presentation(DeleteView):
     model = Presentation
-    template_name = 'presentations/delete_presentations.html'
+    template_name = 'presentations/delete_presentation.html'
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
         self.object.delete()
-        return redirect('/presentation/')
+        return redirect('/supplies/details/' + self.kwargs['suppk'])
 
 
 
@@ -170,7 +171,7 @@ def suppliers(request):
     }
     return render(request, template, context)
 
-# -------------------------------------  Providers -------------------------------------
+# -------------------------------------  Warehouse -------------------------------------
 @login_required(login_url='users:login')
 def warehouse_analytics(request):
 
@@ -191,7 +192,7 @@ def warehouse_analytics(request):
         if request.POST['type'] == 'load_date':
             selected_year = request.POST['year']
             selected_month = request.POST['month']
-            selected_category = request.POST['category']            
+            selected_category = request.POST['category']
 
             resultado = products_helper.get_cartridges_sales_by_date(int(selected_year),int(selected_month),selected_category)
 
