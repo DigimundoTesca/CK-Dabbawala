@@ -2,7 +2,7 @@
 <div class="container center_div">
     <font color="red">
         <center>
-            <h1>{{title}}</h1>
+            <h1>Crear Presentacion</h1>
         </center>
     </font>
     <div class="row">
@@ -10,7 +10,8 @@
             <br>
             <div class="card-panel">
                 <form method="POST" enctype="multipart/form-data">
-                    {% csrf_token %} {{ form.as_p }}
+                    {% csrf_token %} 
+                    {{ form.as_p }}
                     <input type="submit" value="Enviar">
                 </form>
             </div>

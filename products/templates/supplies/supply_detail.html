@@ -18,20 +18,19 @@
     <div class="container">
       <h1>Presentaciones</h1>
       {% for presentation in presentations %}
-        <div class="card">
-          {{presentation}}
+        <div class="row">
+          <p class="col-md-8" >{{presentation}}</p>
+          <a title="Modificar" class="offset-md-2 col-md-1 material-icons" href="{% url 'products:update_presentation' supply.pk presentation.pk %}">create</a>
+          <a title="Eliminar" class="col-md-1 material-icons" href="{% url 'products:delete_presentation' supply.pk presentation.pk %}">delete</a>                              
         </div>
       {% endfor %}
+      <a title="Agregar" class="btn btn-primary" href="{% url 'products:new_presentation' supply.pk %}">Agregar</a>      
     </div>
   </div>  
 </div>
 
 {% endblock content %}
 {% block javascript %}
-<script type="text/javascript">
-  $(function () {
-    $('#fab-add-presentation').click(function (event) {
-      location.href = '/presentation/new/';
-    });
-  });
-</script> {% endblock javascript %}
+
+  
+{% endblock javascript %}
