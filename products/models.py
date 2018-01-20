@@ -78,7 +78,7 @@ class Supply(models.Model):
     created_at = models.DateTimeField(editable=False, auto_now=True)
     category = models.ForeignKey(
         SuppliesCategory, default=1, on_delete=models.CASCADE)
-    barcode = models.PositiveIntegerField(
+    barcode = models.BigIntegerField(
         help_text='(Código de barras de 13 dígitos)',
         validators=[MaxValueValidator(9999999999999)],
         blank=True,
