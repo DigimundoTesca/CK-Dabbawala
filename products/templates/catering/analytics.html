@@ -165,19 +165,7 @@
             data: data.tick_sales,
             borderColor: colors,
             backgroundColor: colors,
-            borderWidth: 1,
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                },
-                legend: {
-                    position: "left",
-                }
-            }
+            borderWidth: 1,            
         }
         dataset.push(obj)
         return dataset
@@ -193,6 +181,7 @@
                 label: data.final_name[x],
                 data: data.final_dates[x],
                 fill: false,
+                hidden:true,
             };
             datasets.push(object);
         }
