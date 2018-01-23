@@ -84,11 +84,7 @@ class Supply(models.Model):
         blank=True,
         null=True)
     storage_required = models.CharField(choices=STORAGE_REQUIREMENTS, default=DRY_ENVIRONMENT, max_length=2)
-    supplier = models.ForeignKey(Supplier, default=1, on_delete=models.CASCADE)
-    presentation_unit = models.CharField(max_length=10, choices=PRESENTATION_UNIT, default=PACKAGE)
-    presentation_cost = models.FloatField(default=0)
-    measurement_unit = models.CharField(max_length=10, choices=METRICS, default=PACKAGE)
-    measurement_quantity = models.FloatField(default=0)
+    supplier = models.ForeignKey(Supplier, default=1, on_delete=models.CASCADE)    
     optimal_duration = models.IntegerField(default=0)
     optimal_duration_unit = models.CharField(choices=OPTIMAL_DURATION, max_length=2, default=DAYS)
     location = models.ForeignKey(SupplyLocation, default=1, on_delete=models.CASCADE)
@@ -293,13 +289,11 @@ class Presentation(models.Model):
         (PIECE, 'pieza'),
     )
 
-    supply = models.ForeignKey(Supply, default=1, on_delete=models.CASCADE)
-    measurement_quantity = models.FloatField(default=0)
-    measurement_unit = models.CharField(
-        max_length=10, choices=METRICS, default=PACKAGE)
-    presentation_unit = models.CharField(
-        max_length=10, choices=PRESENTATION_UNIT, default=PACKAGE)
+    supply = models.ForeignKey(Supply, default=1, on_delete=models.CASCADE)    
+    presentation_unit = models.CharField(max_length=10, choices=PRESENTATION_UNIT, default=PACKAGE)
     presentation_cost = models.FloatField(default=0)
+    measurement_unit = models.CharField(max_length=10, choices=METRICS, default=PACKAGE)
+    measurement_quantity = models.FloatField(default=0)
 
     def __str__(self):
         return '%s %s %s %s %s' % (self.supply, self.measurement_quantity,
