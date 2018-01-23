@@ -69,30 +69,14 @@ class Warehouse(models.Model):
         (PIECE, 'pieza'),
     )
 
-    supply = models.ForeignKey(Supply, default=1, on_delete=models.CASCADE)
-    status = models.CharField(choices=STATUS, default=PROVIDER, max_length=15)
-    measurement_unit = models.CharField(
-        max_length=10, choices=METRICS, default=GRAM)
+    presentation = models.ForeignKey(Presentation, on_delete=models.CASCADE)
+    status = models.CharField(choices=STATUS, default=PROVIDER, max_length=15)    
     created_at = models.DateField(editable=False, auto_now_add=True)
     expiry_date = models.DateField(editable=True, auto_now_add=True)
     quantity = models.FloatField(default=0)
 
     def __str__(self):
-        return '%s %s' % (self.supply, self.quantity)
-
-    def get_quantity_stock(self):
-        if self.measurement_unit == "GR" or self.measurement_unit == "MI":
-            if self.quantity >= 1000:
-                return str(
-                    self.quantity / 1000) + " " + self.thousand_measurement()
-            else:
-                return str(self.quantity) + " " + self.measurement_unit
-
-    def thousand_measurement(self):
-        if self.measurement_unit == "MI":
-            return "L"
-        if self.measurement_unit == "GR":
-            return "KL"
+        return '%s %s' % (self.Presentation, self.quantity)
 
     class Meta:
         ordering = ('id', )
@@ -136,8 +120,7 @@ class ShopListDetail(models.Model):
     )
 
     status = models.CharField(choices=STATUS, default=MISSING, max_length=15)
-    shop_list = models.ForeignKey(
-        ShopList, default=1, on_delete=models.CASCADE)
+    shop_list = models.ForeignKey(ShopList, default=1, on_delete=models.CASCADE)
     presentation = models.ForeignKey(Presentation, on_delete=models.CASCADE)
     quantity = models.IntegerField()
     deliver_day = models.DateTimeField(editable=False, null=True, blank=True)
