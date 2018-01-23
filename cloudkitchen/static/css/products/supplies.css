@@ -1,0 +1,29 @@
+.card-img-top{
+    max-width: 100px;
+    max-height: 100px;        
+}
+
+h6.card-title{   
+    height: 40px; 
+    margin: auto;
+    overflow: hidden;
+}
+
+.card-r{    
+    margin-top: 20px;      
+    margin-left: 20px;
+    box-shadow: 2px 2px 2px 2px;
+}
+
+.card-r:hover{
+    box-shadow: 1px 1px 1px;
+}
+
+.icons{
+    padding: 0px ;
+}
+
+.details{
+    padding: 0px !important;
+}
+
