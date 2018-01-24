@@ -1,12 +1,13 @@
-{% extends "base/base_nav_footer.html" %} 
+{% extends "base/base_nav_footer.html" %}
+{% load static %}
 {% block content %}
 
 <div class="container-fluid">    
     <div class="row">
-        <div class="col-md-5">            
+        <div class="col-12 col-xl-5">            
             <canvas id="myChart1" width="400" height="300"></canvas>
         </div>
-        <div class="col-md-5">
+        <div class="col-12 col-xl-5">
             <canvas id="myChart2" width="400" height="300"></canvas>
         </div>        
         <div class="col-md-2">
@@ -40,8 +41,8 @@
 {% endblock content %} 
 {% block javascript %}
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-<script type="text/javascript" charset="utf-8" defer>
+<script src="{% static 'js/Chart.bundle.min.js' %}" ></script>
+<script type="text/javascript" charset="utf-8" >
 
     var sales_data = JSON.parse('{{ sales_data | safe }}');  
     var sales_data_by_date = JSON.parse('{{ sales_data_by_date | safe }}');  
@@ -117,7 +118,7 @@
                     data: {
                         labels: getLabels(data_by_date),
                         datasets: getDatasets(data_by_date,colors),
-                    },
+                    },                    
                 });   
             }
         });
@@ -139,7 +140,7 @@
         data: {
             labels: getLabels(sales_data_by_date),
             datasets: getDatasets(sales_data_by_date,colors),
-        },
+        },        
     });    
 
     $(".year_select").on('change', function () {
