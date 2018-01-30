@@ -339,6 +339,9 @@
       border-radius: 3px;
       background: #F9ECE0;
     }
+    #header .logo{
+      text-decoration: none;
+    }
     @media screen and (max-width: 2000px) {
 
       #mainmenu {
@@ -1207,7 +1210,6 @@
       #mainmenu {
         visibility: hidden;
       }
-
       .menu .cols p {
         margin: 0 !important;
         font-family:'Conv_Futura',Sans-Serif !important;
@@ -2038,7 +2040,7 @@
     }
 
     body {
-      background-color: #f84f0e;
+      background-color: #FF1B00;
     }
 
     body.is-loading *, body.is-loading *:before, body.is-loading *:after {
@@ -3929,7 +3931,6 @@
   #banner.main {
     background-image: url("../images/image/1.jpg");
     top: 0;
-    margin-bottom: 0;
   }
 
   #banner.build {
@@ -4176,7 +4177,7 @@
 
   /* Main */
 
-  #main, #main1, #main2, #main3, #main4 {
+  #main,#main1, #main3, #main4 {
     background-color: #ffffff;
     background-image: -webkit-linear-gradient(150deg, #ffffff 50%, rgb(250,243,237) 50%);
     background-image: -o-linear-gradient(150deg, #ffffff 50%, rgb(250,243,237) 50%);
@@ -4237,13 +4238,17 @@
 
   #main div.cols, #main1 div.cols, #main2 div.cols, #main3 div.cols, #main4 div.cols {
     padding-top: 3em;
-    padding-bottom: 3em;
+    padding-bottom: 0em;
     width: 80%;
     margin:0 auto;
     text-align: center;
     display: flex;
     flex-wrap: wrap;
     vertical-align: middle;
+  }
+  .menu > #main div.cols{
+    padding-top: 0;
+    width: 100%;
   }
 
   #main div.colr, #main1 div.colr, #main2 div.colr, #main3 div.colr, #main4 div.colr {
@@ -4330,7 +4335,57 @@
     margin: 0 auto;
     text-align: center;
   }
-
+  .menu > #main2, .menu >#main {
+    background-color: #fff !important
+    flex-wrap: wrap;
+    text-align: center;
+    vertical-align: middle;
+  }
+  .menu > #main div.col1, .menu > #main div.col2{
+    width: 550px;
+  }
+  .menu > #main div.col1 > #menu_logo{
+    width: 150px;
+  }
+  .menu > #main #main2 div.col1{
+    width: 250px;
+  }
+  .menu > #main #main2 div.col2{
+    width: 250px;
+  }
+  .menu > #main #fruta,.menu > #main #drink{
+    width: 230px;
+  }
+  .menu > #main #main2 .cols p.large{
+    line-height: 27px;
+}
+  .menu > #main h2.platillo{
+    color: #fff;
+    background-image: url("https://userscontent2.emaze.com/images/f1ac707b-ad3b-4d41-83f4-f1ac790ed997/00d48e24-6423-4744-a8b6-ea8fc2fcb88bimage5.png");
+    background-size: center center;
+    background-position: center;
+    background-repeat:no-repeat;
+  }
+  .menu > #main div.paquete{
+    position: relative;
+    margin-left: 0px;
+    border-radius: 3px;
+    background-color: #FF1B00;
+    padding: inherit;
+    height: 220px;
+    margin: 0 auto;
+    margin-bottom: 2em;
+    width: 100%;
+  }
+  .menu > #main div.paquete:hover{
+    cursor: pointer;
+    transform: scale(.98);
+    box-shadow: inside 10px solid #000;
+  }
+  .menu > #main div.paquete h3{
+    padding-top: 15px;
+    color: #fff;
+  }
   #main .col1 .cont, #main1 .col1 .cont, #main2 .col1 .cont, #main3 .col1 .cont, #main4 .col1 .cont {
     text-align: left;
     /*padding-left: 1em;*/
@@ -4881,9 +4936,9 @@
   .bord2 {
     width: 100%;
     background-color: transparent;
-    background-image: -webkit-linear-gradient(180deg, #F84F0E 50%, rgb(250,243,237) 50%);
-    background-image: -o-linear-gradient(180deg, #F84F0E 50%, rgb(250,243,237) 50%);
-    background-image: linear-gradient(180deg, #F84F0E 50%, rgb(250,243,237) 50%);
+    background-image: -webkit-linear-gradient(180deg, #FF1B00 50%, rgb(250,243,237) 50%);
+    background-image: -o-linear-gradient(180deg, #FF1B00 50%, rgb(250,243,237) 50%);
+    background-image: linear-gradient(180deg, #FF1B00 50%, rgb(250,243,237) 50%);
   }
 
   #main .pick, #main1 .pick, #main2 .pick, #main3 .pick, #main4 .pick {
@@ -4979,7 +5034,7 @@
     font-weight: 700;
   }
 
-  .menu .cols p {
+  .menu .cols p  {
     margin: 1.5em;
     margin-left: 0;
     padding-left: 0;
@@ -5009,8 +5064,6 @@
     line-height: 20px;
     width: 85%;
   }
-
-
   #carta img{
     margin: 0 !important;
     margin-top: 10% !important;
@@ -5288,7 +5341,7 @@
  */
 @media screen and (min-width: 900px) {
   #mainmenu {
-    width: 380px;
+    width: 470px;
     max-height: 2rem;
     align-self: center;
   }
@@ -5311,6 +5364,7 @@
     height: 100%;
     padding: 0;
     margin: 0;
+    text-decoration: none;
     text-align: center;
     justify-content: center;
     transition: all .3s ease;
@@ -5333,4 +5387,94 @@
     color: #fff;
     box-shadow: 0 2px 0 0 rgba(241, 232, 231, 0.95);
   }
+}
+#whats{
+  z-index: 10;
+	height: 60px;
+	width: 60px;
+	right: 40px; top: 120px;
+	position: fixed;
+	cursor: pointer;
+	text-decoration: none;
+	color: white;
+}
+#whats:hover{
+	color: white;
+	transform: scale(1.15);
+}
+
+/*template job*/
+#team_image{
+  margin: 0 auto;
+  background-image: url('../images/team.jpeg');
+  background-position: center;
+  background-repeat: no-repeat;
+  max-width: 660px;
+  height: 385px;
+  position: relative;
+}
+#info_team{
+  position: absolute;
+  -webkit-transition: background-color 0.2s;
+  width: auto;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.45);
+  position: absolute;
+  text-align: center;
+  color: #ffff;
+}
+#info_team p{
+  margin: 25px;
+  -webkit-transition: margin .2s;
+  margin-top: 200px;
+  margin-bottom: 30px;
+}
+#info_team h3{
+  padding-top: 1em;
+  margin-top: 15px;
+  -webkit-transition: margin 0.5s;
+  margin-left: -400px;
+}
+#info_team h3, #info_team p {
+  color: #fff;
+}
+.button_job{
+  line-height: 1px;
+  cursor: pointer;
+  text-decoration: none;
+  padding-top: 5px;
+  padding-bottom: 10px;
+  padding-left: 40px;
+  padding-right: 40px;
+  border: 1px solid #fff;
+  border-radius: 2px;
+}
+.button_job:hover{
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #000;
+  transform: scale(.90);
+}
+.oculto{
+  width: 80%;
+  overflow: hidden;
+  margin: 0 auto;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  margin-top: 3em;
+  padding-bottom: 2em;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  opacity: 0;
+}
+#info_team:hover{
+  background-color: rgba(0, 0, 0, 0.85);
+}
+#info_team:hover .oculto{
+  opacity: 1;
+}
+#info_team:hover h3{
+  margin-left: 0px;
+}
+#info_team:hover p{
+  margin-top: 0px;
 }

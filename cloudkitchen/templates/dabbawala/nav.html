@@ -14,6 +14,7 @@
       <li><a href="{% url 'users:home' %}">Home</a></li>
       <li><a href="{% url 'products:menu'%}">Menú</a></li>
       <li><a href="{% url 'branch_offices:contact' %}">Contacto</a></li>
+      <li><a href="{% url 'branch_offices:job' %}">Bolsa de Trabajo</a></li>
       <li><a href="" class="button nob" data-type="zoomin"><span>Inicia Sesión</span></a></li>
       <li><a href="{% url 'users:register' %}">Registrate</a></li>
       <li><a href="{% url 'orders:new_order' %}" class="button fit">Arma tu Dabba</a></li>
@@ -26,6 +27,7 @@
       <li><a href="{% url 'users:home' %}"><span>Home</span></a></li>
       <li><a href="{% url 'products:menu'%}"><span>Menú</span></a></li>
       <li><a href="{% url 'branch_offices:contact' %}"><span>Contacto</span></a></li>
+      <li><a href="{% url 'branch_offices:job' %}"><span>Bolsa de Trabajo</span></a></li>
       {% if request.user.is_authenticated %}
       <li><a href="{% url 'users:profile' %}"><span>{{ request.user }}</span></a></li>
       <li><a href="{% url 'users:logout_customer' %}"><span>Cerrar Sesión</span></a></li>

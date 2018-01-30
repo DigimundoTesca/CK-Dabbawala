@@ -90,6 +90,37 @@
 
 	};
 
+	//Whats button
+	var whatsapp = document.getElementById('whats');
+	var mc = new Hammer(whatsapp);
+	mc.add( new Hammer.Pan({ direction: Hammer.DIRECTION_ALL, threshold: 0 }) );
+	mc.on("pan", handleDrag);
+
+	var lastPosX = 0;
+	var lastPosY = 0;
+	var isDragging = false;
+	function handleDrag(ev) {
+
+	  // for convience, let's get a reference to our object
+	  var elem = ev.target;
+
+	  if ( ! isDragging ) {
+	    isDragging = true;
+	    lastPosX = elem.offsetLeft;
+	    lastPosY = elem.offsetTop;
+	  }
+	  // NOTE:
+	  var posX = ev.deltaX + lastPosX;
+	  var posY = ev.deltaY + lastPosY;
+
+	  elem.style.left = posX + "px";
+	  elem.style.top = posY + "px";
+
+	  if (ev.isFinal) {
+	    isDragging = false;
+	  }
+	}
+
 	$(function() {
 
 		var	$window = $(window),

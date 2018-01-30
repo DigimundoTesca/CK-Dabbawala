@@ -16,3 +16,8 @@ def contact(request):
       template = 'contact.html'
       context = {}
       return render(request, template, context)
+
+def job(request):
+    template = 'job.html'
+    context = {}
+    return render(request, template, context)

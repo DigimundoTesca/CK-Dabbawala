@@ -1,0 +1,33 @@
+{% extends "dabbawala/base_nav_footer.html" %}
+{% load static %}
+{% block content %}
+<div class="job-container">
+  <div id="main">
+    <img class="bord2" src="{% static 'images/image/reverse.png' %}" alt="Borde">
+    <div id="main2">
+      <h1>Bolsa de trabajo</h1>
+      <h2>Solicitamos...</h2>
+      <h4>¡Se parte de nuestro equipo Dabbawala!</h4>
+      <div class="col" id="team_image">
+        <div class="col" id="info_team">
+          <div class="oculto">
+            <h3 class="title_team">¿Quiéres ser parte de Dabbawala?</h3><br>
+            <p> Envíanos tus datos y nosotros nos comunicaremos contigo. Llena el formulario que se encuentra bajo esta imagen.</p>
+            <a class="button_job" href="#">Nosotros</a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="registro_empleo">
+      <div class="cols">
+        <h4>Mándanos tu información</h4>
+        <form class="datos_trabajo" action="" method="post">
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock content %}
