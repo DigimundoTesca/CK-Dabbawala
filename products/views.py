@@ -30,8 +30,7 @@ import calendar
 
 class Create_Supply(CreateView):
     model = Supply
-    fields = ['name','category','barcode','supplier','storage_required','presentation_unit','presentation_cost',
-        'measurement_quantity','measurement_unit','optimal_duration','optimal_duration_unit','location','image']
+    fields = ['name','category','barcode','supplier','storage_required','optimal_duration','optimal_duration_unit','location','image']
     template_name = 'supplies/new_supply.html'
 
     def form_valid(self, form):
