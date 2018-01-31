@@ -84,7 +84,7 @@ class Supply(models.Model):
         blank=True,
         null=True)
     storage_required = models.CharField(choices=STORAGE_REQUIREMENTS, default=DRY_ENVIRONMENT, max_length=2)
-    supplier = models.ForeignKey(Supplier, default=1, on_delete=models.CASCADE)    
+    supplier = models.ForeignKey(Supplier, default=1, on_delete=models.CASCADE)
     optimal_duration = models.IntegerField(default=0)
     optimal_duration_unit = models.CharField(choices=OPTIMAL_DURATION, max_length=2, default=DAYS)
     location = models.ForeignKey(SupplyLocation, default=1, on_delete=models.CASCADE)
@@ -263,6 +263,10 @@ class PackageCartridgeRecipe(models.Model):
         verbose_name = 'Receta del Paquete'
         verbose_name_plural = 'Recetas de Paquetes'
 
+class Brand(models.Model):
+    name = models.CharField(max_length=90)
+    created_at = models.DateTimeField(auto_now=True)
+
 
 class Presentation(models.Model):
 
@@ -270,12 +274,12 @@ class Presentation(models.Model):
     BOX = 'BO'
     PIECE = 'PZ'
     GRANEL = 'GR'
-    CARTON = 'CT'    
+    CARTON = 'CT'
     BAG = 'BA'
-    PRESENTATION_UNIT = ((PACKAGE, 'Paquete'), 
-                         (BOX, 'Caja'), 
-                         (PIECE, 'Pieza'), 
-                         (GRANEL, 'Granel'), 
+    PRESENTATION_UNIT = ((PACKAGE, 'Paquete'),
+                         (BOX, 'Caja'),
+                         (PIECE, 'Pieza'),
+                         (GRANEL, 'Granel'),
                          (CARTON, 'Carton'),
                          (BAG, 'Bolsa'))
 
@@ -289,7 +293,7 @@ class Presentation(models.Model):
         (PIECE, 'pieza'),
     )
 
-    supply = models.ForeignKey(Supply, default=1, on_delete=models.CASCADE)    
+    supply = models.ForeignKey(Supply, default=1, on_delete=models.CASCADE)
     presentation_unit = models.CharField(max_length=10, choices=PRESENTATION_UNIT, default=PACKAGE)
     presentation_cost = models.FloatField(default=0)
     measurement_unit = models.CharField(max_length=10, choices=METRICS, default=PACKAGE)

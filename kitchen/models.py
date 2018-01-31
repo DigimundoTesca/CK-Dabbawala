@@ -76,7 +76,7 @@ class Warehouse(models.Model):
     quantity = models.FloatField(default=0)
 
     def __str__(self):
-        return '%s %s' % (self.Presentation, self.quantity)
+        return '%s %s' % (self.presentation, self.quantity)
 
     class Meta:
         ordering = ('id', )
