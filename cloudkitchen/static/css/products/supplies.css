@@ -1,29 +1,21 @@
-.card-img-top{
-    max-width: 100px;
-    max-height: 100px;        
+.list-group{
+    height: 45rem;
+    overflow-y: auto;
 }
 
-h6.card-title{   
-    height: 40px; 
-    margin: auto;
-    overflow: hidden;
+.tab-content{
+    height: 45rem;
+    overflow-y: auto;
 }
 
-.card-r{    
-    margin-top: 20px;      
-    margin-left: 20px;
-    box-shadow: 2px 2px 2px 2px;
+a.material-icons{
+    font-size: 50px;
 }
 
-.card-r:hover{
-    box-shadow: 1px 1px 1px;
+img{
+    display:block;
+    margin:auto;
 }
 
-.icons{
-    padding: 0px ;
-}
 
-.details{
-    padding: 0px !important;
-}
 
