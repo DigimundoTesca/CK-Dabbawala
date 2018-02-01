@@ -170,49 +170,6 @@ def suppliers(request):
     }
     return render(request, template, context)
 
-# -------------------------------------  Warehouse -------------------------------------
-@login_required(login_url='users:login')
-def warehouse_analytics(request):
-
-    sales_helper = TicketPOSHelper()
-    helper = Helper()
-    products_helper = ProductsHelper()
-    today = datetime.today()
-    current_year = today.year
-    current_month = today.month
-    category = "select"
-
-    resultado = products_helper.get_cartridges_sales_by_date(current_year,current_month,category)
-
-    sales_data = resultado['sales_data']
-    json_sales_data_by_date = resultado['json_sales_data_by_date']
-
-    if request.method == 'POST':
-        if request.POST['type'] == 'load_date':
-            selected_year = request.POST['year']
-            selected_month = request.POST['month']
-            selected_category = request.POST['category']
-
-            resultado = products_helper.get_cartridges_sales_by_date(int(selected_year),int(selected_month),selected_category)
-
-            sales_data = resultado['sales_data']
-            json_sales_data_by_date = resultado['json_sales_data_by_date']
-
-            return JsonResponse({'sales_data':sales_data,'json_sales_data_by_date':json_sales_data_by_date})
-
-
-    template = 'catering/analytics.html'
-    title = 'Almacen - Analytics'
-    context = {
-        'sales_data_by_date':json_sales_data_by_date,
-        'sales_data': sales_data,
-        'today': today,
-        'title': title,
-        'page_title': PAGE_TITLE
-    }
-    return render(request, template, context)
-
-
 # -------------------------------------  Supplies -------------------------------------
 @login_required(login_url='users:login')
 def supplies(request):
@@ -440,6 +397,7 @@ def cartridge_modify(request, pk):
     }
     return render(request, template, context)
 
+# -------------------------------------  Warehouse -------------------------------------
 
 @login_required(login_url='users:login')
 def warehouse(request):
@@ -613,6 +571,54 @@ def new_shoplist(request):
         'form': form,
         'title': title,
         'supply_list': supply_list,
+        'page_title': PAGE_TITLE
+    }
+    return render(request, template, context)
+
+
+@login_required(login_url='users:login')
+def warehouse_analytics(request):
+
+    sales_helper = TicketPOSHelper()
+    helper = Helper()
+    products_helper = ProductsHelper()
+    today = datetime.today()
+    current_year = today.year
+    current_month = today.month
+    category = "select"
+
+    resultado = products_helper.get_cartridges_sales_by_date(
+        current_year, current_month, category)
+
+    sales_data = resultado['sales_data']
+    json_sales_data_by_date = resultado['json_sales_data_by_date']
+
+    if request.method == 'POST':
+        if request.POST['type'] == 'load_date':
+            selected_year = request.POST['year']
+            selected_month = request.POST['month']
+            selected_category = request.POST['category']
+
+            resultado = products_helper.get_cartridges_sales_by_date(
+                int(selected_year), int(selected_month), selected_category)
+
+            sales_data = resultado['sales_data']
+            json_sales_data_by_date = resultado['json_sales_data_by_date']
+
+            return JsonResponse({
+                'sales_data':
+                sales_data,
+                'json_sales_data_by_date':
+                json_sales_data_by_date
+            })
+
+    template = 'catering/analytics.html'
+    title = 'Almacen - Analytics'
+    context = {
+        'sales_data_by_date': json_sales_data_by_date,
+        'sales_data': sales_data,
+        'today': today,
+        'title': title,
         'page_title': PAGE_TITLE
     }
     return render(request, template, context)

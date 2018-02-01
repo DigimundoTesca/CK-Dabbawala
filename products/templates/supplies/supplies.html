@@ -4,7 +4,7 @@
 <link rel="stylesheet" type='text/css' href="{% static 'css/products/supplies.css' %}"> 
 {% endblock link %}
 {% block content %}
-<div class="container">
+<div class="container-fluid">
   <div class="row">
     <div class="col-md-4 col-sm-12">
       <div class="list-group" id="list-tab" role="tablist">
@@ -31,7 +31,7 @@
         {% endif %}        
           <p class="text-center">{{sp.name}}</p>
           <div class="row">  
-            <div class="col-md-12">
+            <div class="img-c col-md-12">
               <img src="{{sp.image.url}}" alt="No img" >              
             </div>          
           </div>

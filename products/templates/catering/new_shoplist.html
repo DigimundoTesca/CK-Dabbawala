@@ -6,37 +6,44 @@
 {% block content %}
 
 <!--Container of List-->
-<div class="container container_manual_list">
+<div class="container-fluid">
     <div class="row">
         <div class="block_card col-md-6">
             {% for supplies in supply_list %}
             <div class="card card_element col-12" id="supplies.supply-{{ supplies.pk }}">
-                <div class="card_image">
-                    <img class="ele_image" src="{{ supplies.imagen }}" id="supplies.pr.supply-img-{{ supplies.pk }}">
-                </div>
-                <div class="card_ele_info">
-                    <div class="block_info">
+                <div class="row">
+
+                    <div class="col-md-6 card_image">
                         <span class="product_name" id="supply_name-{{ supplies.name }}">
                             <b>{{ supplies.name }}</b>
-                        </span>
-                        <br>
-                        <small class="provider_unit" id="supplies.quantity-{{ supplies.unidad }},{{ supplies.medida }},{{ supplies.costo }}"> Unidad: {{ supplies.unidad }} {{ supplies.medida }} </small>
-                        <br>
+                        </span><br>
+                        <img class="ele_image" src="{{ supplies.imagen }}" id="supplies.pr.supply-img-{{ supplies.pk }}">
                     </div>
-                    <div class="block_btn">
-                        {% for presentations in supplies.presentations %}
-                        <div class="pres_btn">
-                            <small class="btn_pres material-icons">lens</small>
-                            <br>
-                            <small class="info_pres" id="{{ presentations.pk }},{{ presentations.measurement_quantity }},{{ presentations.measurement_unit }},{{ presentations.presentation_cost }}">
-                            {{ presentations.measurement_quantity }} {{ presentations.measurement_unit }}</small>
-                        </div>
-                        {% endfor %}                         
-                        {% if supplies.presentations|length <= 2 %} 
-                        <div class="add_btn">
-                            <span class="btn_add material-icons">add</span>
-                        </div>    
-                        {% endif %}  
+                    <div class="col-md-6 card_ele_info">
+                        <div class="block_info">                        
+                            <small class="provider_unit" id="supplies.quantity-{{ supplies.unidad }},{{ supplies.medida }},{{ supplies.costo }}"> 
+                                 {{ supplies.unidad }} {{ supplies.medida }} 
+                            </small>                       
+                        </div>                        
+                        <div class="block_btn">
+                            <div class="row">
+                                {% for presentations in supplies.presentations %}
+                                <div>
+                                    <button type="button" class="pres_btn btn btn-primary" id="{{ presentations.pk }},{{ presentations.measurement_quantity }},{{ presentations.measurement_unit }},{{ presentations.presentation_cost
+                                    }}">
+                                         {{ presentations.measurement_quantity }} {{ presentations.measurement_unit }}
+                                    </button>                                                                                                            
+                                </div>
+                                {% endfor %}                         
+                            </div>
+                            {% if supplies.presentations|length <= 2 %} 
+                            <div class="add_btn">
+                                <button type="button" class="btn_add btn btn-primary">
+                                    Agregar Presentacion
+                                </button>                            
+                            </div>    
+                            {% endif %}  
+                    </div>
                 </div>
             </div>
         </div>
@@ -70,7 +77,8 @@
             </div>
             <div class="modal-body ">
                 <form method="POST" enctype="multipart/form-data">
-                    {% csrf_token %} {{ form.as_p }}
+                    {% csrf_token %} 
+                    {{ form.as_p }}
                     <button type="submit"> Guardar </button>
                 </form>
             </div>
