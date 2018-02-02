@@ -19,25 +19,19 @@
                         </span><br>
                         <img class="ele_image" src="{{ supplies.imagen }}" id="supplies.pr.supply-img-{{ supplies.pk }}">
                     </div>
-                    <div class="col-md-6 card_ele_info">
-                        <div class="block_info">                        
-                            <small class="provider_unit" id="supplies.quantity-{{ supplies.unidad }},{{ supplies.medida }},{{ supplies.costo }}"> 
-                                 {{ supplies.unidad }} {{ supplies.medida }} 
-                            </small>                       
-                        </div>                        
+                    <div class="col-md-6 card_ele_info">                                               
                         <div class="block_btn">
-                            <div class="row">
+                            <div class="row">                                
                                 {% for presentations in supplies.presentations %}
                                 <div>
-                                    <button type="button" class="pres_btn btn btn-primary" id="{{ presentations.pk }},{{ presentations.measurement_quantity }},{{ presentations.measurement_unit }},{{ presentations.presentation_cost
-                                    }}">
+-                                    <button type="button" class="pres_btn btn btn-primary" id="{{ presentations.pk }},{{ presentations.measurement_quantity }},{{ presentations.measurement_unit }},{{ presentations.presentation_cost}}">
                                          {{ presentations.measurement_quantity }} {{ presentations.measurement_unit }}
                                     </button>                                                                                                            
                                 </div>
                                 {% endfor %}                         
                             </div>
                             {% if supplies.presentations|length <= 2 %} 
-                            <div class="add_btn">
+                            <div class="row add_btn">
                                 <button type="button" class="btn_add btn btn-primary">
                                     Agregar Presentacion
                                 </button>                            

@@ -564,13 +564,15 @@ def new_shoplist(request):
         element_object['presentations'] = supp_pres
         supply_list.append(element_object)
 
-    template = 'catering/new_shoplist.html'
+    template = 'catering/new_shoplist_2.html'
     title = 'Lista de Compras'
     context = {
         'shop_list': shop_list,
         'form': form,
         'title': title,
         'supply_list': supply_list,
+        'supplies':supps,
+        'presentations':all_presentations,
         'page_title': PAGE_TITLE
     }
     return render(request, template, context)
