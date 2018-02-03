@@ -89,7 +89,6 @@
 		return $(this);
 
 	};
-
 	//Whats button
 	var whatsapp = document.getElementById('whats');
 	var mc = new Hammer(whatsapp);
@@ -377,5 +376,10 @@
 				});
 
 	});
+	//change background in banner home
+	$(function() {
+  var imagenes = ['fondo.jpg', 'fondo1.jpg', 'fondo2.jpg', 'fondo3.png',];
+  $('.main').css({'background-image': 'url(../images/image/' + imagenes[Math.floor(Math.random() * imagenes.length)] + "'"});
+});
 
 })(jQuery);

@@ -2,6 +2,11 @@
 {% load static %}
 {% block content %}
 <div class="job-container">
+  <div class="col2">
+    <div id="whatsdiv" class="align-self-right whatsapp mt-5">
+    <a href="https://api.whatsapp.com/send?phone=525576112053" id="whats_cont" class="rounded-circle"><h2 id="ordena">¡Ordena aquí!</h2><img id="whats" src="{% static 'images/whats.png' %}" alt="whats"></a>
+    </div>
+  </div>
   <div id="main">
     <img class="bord2" src="{% static 'images/image/reverse.png' %}" alt="Borde">
     <div id="main2">
@@ -15,15 +20,33 @@
             <p> Envíanos tus datos y nosotros nos comunicaremos contigo. Llena el formulario que se encuentra bajo esta imagen.</p>
             <a class="button_job" href="#">Nosotros</a>
           </div>
-
         </div>
       </div>
     </div>
     <div class="registro_empleo">
-      <div class="cols">
-        <h4>Mándanos tu información</h4>
-        <form class="datos_trabajo" action="" method="post">
-
+        <h4>Mándanos tu información</h4><br>
+          <img class="arr" src="{% static 'images/image/arrow.png'%}" alt="Borde de flechas">
+        <div class="form">
+          <div class="cols">
+            <div class="col1">
+              <h4>Datos del solitante</h4>
+              <p class="cont">Llena todos los campos solicitados por favor</p>
+              <label for="name">Nombre * </label>
+              <input type="text" name="name" id="name" placeholder="" required />
+              <label for="edad">Edad * </label>
+              <input type="number" name="edad" id="edad" value="" step="2" required="required">
+              <label for="level">Escolaridad * </label>
+              <input type="text" name="level" value="" id="level" required>
+              <label for="phone">Telefono * </label>
+              <input type="tel" name="phone" value="" id="phone">
+              <label for="email">Correo </label>
+              <input type="text" name="email" id="email" placeholder="Correo" />
+              <label for="message">¿Por qué quieres formar parte del equipo Dabba? </label>
+              <textarea name="message" placeholder="Mensaje" id="message"></textarea>
+              <input class="button" type="submit" name="submit" value="ENVIAR" />
+            </div>
+          </div>
+        </div>
         </form>
       </div>
 
