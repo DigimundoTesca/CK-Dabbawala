@@ -8,9 +8,12 @@
 			<div class="contenido">
         <div class="main">
           <div class="cols">
+						  <img id="flecha" src="{% static 'images/flecha.png' %}" alt="ordena_aqui">
             <div class="col">
               <h1>¡Arma tu Dabba desde aquí!</h1>
+							<br>
               <h2>Síguenos en nuestras redes sociales</h2>
+							<i id="facebook"class="fa fa-facebook-f"></i>
             </div>
           </div>
         </div>
@@ -19,7 +22,7 @@
     <div>
   <div class="col2">
     <div id="whatsdiv" class="align-self-right whatsapp mt-5">
-    <a href="https://api.whatsapp.com/send?phone=525576112053" id="whats_cont" class="rounded-circle"><h2 id="ordena">¡Ordena aquí!</h2><img id="whats" src="{% static 'images/whats.png' %}" alt="whats"></a>
+    <a href="https://api.whatsapp.com/send?phone=525576112053" id="whats_cont" class="rounded-circle"><h2 id="ordena">¡Ordena ya!</h2><img id="whats" src="{% static 'images/whats.png' %}" alt="whats"></a>
     </div>
   </div>
   <section id="banner"  class="main major style2">
@@ -29,6 +32,7 @@
         <h1 id="registrate">¡Registrate Ahora!</h1>
         <h2>Y obtén muchos beneficios</h2>
       </header>
+			<h4 class="facebook">Dale like a nuestra página de facebook <i id="facebook"class="fa fa-facebook-f"></i></h4>
     </div>
   </section>
   <div id="main">
@@ -71,16 +75,14 @@
     <div class="form">
       <h2>¿TIENES ALGUNA DUDA O SUGERENCIA?</h2>
       <p>Envíanos tus dudas ó sugerencias; estamos siempre al pendiente de nuestros clientes.<br>Te estaremos respondiendo en poco tiempo.</p>
-      <form class="col sections" action="" method="post" accept-charset="utf-8">
-        <div class="col1">
+      <form id="opinion" class="col sections" action="" method="post" accept-charset="utf-8">
+        <div class="col">
           <input class="inp1" type="text" name="email" id="email" placeholder="Email" />
+					<textarea name="message" placeholder="Mensaje" id="message" rows="2"></textarea>
           <input type="submit" class="fit inp2 button" name="submit" value="Enviar" />
         </div>
       </div>
     </div>
-        <div class="col2">
-          <textarea name="message" placeholder="Mensaje" id="message" rows="2"></textarea>
-        </div>
       </form>
     </div>
   </div>

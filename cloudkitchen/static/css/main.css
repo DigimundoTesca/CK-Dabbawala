@@ -1220,7 +1220,7 @@
 
 
       .menu .cols span {
-        color: #f84f0e !important;
+        color: #D34818 !important;
         font-family:'Conv_Futura',Sans-Serif !important;
         float: right !important;
         text-align: right !important;
@@ -2040,7 +2040,7 @@
     }
 
     body {
-      background-color: #FF1B00;
+      background-color: #D34818;
     }
 
     body.is-loading *, body.is-loading *:before, body.is-loading *:after {
@@ -2280,7 +2280,7 @@
     /* Form */
 
     form {
-      margin: 0 0 2em 0;
+      margin:0;
     }
 
     form .field {
@@ -2517,7 +2517,7 @@
       background: #ffffff;
       border-color: #F98559;
       content: '\f00c';
-      color: #F84F0E;
+      color: #D34818;
     }
 
     input[type="checkbox"]:focus + label:before,
@@ -2570,7 +2570,7 @@
     .icon.alt:before {
       background-color: #fff;
       border-radius: 100%;
-      color: #F84F0E;
+      color: #D34818;
       display: inline-block;
       height: 2em;
       line-height: 2em;
@@ -2997,7 +2997,7 @@
     -webkit-transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
     -ms-transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
     transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
-    background: #F84F0E;
+    background: #D34818;
     border: 0;
     border-radius: 5px;
     box-shadow: inset 0 0 0 2px #fff;
@@ -3036,7 +3036,7 @@
     border: 0;
     border-radius: 0;
     box-shadow: inset 0 0 0 2px #F98559;
-    color: #F84F0E;
+    color: #D34818;
     cursor: pointer;
     display: inline-block;
     font-size: 0.8em;
@@ -3105,8 +3105,8 @@
   button:active,
   .button:active {
     background-color: rgba(249,133,89,0.4);
-    box-shadow: inset 0 0 0 2px #F84F0E;
-    color: #F84F0E;
+    box-shadow: inset 0 0 0 2px #D34818;
+    color: #D34818;
   }
 
   input[type="submit"].icon:before,
@@ -3229,7 +3229,7 @@
   .button.special {
     background-color: #ffffff;
     box-shadow: none;
-    color: #F84F0E;
+    color: #D34818;
   }
 
   input[type="submit"].special:hover, input[type="submit"].special:active,
@@ -3250,7 +3250,7 @@
   input[type="button"].special:active,
   button.special:active,
   .button.special:active {
-    background-color: #F84F0E;
+    background-color: #D34818;
   }
 
   input[type="submit"].disabled, input[type="submit"]:disabled,
@@ -3655,7 +3655,7 @@
     display: -webkit-flex;
     display: -ms-flex;
     display: flex;
-    background-color: #F84F0E;
+    background-color: #D34818;
     box-shadow: 0 0 0.25em 0 rgba(0, 0, 0, 0.15);
     cursor: default;
     font-weight: 600;
@@ -3681,7 +3681,7 @@
     -ms-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
     transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
     background-color: #ffffff;
-    color: #F84F0E;
+    color: #D34818;
     display: inline-block;
     line-height: 1.65em;
     margin-right: 0.325em;
@@ -3930,7 +3930,7 @@
 	width: 100%;
 	height: 100vh;
   z-index: 50;
-	background: rgba(0,0,0,0.85);
+	background: rgba(0,0,0,0.75);
 
 	position: fixed;
 	top: 0;
@@ -3940,8 +3940,13 @@
 	visibility: hidden;
 	opacity: 0;
 }
+#flecha{
+  position: absolute;
+  right: 3.5em;
+  z-index: -1;
+}
+
 .contenido {
-  background-color: #FF1B00;
 	margin: auto;
 	width: 40;
 	height: 40%;
@@ -3969,7 +3974,7 @@
 	opacity: 0;
 }
 
-#cerrar:checked + label, #cerrar:checked ~ .modal {
+#cerrar:checked + label, #cerrar:checked ~ .modal, cerrar:checked + label, #cerrar:checked ~ #ordena{
 	display: none;
 }
 
@@ -4048,13 +4053,32 @@
   #banner h1 {
     font-size: 3.25em;
     margin: 0;
-    color: #F84F0E;
+    color: #D34818;
   }
 
   #banner h2 {
-    padding-bottom: 4em;
+    padding-bottom: 0em;
+  }
+  #facebook{
+    color: #fff;
+    box-shadow: 2px solid #000;
+    background-color:#0F68A2;
+    cursor: pointer;
+    border-radius: 100%;
+    padding: .55em;
+    padding-left: .8em;
+    padding-right: .8em;
+  }
+  .modal i{
+    align-self: center;
   }
 
+  #banner #facebook:hover{
+    background-color: #fff;
+    color: #0F68A2;
+    box-shadow: 2px;
+    transform: scale(1.10);
+  }
   #banner img {
     width: 310px !important;
   }
@@ -4194,7 +4218,9 @@
     #banner h1 {
       font-size: 2em;
     }
-
+    #banner h4{
+      padding-bottom: 2em;
+    }
     #banner > .inner .content {
       display: block;
     }
@@ -4244,7 +4270,7 @@
   #main h2, #main1 h2, #main2 h2, #main3 h2, #main4 h2,
   #main h3, #main1 h3, #main2 h3, #main3 h3, #main4 h3,
   #main h4, #main1 h4, #main2 h4, #main3 h4, #main4 h4 {
-    color: #F84F0E;
+    color: #D34818;
     padding: 0;
     margin: 0;
     text-align: center;
@@ -4277,7 +4303,7 @@
   }
 
   #main .menustrong, #main1 .menustrong, #main2 .menustrong, #main3 .menustrong, #main4 .menustrong {
-    color: #F84F0E;
+    color: #D34818;
     font-size: 1.5em;
   }
 
@@ -4298,6 +4324,9 @@
     display: flex;
     flex-wrap: wrap;
     vertical-align: middle;
+  }
+  #main div#sucursal{
+    padding-top: 0;
   }
   .menu > #main div.cols{
     padding-top: 0;
@@ -4423,7 +4452,7 @@
     position: relative;
     margin-left: 0px;
     border-radius: 3px;
-    background-color: #FF1B00;
+    background-color: #D34818;
     padding: inherit;
     height: 220px;
     margin: 0 auto;
@@ -4506,15 +4535,27 @@
     padding-top: 2em;
     padding-bottom: 1.5em;
   }
+  #main #contact_form{
+    padding-top: 0;
+  }
 
   #main .contactcol, #main1 .contactcol, #main2 .contactcol, #main3 .contactcol, #main4 .contactcol {
     width: 100%;
   }
+  #main .contactcol{
+    width: 50%;
+    text-align: center;
+  }
+  #main .contactcol h4{
+    margin-top: 5.5em;
+  }
+  #main .contactcol p {
 
+  }
   #main label, #main1 label, #main2 label, #main3 label, #main4 label {
     font-family:'Conv_Futura',Sans-Serif;
     margin-left: 1rem;
-    color:#F84F0E;
+    color:#D34818;
     display: block;
     letter-spacing: 0;
     font-size: .8rem;
@@ -4878,7 +4919,7 @@
 
   #header .men:hover span {
     background-color: #ffffff;
-    color: #F84F0E;
+    color: #D34818;
   }
 
 
@@ -4989,9 +5030,9 @@
   .bord2 {
     width: 100%;
     background-color: transparent;
-    background-image: -webkit-linear-gradient(180deg, #FF1B00 50%, rgb(250,243,237) 50%);
-    background-image: -o-linear-gradient(180deg, #FF1B00 50%, rgb(250,243,237) 50%);
-    background-image: linear-gradient(180deg, #FF1B00 50%, rgb(250,243,237) 50%);
+    background-image: -webkit-linear-gradient(180deg, #D34818 50%, rgb(250,243,237) 50%);
+    background-image: -o-linear-gradient(180deg, #D34818 50%, rgb(250,243,237) 50%);
+    background-image: linear-gradient(180deg, #D34818 50%, rgb(250,243,237) 50%);
   }
 
   #main .pick, #main1 .pick, #main2 .pick, #main3 .pick, #main4 .pick {
@@ -5099,7 +5140,7 @@
   }
 
   .menu .cols span {
-    color: #F84F0E;
+    color: #D34818;
     font-family:'Conv_Futura',Sans-Serif;
     float: right;
     text-align: right;
@@ -5207,7 +5248,7 @@
 
   .window-container h1 {
     margin: 0.3em 0 0.5em;
-    color: #F84F0E;
+    color: #D34818;
     font-family:'Conv_Futura',Sans-Serif;
     font-weight: normal;
     font-size: 2.5em;
@@ -5230,7 +5271,7 @@
     width: 40px;
     height: 40px;
     text-align: center;
-    background: #F84F0E;
+    background: #D34818;
     padding: 8px 14px;
     color: #fff;
     font-family:'Conv_Futura',Sans-Serif !important;
@@ -5251,7 +5292,7 @@
   }
 
   .closeres:active {
-    background: #F84F0E;
+    background: #D34818;
   }
 
   .logform {
@@ -5260,7 +5301,7 @@
   }
 
   .logform label {
-    color:#F84F0E;
+    color:#D34818;
     display: block;
     text-align: left;
     line-height: 3.5;
@@ -5273,7 +5314,7 @@
   .logform input {
     margin-left: 10px;
     background-color: rgba(255,255,255,1);
-    border: 1px solid #F84F0E;
+    border: 1px solid #D34818;
   }
 
   .logform h1 {
@@ -5442,12 +5483,12 @@
   }
 }
  h1#registrate{
-   background-color: rgba(220,220,220,0.25);
+   background-color: rgba(220,220,220,0.5);
    border: 2px solid #fff;
    border-radius: 10px;
    padding-left: 1.5em;
    padding-right: 1.5em;
-  color: #FF1B00;
+  color: #D34818;
 }
  #ordena, #whats{
   z-index: 50;
@@ -5462,7 +5503,7 @@
 h2#ordena{
   width: auto;
   font-weight: bold;
-  color: #f19f30;
+  color: #D34818;
   right: 125px;
   display: none;
   padding: .2em;
@@ -5492,7 +5533,7 @@ h2#ordena{
   -webkit-transition: background-color 0.2s;
   width: auto;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.45);
+  background-color: rgba(255, 255, 255, 0.10);
   position: absolute;
   text-align: center;
   color: #ffff;
@@ -5530,14 +5571,14 @@ h2#ordena{
   transform: scale(.90);
 }
 .oculto{
-
   margin: auto;
   width: 80%;
+  height: 300px;
   overflow: hidden;
   margin: 0 auto;
   border-top: 1px solid #fff;
   border-bottom: 1px solid #fff;
-  margin-top: 4em;
+  margin-top: 2.8em;
   padding-bottom: 0;
   -webkit-transition: opacity 0.5s;
   -moz-transition: opacity 0.5s;
@@ -5548,7 +5589,7 @@ h2#ordena{
 }
 #info_team:hover .oculto{
   opacity: 1;
-  padding-bottom: 3.5em;
+  padding-bottom: 0em;
 }
 #info_team:hover h3{
   margin-left: 0px;
@@ -5558,4 +5599,31 @@ h2#ordena{
 }
 .registro_empleo > .form #edad{
   width: 40%;
+}
+
+/*opinion message*/
+.col#opinion{
+  width:50%;
+  margin: 0 auto;
+}
+#email{
+  margin-top: 1.07em;
+}
+/*contac template sucursal*/
+
+/*new media MediaQueries
+for laptops 14-15 inches
+*/
+@media (min-width: 1025px) and (max-width: 1332px) {
+  #main .bord {
+    margin-top: -25px !important;
+  }
+  #banner{
+    background-attachment: fixed;
+  }
+  #banner h4{
+    padding-bottom: 4em;
+    align-items: left;
+  }
+
 }

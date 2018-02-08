@@ -7,15 +7,13 @@
 {% endblock stylesheets%}
 
 {% block content %}
-  <div id="main1">
+  <div id="main">
     <img class="bord2" src="{% static 'images/image/reverse.png' %}" alt="Borde">
     <h2>Bienvenido a </h2>
     <h1>Dabbawala</h1>
     <div class="regis">
       <p>¡Registrate para recibir promociones, sorpresas y más!</p>
     </div>
-  </div>
-  <div id="main">
     <img class="arr" src="{% static 'images/image/arrow.png' %}" alt="Borde">
     <div class="form">
       <form id="form-register" action="" method="POST" class="form-register-customer">
@@ -201,7 +199,7 @@
     <div class="form">
       <h2>¿TIENES ALGUNA DUDA O SUGERENCIA?</h2>
       <p>Envíanos tus dudas ó sugerencias; estamos siempre al pendiente de nuestros clientes.<br>Te estaremos respondiendo en poco tiempo.</p>
-      <form class="col sections" action="" method="post" accept-charset="utf-8">
+      <form id="opinion"class="col sections" action="" method="post" accept-charset="utf-8">
         <div class="col1">
           <input type="text" name="email" id="email" placeholder="Email" />
           <input type="submit" class="fit button" name="submit" value="Enviar" />
