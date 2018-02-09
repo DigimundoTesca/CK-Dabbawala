@@ -16,7 +16,7 @@
       <li><a href="{% url 'branch_offices:job' %}">Bolsa de Trabajo</a></li>
       <!--<li><a href="" class="button nob" data-type="zoomin"><span>Inicia Sesión</span></a></li>-->
       <li><a href="{% url 'users:register' %}" class="button fit">Registrate</a></li>
-      <li><a href="{% url 'orders:new_order' %}" class="button fit">Arma tu Dabba</a></li>
+      <!--<li><a href="{% url 'orders:new_order' %}" class="button fit">Arma tu dabba</a></li>-->
       <li><a href="{% url 'orders:pay' %}" class="button fit"><span class="icon-container"><i class="material-icons">shopping_cart</i></span></a></li>
     </ul>
   </nav>
@@ -36,7 +36,7 @@
       {% if request.session.cart %}
       <li><a href="{% url 'orders:pay' %}"><span class="icon-container"><i class="material-icons">shopping_cart</i></span></a></li>
       {% else %}
-      <li><a href="{% url 'orders:new_order' %}"><span>Arma tu Dabba</span></a></li>
+      <!--<li><a href="{% url 'orders:new_order' %}"><span>Arma tu dabba</span></a></li>-->
       {% endif %}
     </ul>
   </nav>

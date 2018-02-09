@@ -40,12 +40,21 @@
         </div>
       </div>
       <div id="opinion" class="col">
-        <h4>¿TIENES ALGUNA DUDA O SUGERENCIA?</h4>
-        <p class="cont">Por favor envianos tus dudas y nos pondremos en contacto a la brevedad.</p>
-        <input type="text" name="name" id="name" placeholder="Nombre de usuario" />
-        <input type="text" name="email" id="email" placeholder="Correo" />
-        <textarea name="message" placeholder="Mensaje" id="message"></textarea>
-        <input class="button" type="submit" name="submit" value="ENVIAR" />
+          <img class="arr" src="{% static 'images/image/arrow.png' %}" alt="Borde" height="60px">
+          <div class="form">
+            <h2>¿TIENES ALGUNA DUDA O SUGERENCIA?</h2>
+            <p>Envíanos tus dudas ó sugerencias. <br>Te estaremos respondiendo en poco tiempo.</p>
+            <form class="col sections" action="" method="post" accept-charset="utf-8">
+              <input type="text" name="name" id="name" placeholder="Nombre de usuario" />
+              <div class="col1">
+                <input type="text" name="email" id="email" placeholder="Email" />
+                <input type="submit" class="fit button" name="submit" value="Enviar" />
+              </div>
+              <div class="col2">
+                <textarea name="message" placeholder="Mensaje" id="message" rows="2"></textarea>
+              </div>
+            </form>
+        </div>
       </div>
     </div>
     <h4 class="facebook">Dale like a nuestra página de facebook <i id="facebook"class="fa fa-facebook-f"></i></h4>

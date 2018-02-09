@@ -3940,6 +3940,12 @@
 	visibility: hidden;
 	opacity: 0;
 }
+.modal h2, .modal h1{
+  text-align: center;
+}
+.modal h2{
+  margin-top: .5em;
+}
 #flecha{
   position: absolute;
   right: 3.5em;
@@ -4070,7 +4076,7 @@
     padding-right: .8em;
   }
   .modal i{
-    align-self: center;
+    margin-left: 250px;
   }
 
   #banner #facebook:hover{
@@ -5471,16 +5477,54 @@
   #mainmenu li:last-child a{
     border: 1px #fff solid;
     border-radius: 3px;
+    font-size: 16px;
   }
   #mainmenu li:last-child a:hover {
     box-shadow: none;
+    text-decoration: none;
     border-bottom: 1.5px #fff solid;
     background: rgba(255,255,255,.3);
+  }
+  /*parpadear Registrate*/
+  #mainmenu li:last-child a{
+    animation-name: parpadeo;
+    animation-duration: 3s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+
+    -webkit-animation-name:parpadeo;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+  }
+  @-moz-keyframes parpadeo{
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+  }
+  @-webkit-keyframes parpadeo {
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+     100% { opacity: 1.0; }
+  }
+  @keyframes parpadeo {
+    0% { opacity: 1.0; }
+     50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
   }
   #mainmenu li a:hover {
     color: #fff;
     box-shadow: 0 2px 0 0 rgba(241, 232, 231, 0.95);
   }
+}
+a#button_register{
+  text-decoration: none;
+}
+a#button_register:hover h1{
+  transform: scale(.98);
+  color: #fff;
+  background-color: #D34818;
+  opacity: 0.7;
 }
  h1#registrate{
    background-color: rgba(220,220,220,0.5);
@@ -5519,6 +5563,22 @@ h2#ordena{
 }
 
 /*template job*/
+ul#empleo{
+  width: 60%;
+  margin: 0 auto;
+  padding-top:  .5em;
+  padding-bottom: .5em;
+}
+div#main ul#empleo li{
+  align-content: left;
+  display:list-item;
+}
+div#main a.puesto{
+  position: absolute;
+  left: 30%;
+  text-decoration: none;
+  color: #D34818;
+}
 #team_image{
   margin: 0 auto;
   background-image: url('../images/team.jpeg');
@@ -5600,7 +5660,6 @@ h2#ordena{
 .registro_empleo > .form #edad{
   width: 40%;
 }
-
 /*opinion message*/
 .col#opinion{
   width:50%;
@@ -5611,10 +5670,15 @@ h2#ordena{
 }
 /*contac template sucursal*/
 
-/*new media MediaQueries
+/*new media Queries
 for laptops 14-15 inches
 */
 @media (min-width: 1025px) and (max-width: 1332px) {
+  #mainmenu {
+    width: 350px;
+    max-height: 2rem;
+    align-self: center;
+  }
   #main .bord {
     margin-top: -25px !important;
   }
@@ -5625,5 +5689,4 @@ for laptops 14-15 inches
     padding-bottom: 4em;
     align-items: left;
   }
-
 }
