@@ -3968,7 +3968,6 @@
 	color: #fff;
 	font-size: 25px;
 	z-index: 51;
-	background: darkred;
 	line-height: 40px;
 	border-radius: 100%;
 	right: 50px;
@@ -4065,6 +4064,9 @@
   #banner h2 {
     padding-bottom: 0em;
   }
+  a[href="https://www.facebook.com/dabbawaladesayunosya/"]{
+    text-decoration: none;
+  }
   #facebook{
     color: #fff;
     box-shadow: 2px solid #000;
@@ -4078,7 +4080,6 @@
   .modal i{
     margin-left: 250px;
   }
-
   #banner #facebook:hover{
     background-color: #fff;
     color: #0F68A2;
@@ -5574,10 +5575,17 @@ div#main ul#empleo li{
   display:list-item;
 }
 div#main a.puesto{
+  cursor:default;
   position: absolute;
   left: 30%;
   text-decoration: none;
   color: #D34818;
+}
+div#main a.puesto i{
+  cursor: pointer;
+}
+div#main a.puesto:hover{
+  border-bottom: 3.2px solid #D34818;
 }
 #team_image{
   margin: 0 auto;
@@ -5657,8 +5665,14 @@ div#main a.puesto{
 #info_team:hover p{
   margin-top: 0px;
 }
+.registro_empleo{
+  display: none;
+}
 .registro_empleo > .form #edad{
-  width: 40%;
+  width: 100%;
+}
+#main2 h6{
+  color: #D34818;
 }
 /*opinion message*/
 .col#opinion{
@@ -5667,6 +5681,16 @@ div#main a.puesto{
 }
 #email{
   margin-top: 1.07em;
+}
+#main h3#solicitud, #main h3#tipe{
+  padding-top: 0;
+  margin-top: 0;
+}
+h3#solicitud .cols{
+  padding-top: 0;
+}
+#main #form_job{
+  padding-top: 0;
 }
 /*contac template sucursal*/
 
@@ -5688,5 +5712,26 @@ for laptops 14-15 inches
   #banner h4{
     padding-bottom: 4em;
     align-items: left;
+  }
+}
+/*monitores grandes*/
+@media screen and (min-width: 1367px) and (max-width: 3900px){
+  #whats{
+    top: 160px;
+    right: 60px;
+  }
+  .nosotros{
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+  #ordena{
+    top: 150px;
+    right: 100px;
+  }
+  .oculto{
+    margin-top: 1.8em;
+  }
+  .title_team{
+    padding-top: 0;
   }
 }

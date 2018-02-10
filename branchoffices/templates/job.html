@@ -12,10 +12,11 @@
     <div id="main2">
       <h1>Bolsa de trabajo</h1>
       <h2>Solicitamos</h2>
+      <h6>Da click en el puesto de tu interés</h6>
       <ul id="empleo">
-        <li><a class="puesto" href="#"> Cocinero(a) <i class="fa fa-file"></i></a></li>
-        <li><a class="puesto" href="#"> Atudante barra repartidor <i class="fa fa-file"></i></a></li>
-        <li><a class="puesto" href="#">Cajero <i class="fa fa-file"></i></a></li>
+        <li><a class="puesto" href="#point"> Cocinero(a) <i class="fa fa-file"></i></a></li>
+        <li><a class="puesto" href="#point"> Atudante barra repartidor <i class="fa fa-file"></i></a></li>
+        <li><a class="puesto" href="#point"> Cajero <i class="fa fa-file"></i></a></li>
       </ul>
       <h4>¡Se parte de nuestro equipo Dabbawala!</h4>
       <div class="col" id="team_image">
@@ -31,15 +32,16 @@
     </div>
     <div class="registro_empleo">
         <h4>Mándanos tu información</h4><br>
-          <img class="arr" src="{% static 'images/image/arrow.png'%}" alt="Borde de flechas">
+          <img class="arr" id="point" src="{% static 'images/image/arrow.png'%}" alt="Borde de flechas">
+          <h3 id="solicitud"> </h3>
         <div class="form">
-          <div class="cols">
+          <div class="cols" id="form_job">
             <div class="col1">
               <p class="cont">Llena todos los campos solicitados por favor</p>
               <label for="name">Nombre * </label>
               <input type="text" name="name" id="name" placeholder="" required />
               <label for="edad">Edad * </label>
-              <input type="number" name="edad" id="edad" value="" step="2" required="required">
+              <input type="text" name="edad" id="edad" value="" step="2" required="required">
               <label for="level">Escolaridad * </label>
               <input type="text" name="level" value="" id="level" required>
               <label for="phone">Telefono * </label>
