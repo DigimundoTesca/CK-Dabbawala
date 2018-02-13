@@ -74,12 +74,45 @@ $(function() {
   }
 
   /**
-   * Reload the page every time
+   * Gets a cookie from cache
    */
-  function rel(){
-    location.reload();
+  function get_cookie(name) {
+    let cookie_value = null;
+    if (document.cookie && document.cookie !== '') {
+      let cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        let cookie = jQuery.trim(cookies[i]);
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookie_value = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookie_value;
+  }
+
+  /**
+   * Reload the table
+   */
+  function reloadTableData(){
+    $.ajax({
+      url: '',
+      method: 'POST',
+      data: {
+        type: 'get_hot_kitchen_data',
+        csrfmiddlewaretoken: get_cookie('csrftoken')
+      },
+      async: true,
+      type: 'json',
+      success: function (response) {
+        console.log(response);
+
+      }, error: function (jqXHR, textStatus, errorThrown ) {
+        console.log("error");
+      }
+    });
   }
 
   format_tables();
-  setTimeout(rel, 15000);
+  setInterval(reloadTableData, 5000);
 });
