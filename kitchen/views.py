@@ -10,7 +10,7 @@ from cloudkitchen.settings.base import PAGE_TITLE
 from helpers.products_helper import ProductsHelper
 from helpers.sales_helper import TicketPOSHelper
 from kitchen.models import ProcessedProduct
-from products.models import PackageCartridgeRecipe, Cartridge, PackageCartridge
+from products.models import PackageCartridgeRecipe
 from sales.models import TicketBase
 
 
