@@ -2,7 +2,7 @@ import json
 
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.shortcuts import render, redirect
 
 # -------------------------------------  Kitchen -------------------------------------
@@ -15,70 +15,13 @@ from sales.models import TicketBase
 
 
 @login_required(login_url='users:login')
-def cold_kitchen(request):
-    template = 'cold.html'
-    tickets = TicketBase.objects.all()
-    title = 'Cocina Fría'
-    sales_helper = TicketPOSHelper()
-
-    def get_processed_products():
-        processed_products_list = []
-        processed_objects = ProcessedProduct.objects.filter(status='PE')
-
-        for processed in processed_objects:
-            processed_product_object = {
-                'ticket_order': processed.ticket.order_number,
-                'cartridges': [],
-                'packages': []
-            }
-
-            # Cartridge Ticket Detail
-            for cartridge_ticket_detail in sales_helper.get_cartridges_tickets_details().filter(
-                    ticket_base=processed.ticket):
-                if cartridge_ticket_detail.ticket_base == processed.ticket:
-                    cartridge = {
-                        'quantity': cartridge_ticket_detail.quantity,
-                        'cartridge': cartridge_ticket_detail.cartridge
-                    }
-                    processed_product_object['cartridges'].append(cartridge)
-
-            # Package Ticket Detail
-            for package_ticket_detail in sales_helper.get_packages_tickets_details().filter(
-                    ticket_base=processed.ticket):
-                if package_ticket_detail.ticket_base == processed.ticket:
-
-                    package = {
-                        'quantity': package_ticket_detail.quantity,
-                        'package_recipe': []
-                    }
-                    package_recipe = \
-                        PackageCartridgeRecipe.objects.filter(package_cartridge=package_ticket_detail.package_cartridge)
-
-                    for recipe in package_recipe:
-                        package['package_recipe'].append(recipe.cartridge)
-
-                    processed_product_object['packages'].append(package)
-
-            processed_products_list.append(processed_product_object)
-
-        return processed_products_list
-
-    context = {
-        'title': PAGE_TITLE + ' | ' + title,
-        'page_title': title,
-        'products': get_processed_products(),
-        'tickets': tickets,
-    }
-    return render(request, template, context)
-
-
-def hot_kitchen(request):
+def kitchen(request, kitchen_type):
     tickets = TicketBase.objects.all()
     sales_helper = TicketPOSHelper()
 
-    def get_processed_products():
+    def get_processed_products(json_type=False):
         processed_products_list = []
-        processed_objects = ProcessedProduct.objects.filter(status='PE')
+        processed_objects = ProcessedProduct.objects.select_related('ticket').filter(status='PE')
 
         for processed in processed_objects:
             processed_product_object = {
@@ -91,10 +34,19 @@ def hot_kitchen(request):
             for cartridge_ticket_detail in sales_helper.get_cartridges_tickets_details().filter(
                     ticket_base=processed.ticket):
                 if cartridge_ticket_detail.ticket_base == processed.ticket:
-                    cartridge = {
-                        'quantity': cartridge_ticket_detail.quantity,
-                        'cartridge': cartridge_ticket_detail.cartridge
-                    }
+                    if json_type:
+                        cartridge = {
+                            'quantity': cartridge_ticket_detail.quantity,
+                            'cartridge': json.loads(
+                                serializers.serialize(
+                                    'json', [cartridge_ticket_detail.cartridge, ],
+                                    use_natural_foreign_keys=True))
+                        }
+                    else:
+                        cartridge = {
+                            'quantity': cartridge_ticket_detail.quantity,
+                            'cartridge': cartridge_ticket_detail.cartridge
+                        }
                     processed_product_object['cartridges'].append(cartridge)
 
             # Package Ticket Detail
@@ -110,49 +62,13 @@ def hot_kitchen(request):
                         PackageCartridgeRecipe.objects.filter(package_cartridge=package_ticket_detail.package_cartridge)
 
                     for recipe in package_recipe:
-                        package['package_recipe'].append(recipe.cartridge)
-
-                    processed_product_object['packages'].append(package)
-
-            processed_products_list.append(processed_product_object)
-
-        return processed_products_list
-
-    def get_json_processed_products():
-        processed_products_list = []
-        processed_objects = ProcessedProduct.objects.filter(status='PE')
-
-        for processed in processed_objects:
-            processed_product_object = {
-                'ticket_order': processed.ticket.order_number,
-                'cartridges': [],
-                'packages': []
-            }
-
-            # Cartridge Ticket Detail
-            for cartridge_ticket_detail in sales_helper.get_cartridges_tickets_details().filter(
-                    ticket_base=processed.ticket):
-                if cartridge_ticket_detail.ticket_base == processed.ticket:
-                    cartridge = {
-                        'quantity': cartridge_ticket_detail.quantity,
-                        'cartridge': json.loads(serializers.serialize('json', [cartridge_ticket_detail.cartridge, ]))
-                    }
-                    processed_product_object['cartridges'].append(cartridge)
-
-            # Package Ticket Detail
-            for package_ticket_detail in sales_helper.get_packages_tickets_details().filter(
-                    ticket_base=processed.ticket):
-                if package_ticket_detail.ticket_base == processed.ticket:
-
-                    package = {
-                        'quantity': package_ticket_detail.quantity,
-                        'package_recipe': []
-                    }
-                    package_recipe = \
-                        PackageCartridgeRecipe.objects.filter(package_cartridge=package_ticket_detail.package_cartridge)
-
-                    for recipe in package_recipe:
-                        package['package_recipe'].append(json.loads(serializers.serialize('json', [recipe.cartridge, ])))
+                        if json_type:
+                            package['package_recipe'].append(json.loads(
+                                serializers.serialize(
+                                    'json', [recipe.cartridge, ],
+                                    use_natural_foreign_keys=True)))
+                        else:
+                            package['package_recipe'].append(recipe.cartridge)
 
                     processed_product_object['packages'].append(package)
 
@@ -161,15 +77,15 @@ def hot_kitchen(request):
         return processed_products_list
 
     if request.method == 'GET':
-        pendiente_products = {
-            'data': get_json_processed_products()
-        }
+        if kitchen_type == 'fria':
+            template = 'cold.html'
+            title = 'Cocina Fría'
 
-        return JsonResponse(pendiente_products)
-
-    elif request.method == 'POST':
-        template = 'hot.html'
-        title = 'Cocina Caliente'
+        elif kitchen_type == 'caliente':
+            template = 'hot.html'
+            title = 'Cocina Caliente'
+        else:
+            raise Http404
 
         context = {
             'title': PAGE_TITLE + ' | ' + title,
@@ -179,6 +95,14 @@ def hot_kitchen(request):
         }
 
         return render(request, template, context)
+
+    elif request.method == 'POST':
+
+        pendiente_products = {
+            'data': get_processed_products(True)
+        }
+
+        return JsonResponse(pendiente_products)
 
 
 def assembly(request):

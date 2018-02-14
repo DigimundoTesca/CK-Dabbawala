@@ -47,7 +47,6 @@ class ProcessedProduct(models.Model):
         return '%s' % self.ticket.order_number
 
 
-
 class Warehouse(models.Model):
     PROVIDER = 'PR'
     STOCK = 'ST'

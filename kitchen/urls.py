@@ -9,7 +9,6 @@ urlpatterns = [
     # url(r'warehouse/$', views.supplies, name='supplies'),
 
     # Kitchen
-    url(r'cocina/fria/$', views.cold_kitchen, name='cold_kitchen'),
-    url(r'cocina/caliente/$', views.hot_kitchen, name='hot_kitchen'),
     url(r'cocina/ensamblado/$', views.assembly, name='assembly'),
+    url(r'cocina/(?P<kitchen_type>\w{4,10})/$', views.kitchen, name='kitchen')
 ]
