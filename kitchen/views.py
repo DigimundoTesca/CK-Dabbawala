@@ -21,7 +21,7 @@ def kitchen(request, kitchen_type):
 
     def get_processed_products(json_type=False):
         processed_products_list = []
-        processed_objects = ProcessedProduct.objects.filter(status='PE')
+        processed_objects = ProcessedProduct.objects.select_related('ticket').filter(status='PE')
 
         for processed in processed_objects:
             processed_product_object = {
@@ -38,7 +38,9 @@ def kitchen(request, kitchen_type):
                         cartridge = {
                             'quantity': cartridge_ticket_detail.quantity,
                             'cartridge': json.loads(
-                                serializers.serialize('json', [cartridge_ticket_detail.cartridge, ]))
+                                serializers.serialize(
+                                    'json', [cartridge_ticket_detail.cartridge, ],
+                                    use_natural_foreign_keys=True))
                         }
                     else:
                         cartridge = {
@@ -61,8 +63,10 @@ def kitchen(request, kitchen_type):
 
                     for recipe in package_recipe:
                         if json_type:
-                            package['package_recipe'].append(
-                                json.loads(serializers.serialize('json', [recipe.cartridge, ])))
+                            package['package_recipe'].append(json.loads(
+                                serializers.serialize(
+                                    'json', [recipe.cartridge, ],
+                                    use_natural_foreign_keys=True)))
                         else:
                             package['package_recipe'].append(recipe.cartridge)
 
@@ -93,6 +97,7 @@ def kitchen(request, kitchen_type):
         return render(request, template, context)
 
     elif request.method == 'POST':
+
         pendiente_products = {
             'data': get_processed_products(True)
         }

@@ -53,13 +53,13 @@ $(function() {
         {
           color.push(the_color[col]);
         }
-          col++;
-          c=1;
+        col++;
+        c=1;
       }
-        if(col==3)
-        {
-          col=0;
-        }
+      if(col==3)
+      {
+        col=0;
+      }
     }
 
     /**
@@ -95,6 +95,10 @@ $(function() {
    * Reload the table
    */
   function reloadTableData(){
+    // Refresh the tbody from the table-kitchen
+    let table_tbody = $('#table-kitchen').find('tbody');
+
+    // Load the new elements for the table-kitchen
     $.ajax({
       url: '',
       method: 'POST',
@@ -105,14 +109,67 @@ $(function() {
       async: true,
       type: 'json',
       success: function (response) {
-        console.log(response);
+        table_tbody.empty();
+        $.each(response.data, function(index_data, ticketOrder) {
+          // If the object has cartridges
+          /** @namespace ticketOrder.cartridges */
+          if (ticketOrder.cartridges.length > 0) {
+            let cartridges = ticketOrder.cartridges;
 
+            $.each(cartridges, function (index_cartridge, cartridges_value){
+              /** @namespace cartridges_value.cartridge */
+              let oCartridge = cartridges_value.cartridge[0].fields;
+
+              /** @namespace oCartridge.kitchen_assembly */
+              if (oCartridge.kitchen_assembly.toString() === 'HO') {
+                  /** @namespace ticketOrder.ticket_order */
+                  table_tbody.append('' +
+                      '<tr class="tr_id">' +
+                        '<th scope="row" class="id_kitchen_table">' + ticketOrder.ticket_order + '</th>' +
+                        '<td>' + oCartridge.name + '</td>' +
+                        '<td>' + cartridges_value.quantity + '</td>' +
+                      '</tr>');
+                  }
+            });
+
+          }
+
+          // If the object has packages cartridges
+          /** @namespace ticketOrder.packages */
+          if (ticketOrder.packages.length > 0) {
+            let packages = ticketOrder.packages;
+
+            $.each(packages, function (index_package, packages_value){
+              /** @namespace packages_value.package_recipe */
+              let oPackageRecipe = packages_value.package_recipe;
+
+              $.each(oPackageRecipe, function(indexPackageRecipe, oCartridge) {
+                oCartridge = oCartridge[0];
+
+                /** @namespace oPackageRecipe.kitchen_assembly */
+                if (oCartridge.fields.kitchen_assembly.toString() === 'HO') {
+                  /** @namespace packages_value.quantity */
+                    table_tbody.append('' +
+                        '<tr class="tr_id">' +
+                          '<th scope="row" class="id_kitchen_table">' + ticketOrder.ticket_order + '</th>' +
+                          '<td>' + oCartridge.fields.name + '</td>' +
+                          '<td>' + packages_value.quantity + '</td>' +
+                        '</tr>');
+                    }
+              });
+            });
+          }
+        });
+        format_tables();
       }, error: function (jqXHR, textStatus, errorThrown ) {
-        console.log("error");
+        console.log(jqXHR);
+        console.log(textStatus);
       }
     });
+
+
   }
 
   format_tables();
-  setInterval(reloadTableData, 5000);
+  setInterval(reloadTableData, 3000);
 });
