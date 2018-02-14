@@ -76,7 +76,7 @@ def hot_kitchen(request):
     tickets = TicketBase.objects.all()
     sales_helper = TicketPOSHelper()
 
-    def get_processed_products():
+    def get_processed_products(json_type=False):
         processed_products_list = []
         processed_objects = ProcessedProduct.objects.filter(status='PE')
 
@@ -91,10 +91,17 @@ def hot_kitchen(request):
             for cartridge_ticket_detail in sales_helper.get_cartridges_tickets_details().filter(
                     ticket_base=processed.ticket):
                 if cartridge_ticket_detail.ticket_base == processed.ticket:
-                    cartridge = {
-                        'quantity': cartridge_ticket_detail.quantity,
-                        'cartridge': cartridge_ticket_detail.cartridge
-                    }
+                    if json_type:
+                        cartridge = {
+                            'quantity': cartridge_ticket_detail.quantity,
+                            'cartridge': json.loads(
+                                serializers.serialize('json', [cartridge_ticket_detail.cartridge, ]))
+                        }
+                    else:
+                        cartridge = {
+                            'quantity': cartridge_ticket_detail.quantity,
+                            'cartridge': cartridge_ticket_detail.cartridge
+                        }
                     processed_product_object['cartridges'].append(cartridge)
 
             # Package Ticket Detail
@@ -110,49 +117,11 @@ def hot_kitchen(request):
                         PackageCartridgeRecipe.objects.filter(package_cartridge=package_ticket_detail.package_cartridge)
 
                     for recipe in package_recipe:
-                        package['package_recipe'].append(recipe.cartridge)
-
-                    processed_product_object['packages'].append(package)
-
-            processed_products_list.append(processed_product_object)
-
-        return processed_products_list
-
-    def get_json_processed_products():
-        processed_products_list = []
-        processed_objects = ProcessedProduct.objects.filter(status='PE')
-
-        for processed in processed_objects:
-            processed_product_object = {
-                'ticket_order': processed.ticket.order_number,
-                'cartridges': [],
-                'packages': []
-            }
-
-            # Cartridge Ticket Detail
-            for cartridge_ticket_detail in sales_helper.get_cartridges_tickets_details().filter(
-                    ticket_base=processed.ticket):
-                if cartridge_ticket_detail.ticket_base == processed.ticket:
-                    cartridge = {
-                        'quantity': cartridge_ticket_detail.quantity,
-                        'cartridge': json.loads(serializers.serialize('json', [cartridge_ticket_detail.cartridge, ]))
-                    }
-                    processed_product_object['cartridges'].append(cartridge)
-
-            # Package Ticket Detail
-            for package_ticket_detail in sales_helper.get_packages_tickets_details().filter(
-                    ticket_base=processed.ticket):
-                if package_ticket_detail.ticket_base == processed.ticket:
-
-                    package = {
-                        'quantity': package_ticket_detail.quantity,
-                        'package_recipe': []
-                    }
-                    package_recipe = \
-                        PackageCartridgeRecipe.objects.filter(package_cartridge=package_ticket_detail.package_cartridge)
-
-                    for recipe in package_recipe:
-                        package['package_recipe'].append(json.loads(serializers.serialize('json', [recipe.cartridge, ])))
+                        if json_type:
+                            package['package_recipe'].append(
+                                json.loads(serializers.serialize('json', [recipe.cartridge, ])))
+                        else:
+                            package['package_recipe'].append(recipe.cartridge)
 
                     processed_product_object['packages'].append(package)
 
@@ -162,7 +131,7 @@ def hot_kitchen(request):
 
     if request.method == 'GET':
         pendiente_products = {
-            'data': get_json_processed_products()
+            'data': get_processed_products(True)
         }
 
         return JsonResponse(pendiente_products)
