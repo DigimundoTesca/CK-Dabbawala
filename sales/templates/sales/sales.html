@@ -654,7 +654,6 @@
      */
     $(this).on('click', '.print-ticket', function(event) {
       let id_element = $(this).parent().siblings('.header-id').text();
-      let products_list = $(this).parent().siblings('.header-products');
       let btn_printer = $('.btn-printer');
       let ticket_details;
       let sales_list_modal = $('#sales-list-modal');
@@ -706,7 +705,7 @@
         }
 
         function iterate_packages(element, index, array) {
-          let cartridges_list = array[0].cartridges;
+          let cartridges_list = array[index].cartridges;
           let name = '';
           let cost_base = parseFloat(element.total) / element.quantity;
           let total = parseFloat(element.total);
