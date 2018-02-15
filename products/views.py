@@ -1,4 +1,3 @@
-
 # -*- encoding: utf-8 -*-
 from __future__ import unicode_literals
 
@@ -10,13 +9,16 @@ from branchoffices.models import Supplier
 from cloudkitchen.settings.base import PAGE_TITLE
 from products.forms import SupplyForm, SuppliesCategoryForm, CartridgeForm
 from products.models import Cartridge, Supply, SuppliesCategory, KitchenAssembly
+from kitchen.models import Presentation, ShopList, ShopListDetail
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-
+from helpers.products_helper import ProductsHelper
 from django.views.generic import UpdateView
 from django.views.generic import DeleteView
 from django.views.generic import CreateView
+from .forms import PresentationForm
+ 
 
 class Create_Supply(CreateView):
     model = Supply
@@ -24,9 +26,10 @@ class Create_Supply(CreateView):
         'measurement_quantity','measurement_unit','optimal_duration','optimal_duration_unit','location','image']
     template_name = 'new_supply.html'
 
-    def form_valid(self,form):
+    def form_valid(self, form):
         self.object = form.save()
         return redirect('/supplies/')
+
 
 class Update_Supply(UpdateView):
     model = Supply
@@ -34,7 +37,7 @@ class Update_Supply(UpdateView):
         'measurement_quantity','measurement_unit','optimal_duration','optimal_duration_unit','location','image']
     template_name = 'new_supply.html'
 
-    def form_valid(self,form):
+    def form_valid(self, form):
         self.object = form.save()
         return redirect('/supplies/')
 
@@ -51,20 +54,20 @@ class Delete_Supply(DeleteView):
 
 class Create_Cartridge(CreateView):
     model = Cartridge
-    fields = ['name','price','category','image']
+    fields = ['name', 'price', 'category', 'image']
     template_name = 'new_cartridge.html'
 
-    def form_valid(self,form):
+    def form_valid(self, form):
         self.object = form.save()
         return redirect('/cartridges/')
 
 
 class Update_Cartridge(UpdateView):
     model = Cartridge
-    fields = ['name','price','category','image']
+    fields = ['name', 'price', 'category', 'image']
     template_name = 'new_cartridge.html'
 
-    def form_valid(self,form):
+    def form_valid(self, form):
         self.object = form.save()
         return redirect('/cartridges/')
 
@@ -90,9 +93,7 @@ def test(request):
         else:
             cartridge.kitchen_assembly = kitchen_assembly_cold
         cartridge.save()
-    context = {
-        'cartridges': cartridges
-    }
+    context = {'cartridges': cartridges}
     return render(request, template, context)
 
 
@@ -169,15 +170,12 @@ def supply_detail(request, pk):
     supply = get_object_or_404(Supply, pk=pk)
     template = 'supplies/supply_detail.html'
     title = 'DabbaNet - Detalles del insumo'
-    context = {
-        'page_title': PAGE_TITLE,
-        'supply': supply,
-        'title': title
-    }
+    context = {'page_title': PAGE_TITLE, 'supply': supply, 'title': title}
     return render(request, template, context)
 
+
 @login_required(login_url='users:login')
-def supply_modify(request,pk):
+def supply_modify(request, pk):
     supply = get_object_or_404(Supply, pk=pk)
 
     if request.method == 'POST':
@@ -204,19 +202,19 @@ def supply_modify(request,pk):
 
     else:
         dic = {
-            'name' : supply.name,
-            'category' : supply.category ,
-            'barcode' : supply.barcode,
-            'supplier' : supply.supplier,
-            'storage_required' : supply.storage_required,
-            'presentation_unit' : supply.presentation_unit,
-            'presentation_cost' : supply.presentation_cost,
-            'quantity' : supply.measurement_quantity,
-            'measurement_unit' : supply.measurement_unit,
-            'optimal_duration' : supply.optimal_duration,
-            'optimal_duration_unit' : supply.optimal_duration_unit,
-            'location' : supply.location,
-            'image' : supply.image,
+            'name': supply.name,
+            'category': supply.category,
+            'barcode': supply.barcode,
+            'supplier': supply.supplier,
+            'storage_required': supply.storage_required,
+            'presentation_unit': supply.presentation_unit,
+            'presentation_cost': supply.presentation_cost,
+            'quantity': supply.measurement_quantity,
+            'measurement_unit': supply.measurement_unit,
+            'optimal_duration': supply.optimal_duration,
+            'optimal_duration_unit': supply.optimal_duration_unit,
+            'location': supply.location,
+            'image': supply.image,
         }
         form = SupplyForm(initial=dic)
 
@@ -224,11 +222,12 @@ def supply_modify(request,pk):
     title = 'Modificar Insumo'
     context = {
         'form': form,
-        'supply' : supply,
+        'supply': supply,
         'title': title,
         'page_title': PAGE_TITLE
     }
     return render(request, template, context)
+
 
 # ------------------------------------- Categories -------------------------------------
 @login_required(login_url='users:login')
@@ -257,11 +256,7 @@ def new_category(request):
 
     template = 'categories/new_category.html'
     title = 'Nueva Categoria'
-    context = {
-        'form': form,
-        'title': title,
-        'page_title': PAGE_TITLE
-    }
+    context = {'form': form, 'title': title, 'page_title': PAGE_TITLE}
     return render(request, template, context)
 
 
@@ -271,11 +266,7 @@ def categories_supplies(request, categ):
     supply = Supply.objects.filter(category=supplies_categories)
     template = 'supplies/supplies.html'
     title = categ
-    context = {
-        'supply': supply,
-        'title': title,
-        'page_title': PAGE_TITLE
-    }
+    context = {'supply': supply, 'title': title, 'page_title': PAGE_TITLE}
     return render(request, template, context)
 
 
@@ -306,11 +297,7 @@ def new_cartridge(request):
 
     template = 'cartridges/new_cartridge.html'
     title = 'Nuevo Cartucho'
-    context = {
-        'form': form,
-        'title': title,
-        'page_title': PAGE_TITLE
-    }
+    context = {'form': form, 'title': title, 'page_title': PAGE_TITLE}
     return render(request, template, context)
 
 
@@ -325,6 +312,7 @@ def cartridge_detail(request, pk):
         'title': title
     }
     return render(request, template, context)
+
 
 def cartridge_modify(request, pk):
     cartridge = get_object_or_404(Cartridge, pk=pk)
@@ -342,10 +330,10 @@ def cartridge_modify(request, pk):
 
     else:
         dic = {
-            'name' : cartridge.name,
-            'price' : cartridge.price,
-            'category' : cartridge.category,
-            'image' : cartridge.image
+            'name': cartridge.name,
+            'price': cartridge.price,
+            'category': cartridge.category,
+            'image': cartridge.image
         }
         form = CartridgeForm(initial=dic)
 
@@ -353,8 +341,186 @@ def cartridge_modify(request, pk):
     title = 'Modificar Cartucho'
     context = {
         'form': form,
-        'cartridge' : cartridge,
+        'cartridge': cartridge,
         'title': title,
+        'page_title': PAGE_TITLE
+    }
+    return render(request, template, context)
+
+
+@login_required(login_url='users:login')
+def warehouse(request):
+    products_helper = ProductsHelper()
+    warehouse_list = products_helper.get_elements_in_warehouse()
+
+    if request.method == 'POST':
+
+        if request.POST['type'] == 'save_to_assembly':
+
+            quantity = json.loads(request.POST.get('quantity_available'))
+            warehouse_id = json.loads(request.POST.get('warehouse_id'))
+
+            # Retirar del almacen
+            selected_warehouse = Warehouse.objects.get(id=warehouse_id)
+            selected_warehouse.quantity -= quantity
+            selected_warehouse.save()
+
+            # Agregar al almacen
+            try:
+                itemstock = Warehouse.objects.get(
+                    supply=selected_warehouse.supply, status="AS")
+                itemstock.quantity += quantity
+                itemstock.save()
+            except Warehouse.DoesNotExist:
+                itemstock = Warehouse(
+                    supply=selected_warehouse.supply,
+                    status="AS",
+                    quantity=quantity,
+                    measurement_unit=selected_warehouse.measurement_unit)
+                itemstock.save()
+
+    template = 'catering/warehouse.html'
+    title = 'Movimientos de Almacen'
+    context = {
+        'warehouse_list': warehouse_list,
+        'title': title,
+        'page_title': PAGE_TITLE
+    }
+    return render(request, template, context)
+
+
+@login_required(login_url='users:login')
+def shop_list(request):
+    shop_list = ShopList.objects.all()
+
+    if request.method == 'POST':
+
+        if request.POST['type'] == 'load_list':
+            element = json.loads(request.POST.get('load_list'))
+            list_sl = ShopListDetail.objects.filter(shop_list_id=element)
+
+            shop_list_array = []
+
+            for ele_shoplist in list_sl:
+                list_object = {
+                    'id':
+                    ele_shoplist.id,
+                    'nombre':
+                    ele_shoplist.presentation.supply.name,
+                    'cantidad':
+                    ele_shoplist.quantity,
+                    'medida':
+                    ele_shoplist.presentation.measurement_quantity,
+                    'unidad':
+                    ele_shoplist.presentation.measurement_unit,
+                    'costo':
+                    ele_shoplist.presentation.presentation_cost *
+                    ele_shoplist.quantity,
+                    'status':
+                    ele_shoplist.status
+                }
+
+                shop_list_array.append(list_object)
+
+            list_naive_array = {'shop_list': shop_list_array}
+            return JsonResponse(list_naive_array)
+
+        if request.POST['type'] == 'load_list_detail':
+            element = json.loads(request.POST.get('load_list_detail'))
+            list_sl = ShopListDetail.objects.get(id=element)
+            list_sl.status = "DE"
+            list_sl.deliver_day = datetime.now()
+            list_sl.save()
+
+            try:
+                itemstock = Warehouse.objects.get(
+                    supply=list_sl.presentation.supply, status="ST")
+                itemstock.quantity += list_sl.quantity * list_sl.presentation.measurement_quantity
+                itemstock.save()
+            except Warehouse.DoesNotExist:
+                itemstock = Warehouse(
+                    supply=list_sl.presentation.supply,
+                    status="ST",
+                    quantity=list_sl.quantity *
+                    list_sl.presentation.measurement_quantity,
+                    measurement_unit=list_sl.presentation.measurement_unit)
+                itemstock.save()
+
+        if request.POST['type'] == 'load_date':
+            element = json.loads(request.POST.get('detail_list_id'))
+            list_sl = ShopListDetail.objects.get(id=element)
+            date = list_sl.deliver_day
+
+            return HttpResponse(date)
+
+    template = 'catering/shoplist.html'
+    title = 'Lista de Compras'
+    context = {
+        'shop_list': shop_list,
+        'title': title,
+        'page_title': PAGE_TITLE
+    }
+    return render(request, template, context)
+
+
+@login_required(login_url='users:login')
+def new_shoplist(request):
+    products_helper = ProductsHelper()
+    supps = products_helper.get_all_supplies()
+    all_presentations = Presentation.objects.all()
+
+    shop_list = ShopList.objects.all()
+
+    supply_list = []
+
+    if request.method == 'POST':
+        form = PresentationForm(request.POST, request.FILES)
+        if form.is_valid():
+            presentation = form.save(commit=False)
+            presentation.save()
+            return redirect('/warehouse/new_shoplist')
+
+        if request.POST['type'] == 'shop_list':
+            shop_l = json.loads(request.POST.get('shop_list'))
+
+            new_shop_list = ShopList.objects.create()
+            new_shop_list.save()
+
+            for item in shop_l:
+                sel_pre = Presentation.objects.get(pk=item['pre_pk'])
+                ShopListDetail.objects.create(
+                    shop_list=new_shop_list,
+                    presentation=sel_pre,
+                    quantity=item['Cantidad'])
+
+            return redirect('/warehouse/shoplist')
+
+    else:
+        form = PresentationForm()
+
+    for sup in supps:
+        print(sup)
+        element_object = {
+            'pk': sup.pk,
+            'name': sup.name,
+            'imagen': sup.image.url,
+        }
+        supp_presentations = all_presentations.filter(supply=sup)
+        supp_pres = []
+
+        for supp_pre in supp_presentations:
+            supp_pres.append(supp_pre)
+
+        element_object['presentations'] = supp_pres
+        supply_list.append(element_object)
+
+    template = 'catering/new_shoplist.html'
+    title = 'Lista de Compras'
+    context = {
+        'shop_list': shop_list,
+        'form': form,
+        'title': title,
+        'supply_list': supply_list,
         'page_title': PAGE_TITLE
     }
     return render(request, template, context)

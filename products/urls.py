@@ -34,6 +34,11 @@ urlpatterns = [
     url(r'^categories/new/$', views.new_category, name='new_category'),
     url(r'^categories/([A-Za-z]+)/$', views.categories_supplies, name='categories_supplies'),
 
+    # Warehouse
+    url(r'^warehouse/$', views.warehouse, name='warehouse'),        
+    url(r'^warehouse/shoplist/$', views.shop_list, name='shoplist'),
+    url(r'^warehouse/new_shoplist/$', views.new_shoplist, name='new_shoplist'),
+
     # Menu
     url(r'^menu/$', views.menu, name='menu'),
 ]
