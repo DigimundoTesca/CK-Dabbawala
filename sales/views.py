@@ -287,8 +287,20 @@ def delete_sale(request):
         return JsonResponse({'result': 'success'})
 
 
-@permission_required('users.can_sell')
+@permission_required('users.can_sells')
 def new_sale(request):
+    template = 'sales/new_sale_v2.html'
+    title = 'Nueva venta'
+    context = {
+        'page_title': PAGE_TITLE,
+        'title': title,
+    }
+
+    return render(request, template, context)
+
+
+@permission_required('users.can_sell')
+def new_sale__(request):
     helper = Helper()
     sales_helper = TicketPOSHelper()
     products_helper = ProductsHelper()
