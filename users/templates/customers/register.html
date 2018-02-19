@@ -7,17 +7,13 @@
 {% endblock stylesheets%}
 
 {% block content %}
-  <div id="main1">
+  <div id="main">
     <img class="bord2" src="{% static 'images/image/reverse.png' %}" alt="Borde">
-    <h2>bienvenido a </h2>
+    <h2>Bienvenido a </h2>
     <h1>Dabbawala</h1>
     <div class="regis">
-      <p>Registrate y obtén<br>
-        <span>2x1 EN TU SIGUIENTE DESAYUNO</span>
-      </p>
+      <p>¡Registrate para recibir promociones, sorpresas y más!</p>
     </div>
-  </div>
-  <div id="main2">
     <img class="arr" src="{% static 'images/image/arrow.png' %}" alt="Borde">
     <div class="form">
       <form id="form-register" action="" method="POST" class="form-register-customer">
@@ -197,23 +193,9 @@
         </div>
       </form>
     </div>
+    <a href="https://www.facebook.com/dabbawaladesayunosya/"><h4 class="facebook">Dale like a nuestra página de facebook <i id="facebook"class="fa fa-facebook-f"></i></h4></a>
   </div>
-  <div id="main">
-    <img class="arr" src="{% static 'images/image/arrow.png' %}" alt="Borde" height="60px">
-    <div class="form">
-      <h2>¿TIENES ALGUNA DUDA O SUGERENCIA?</h2>
-      <p>Envíanos tus dudas ó sugerencias; estamos siempre al pendiente de nuestros clientes.<br>Te estaremos respondiendo en poco tiempo.</p>
-      <form class="col sections" action="" method="post" accept-charset="utf-8">
-        <div class="col1">
-          <input type="text" name="email" id="email" placeholder="Email" />
-          <input type="submit" class="fit button" name="submit" value="Enviar" />
-        </div>
-        <div class="col2">
-          <textarea name="message" placeholder="Mensaje" id="message" rows="2"></textarea>
-        </div>
-      </form>
-    </div>
-  </div>
+
 {% endblock content %}
 
 {% block scripts %}

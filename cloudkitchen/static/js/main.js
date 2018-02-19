@@ -89,6 +89,36 @@
 		return $(this);
 
 	};
+	//Whats button
+	var whatsapp = document.getElementById('whats');
+	var mc = new Hammer(whatsapp);
+	mc.add( new Hammer.Pan({ direction: Hammer.DIRECTION_ALL, threshold: 0 }) );
+	mc.on("pan", handleDrag);
+
+	var lastPosX = 0;
+	var lastPosY = 0;
+	var isDragging = false;
+	function handleDrag(ev) {
+
+	  // for convience, let's get a reference to our object
+	  var elem = ev.target;
+
+	  if ( ! isDragging ) {
+	    isDragging = true;
+	    lastPosX = elem.offsetLeft;
+	    lastPosY = elem.offsetTop;
+	  }
+	  // NOTE:
+	  var posX = ev.deltaX + lastPosX;
+	  var posY = ev.deltaY + lastPosY;
+
+	  elem.style.left = posX + "px";
+	  elem.style.top = posY + "px";
+
+	  if (ev.isFinal) {
+	    isDragging = false;
+	  }
+	}
 
 	$(function() {
 
@@ -346,5 +376,36 @@
 				});
 
 	});
+	//change background in banner home
+	$(function() {
+  var imagenes = ['fondo.jpg', 'fondo1.jpg', 'fondo2.jpg', 'fondo3.png',];
+  $('.main').css({'background-image': 'url(../images/image/' + imagenes[Math.floor(Math.random() * imagenes.length)] + "'"});
+});
+$(document).ready(function(){
+	var puesto = $(".puesto");
+	var x = 0;
+	for(x==0; x<=2; x++){
+		console.log(puesto[x]);
+
+	if(puesto[x] == puesto[0]){
+		console.log(puesto[0]);
+		$("#solicitud").text('Solicitud de cocinero(a)');
+		}
+	}
+});
+
+$(document).ready(function(){
+	var puesto = $(".puesto");
+	$(puesto).click(function(event){
+		$('.registro_empleo').css({'display':"block"});
+	  //bloqueamos la función del anchor original
+	  event.preventDefault();
+	  //dirigimos de manera animada al id del anchor
+	  $('html,body').animate({
+    	scrollTop:$(this.hash).offset().top
+    },1000);
+    });
+
+});
 
 })(jQuery);
