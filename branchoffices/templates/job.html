@@ -1,0 +1,63 @@
+{% extends "dabbawala/base_nav_footer.html" %}
+{% load static %}
+{% block content %}
+<div class="job-container">
+  <div class="col2">
+    <div id="whatsdiv" class="align-self-right whatsapp mt-5">
+    <a href="https://api.whatsapp.com/send?phone=525576112053" id="whats_cont" class="rounded-circle"><h2 id="ordena">¡Ordena aquí!</h2><img id="whats" src="{% static 'images/whats.png' %}" alt="whats"></a>
+    </div>
+  </div>
+  <div id="main">
+    <img class="bord2" src="{% static 'images/image/reverse.png' %}" alt="Borde">
+    <div id="main2">
+      <h1>Bolsa de trabajo</h1>
+      <h2>Solicitamos</h2>
+      <h6>Da click en el puesto de tu interés</h6>
+      <ul id="empleo">
+        <li><a class="puesto" href="#point"> Cocinero(a) <i class="fa fa-file"></i></a></li>
+        <li><a class="puesto" href="#point"> Atudante barra repartidor <i class="fa fa-file"></i></a></li>
+        <li><a class="puesto" href="#point"> Cajero <i class="fa fa-file"></i></a></li>
+      </ul>
+      <h4>¡Se parte de nuestro equipo Dabbawala!</h4>
+      <div class="col" id="team_image">
+        <div class="col" id="info_team">
+          <div class="oculto">
+            <h3 class="title_team">¿Quiéres ser parte de Dabbawala?</h3><br>
+            <p> Envíanos tus datos y nosotros nos comunicaremos contigo. Llena el formulario que se encuentra bajo esta imagen.</p>
+            <a class="button_job" href="#">Nosotros</a>
+          </div>
+        </div>
+      </div>
+      <a href="https://www.facebook.com/dabbawaladesayunosya/"><h4 class="facebook">Dale like a nuestra página de facebook <i id="facebook"class="fa fa-facebook-f"></i></h4></a>
+    </div>
+    <div class="registro_empleo">
+        <h4>Mándanos tu información</h4><br>
+          <img class="arr" id="point" src="{% static 'images/image/arrow.png'%}" alt="Borde de flechas">
+          <h3 id="solicitud"> </h3>
+        <div class="form">
+          <div class="cols" id="form_job">
+            <div class="col1">
+              <p class="cont">Llena todos los campos solicitados por favor</p>
+              <label for="name">Nombre * </label>
+              <input type="text" name="name" id="name" placeholder="" required />
+              <label for="edad">Edad * </label>
+              <input type="text" name="edad" id="edad" value="" step="2" required="required">
+              <label for="level">Escolaridad * </label>
+              <input type="text" name="level" value="" id="level" required>
+              <label for="phone">Telefono * </label>
+              <input type="tel" name="phone" value="" id="phone">
+              <label for="email">Correo </label>
+              <input type="text" name="email" id="email" placeholder="Correo" />
+              <label for="message">¿Por qué quieres formar parte del equipo Dabba? </label>
+              <textarea name="message" placeholder="Mensaje" id="message"></textarea>
+              <input class="button" type="submit" name="submit" value="ENVIAR" />
+            </div>
+          </div>
+        </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock content %}
