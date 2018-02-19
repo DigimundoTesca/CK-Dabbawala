@@ -1,4 +1,8 @@
+@import "fonts";
+
 @import url(font-awesome.min.css);
+
+
 @font-face {
   font-family: 'Conv_Futura';
   font-weight: normal;
@@ -19,6 +23,9 @@
   url('../fonts/FuturaBold.ttf') format('truetype'),
   url('../fonts/FuturaBold.svg') format('svg');
 }
+
+
+// DABBAWALA HOME PAGE
     /*
     Forty by HTML5 UP
     html5up.net | @ajlkn
@@ -4425,7 +4432,7 @@
     text-align: center;
   }
   .menu > #main2, .menu >#main {
-    background-color: #fff !important
+    background-color: #fff !important;
     flex-wrap: wrap;
     text-align: center;
     vertical-align: middle;
