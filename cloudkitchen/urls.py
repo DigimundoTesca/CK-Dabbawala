@@ -6,7 +6,6 @@ from . import views
 
 
 urlpatterns = [
-    url(r'^jet/', include('jet.urls', 'jet')),  # Django JET URLS
     url(r'^admin-cloud/', admin.site.urls, name='admin'),
     url(r'^', include('users.urls')),
     url(r'^', include('branchoffices.urls')),
@@ -26,5 +25,5 @@ if settings.DEBUG:
 
 urlpatterns += [
     # API Endpoints
-    url(r'^api/', include('api.urls', namespace='api')),
+    # url(r'^api/', include('api.urls', namespace='api')),
 ]

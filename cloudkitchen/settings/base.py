@@ -22,7 +22,6 @@ SECRET_KEY = os.getenv('DABBANET_SECRET_KEY')
 
 # Application definition
 DJANGO_APPS = [
-    'jet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
