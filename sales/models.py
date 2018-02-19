@@ -183,7 +183,7 @@ class CartridgeTicketDetail(models.Model):
 
 class PackageCartridgeTicketDetail(models.Model):
     ticket_base = models.ForeignKey(TicketBase, on_delete=models.CASCADE)
-    package_cartridge = models.ForeignKey(PackageCartridge)
+    package_cartridge = models.ForeignKey(PackageCartridge, on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField(default=1)
     price = models.DecimalField(default=0, max_digits=12, decimal_places=2)
 

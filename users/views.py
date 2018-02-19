@@ -33,7 +33,7 @@ def temporal_index(request):
 # AUTH
 # ---------------------------------------------------------------------------------------------------------------------
 def login(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         if request.user.has_perm('users.can_see_sales'):
             return redirect('sales:sales')
         elif request.user.has_perm('users.can_sell'):
@@ -88,7 +88,7 @@ def login(request):
 
 
 def login_customer(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         return redirect('orders:new_order')
     template = 'customers/login.html'
 
