@@ -26,5 +26,7 @@ if settings.DEBUG:
 
 urlpatterns += [
     # API Endpoints
-    # url(r'^api/', include('api.urls', namespace='api')),
+    
+    url(r'^api/', include('rest_framework.urls'))
+
 ]
