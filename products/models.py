@@ -160,7 +160,7 @@ class Cartridge(models.Model):
     category = models.CharField(choices=CATEGORIES, default=FOOD_DISHES, max_length=2)
     subcategory = models.CharField(choices=SUBCATEGORIES, default=FRUITS, max_length=2)
     price = models.DecimalField(decimal_places=2, default=0, max_digits=12)
-    kitchen_assembly = models.ForeignKey(KitchenAssembly, blank=True, null=True)
+    kitchen_assembly = models.ForeignKey(KitchenAssembly, blank=True, null=True, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
     image = models.ImageField(blank=False, upload_to='cartridges', max_length=255)
 
@@ -200,7 +200,7 @@ class ExtraIngredient(models.Model):
     """
     Description: Extra ingredients that could have the cartridges in a new sale
     """
-    ingredient = models.ForeignKey(Cartridge, null=True, blank=True, default=None)
+    ingredient = models.ForeignKey(Cartridge, null=True, blank=True, default=None, on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField(default=1)
     cost = models.DecimalField(default=0, max_digits=12, decimal_places=2)
 

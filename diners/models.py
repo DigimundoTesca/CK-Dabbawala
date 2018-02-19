@@ -17,7 +17,7 @@ class Diner(models.Model):
 
 
 class AccessLog(models.Model):
-    diner = models.ForeignKey(Diner, null=True, blank=True)
+    diner = models.ForeignKey(Diner, null=True, blank=True, on_delete=models.CASCADE)
     RFID = models.CharField(default='', max_length=24)
     access_to_room = models.DateTimeField(auto_now_add=True)
 
