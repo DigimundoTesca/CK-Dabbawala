@@ -8,9 +8,7 @@ from django.contrib.auth.decorators import login_required
 from branchoffices.models import Supplier
 from cloudkitchen.settings.base import PAGE_TITLE
 from products.forms import SupplyForm, SuppliesCategoryForm, CartridgeForm
-from products.models import Cartridge, Supply, SuppliesCategory, KitchenAssembly, PackageCartridge, PackageCartridgeRecipe
-
-from kitchen.models import Presentation, ShopList, ShopListDetail, Warehouse
+from products.models import Cartridge, Supply, SuppliesCategory, KitchenAssembly, PackageCartridge, PackageCartridgeRecipe, Presentation, ShopList, ShopListDetail, Warehouse
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy

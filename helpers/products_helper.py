@@ -1,6 +1,5 @@
-from kitchen.models import Warehouse
 from products.models import Cartridge, CartridgeRecipe, PackageCartridge, \
-    PackageCartridgeRecipe, Supply, ExtraIngredient
+    PackageCartridgeRecipe, Supply, ExtraIngredient, Warehouse
 from sales.models import CartridgeTicketDetail
 import calendar, json
 from django.db.models import Count, Sum
