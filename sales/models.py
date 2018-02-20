@@ -88,10 +88,16 @@ class TicketPOS(models.Model):
         return self.ticket.payment_type
 
     def total(self):
-        tickets_details = TicketDetail.objects.filter(ticket=self.ticket.id)
         total = 0
-        for x in tickets_details:
+        cartridge_tickets_details = CartridgeTicketDetail.objects.filter(ticket_base=self.ticket.id)
+        package_tickets_details = PackageCartridgeTicketDetail.objects.filter(ticket_base=self.ticket.id)
+
+        for x in cartridge_tickets_details:
             total += x.price
+
+        for x in package_tickets_details:
+            total += x.price
+
         return total
 
     def is_active(self):
@@ -177,10 +183,10 @@ class CartridgeTicketDetail(models.Model):
 
 class PackageCartridgeTicketDetail(models.Model):
     ticket_base = models.ForeignKey(TicketBase, on_delete=models.CASCADE)
-    package_cartridge = models.ForeignKey(PackageCartridge)
+    package_cartridge = models.ForeignKey(PackageCartridge, on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField(default=1)
     price = models.DecimalField(default=0, max_digits=12, decimal_places=2)
-    
+
     class Meta:
         verbose_name = 'Detalle del Ticket para Paquetes'
         verbose_name_plural = 'Detalles de Tickets para Paquetes'

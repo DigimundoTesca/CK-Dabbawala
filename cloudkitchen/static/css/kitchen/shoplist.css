@@ -6,7 +6,23 @@
 img{            
     display: block;
     margin:auto;       
-    height:100%;        
+    width: 100%;
+}
+
+.btn-pres{    
+    font-size: 15px;
+    max-width: 100px;
+    background-color: coral !important;
+    border: coral !important; 
+}
+
+.tab_img{
+    height: 50%;
+}
+
+
+.tab_buttons{
+    height: 50%;
 }
 
 .tab-pane{

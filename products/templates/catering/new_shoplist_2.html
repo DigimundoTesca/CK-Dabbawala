@@ -26,18 +26,25 @@
                     {% else %}
                     <div class="tab-pane fade" id="{{sp.pk}}-home" role="tabpanel" aria-labelledby="list-{{sp.pk}}-list">
                     {% endif %}
-                        <div class="row" style="height:50%">
+                        <div class="row tab_img">
                             <p class="text-center">{{sp.name}}</p>
                             <div class="img-c col-md-12">
                                 <img class="col-md-12" src="{{sp.image.url}}" alt="No img">
                             </div>
                         </div>                       
-                        <div class="row" style="height:50%">
-                            {% for presentation in presentations %} {% if presentation.supply == sp %}
-                            <button>
-                                {{presentation}}
-                            </button>
-                            {% endif %} {% endfor %}
+                        <div class="row tab_buttons">
+                            {% for presentation in presentations %} 
+                                {% if presentation.supply == sp %}
+                                <div class="col-md-6">
+                                    <button class="btn-pres btn btn-primary">
+                                        {{presentation.presentation_unit}}
+                                        {{presentation.presentation_cost}}
+                                        {{presentation.measurement_unit}}
+                                        {{presentation.measurement_quantity}}
+                                    </button>
+                                </div>
+                                {% endif %} 
+                            {% endfor %}
                         </div>
                     </div>                                               
                  {% endfor %}
@@ -57,24 +64,6 @@
             
                 </tbody>
             </table>
-        </div>
-    </div>
-</div>
-
-<!-- The Modal -->
-<div class="modal fade" id="NewPresentation" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 align="center">Agregar Presentacion</h1>
-                <h4 id="title_pres" align="center"></h4>
-            </div>
-            <div class="modal-body ">
-                <form method="POST" enctype="multipart/form-data">
-                    {% csrf_token %} {{ form.as_p }}
-                    <button type="submit"> Guardar </button>
-                </form>
-            </div>
         </div>
     </div>
 </div>

@@ -114,6 +114,9 @@ class KitchenAssembly(models.Model):
     def __str__(self):
         return '%s' % self.name
 
+    def natural_key(self):
+        return self.name
+
     class Meta:
         ordering = ('name', )
         verbose_name = 'Cocina de Ensamble'
@@ -156,8 +159,7 @@ class Cartridge(models.Model):
     subcategory = models.CharField(
         choices=SUBCATEGORIES, default=FRUITS, max_length=2)
     price = models.DecimalField(decimal_places=2, default=0, max_digits=12)
-    kitchen_assembly = models.ForeignKey(
-        KitchenAssembly, blank=True, null=True)
+    kitchen_assembly = models.ForeignKey(KitchenAssembly, blank=True, null=True, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
     image = models.ImageField(
         blank=False, upload_to='cartridges', max_length=255)
@@ -199,8 +201,7 @@ class ExtraIngredient(models.Model):
     """
     Description: Extra ingredients that could have the cartridges in a new sale
     """
-    ingredient = models.ForeignKey(
-        Cartridge, null=True, blank=True, default=None)
+    ingredient = models.ForeignKey(Cartridge, null=True, blank=True, default=None, on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField(default=1)
     cost = models.DecimalField(default=0, max_digits=12, decimal_places=2)
 
@@ -307,3 +308,89 @@ class Presentation(models.Model):
         ordering = ('id', )
         verbose_name = 'Presentacion'
         verbose_name_plural = 'Presentaciones'
+
+class Warehouse(models.Model):
+    PROVIDER = 'PR'
+    STOCK = 'ST'
+    ASSEMBLED = 'AS'
+    SOLD = 'SO'
+    STATUS = (
+        (PROVIDER, 'Provider'),
+        (STOCK, 'Stock'),
+        (ASSEMBLED, 'Assembled'),
+        (SOLD, 'Sold'),
+    )
+
+    GRAM = 'GR'
+    MILLILITER = 'MI'
+    PIECE = 'PZ'
+
+    METRICS = (
+        (GRAM, 'gramo'),
+        (MILLILITER, 'mililitro'),
+        (PIECE, 'pieza'),
+    )
+
+    presentation = models.ForeignKey(Presentation, on_delete=models.CASCADE)
+    status = models.CharField(choices=STATUS, default=PROVIDER, max_length=15)    
+    created_at = models.DateField(editable=False, auto_now_add=True)
+    expiry_date = models.DateField(editable=True, auto_now_add=True)
+    quantity = models.FloatField(default=0)
+
+    def __str__(self):
+        return '%s %s' % (self.presentation, self.quantity)
+
+    class Meta:
+        ordering = ('id', )
+        verbose_name = 'Insumo en Almacén'
+        verbose_name_plural = 'Insumos en el Almacén'
+
+
+class ShopList(models.Model):
+
+    DELIVERED = 'DE'
+    MISSING = 'MI'
+    WAITING = 'WA'
+
+    STATUS = (
+        (DELIVERED, 'Delivered'),
+        (MISSING, 'Missing'),
+        (WAITING, 'Waiting'),
+    )
+
+    created_at = models.DateField(editable=False, auto_now_add=True)
+    status = models.CharField(choices=STATUS, default=MISSING, max_length=15)
+
+    def __str__(self):
+        return '%s' % self.id
+
+    class Meta:
+        ordering = ('id', )
+        verbose_name = 'Lista de Compra'
+        verbose_name_plural = 'Lista de Compras'
+
+
+class ShopListDetail(models.Model):
+    DELIVERED = 'DE'
+    MISSING = 'MI'
+    WAITING = 'WA'
+
+    STATUS = (
+        (DELIVERED, 'Delivered'),
+        (MISSING, 'Missing'),
+        (WAITING, 'Waiting'),
+    )
+
+    status = models.CharField(choices=STATUS, default=MISSING, max_length=15)
+    shop_list = models.ForeignKey(ShopList, default=1, on_delete=models.CASCADE)
+    presentation = models.ForeignKey(Presentation, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    deliver_day = models.DateTimeField(editable=False, null=True, blank=True)
+
+    def __str__(self):
+        return '%s %s' % (self.presentation, self.quantity)
+
+    class Meta:
+        ordering = ('id', )
+        verbose_name = 'Lista de Compra-Detalles'
+        verbose_name_plural = 'Lista de Compras-Detalles'
