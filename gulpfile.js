@@ -11,8 +11,10 @@ gulp.task('sass', ()=>
     versions: ['last 5 browsers']
   }))
   .pipe(gulp.dest('./cloudkitchen/static/css'))
-  );
+);
 
-gulp.task('default', () => {
-  gulp.watch('./cloudkitchen/static/scss/*.scss', ['sass'])
+gulp.task('watch', () => {
+  gulp.watch('./cloudkitchen/static/**/*.scss', ['sass'])
 })
+
+gulp.task('default', ['sass', 'watch']);
