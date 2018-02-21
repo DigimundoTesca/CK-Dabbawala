@@ -155,4 +155,4 @@ media/
 
 # SASS Files
 /**/.sass-cache/*
-
+node_modules/
