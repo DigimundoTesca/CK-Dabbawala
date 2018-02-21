@@ -1,0 +1,14 @@
+// 1 - Load project variables.
+// 2 - Load bootstrap sass files.
+// 3 - Load custom app sass files
+
+// ----------------------------------------------
+// Import in th default bootstrap variables.
+// Then override bootstrap with project specific values.
+// ----------------------------------------------
+
+@import "variables"; 
+
+@import "bootstrap/bootstrap";
+
+@import "base";
