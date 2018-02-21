@@ -1,0 +1,28 @@
+{
+  "name": "CK-Dabbawala",
+  "version": "1.0.0",
+  "description": "To install CloudKitchen, you must to install virtualenv and a python version >= 3.4",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DigimundoTesca/CK-Dabbawala.git"
+  },
+  "keywords": [],
+  "author": "Digimundo Technologies",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DigimundoTesca/CK-Dabbawala/issues"
+  },
+  "homepage": "https://github.com/DigimundoTesca/CK-Dabbawala#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^4.1.0",
+    "gulp-sass": "^3.1.0"
+  }
+}
