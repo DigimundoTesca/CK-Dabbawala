@@ -152,3 +152,7 @@ media/
 *.sqlite3
 .Rproj.user
 .Rhistory
+
+# SASS Files
+/**/.sass-cache/*
+
