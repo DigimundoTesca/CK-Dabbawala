@@ -1,34 +1,34 @@
-.list-group{
-    height: 45rem;
+.tab_list{
+    height: 80vh;
     overflow-y: auto;
 }
 
-img{            
-    display: block;
-    margin:auto;       
-    width: 100%;
-}
-
-.btn-pres{    
-    font-size: 15px;
-    max-width: 100px;
-    background-color: coral !important;
-    border: coral !important; 
-}
-
-.tab_img{
-    height: 50%;
-}
-
-
-.tab_buttons{
-    height: 50%;
-}
-
-.tab-pane{
-    height: 100%;
-}
-
 .tab-content{
-    height: 100%;
+    height: 75vh;        
 }
+
+.tab_view{
+    height: 75vh;  
+    overflow: hidden;        
+}
+
+.sect_img{    
+    height: 37.5vh;            
+    display: block;
+    margin: auto;
+}
+
+.sect_btn{
+    height: 37.5vh;        
+}
+
+img{    
+    height: 30vh;
+    max-width: 100%;    
+}
+
+
+
+
+
+
