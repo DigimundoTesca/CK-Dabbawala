@@ -304,6 +304,30 @@ class Presentation(models.Model):
         return '%s %s %s %s %s' % (self.supply, self.measurement_quantity,
                              self.measurement_unit, self.presentation_cost, self.presentation_unit)
 
+    def getElements(self):
+        su = str(self.supply)
+        mq = str(self.measurement_quantity)
+        mu = str(self.measurement_unit)
+        pc = str(self.presentation_cost)
+        pu = str(self.presentation_unit)
+
+        return su +"&"+ mq +"&" + mu +"&"+ pc +"&"+ pu
+
+    def getDescription(self):
+        pu = dict(self.PRESENTATION_UNIT).get(self.presentation_unit)
+        pc = str(self.presentation_cost)
+        mu = dict(self.METRICS).get(self.measurement_unit)
+        mq = str(self.measurement_quantity)
+
+        if self.measurement_quantity >= 1000 and self.measurement_unit == 'MI':
+            mq = str(self.measurement_quantity / 1000)
+            mu = "Litro"
+        if self.measurement_quantity >= 1000 and self.measurement_unit == 'GR':
+            mq = str(self.measurement_quantity / 1000)
+            mu = "Kilo"
+
+        return pu + " de " + mq + " " + mu + " Precio: $" + pc 
+
     class Meta:
         ordering = ('id', )
         verbose_name = 'Presentacion'
@@ -332,7 +356,7 @@ class Warehouse(models.Model):
     )
 
     presentation = models.ForeignKey(Presentation, on_delete=models.CASCADE)
-    status = models.CharField(choices=STATUS, default=PROVIDER, max_length=15)    
+    status = models.CharField(choices=STATUS, default=PROVIDER, max_length=15)
     created_at = models.DateField(editable=False, auto_now_add=True)
     expiry_date = models.DateField(editable=True, auto_now_add=True)
     quantity = models.FloatField(default=0)
