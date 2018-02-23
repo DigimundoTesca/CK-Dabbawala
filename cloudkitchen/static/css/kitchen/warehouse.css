@@ -1,57 +1,37 @@
-.card-element{
-    text-align: center;
-    direction: ltr;
-    transition: 0.3s;
-    width: 40% ;
-    padding: 16px;
-    margin: 10px ;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    border-radius: 15px !important; ; /* 5px rounded corners */
+.cont{
+    height:75vh;
+    overflow-y: scroll;
 }
 
-.card-element:hover {
+.element{
+    text-align: center;    
+    transition: 0.3s;        
+    box-shadow: 0px 4px 8px 0px ;    
+}
+
+.element:hover {
     background: lightgray;
     cursor: pointer;
 }
 
 .image{
-    height: 120px;
-    width: 50%;
-    margin: auto;
-    border-radius: 50%;
+    height: 120px;    
+    margin: auto;    
 }
 
 .info_div, .info_quantity{
-    background: #004c83;
-    border-radius: 15%;
-}
-
-.info_div p, .info_quantity p {
-    width: 100%;
-    color: white;
-    margin: 10px;
-}
-
-.container_warehouse{
-    height: calc(105vh - 16rem);
-    height: calc(105vh - 16rem);
-}
-
-.warehouse_display{
-    height: 100%;
-    overflow-y: scroll;
-    direction: ltr;
+    margin: auto;
+    background: #D44027;
+    text-align: center;    
+    color: white;    
 }
 
 .titles{
-    margin: auto;
-    padding: 10px;
-    padding-left: 15%;
-    padding-right: 15%;
+    margin: auto;            
+    margin-bottom: 20px;    
     text-align: center;
     font-size: 25px;
     color: #ffecfe;
-    background: #004c83;
-    border-radius: 15px;
+    background: #D44027;    
 }
 
