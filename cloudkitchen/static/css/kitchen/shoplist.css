@@ -4,31 +4,26 @@
 }
 
 .tab-content{
-    height: 75vh;        
+    height: 80vh;        
 }
 
 .tab_view{
-    height: 75vh;  
-    overflow: hidden;        
+    height: 80vh;  
+    overflow-y: auto;
 }
 
 .sect_img{    
-    height: 37.5vh;            
+    height: 40vh;            
     display: block;
     margin: auto;
 }
 
 .sect_btn{
-    height: 37.5vh;        
+    height: 40vh;        
 }
 
 img{    
-    height: 30vh;
+    height: 35vh;
     max-width: 100%;    
 }
-
-
-
-
-
 
