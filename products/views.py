@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from branchoffices.models import Supplier
 from cloudkitchen.settings.base import PAGE_TITLE
 from products.forms import SupplyForm, SuppliesCategoryForm, CartridgeForm
-from products.models import Cartridge, Supply, SuppliesCategory, KitchenAssembly, PackageCartridge, PackageCartridgeRecipe, Presentation, ShopList, ShopListDetail, Warehouse
+from products.models import Cartridge, Supply, SuppliesCategory, KitchenAssembly, PackageCartridge, PackageCartridgeRecipe, Presentation, ShopList, ShopListDetail
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -38,8 +38,7 @@ class Create_Supply(CreateView):
 
 class Update_Supply(UpdateView):
     model = Supply
-    fields = ['name','category','barcode','supplier','storage_required','presentation_unit','presentation_cost',
-        'measurement_quantity','measurement_unit','optimal_duration','optimal_duration_unit','location','image']
+    fields = ['name','category','barcode','supplier','storage_required','optimal_duration','optimal_duration_unit','location','image']
     template_name = 'supplies/new_supply.html'
 
     def form_valid(self, form):
@@ -400,7 +399,8 @@ def cartridge_modify(request, pk):
 @login_required(login_url='users:login')
 def warehouse(request):
     products_helper = ProductsHelper()
-    warehouse_list = products_helper.get_elements_in_warehouse()
+    presentations = Presentation.objects.all()
+    supps = products_helper.get_all_supplies()
 
     if request.method == 'POST':
 
@@ -431,7 +431,8 @@ def warehouse(request):
     template = 'catering/warehouse.html'
     title = 'Movimientos de Almacen'
     context = {
-        'warehouse_list': warehouse_list,
+        'presentations': presentations,
+        'supps':supps,
         'title': title,
         'page_title': PAGE_TITLE
     }
@@ -518,10 +519,6 @@ def new_shoplist(request):
     supps = products_helper.get_all_supplies()
     all_presentations = Presentation.objects.all()
 
-    shop_list = ShopList.objects.all()
-
-    supply_list = []
-
     if request.method == 'POST':
         form = PresentationForm(request.POST, request.FILES)
         if form.is_valid():
@@ -536,42 +533,24 @@ def new_shoplist(request):
             new_shop_list.save()
 
             for item in shop_l:
-                sel_pre = Presentation.objects.get(pk=item['pre_pk'])
+                sel_pre = Presentation.objects.get(pk=item[5])
                 ShopListDetail.objects.create(
                     shop_list=new_shop_list,
                     presentation=sel_pre,
-                    quantity=item['Cantidad'])
+                    quantity=item[6])
 
             return redirect('/warehouse/shoplist')
 
     else:
         form = PresentationForm()
 
-    for sup in supps:
-        element_object = {
-            'pk': sup.pk,
-            'name': sup.name,
-            'imagen': sup.image.url,
-        }
-        supp_presentations = all_presentations.filter(supply=sup)
-        supp_pres = []
-
-        for supp_pre in supp_presentations:
-            supp_pres.append(supp_pre)
-
-        element_object['presentations'] = supp_pres
-        supply_list.append(element_object)
-
     template = 'catering/new_shoplist_2.html'
     title = 'Lista de Compras'
     context = {
-        'shop_list': shop_list,
         'form': form,
         'title': title,
-        'supply_list': supply_list,
         'supplies':supps,
         'presentations':all_presentations,
-        'page_title': PAGE_TITLE
     }
     return render(request, template, context)
 
