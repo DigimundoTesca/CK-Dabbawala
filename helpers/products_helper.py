@@ -1,5 +1,5 @@
 from products.models import Cartridge, CartridgeRecipe, PackageCartridge, \
-    PackageCartridgeRecipe, Supply, ExtraIngredient, Warehouse
+    PackageCartridgeRecipe, Supply, ExtraIngredient
 from sales.models import CartridgeTicketDetail
 import calendar, json
 from django.db.models import Count, Sum
