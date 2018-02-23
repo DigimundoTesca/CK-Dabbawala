@@ -299,6 +299,7 @@ class Presentation(models.Model):
     presentation_cost = models.FloatField(default=0)
     measurement_unit = models.CharField(max_length=10, choices=METRICS, default=PACKAGE)
     measurement_quantity = models.FloatField(default=0)
+    on_warehouse = models.IntegerField(default=0)
 
     def __str__(self):
         return '%s %s %s %s %s' % (self.supply, self.measurement_quantity,
@@ -307,11 +308,19 @@ class Presentation(models.Model):
     def getElements(self):
         su = str(self.supply)
         mq = str(self.measurement_quantity)
-        mu = str(self.measurement_unit)
+        mu = dict(self.METRICS).get(self.measurement_unit)
         pc = str(self.presentation_cost)
-        pu = str(self.presentation_unit)
+        pu = dict(self.PRESENTATION_UNIT).get(self.presentation_unit)
+        pk = str(self.pk)
 
-        return su +"&"+ mq +"&" + mu +"&"+ pc +"&"+ pu
+        if self.measurement_quantity >= 1000 and self.measurement_unit == 'MI':
+            mq = str(self.measurement_quantity / 1000)
+            mu = "Litro"
+        if self.measurement_quantity >= 1000 and self.measurement_unit == 'GR':
+            mq = str(self.measurement_quantity / 1000)
+            mu = "Kilo"
+
+        return su +"&"+ mq +"&" + mu +"&"+ pc +"&"+ pu + "&" + pk
 
     def getDescription(self):
         pu = dict(self.PRESENTATION_UNIT).get(self.presentation_unit)
@@ -326,48 +335,12 @@ class Presentation(models.Model):
             mq = str(self.measurement_quantity / 1000)
             mu = "Kilo"
 
-        return pu + " de " + mq + " " + mu + " Precio: $" + pc 
+        return pu + " de " + mq + " " + mu + " Precio: $" + pc
 
     class Meta:
         ordering = ('id', )
         verbose_name = 'Presentacion'
         verbose_name_plural = 'Presentaciones'
-
-class Warehouse(models.Model):
-    PROVIDER = 'PR'
-    STOCK = 'ST'
-    ASSEMBLED = 'AS'
-    SOLD = 'SO'
-    STATUS = (
-        (PROVIDER, 'Provider'),
-        (STOCK, 'Stock'),
-        (ASSEMBLED, 'Assembled'),
-        (SOLD, 'Sold'),
-    )
-
-    GRAM = 'GR'
-    MILLILITER = 'MI'
-    PIECE = 'PZ'
-
-    METRICS = (
-        (GRAM, 'gramo'),
-        (MILLILITER, 'mililitro'),
-        (PIECE, 'pieza'),
-    )
-
-    presentation = models.ForeignKey(Presentation, on_delete=models.CASCADE)
-    status = models.CharField(choices=STATUS, default=PROVIDER, max_length=15)
-    created_at = models.DateField(editable=False, auto_now_add=True)
-    expiry_date = models.DateField(editable=True, auto_now_add=True)
-    quantity = models.FloatField(default=0)
-
-    def __str__(self):
-        return '%s %s' % (self.presentation, self.quantity)
-
-    class Meta:
-        ordering = ('id', )
-        verbose_name = 'Insumo en Almacén'
-        verbose_name_plural = 'Insumos en el Almacén'
 
 
 class ShopList(models.Model):
