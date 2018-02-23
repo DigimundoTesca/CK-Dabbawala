@@ -1,7 +1,7 @@
 import math
 from datetime import datetime, date, timedelta, time
 from kitchen.models import ProcessedProduct
-from products.models import Cartridge, Warehouse
+from products.models import Cartridge
 from sales.models import TicketOrder, TicketPOS, TicketBase
 
 
