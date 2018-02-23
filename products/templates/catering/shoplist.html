@@ -1,23 +1,22 @@
 {% extends "base/base_nav_footer.html" %} {% load static %} {% block link %}
 <link rel="stylesheet" type='text/css' href="{% static 'css/shoplist.css' %}"> {% endblock link %} {% block content %}
 
-<div class="container container_view_lists">
-    <div class="a col-md-12">
-        <div class="list_display col-md-6">
-            <table class="table table-hover" id="TableShopList">
-                <thead>
-                    <tr>
-                        <th>ID</th>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table table-hover table-bordered" id="TableShopList">
+                <thead class="thead-dark">
+                    <tr align="center">
+                        <th >ID</th>
                         <th>Fecha</th>
                         <th>Estado</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for element in shop_list %}
-                    <tr class="list-element" id="element-{{ element.id }}">
+                    <tr align="center" class="list-element" id="element-{{ element.id }}">
                         <td>{{ element.id }}</td>
-                        <td>{{ element.created_at }}</td>
-                        <span></span>
+                        <td>{{ element.created_at }}</td>                        
                         <td>{{ element.status }}</td>
                     </tr>
                     {% endfor %}
@@ -25,10 +24,10 @@
                 </tbody>
             </table>
         </div>
-        <div class="card_list block_list col-md-6">
-            <table class="table table_shoplist_detail table-hover" id="TableShopListDetail">
-                <thead>
-                    <tr>
+        <div class="col-md-6">
+            <table class="table table-hover table-bordered" id="TableShopListDetail">
+                <thead class="thead-dark">
+                    <tr align="center">
                         <th>Nombre</th>
                         <th>Cantidad</th>
                         <th>Presentacion</th>
@@ -105,7 +104,7 @@
                     for (x = 0; x < shop_list.length; x++) {
                         html_list_detail +=
 
-                            '<tr id="id-' + shop_list[x].id + '" class="shoplistdetail_element">' +
+                            '<tr align="center" id="id-' + shop_list[x].id + '" class="shoplistdetail_element">' +
                             '<td class="sld_nombre">' + shop_list[x].nombre + '</td>' +
                             '<td class="sld_cantidad">' + shop_list[x].cantidad + '</td>' +
                             '<td class="sld_medida">' + shop_list[x].medida + " " + shop_list[x].unidad + '</td>' +

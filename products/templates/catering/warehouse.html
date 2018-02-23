@@ -1,43 +1,61 @@
  {% extends "base/base_nav_footer.html" %} {% load static %} {% block link %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/kitchen/warehouse.css' %}"> {% endblock link %} {% block content %}
 
-<div class="container container_warehouse col-md-12">
+<div class="container-fluid ">
+    <div class="row">        
+        <div class="col-md-4">
+            <p class="titles">Insumos</p>
+            <div class="cont">
+                <ul class="list-group">                                                    
+                    {% for supp in supps %}                                                        
+                        <li  class="list-group-item">  {{supp}} </li>
+                    {% endfor %}
+                        
+                </ul>
+            </div>
+        </div>
 
-    <div class="warehouse_display col-md-6">
-        <div class="row type_warehouse">
+        <div class="col-md-4">            
             <p class="titles">Almacen</p>
+            <div class="cont">
+                 {% for supp in supps %}
+                    {% for presentation in presentations %} 
+                        {% if presentation.supply == supp %}
+                            <div class="element add-btn" id="warehouse_btn">
+                                <div id="{{ presentation.id }},{{ presentation.supply.name }}" class="info_div">
+                                    <p>{{ presentation.supply.name }}</p>
+                                </div>
+                                <div class="image_div">
+                                    <img class="image" src="{{ presentation.supply.image.url }}">
+                                </div>
+                                <div id="{{ presentation.quantity }}" class="info_quantity">
+                                    <p>{{ presentation.on_warehouse }}</p>
+                                </div>
+                            </div>            
+                        {% endif %} 
+                    {% endfor %} 
+                 {% endfor %}
+            </div>
         </div>
-        {% for warehouse in warehouse_list %} {% if warehouse.status == "ST" %} {% if warehouse.quantity > 0 %}
-        <div class="card card-element add-btn col-md-2" id="warehouse_btn">
-            <div id="{{ warehouse.id }},{{ warehouse.supply.name }}" class="row info_div">
-                <p>{{ warehouse.supply.name }}</p>
-            </div>
-            <div class="row image_div">
-                <img class="image" src="{{ warehouse.supply.image.url }}">
-            </div>
-            <div id="{{ warehouse.quantity }}" class="row info_quantity">
-                <p>{{ warehouse.get_quantity_stock }}</p>
-            </div>
-        </div>
-        {% endif %} {% endif %} {% endfor %}
-    </div>
-    <div class="warehouse_display col-md-6">
-        <div class="row type_warehouse">
+        <div class="col-md-4">                    
             <p class="titles">Ensamblaje</p>
+            <div class="cont">
+                {% for warehouse in warehouse_list %} {% if warehouse.status == "AS" %} {% if warehouse.quantity > 0 %}
+                <div class="card card-element col-md-2">
+                    <div id="{{ warehouse.id }}" class="row info_div">
+                        <p>{{ warehouse.supply.name }}</p>
+                    </div>
+                    <div class="row image_div">
+                        <img class="image" src="{{ warehouse.supply.image.url }}">
+                    </div>
+                    <div id="{{ warehouse.quantity }}" class="row info_quantity">
+                        <p>{{ warehouse.get_quantity_stock }}</p>
+                    </div>
+                </div>
+                {% endif %} {% endif %} {% endfor %}
+            </div>
         </div>
-        {% for warehouse in warehouse_list %} {% if warehouse.status == "AS" %} {% if warehouse.quantity > 0 %}
-        <div class="card card-element col-md-2">
-            <div id="{{ warehouse.id }}" class="row info_div">
-                <p>{{ warehouse.supply.name }}</p>
-            </div>
-            <div class="row image_div">
-                <img class="image" src="{{ warehouse.supply.image.url }}">
-            </div>
-            <div id="{{ warehouse.quantity }}" class="row info_quantity">
-                <p>{{ warehouse.get_quantity_stock }}</p>
-            </div>
-        </div>
-        {% endif %} {% endif %} {% endfor %}
+
     </div>
 
 </div>

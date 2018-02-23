@@ -52,9 +52,9 @@
             <div class="tab_view col-md-12">
                 <table class="table table-striped table-dark" id="TableID">
                     <thead>
-                        <tr>
-                            <th>Nombre</th>
+                        <tr align="center">
                             <th>Cantidad</th>
+                            <th>Nombre</th>                            
                             <th>Presentacion</th>
                             <th>Costo</th>
                         </tr>
@@ -84,34 +84,105 @@
 
     table_array = [];
 
+    function get_cookie(name) {
+            let cookie_value = null;
+            if (document.cookie && document.cookie !== '') {
+                let cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    let cookie = jQuery.trim(cookies[i]);
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookie_value = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookie_value;/**/
+        }
+
     $('.btn-pres').click(function () {
         var a = $(this).attr('id');
-        var arr = a.split("&");                
-        table_array.push(arr);
-        console.log(table_array);
-        alert(table_array);
+        var arr = a.split("&");        
+        arr.push(1);
+        var res = check_repeat(arr);        
+        if (res ==-1){
+            table_array.push(arr);    
+        }else{
+            table_array[res][6]+=1;
+        }                
         pop_table();
     });
 
-    function pop_table(){
-        for (var x=0;x<table_array.length;x++){
-            var html_list =
-                '<tr>' +
-                '<th>' + table_array[x][0] + '</th>' +
-                '<th>' + table_array[x][1] + '</th>' +
-                '<th>' + table_array[x][2] + '</th>' +
-                '<th>' + table_array[x][3] + '</th>' +
-                '</tr>'
-
-            $("#TableID tbody")
-                .append($(
-                    html_list
-                ));
-
+    function check_repeat(arr){        
+        for (var i=0;i<table_array.length;i++){            
+            if(table_array[i][5].localeCompare(arr[5]) == 0 ){                
+                return i;
+            }
         }
-
-        table_array
+        return -1;
     }
+
+    function pop_table(){
+        var html_list = ""; 
+        $("#TableID tbody").empty();
+        for (var x=0;x<table_array.length;x++){
+            html_list +=
+                '<tr align="center">' +
+                '<th>' + table_array[x][6] + '</th>' +
+                '<th>' + table_array[x][0] + '</th>' +
+                '<th>' + table_array[x][4] + "  " + table_array[x][1] + "  " + table_array[x][2] + '</th>' +
+                '<th>' + table_array[x][3] + '</th>' +
+                '</tr>';
+        }
+        $("#TableID tbody").append($(html_list));
+    }
+
+    function clear_array(){
+        
+    }
+
+    $(".FAB").on("click", function (e) {
+            let csrf_token = get_cookie('csrftoken');
+            let JSONSale = JSON.stringify(table_array);
+            if (table_array.length > 0) {
+                $.ajax({
+                    url: '{% url "products:new_shoplist" %}',
+                    type: 'POST',
+                    data: {
+                        'type': 'shop_list',
+                        'shop_list': JSONSale,
+                        csrfmiddlewaretoken: csrf_token,
+                    },
+                    traditional: true,
+                    datatype: 'jsonp',
+                    success: function (result) {
+                        swal({
+                            title: "Éxito",
+                            text: "Lista Guardada",
+                            type: "success",
+                            showConfirmButton: false,
+                        });
+                        location.replace('{% url "products:shoplist" %}');
+                    },
+                    error: function (result, jqXHR, textStatus, errorThrown) {
+                        swal({
+                            title: "Lista no Guardada!",
+                            text: 'Contacte a soporte!\n ' + 'Errores: ' + textStatus + ', ' + jqXHR,
+                            type: "error",
+                            showConfirmButton: false
+                        });
+                        setTimeout(rel, 30000);
+                    },
+                });
+            } else {
+                swal({
+                    title: "La lista esta vacia!",
+                    text: 'Agregue elementos a la lista!',
+                    type: "warning",
+                    showConfirmButton: false
+                });
+                setTimeout(rel, 30000);
+            }
+        });
 
 
 </script>
