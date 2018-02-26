@@ -1,0 +1,17 @@
+@import "variables";
+
+.login-bg {
+  background: { 
+    image: url($STATIC_PATH + '/images/login/login-wallpaper.jpg');
+    // color: orange; 
+    position: bottom;
+    size: auto;
+    repeat: no-repeat;
+    attachment: fixed;
+  }
+  display: flex;
+  // filter: blur(1rem );
+  // transform: scale(1.1);
+  width: 100%;
+  min-height: 100vh;
+}

@@ -1,5 +1,5 @@
-// 1 - Load project variables.
-// 2 - Load bootstrap sass files.
+// 1 - Load normalize scss
+// 2 - Load your variables
 // 3 - Load custom app sass files
 
 // ----------------------------------------------
@@ -7,8 +7,9 @@
 // Then override bootstrap with project specific values.
 // ----------------------------------------------
 
+@import "normalize";
+
 @import "variables"; 
 
-@import "bootstrap/bootstrap";
-
 @import "base";
+  
