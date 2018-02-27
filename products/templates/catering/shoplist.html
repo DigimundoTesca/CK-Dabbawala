@@ -104,7 +104,7 @@
                     for (x = 0; x < shop_list.length; x++) {
                         html_list_detail +=
 
-                            '<tr align="center" id="id-' + shop_list[x].id + '" class="shoplistdetail_element">' +
+                            '<tr align="center" id="id-' + shop_list[x].pk + '" class="shoplistdetail_element">' +
                             '<td class="sld_nombre">' + shop_list[x].nombre + '</td>' +
                             '<td class="sld_cantidad">' + shop_list[x].cantidad + '</td>' +
                             '<td class="sld_medida">' + shop_list[x].medida + " " + shop_list[x].unidad + '</td>' +
@@ -127,6 +127,7 @@
 
                     body.on("click", ".sld_missing", function (e) {
                         var sld_ele_id = $(this).parent().attr('id').substring(3);
+                        console.log(sld_ele_id);
                         var nombre = $(this).parent().children(".sld_nombre").html();
                         var presentacion = $(this).parent().children(".sld_medida").html();
                         var cantidad = $(this).parent().children(".sld_cantidad").html();
@@ -147,7 +148,7 @@
                                 type: 'POST',
                                 data: {
                                     'type': 'load_list_detail',
-                                    'load_list_detail': sld_ele_id,
+                                    'ele_pk': sld_ele_id,
                                     csrfmiddlewaretoken: csrf_token,
                                 },
                                 datatype: 'jsonp',
@@ -157,8 +158,8 @@
                                         'Éxito!',
                                         'Agregado al almacen',
                                         'success'
-                                    );
-                                    location.replace('{% url "products:shoplist" %}');
+                                    );                                  
+                                    $(this).children(".mi_button").html = "done";
                                 }
                             });
                         });

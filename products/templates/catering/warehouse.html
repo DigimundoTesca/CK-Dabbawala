@@ -2,57 +2,84 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/kitchen/warehouse.css' %}"> {% endblock link %} {% block content %}
 
 <div class="container-fluid ">
-    <div class="row">        
-        <div class="col-md-4">
-            <p class="titles">Insumos</p>
-            <div class="cont">
-                <ul class="list-group">                                                    
-                    {% for supp in supps %}                                                        
-                        <li  class="list-group-item">  {{supp}} </li>
-                    {% endfor %}
-                        
-                </ul>
-            </div>
-        </div>
-
-        <div class="col-md-4">            
+    <div class="row">               
+        <div class="col-md-6">
             <p class="titles">Almacen</p>
-            <div class="cont">
-                 {% for supp in supps %}
-                    {% for presentation in presentations %} 
-                        {% if presentation.supply == supp %}
-                            <div class="element add-btn" id="warehouse_btn">
-                                <div id="{{ presentation.id }},{{ presentation.supply.name }}" class="info_div">
-                                    <p>{{ presentation.supply.name }}</p>
-                                </div>
-                                <div class="image_div">
-                                    <img class="image" src="{{ presentation.supply.image.url }}">
-                                </div>
-                                <div id="{{ presentation.quantity }}" class="info_quantity">
-                                    <p>{{ presentation.on_warehouse }}</p>
-                                </div>
-                            </div>            
-                        {% endif %} 
-                    {% endfor %} 
-                 {% endfor %}
+            <div class="col-md-12 cont">                
+                <div id="accordion">
+                    {% for supp in supps %}
+                    <div class="card">
+                        <div class="card-header" id="heading-{{supp}}" data-toggle="collapse" data-target="#collapse-{{supp}}" aria-expanded="false" aria-controls="collapse-{{supp}}">
+                            <h5 class="mb-0"></h5>                                
+                                <img class="img" src="{{supp.image.url}}">
+                                {{supp}}                                                                                                    
+                            </h5>
+                        </div>
+                        <div id="collapse-{{supp}}" class="collapse" aria-labelledby="heading-{{supp}}" data-parent="#accordion">
+                            <div class="card-body">                
+                                {% for presentation in presentations %}                                     
+                                    <ul class="list-group">
+                                        {% if presentation.supply == supp and presentation.on_warehouse > 0 %}
+                                        <div class="btn-pres">
+                                            <div class="pres" id="{{presentation.pk}}&{{presentation}}&{{presentation.on_warehouse}}">
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">                                                     
+                                                    {{presentation.getUnit.mq}} {{presentation.getUnit.mu}}
+                                                    <span class="badge badge-primary badge-pill">{{ presentation.on_warehouse }}</span>
+                                                </li>                                                
+                                            </div>
+                                        </div>
+                                    </ul>
+                                        {% else %}                                            
+                                            {% if forloop.last %}
+                                                <div style="text-align:center">
+                                                    <h5>No hay presentaciones</h5>
+                                                </div>
+                                            {% endif %}                                                
+                                        {% endif %}                                 
+                                {% endfor %}    
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
-        <div class="col-md-4">                    
+        <div class="col-md-6">
             <p class="titles">Ensamblaje</p>
             <div class="cont">
-                {% for warehouse in warehouse_list %} {% if warehouse.status == "AS" %} {% if warehouse.quantity > 0 %}
-                <div class="card card-element col-md-2">
-                    <div id="{{ warehouse.id }}" class="row info_div">
-                        <p>{{ warehouse.supply.name }}</p>
+                <div id="b-accordion">
+                    {% for supp in supps %}
+                    <div class="card">
+                        <div class="card-header" id="b-heading-{{supp}}" data-toggle="collapse" data-target="#b-collapse-{{supp}}" aria-expanded="false"
+                            aria-controls="b-collapse-{{supp}}">
+                            <h5 class="mb-0"></h5>
+                            <img class="img" src="{{supp.image.url}}"> {{supp}}
+                            </h5>
+                        </div>
+                        <div id="b-collapse-{{supp}}" class="collapse" aria-labelledby="b-heading-{{supp}}" data-parent="#b-accordion">
+                            <div class="card-body">
+                                {% for presentation in presentations %}
+                                <ul class="list-group">
+                                    {% if presentation.supply == supp and presentation.on_assembly > 0 %}
+                                    <div class="btn-pres">
+                                        <div class="pres" id="{{presentation.pk}}&{{presentation}}&{{presentation.on_assembly}}">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                {{presentation.getUnit.mq}} {{presentation.getUnit.mu}}
+                                                <span class="badge badge-primary badge-pill">{{ presentation.on_assembly }}</span>
+                                            </li>
+                                        </div>
+                                    </div>
+                                </ul>
+                                {% else %} {% if forloop.last %}
+                                <div style="text-align:center">
+                                    <h5>No hay presentaciones</h5>
+                                </div>
+                                {% endif %} {% endif %} {% endfor %}
+                            </div>
+                        </div>
                     </div>
-                    <div class="row image_div">
-                        <img class="image" src="{{ warehouse.supply.image.url }}">
-                    </div>
-                    <div id="{{ warehouse.quantity }}" class="row info_quantity">
-                        <p>{{ warehouse.get_quantity_stock }}</p>
-                    </div>
+                    {% endfor %}
                 </div>
-                {% endif %} {% endif %} {% endfor %}
             </div>
         </div>
 
@@ -81,28 +108,21 @@
             return cookie_value;/**/
         }
 
-        $(".add-btn").on("click", function () {
+        $(".btn-pres").on("click", function () {
             let csrf_token = get_cookie('csrftoken');
-            var quantity_available = $(this).children(".info_quantity").attr('id');
-            var data_in = $(this).children(".info_div").attr('id').split(",");
-            var warehouse_id = data_in[0];
-            var warehouse_name = data_in[1];
-            console.log(data_in);
-
-            var step = 1000;
-
-            if (quantity_available < 100) {
-                step = 1;
-            }
-            if (quantity_available < 1000) {
-                step = 100;
-            }
+            var presentation = $(this).children(".pres").attr('id');            
+            var arr = presentation.split('&');
+            var presentation_pk = arr[0];
+            var presentation_name = arr[1];
+            var quantity_available = arr[2];            
+            
+            var step = 1;
 
             swal({
-                title: '¿Cuantos ' + warehouse_name + ' desea mover? ',
+                title: '¿Cuantos ' + presentation_name + ' desea mover? ',
                 input: 'range',
                 inputAttributes: {
-                    min: step,
+                    min: 1,
                     max: quantity_available,
                     step: step
                 },
@@ -117,11 +137,11 @@
                             type: 'POST',
                             data: {
                                 'type': 'save_to_assembly',
-                                'quantity_available': number,
-                                'warehouse_id': warehouse_id,
+                                'quantity': number,
+                                'presentation_pk': presentation_pk,
                                 csrfmiddlewaretoken: csrf_token,
                             },
-                            datatype: "html",
+                            datatype: "jsonp",
                             success: function (result) {
                                 swal("Agregado " + number + " de " + warehouse_name + " al almacen");
                                 setTimeout(null, 5000);
