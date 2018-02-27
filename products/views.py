@@ -406,27 +406,17 @@ def warehouse(request):
 
         if request.POST['type'] == 'save_to_assembly':
 
-            quantity = json.loads(request.POST.get('quantity_available'))
-            warehouse_id = json.loads(request.POST.get('warehouse_id'))
-
+            quantity = json.loads(request.POST.get('quantity'))
+            presentation_pk = json.loads(request.POST.get('presentation_pk'))
+                
             # Retirar del almacen
-            selected_warehouse = Warehouse.objects.get(id=warehouse_id)
-            selected_warehouse.quantity -= quantity
-            selected_warehouse.save()
+            presentation = Presentation.objects.get(pk=presentation_pk)
+            presentation.on_warehouse -= quantity
+            presentation.on_assembly += quantity
+            presentation.save()
+            
+            return JsonResponse({'shop_list': "nothing"})
 
-            # Agregar al almacen
-            try:
-                itemstock = Warehouse.objects.get(
-                    supply=selected_warehouse.supply, status="AS")
-                itemstock.quantity += quantity
-                itemstock.save()
-            except Warehouse.DoesNotExist:
-                itemstock = Warehouse(
-                    supply=selected_warehouse.supply,
-                    status="AS",
-                    quantity=quantity,
-                    measurement_unit=selected_warehouse.measurement_unit)
-                itemstock.save()
 
     template = 'catering/warehouse.html'
     title = 'Movimientos de Almacen'
@@ -453,21 +443,13 @@ def shop_list(request):
 
             for ele_shoplist in list_sl:
                 list_object = {
-                    'id':
-                    ele_shoplist.id,
-                    'nombre':
-                    ele_shoplist.presentation.supply.name,
-                    'cantidad':
-                    ele_shoplist.quantity,
-                    'medida':
-                    ele_shoplist.presentation.measurement_quantity,
-                    'unidad':
-                    ele_shoplist.presentation.measurement_unit,
-                    'costo':
-                    ele_shoplist.presentation.presentation_cost *
-                    ele_shoplist.quantity,
-                    'status':
-                    ele_shoplist.status
+                    'pk':ele_shoplist.pk,
+                    'nombre':ele_shoplist.presentation.supply.name,
+                    'cantidad':ele_shoplist.quantity,
+                    'medida':ele_shoplist.presentation.measurement_quantity,
+                    'unidad':ele_shoplist.presentation.measurement_unit,
+                    'costo':ele_shoplist.presentation.presentation_cost * ele_shoplist.quantity,
+                    'status':ele_shoplist.status
                 }
 
                 shop_list_array.append(list_object)
@@ -476,25 +458,17 @@ def shop_list(request):
             return JsonResponse(list_naive_array)
 
         if request.POST['type'] == 'load_list_detail':
-            element = json.loads(request.POST.get('load_list_detail'))
+            element = json.loads(request.POST.get('ele_pk'))
             list_sl = ShopListDetail.objects.get(id=element)
+
+            pres = Presentation.objects.get(pk=list_sl.presentation.pk)
+            pres.on_warehouse += list_sl.quantity
+            pres.save()
+
             list_sl.status = "DE"
             list_sl.deliver_day = datetime.now()
             list_sl.save()
 
-            try:
-                itemstock = Warehouse.objects.get(
-                    supply=list_sl.presentation.supply, status="ST")
-                itemstock.quantity += list_sl.quantity * list_sl.presentation.measurement_quantity
-                itemstock.save()
-            except Warehouse.DoesNotExist:
-                itemstock = Warehouse(
-                    supply=list_sl.presentation.supply,
-                    status="ST",
-                    quantity=list_sl.quantity *
-                    list_sl.presentation.measurement_quantity,
-                    measurement_unit=list_sl.presentation.measurement_unit)
-                itemstock.save()
 
         if request.POST['type'] == 'load_date':
             element = json.loads(request.POST.get('detail_list_id'))
