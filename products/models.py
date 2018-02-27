@@ -300,10 +300,27 @@ class Presentation(models.Model):
     measurement_unit = models.CharField(max_length=10, choices=METRICS, default=PACKAGE)
     measurement_quantity = models.FloatField(default=0)
     on_warehouse = models.IntegerField(default=0)
+    on_assembly = models.IntegerField(default=0)
 
     def __str__(self):
-        return '%s %s %s %s %s' % (self.supply, self.measurement_quantity,
-                             self.measurement_unit, self.presentation_cost, self.presentation_unit)
+        return '%s %s %s' % (self.supply, self.measurement_quantity,
+                             self.measurement_unit)
+
+
+    def getUnit(self):
+        mq = str(self.measurement_quantity)
+        mu = dict(self.METRICS).get(self.measurement_unit)
+
+        if self.measurement_quantity >= 1000 and self.measurement_unit == 'MI':
+            mq = str(self.measurement_quantity / 1000)
+            mu = "Litro"
+        if self.measurement_quantity >= 1000 and self.measurement_unit == 'GR':
+            mq = str(self.measurement_quantity / 1000)
+            mu = "Kilo"
+
+        DATA = (('mq',mq),('mu',mu))
+
+        return dict(DATA);
 
     def getElements(self):
         su = str(self.supply)
