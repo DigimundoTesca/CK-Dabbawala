@@ -1,37 +1,21 @@
 .cont{
-    height:75vh;
+    height: 75vh;
     overflow-y: scroll;
 }
 
-.element{
-    text-align: center;    
-    transition: 0.3s;        
-    box-shadow: 0px 4px 8px 0px ;    
-}
-
-.element:hover {
-    background: lightgray;
-    cursor: pointer;
-}
-
-.image{
-    height: 120px;    
-    margin: auto;    
-}
-
-.info_div, .info_quantity{
-    margin: auto;
-    background: #D44027;
-    text-align: center;    
-    color: white;    
-}
-
 .titles{
-    margin: auto;            
-    margin-bottom: 20px;    
+    background-color: #D44027;    
+    color: white;
     text-align: center;
-    font-size: 25px;
-    color: #ffecfe;
-    background: #D44027;    
+    padding: 10px;    
+}
+
+.img{
+    display: in-line;    
+    height: 50px;
+}
+
+.btn-pres{
+    cursor: pointer;           
 }
 
