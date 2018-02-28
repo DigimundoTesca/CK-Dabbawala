@@ -1,5 +1,7 @@
-$(function() {
+require('../scss/app.scss');
 
+const $ = require('jquery');
+$(function() {
   /**  Resalta el nombre de los enlaces del navbar de acuerdo a la ubicacion en donde se encuentre */
   let path = $(location).attr('pathname');
   if (path == '/sales/') {

@@ -1,9 +1,9 @@
-@import "variables";
+@import "../variables";
 
 .login-bg {
   background: { 
     image: url($STATIC_PATH + '/images/login/login-wallpaper.jpg');
-    // color: orange; 
+    color: orange;
     position: bottom;
     size: auto;
     repeat: no-repeat;

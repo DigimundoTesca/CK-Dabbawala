@@ -1,6 +1,6 @@
 @import "fonts";
 
-@import url(font-awesome.min.css);
+@import url("../css/font-awesome.min.css");
 
 
 @font-face {
@@ -941,7 +941,7 @@
         justify-content: center;
         align-items: center;
         background: rgba(0,0,0,0.1);
-        background-image: url("../images/image/popbck.png");
+        background-image: url("../../cloudkitchen/static/images/image/popbck.png");
         background-repeat: repeat;
         background-position:center top;
         background-size: contain;
@@ -1251,7 +1251,7 @@
         justify-content: center;
         align-items: center;
         background: rgba(0,0,0,0.1);
-        background-image: url("../images/image/popbck.png");
+        background-image: url("../../cloudkitchen/static/images/image/popbck.png");
         background-repeat: repeat;
         background-position:center top;
         background-size: contain;
@@ -3999,12 +3999,12 @@
   /* Banner */
 
   #banner.main {
-    background-image: url("../images/image/fondo.jpg");
+    background-image: url("../../cloudkitchen/static/images/image/fondo.jpg");
     top: 0;
   }
 
   #banner.build {
-    background-image: url("../images/image/build.jpg");
+    background-image: url("../../cloudkitchen/static/images/image/build.jpg");
     top: 0;
     margin-bottom: -35px;
   }
@@ -5080,7 +5080,7 @@
 
   .pick1 {
     width: 450px !important;
-    background-image: url('../images/image/bck1.jpg');
+    background-image: url('../../cloudkitchen/static/images/image/bck1.jpg');
     border-radius: 10px;
     background-position: center center;
     background-size: cover;
@@ -5091,7 +5091,7 @@
 
   .pick2 {
     width: 450px !important;
-    background-image: url('../images/image/bck2.jpg');
+    background-image: url('../../cloudkitchen/static/images/image/bck2.jpg');
     border-radius: 10px;
     background-position: center center;
     background-size: cover;
@@ -5225,7 +5225,7 @@
     justify-content: center;
     align-items: center;
     background: rgba(0,0,0,0.1);
-    background-image: url("../images/image/popbck.png");
+    background-image: url("../../cloudkitchen/static/images/image/popbck.png");
     background-repeat: repeat;
     background-position:center top;
     background-size: contain;
@@ -5596,7 +5596,7 @@ div#main a.puesto:hover{
 }
 #team_image{
   margin: 0 auto;
-  background-image: url('../images/team.jpeg');
+  background-image: url('../../cloudkitchen/static/images/team.jpeg');
   background-position: center;
   background-repeat: no-repeat;
   max-width: 660px;

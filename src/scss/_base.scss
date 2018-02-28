@@ -4,11 +4,12 @@ body {
   flex-direction: column;
   font-family: 'Open Sans', sans-serif;
   font-size: 18px;
-  min-height: 100vh; 
+  min-height: 100vh;
+
 }
 
 main {
-  flex: 1; 
+  flex: 1;
 }
 
 @import "auth/login";
