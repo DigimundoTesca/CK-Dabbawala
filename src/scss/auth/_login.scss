@@ -2,13 +2,19 @@
 
 .login-bg {
   background: { 
-    image: url($STATIC_PATH + '/images/login/login-wallpaper.jpg');
-    color: orange;
+    color: $primary;
     position: bottom;
     size: auto;
     repeat: no-repeat;
     attachment: fixed;
   }
+  background: linear-gradient(
+                  to bottom right,
+                  darken($primary, 15%),
+                  darken($primary, 12%),
+                  rgba($primary, .9),
+                  rgba($primary, .8),
+                  rgba($primary, .75));
   display: flex;
   // filter: blur(1rem );
   // transform: scale(1.1);

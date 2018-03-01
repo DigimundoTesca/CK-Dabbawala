@@ -6,10 +6,9 @@
 // Import in th default bootstrap variables.
 // Then override bootstrap with project specific values.
 // ----------------------------------------------
+@import "~bootstrap/scss/bootstrap";
 
-@import "normalize";
-
-@import "variables"; 
+@import "variables";
 
 @import "base";
-  
+

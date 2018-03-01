@@ -1,5 +1,5 @@
 require('../scss/app.scss');
-
+import 'bootstrap';
 const $ = require('jquery');
 $(function() {
   /**  Resalta el nombre de los enlaces del navbar de acuerdo a la ubicacion en donde se encuentre */

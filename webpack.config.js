@@ -1,44 +1,32 @@
 const path = require('path');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
-
+const ExtractTextWebpackPlugin  = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry: './src/js/app.js',
   output: {
     path: path.resolve(__dirname, 'cloudkitchen/static/js'),
-    filename: 'bundle.js'
+    filename: "bundle.js"
   },
-  watch: true,
   module: {
     rules: [
       {
         test: /\.scss$/,
-        use: [
-          {
-            loader: "style-loader", // creates style nodes from JS strings
-          },
-          {
-            loader: "css-loader", // translate CSS into CommonJS
+        use: ExtractTextWebpackPlugin.extract({
+          fallback: 'style-loader', // inject CSS to page
+          use: [{
+            loader: "css-loader", // translate CSS into CommonJS modules
             options: {
               url: false,
-              minimize: true,
-              sourceMap: true,
-              importLoaders: 1
+              minimize: true
             }
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              sourceMap: true
-            }
-          },
-          {
+          }, {
+            loader: 'postcss-loader', // Run post css actions
+          }, {
             loader: "sass-loader", // compiles SCSS to CSS
-            options: {
-              sourceMap: true
-            }
           }
-        ]
+          ]
+        })
       },
       {
         test: /\.js$/,
@@ -51,24 +39,21 @@ module.exports = {
     ]
   },
   plugins: [
+    new ExtractTextWebpackPlugin({
+      filename: '../css/style.css',
+      disable: false,
+      allChunks: false
+    }),
     new BrowserSyncPlugin(
-      // BrowserSync options
       {
-        // browse to http://localhost:3000/ during development
-        //host: 'localhost',
-        //port: 3000,
-        // proxy the Webpack Dev Server endpoint
-        // (which should be serving on http://localhost:3100/)
-        // through BrowserSync
         proxy: 'http://localhost:8000/',
-        files: ['./**/*.html', ]
+        files: ['./**/*.html', ],
+        open: false
       },
-      // plugin options
       {
-        // prevent BrowserSync from reloading the page
-        // and let Webpack Dev Server take care of this
         reload: true
       }
     )
-  ]
+  ],
+  devtool: '#source-map'
 };
