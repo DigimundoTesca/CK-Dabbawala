@@ -408,13 +408,13 @@ def warehouse(request):
 
             quantity = json.loads(request.POST.get('quantity'))
             presentation_pk = json.loads(request.POST.get('presentation_pk'))
-                
+
             # Retirar del almacen
             presentation = Presentation.objects.get(pk=presentation_pk)
             presentation.on_warehouse -= quantity
             presentation.on_assembly += quantity
             presentation.save()
-            
+
             return JsonResponse({'shop_list': "nothing"})
 
 
@@ -498,7 +498,6 @@ def new_shoplist(request):
         if form.is_valid():
             presentation = form.save(commit=False)
             presentation.save()
-            return redirect('/warehouse/new_shoplist')
 
         if request.POST['type'] == 'shop_list':
             shop_l = json.loads(request.POST.get('shop_list'))
@@ -525,6 +524,7 @@ def new_shoplist(request):
         'title': title,
         'supplies':supps,
         'presentations':all_presentations,
+        'page_title': PAGE_TITLE,
     }
     return render(request, template, context)
 

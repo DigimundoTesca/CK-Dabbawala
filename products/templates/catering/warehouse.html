@@ -9,10 +9,10 @@
                 <div id="accordion">
                     {% for supp in supps %}
                     <div class="card">
-                        <div class="card-header" id="heading-{{supp}}" data-toggle="collapse" data-target="#collapse-{{supp}}" aria-expanded="false" aria-controls="collapse-{{supp}}">
-                            <h5 class="mb-0"></h5>                                
-                                <img class="img" src="{{supp.image.url}}">
-                                {{supp}}                                                                                                    
+                        <div class="card-header" id="heading-{{supp}}" data-toggle="collapse" data-target="#collapse-{{supp}}" aria-expanded="false"
+                            aria-controls="collapse-{{supp}}">
+                            <h5 class="mb-0">
+                                <img class="img" src="{{supp.image.url}}"> {{supp}}
                             </h5>
                         </div>
                         <div id="collapse-{{supp}}" class="collapse" aria-labelledby="heading-{{supp}}" data-parent="#accordion">
@@ -27,16 +27,13 @@
                                                     <span class="badge badge-primary badge-pill">{{ presentation.on_warehouse }}</span>
                                                 </li>                                                
                                             </div>
-                                        </div>
-                                    </ul>
-                                        {% else %}                                            
-                                            {% if forloop.last %}
-                                                <div style="text-align:center">
-                                                    <h5>No hay presentaciones</h5>
-                                                </div>
-                                            {% endif %}                                                
-                                        {% endif %}                                 
-                                {% endfor %}    
+                                        </div>                                            
+                                        {% endif %}                                            
+                                    </ul>             
+                                {% empty %}
+                                No hay mas
+
+                                {% endfor %}                                    
                             </div>
                         </div>
                     </div>
@@ -53,7 +50,8 @@
                         <div class="card-header" id="b-heading-{{supp}}" data-toggle="collapse" data-target="#b-collapse-{{supp}}" aria-expanded="false"
                             aria-controls="b-collapse-{{supp}}">
                             <h5 class="mb-0"></h5>
-                            <img class="img" src="{{supp.image.url}}"> {{supp}}
+                                <img class="img" src="{{supp.image.url}}"> 
+                                {{supp}}                                                                
                             </h5>
                         </div>
                         <div id="b-collapse-{{supp}}" class="collapse" aria-labelledby="b-heading-{{supp}}" data-parent="#b-accordion">
@@ -69,12 +67,9 @@
                                             </li>
                                         </div>
                                     </div>
+                                    {% endif %} 
                                 </ul>
-                                {% else %} {% if forloop.last %}
-                                <div style="text-align:center">
-                                    <h5>No hay presentaciones</h5>
-                                </div>
-                                {% endif %} {% endif %} {% endfor %}
+                                {% endfor %}
                             </div>
                         </div>
                     </div>

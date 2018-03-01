@@ -68,7 +68,7 @@
         }
 
         var shop_list;
-        //Display creation list
+        //Link to New Shoplist
         $('.FAB').click(function (event) {
             location.href = '/warehouse/new_shoplist/';
         });
@@ -82,6 +82,7 @@
             var element = $(this);
             list_element_id = element.attr("id").substring(8);
 
+            //Load Lists
             $.ajax({
                 url: '{% url "products:shoplist" %}',
                 type: 'POST',
@@ -97,7 +98,8 @@
                         title: "Éxito",
                         text: "Lista Cargada",
                         type: "success",
-                        showConfirmButton: false
+                        showConfirmButton: false,
+                        timer: 1000,
                     });
                     html_list_detail = "";
                     shop_list = result['shop_list'];

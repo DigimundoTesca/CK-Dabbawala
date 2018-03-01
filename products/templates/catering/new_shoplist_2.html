@@ -1,4 +1,6 @@
-{% extends "base/base_nav_footer.html" %} {% load static %} {% block link %}
+{% extends "base/base_nav_footer.html" %} 
+{% load static %} 
+{% block link %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/kitchen/shoplist.css' %}"> 
 {% endblock link %} {% block content %}
 
@@ -43,7 +45,10 @@
                                 {% endif %} 
                             {% endfor %}
                             </div>
-                        </div>
+                        </div>                        
+                        <button type="button" class="btn-new-pres btn btn-primary col-12">
+                            Agregar Presentacion
+                        </button>                        
                     </div>                                               
                  {% endfor %}
             </div>
@@ -64,6 +69,9 @@
                     </tbody>
                 </table>
             </div>
+            <button type="button" id="clear-btn" class="btn btn-primary col-12">
+                Borrar Todo
+            </button>
         </div>
     </div>
 </div>
@@ -75,6 +83,27 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"> Agregar Presentacion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{form.as_p}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary">Agregar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 {% endblock content %} 
 {% block javascript %}
@@ -82,7 +111,7 @@
 
     var js_list = "{{presentations}}";
 
-    table_array = [];
+    let table_array = [];
 
     function get_cookie(name) {
             let cookie_value = null;
@@ -122,6 +151,7 @@
     }
 
     function pop_table(){
+        console.log(table_array);
         var html_list = ""; 
         $("#TableID tbody").empty();
         for (var x=0;x<table_array.length;x++){
@@ -136,9 +166,14 @@
         $("#TableID tbody").append($(html_list));
     }
 
-    function clear_array(){
-        
-    }
+    $('#clear-btn').on('click', function(e){
+        table_array = [];
+        pop_table();
+    });
+
+    $(".btn-new-pres").on('click', function(e){
+        $('#myModal').modal();
+    });
 
     $(".FAB").on("click", function (e) {
             let csrf_token = get_cookie('csrftoken');
