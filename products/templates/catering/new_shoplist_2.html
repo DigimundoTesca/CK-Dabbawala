@@ -137,6 +137,9 @@
             table_array.push(arr);    
         }else{
             table_array[res][6]+=1;
+            var a = parseInt(table_array[res][3])
+            var b = parseInt(arr[3])
+            table_array[res][3]=a+b;
         }                
         pop_table();
     });

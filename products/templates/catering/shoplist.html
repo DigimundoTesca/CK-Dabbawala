@@ -128,8 +128,7 @@
                         ));
 
                     body.on("click", ".sld_missing", function (e) {
-                        var sld_ele_id = $(this).parent().attr('id').substring(3);
-                        console.log(sld_ele_id);
+                        var sld_ele_id = $(this).parent().attr('id').substring(3);                        
                         var nombre = $(this).parent().children(".sld_nombre").html();
                         var presentacion = $(this).parent().children(".sld_medida").html();
                         var cantidad = $(this).parent().children(".sld_cantidad").html();
@@ -161,7 +160,7 @@
                                         'Agregado al almacen',
                                         'success'
                                     );                                  
-                                    $(this).children(".mi_button").html = "done";
+                                    $(this).children(".mi_button").text("done");
                                 }
                             });
                         });
@@ -178,11 +177,12 @@
                                 'detail_list_id': sld_ele_id,
                                 csrfmiddlewaretoken: csrf_token,
                             },
-                            datatype: "html",
-                            success: function (result) {
-                                var date = result.substring(0, 11);
-                                var time = result.substring(12, 19);
-                                swal("Fecha de Entrega: " + date + " a las " + time)
+                            datatype: "json",
+                            success: function (result) {  
+                                var date = result['date']
+                                var fecha = date.substring(0, 10);
+                                var hora = date.substring(11, 16);
+                                swal("Fecha de Entrega: " + fecha + "<br> Hora: " + hora)
                             }
                         });
                     });

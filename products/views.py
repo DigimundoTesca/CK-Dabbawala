@@ -474,8 +474,8 @@ def shop_list(request):
             element = json.loads(request.POST.get('detail_list_id'))
             list_sl = ShopListDetail.objects.get(id=element)
             date = list_sl.deliver_day
-
-            return HttpResponse(date)
+            j_date = {'date': date}
+            return JsonResponse(j_date)
 
     template = 'catering/shoplist.html'
     title = 'Lista de Compras'
