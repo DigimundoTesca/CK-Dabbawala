@@ -8,7 +8,7 @@
 }
 
 .tab_view{
-    height: 80vh;  
+    height: 75vh;  
     overflow-y: auto;
 }
 
@@ -19,7 +19,7 @@
 }
 
 .sect_btn{
-    height: 40vh;        
+    height: 35vh;        
 }
 
 img{    
