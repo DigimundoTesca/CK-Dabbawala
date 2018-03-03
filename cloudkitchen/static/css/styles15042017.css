@@ -735,9 +735,6 @@ small {
   -moz-appearance: none;
   -webkit-appearance: none;
 }
-.dropdown-menu {
-  margin-left: -5rem !important;
-}
 .form-register-customer {
   margin: 2rem 0;
 }

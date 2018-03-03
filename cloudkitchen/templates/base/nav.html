@@ -5,13 +5,19 @@
   </marquee>
 </nav>
 -->
-<nav class="navbar navbar-full navbar-dark navbar-base">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'users:login' %}"><h3>{{ page_title }}</h3></a>
-    <ul class="nav navbar-nav float-xs-right">
-    <li class="nav-item dropdown" id="link-sales">
-        <a class="nav-link dropdown-toggle" href="#" id="supportedContentDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ventas</a>
-        <div class="dropdown-menu" aria-labelledby="supportedContentDropdown">
+<nav class="navbar navbar-expand-md navbar-dark navbar-base">
+  <a class="navbar-brand" href="{% url 'users:login' %}">
+    <h3>{{ page_title }}</h3>
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="nav navbar-nav ml-auto">
+      <li class="nav-item dropdown" id="link-sales">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ventas</a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <a class="dropdown-item" href="{% url 'sales:sales_new' %}">POS</a>
           <a class="dropdown-item" href="{% url 'sales:sales' %}">Analytics</a>
         </div>
@@ -24,33 +30,37 @@
           <a class="dropdown-item" href="{% url 'kitchen:assembly' %}">Ensamble</a>
         </div>
       </li>
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown" id="link-products">
         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Almacen</a>
-        <div class="dropdown-menu" aria-labelledby="supportedContentDropdown">          
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="{% url 'products:warehouse_analytics' %}">Analytics</a>
           <a class="dropdown-item" href="{% url 'products:supplies' %}">Insumos</a>
           <a class="dropdown-item" href="{% url 'products:cartridges' %}">Productos</a>
           <a class="dropdown-item" href="{% url 'products:warehouse' %}">Almacen</a>
-          <a class="dropdown-item" href="{% url 'products:new_shoplist' %}">Lista de Compras</a>
+          <a class="dropdown-item" href="{% url 'products:new_shoplist' %}">Generar LC</a>
+          <a class="dropdown-item" href="{% url 'products:shoplist' %}">Lista de Compras</a>
         </div>
       </li>
+      {% if user.is_superuser %}
       <li class="nav-item dropdown" id="link-diners">
-        <a class="nav-link dropdown-toggle" href="#" id="supportedContentDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Comedor</a>
-        <div class="dropdown-menu" aria-labelledby="supportedContentDropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Comedor</a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <a class="dropdown-item" href="{% url 'diners:diners' %}">Accesos de hoy</a>
           <a class="dropdown-item" href="{% url 'diners:diners_logs' %}">Historial de Accesos</a>
         </div>
       </li>
+      {% endif %}
       <li class="nav-item dropdown" id="link-diners">
-        <a class="nav-link dropdown-toggle" href="#" id="supportedContentDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Satisfacción</a>
-        <div class="dropdown-menu" aria-labelledby="supportedContentDropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Satisfacción</a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <a class="dropdown-item" href="{% url 'diners:satisfaction_rating' %}">Calificador</a>
           <a class="dropdown-item" href="{% url 'diners:analytics' %}">Analytics</a>
           <a class="dropdown-item" href="{% url 'diners:suggestions' %}">Comentarios</a>
         </div>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="supportedContentDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user.username }}</a>
-        <div class="dropdown-menu" aria-labelledby="supportedContentDropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user.username }}</a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           {% if user.is_superuser %}
           <a class="dropdown-item" href="{% url 'admin:login' %}">Panel de Control</a>
           {% endif %}

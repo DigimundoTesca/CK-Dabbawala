@@ -78,25 +78,16 @@ class Supply(models.Model):
     created_at = models.DateTimeField(editable=False, auto_now=True)
     category = models.ForeignKey(
         SuppliesCategory, default=1, on_delete=models.CASCADE)
-    barcode = models.PositiveIntegerField(
+    barcode = models.BigIntegerField(
         help_text='(Código de barras de 13 dígitos)',
         validators=[MaxValueValidator(9999999999999)],
         blank=True,
         null=True)
-    storage_required = models.CharField(
-        choices=STORAGE_REQUIREMENTS, default=DRY_ENVIRONMENT, max_length=2)
+    storage_required = models.CharField(choices=STORAGE_REQUIREMENTS, default=DRY_ENVIRONMENT, max_length=2)
     supplier = models.ForeignKey(Supplier, default=1, on_delete=models.CASCADE)
-    presentation_unit = models.CharField(
-        max_length=10, choices=PRESENTATION_UNIT, default=PACKAGE)
-    presentation_cost = models.FloatField(default=0)
-    measurement_unit = models.CharField(
-        max_length=10, choices=METRICS, default=PACKAGE)
-    measurement_quantity = models.FloatField(default=0)
     optimal_duration = models.IntegerField(default=0)
-    optimal_duration_unit = models.CharField(
-        choices=OPTIMAL_DURATION, max_length=2, default=DAYS)
-    location = models.ForeignKey(
-        SupplyLocation, default=1, on_delete=models.CASCADE)
+    optimal_duration_unit = models.CharField(choices=OPTIMAL_DURATION, max_length=2, default=DAYS)
+    location = models.ForeignKey(SupplyLocation, default=1, on_delete=models.CASCADE)
     image = models.ImageField(blank=False, upload_to='supplies')
 
     def __str__(self):
@@ -273,13 +264,25 @@ class PackageCartridgeRecipe(models.Model):
         verbose_name = 'Receta del Paquete'
         verbose_name_plural = 'Recetas de Paquetes'
 
+class Brand(models.Model):
+    name = models.CharField(max_length=90)
+    created_at = models.DateTimeField(auto_now=True)
+
 
 class Presentation(models.Model):
 
     PACKAGE = 'PA'
     BOX = 'BO'
     PIECE = 'PZ'
-    PRESENTATION_UNIT = ((PACKAGE, 'Paquete'), (BOX, 'Caja'), (PIECE, 'Pieza'))
+    GRANEL = 'GR'
+    CARTON = 'CT'
+    BAG = 'BA'
+    PRESENTATION_UNIT = ((PACKAGE, 'Paquete'),
+                         (BOX, 'Caja'),
+                         (PIECE, 'Pieza'),
+                         (GRANEL, 'Granel'),
+                         (CARTON, 'Carton'),
+                         (BAG, 'Bolsa'))
 
     GRAM = 'GR'
     MILLILITER = 'MI'
@@ -292,18 +295,116 @@ class Presentation(models.Model):
     )
 
     supply = models.ForeignKey(Supply, default=1, on_delete=models.CASCADE)
-    measurement_quantity = models.FloatField(default=0)
-    measurement_unit = models.CharField(
-        max_length=10, choices=METRICS, default=PACKAGE)
-    presentation_unit = models.CharField(
-        max_length=10, choices=PRESENTATION_UNIT, default=PACKAGE)
+    presentation_unit = models.CharField(max_length=10, choices=PRESENTATION_UNIT, default=PACKAGE)
     presentation_cost = models.FloatField(default=0)
+    measurement_unit = models.CharField(max_length=10, choices=METRICS, default=PACKAGE)
+    measurement_quantity = models.FloatField(default=0)
+    on_warehouse = models.IntegerField(default=0)
+    on_assembly = models.IntegerField(default=0)
 
     def __str__(self):
         return '%s %s %s' % (self.supply, self.measurement_quantity,
                              self.measurement_unit)
 
+
+    def getUnit(self):
+        mq = str(self.measurement_quantity)
+        mu = dict(self.METRICS).get(self.measurement_unit)
+
+        if self.measurement_quantity >= 1000 and self.measurement_unit == 'MI':
+            mq = str(self.measurement_quantity / 1000)
+            mu = "Litro"
+        if self.measurement_quantity >= 1000 and self.measurement_unit == 'GR':
+            mq = str(self.measurement_quantity / 1000)
+            mu = "Kilo"
+
+        DATA = (('mq',mq),('mu',mu))
+
+        return dict(DATA);
+
+    def getElements(self):
+        su = str(self.supply)
+        mq = str(self.measurement_quantity)
+        mu = dict(self.METRICS).get(self.measurement_unit)
+        pc = str(self.presentation_cost)
+        pu = dict(self.PRESENTATION_UNIT).get(self.presentation_unit)
+        pk = str(self.pk)
+
+        if self.measurement_quantity >= 1000 and self.measurement_unit == 'MI':
+            mq = str(self.measurement_quantity / 1000)
+            mu = "Litro"
+        if self.measurement_quantity >= 1000 and self.measurement_unit == 'GR':
+            mq = str(self.measurement_quantity / 1000)
+            mu = "Kilo"
+
+        return su +"&"+ mq +"&" + mu +"&"+ pc +"&"+ pu + "&" + pk
+
+    def getDescription(self):
+        pu = dict(self.PRESENTATION_UNIT).get(self.presentation_unit)
+        pc = str(self.presentation_cost)
+        mu = dict(self.METRICS).get(self.measurement_unit)
+        mq = str(self.measurement_quantity)
+
+        if self.measurement_quantity >= 1000 and self.measurement_unit == 'MI':
+            mq = str(self.measurement_quantity / 1000)
+            mu = "Litro"
+        if self.measurement_quantity >= 1000 and self.measurement_unit == 'GR':
+            mq = str(self.measurement_quantity / 1000)
+            mu = "Kilo"
+
+        return pu + " de " + mq + " " + mu + " Precio: $" + pc
+
     class Meta:
         ordering = ('id', )
         verbose_name = 'Presentacion'
         verbose_name_plural = 'Presentaciones'
+
+
+class ShopList(models.Model):
+
+    DELIVERED = 'DE'
+    MISSING = 'MI'
+    WAITING = 'WA'
+
+    STATUS = (
+        (DELIVERED, 'Delivered'),
+        (MISSING, 'Missing'),
+        (WAITING, 'Waiting'),
+    )
+
+    created_at = models.DateField(editable=False, auto_now_add=True)
+    status = models.CharField(choices=STATUS, default=MISSING, max_length=15)
+
+    def __str__(self):
+        return '%s' % self.id
+
+    class Meta:
+        ordering = ('id', )
+        verbose_name = 'Lista de Compra'
+        verbose_name_plural = 'Lista de Compras'
+
+
+class ShopListDetail(models.Model):
+    DELIVERED = 'DE'
+    MISSING = 'MI'
+    WAITING = 'WA'
+
+    STATUS = (
+        (DELIVERED, 'Delivered'),
+        (MISSING, 'Missing'),
+        (WAITING, 'Waiting'),
+    )
+
+    status = models.CharField(choices=STATUS, default=MISSING, max_length=15)
+    shop_list = models.ForeignKey(ShopList, default=1, on_delete=models.CASCADE)
+    presentation = models.ForeignKey(Presentation, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    deliver_day = models.DateTimeField(editable=False, null=True, blank=True)
+
+    def __str__(self):
+        return '%s %s' % (self.presentation, self.quantity)
+
+    class Meta:
+        ordering = ('id', )
+        verbose_name = 'Lista de Compra-Detalles'
+        verbose_name_plural = 'Lista de Compras-Detalles'

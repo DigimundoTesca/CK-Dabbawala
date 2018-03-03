@@ -1,0 +1,28 @@
+.list-group{
+    height: 45rem;
+    overflow-y: auto;
+}
+
+.tab-content{
+    height: 45rem;
+    overflow: hidden;
+}
+
+a.material-icons{
+    font-size: 50px;
+}
+
+.img-c{        
+    border-radius: 50%; 
+    overflow: hidden;    
+    height: 38rem;
+}
+
+img{            
+    display: block;
+    margin:auto;       
+    height:100%;        
+}
+
+
+

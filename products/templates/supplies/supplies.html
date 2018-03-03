@@ -1,26 +1,51 @@
-{% extends "base/base_nav_footer.html" %}
+{% extends "base/base_nav_footer.html" %} 
+{% load static  %}
+{% block link %}
+<link rel="stylesheet" type='text/css' href="{% static 'css/products/supplies.css' %}"> 
+{% endblock link %}
 {% block content %}
-<div class="container container-main col-lg-10 push-lg-1">
+<div class="container-fluid">
   <div class="row">
-    {% for sp in supplies %}
-    <div class="card col-lg-4 col-xl-2">
-      <figure>
-        <img class="card-img-top" src="{{ sp.image.url }}" alt="Card image cap" style="max-width: 100%;max-height: 150px" >
-      </figure>
-      <div class="card-block">
-        <h4 class="card-title">{{ sp.name }}</h4>
-        <h6 class="card-subtitle text-muted">{{ sp.category }}</h6>
-        <div class="card-bloc text-xs-right">
-          <a href="{% url 'products:supply_detail' sp.pk %}">Detalles</a> <br>
-          <a href="{% url 'products:supply_modify' sp.pk %}">Modificar</a> <br>
-          <a href="{% url 'products:supply_delete' sp.pk %}">Delete</a>
-        </div>
+    <div class="col-md-4 col-sm-12">
+      <div class="list-group" id="list-tab" role="tablist">
+        {% for sp in supplies %}
+          {% if sp == supplies|first %}
+          <a class="list-group-item list-group-item-action active" id="list-{{sp.pk}}-list" data-toggle="list" href="#{{sp.pk}}-home"
+            role="tab" aria-controls="{{sp.pk}}">
+          {% else %}
+          <a class="list-group-item list-group-item-action" id="list-{{sp.pk}}-list" data-toggle="list" href="#{{sp.pk}}-home"
+            role="tab" aria-controls="{{sp.pk}}">
+          {% endif %}          
+            {{sp.name}}
+          </a>
+        {% endfor %}        
       </div>
     </div>
-    {% endfor %}
-  </div>
+    <div class="col-md-8 col-sm-12">
+      <div class="tab-content" id="nav-tabContent">
+        {% for sp in supplies %}
+        {% if sp == supplies|first %}
+          <div class="tab-pane fade show active" id="{{sp.pk}}-home" role="tabpanel" aria-labelledby="list-{{sp.pk}}-list">
+        {% else %}
+          <div class="tab-pane fade" id="{{sp.pk}}-home" role="tabpanel" aria-labelledby="list-{{sp.pk}}-list">
+        {% endif %}        
+          <p class="text-center">{{sp.name}}</p>
+          <div class="row">  
+            <div class="img-c col-md-12">
+              <img src="{{sp.image.url}}" alt="No img" >              
+            </div>          
+          </div>
+          <div class="row">
+            <a title="Detalles" class="col-4 material-icons text-center" href="{% url 'products:supply_detail' sp.pk %}">dehaze</a>
+            <a title="Eliminar" class="col-4 material-icons text-center" href="{% url 'products:supply_delete' sp.pk %}">delete</a>
+            <a title="Modificar" class="col-4 material-icons text-center" href="{% url 'products:supply_modify' sp.pk %}">create</a>          
+          </div>
+        </div>
+        {% endfor %}        
+      </div>
+    </div>
+  </div>  
 </div>
-
 <div class="popout">
   <div class="FAB" id="fab-add-supply">
     <i class="material-icons">add</i>
