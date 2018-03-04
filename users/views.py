@@ -5,12 +5,12 @@ from django.contrib.auth import logout as logout_django
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 
 from .forms import UserForm
 from .forms import CustomerUserProfileForm, CustomerProfileForm
 
-from .models.users import UserMovements, User
+from .models.users import UserMovements
 from .models.customers import CustomerProfile
 
 from cloudkitchen.settings.base import PAGE_TITLE
@@ -45,7 +45,6 @@ def login(request):
         else:
             return redirect('users:index')
 
-    tab = 'login'
     error_message = None
     success_message = None
     template = 'auth/login.html'
@@ -53,6 +52,8 @@ def login(request):
     form_user = UserForm(request.POST or None)
 
     if request.method == 'POST':
+        # MOVER
+        """"
         if 'form-register' in request.POST:
             tab = 'register'
             if form_user.is_valid():
@@ -62,27 +63,37 @@ def login(request):
                 tab = 'register'
                 success_message = 'Usuario creado. Necesita ser activado por un administrador'
                 form_user = None
+        """
+        form_user = UserForm(None)
+        username_login = request.POST.get('username_login')
+        password_login = request.POST.get('password_login')
+        user = authenticate(username=username_login, password=password_login)
 
-        elif 'form-login' in request.POST:
-            form_user = UserForm(None)
-            username_login = request.POST.get('username_login')
-            password_login = request.POST.get('password_login')
-            user = authenticate(username=username_login, password=password_login)
+        if user is not None:
+            login_django(request, user)
+            login_check(user.username)
+            return redirect('sales:sales')
 
-            if user is not None:
-                login_django(request, user)
-                login_check(user.username)
-                return redirect('sales:sales')
-
-            else:
-                error_message = 'Usuario o contraseña incorrecto'
+        else:
+            error_message = 'Usuario o contraseña incorrecto'
 
     context = {
-        'tab': tab,
         'title': 'Bienvenido a CloudKitchen. Inicia Sesión o registrate.',
         'error_message': error_message,
         'success_message': success_message,
         'form_user': form_user,
+    }
+    return render(request, template, context)
+
+
+def login_register(request):
+    objects = UserMovements.objects.all()
+
+    template = 'auth/login_register.html'
+    title = 'Tabla de Usuarios'
+    context = {
+        'title' : title,
+        'objects' : objects
     }
     return render(request, template, context)
 
@@ -121,20 +132,6 @@ def logout(request):
 def logout_customer(request):
     logout_django(request)
     return redirect('orders:new_order')
-
-
-@login_required(login_url='users:login')
-def login_register(request):
-
-    objects = UserMovements.objects.all()
-
-    template = 'auth/login_register.html'
-    title = 'Tabla de Usuarios'
-    context={
-    'titie' : title,
-    'objects' : objects
-    }
-    return render(request, template, context)
 
 
 def login_check(user):

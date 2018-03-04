@@ -15,7 +15,7 @@ urlpatterns = [
     # auth
     url(r'^auth/$', views.login, name='login'),
     url(r'^auth/logout/$', views.logout, name='logout'),
-    url(r'^auth/login_register/$', views.login_register, name='login_register'),
+    url(r'^auth/registro$', views.login_register, name='login_register'),
 
     # profile
     # url(r'^profiles/$', views.ProfileVIew, name='profiles'),
