@@ -1,6 +1,6 @@
 const path = require('path');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
-const ExtractTextWebpackPlugin  = require('extract-text-webpack-plugin');
+const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry: './src/js/app.js',
@@ -31,7 +31,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        exclude: '/node_mdodules/',
+        exclude: [/node_modules/],
         query: {
           presets: ['es2015'],
         }

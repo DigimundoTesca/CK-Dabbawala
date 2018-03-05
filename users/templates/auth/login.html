@@ -15,35 +15,38 @@
     <div class="container mt-3">
       <div class="row">
         <div class="col-12 d-flex justify-content-center mb-3">
-          <img class="img-fluid" src="{% static 'images/login/logo_white.png' %}" alt="Logo Dabbawala">
+          <img class="img-logo" src="{% static 'images/login/logo_white.png' %}" alt="Logo Dabbawala">
         </div>
         <div class="col-12 d-flex justify-content-center mt-3 mb-3">
           <p class="h4 text-light">Inicia sesión aquí</p>
         </div>
+        {% if error_message %}
+          <div class="col alert alert-danger" role="alert">
+            {{ error_message }}
+          </div>
+        {% endif %}
         <div class="col-12 d-flex justify-content-center mt-3 mb-3">
-          <form class="container" method="POST" action="">
-            {% csrf_token %}
-            <div class="form-group row">
-              <label for="colFormLabel" class="col-sm-2 col-form-label text-white">Usuario</label>
-              <div class="col-sm-10">
+          <div class="card col-lg-8 col-xl-6 push-lg-2 push-xl-3 pt-3">
+            <form method="POST" action="">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="username" class="text-muted">Usuario</label>
                 <input name="username_login" type="text" class="form-control" id="colFormLabel" placeholder="Usuario">
               </div>
-            </div>
-            <div class="form-group row">
-              <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label text-white">Contraseña</label>
-              <div class="col-sm-10">
+              <div class="form-group">
+                <label for="password" class="text-muted">Contraseña</label>
                 <input name="password_login" type="password" class="form-control form-control" id="colFormLabelLg" placeholder="Contraseña">
               </div>
-            </div>
-            <div class="d-flex justify-content-end mb-3">
-              <input class="btn btn-primary" type="submit" value="Iniciar Sesión"/>
-            </div>
-          </form>
+              <div class="d-flex justify-content-end mb-3">
+                <input class="btn btn-primary" type="submit" value="Iniciar Sesión"/>
+              </div>
+            </form>
+          </div>
         </div>
         <div class="col-12 mt-3">
           <p class="text-left text-white">
             ¿No tienes cuenta?
-            <a class="badge badge-pill badge-light" href="{% url 'users:login_register' %}">¡Regístrate aquí!</a>
+            <a class="badge badge-pill badge-primary" href="{% url 'users:login_register' %}">¡Regístrate aquí!</a>
           </p>
         </div>
       </div>

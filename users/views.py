@@ -52,18 +52,6 @@ def login(request):
     form_user = UserForm(request.POST or None)
 
     if request.method == 'POST':
-        # MOVER
-        """"
-        if 'form-register' in request.POST:
-            tab = 'register'
-            if form_user.is_valid():
-                new_user = form_user.save(commit=False)
-                new_user.set_password(form_user.cleaned_data['password'])
-                new_user.save()
-                tab = 'register'
-                success_message = 'Usuario creado. Necesita ser activado por un administrador'
-                form_user = None
-        """
         form_user = UserForm(None)
         username_login = request.POST.get('username_login')
         password_login = request.POST.get('password_login')
@@ -87,13 +75,30 @@ def login(request):
 
 
 def login_register(request):
-    objects = UserMovements.objects.all()
+    if request.user.is_authenticated:
+        return redirect('sales:sales')
 
+    error_message = None
+    success_message = None
     template = 'auth/login_register.html'
-    title = 'Tabla de Usuarios'
+
+    form_user = UserForm(request.POST or None)
+
+    if request.method == 'POST':
+        if form_user.is_valid():
+            new_user = form_user.save(commit=False)
+            new_user.set_password(form_user.cleaned_data['password'])
+            new_user.save()
+            success_message = 'Usuario creado. Necesita ser activado por un administrador'
+
+        else:
+            error_message = 'Usuario o contraseña incorrecto'
+
     context = {
-        'title' : title,
-        'objects' : objects
+        'title': 'Bienvenido a CloudKitchen. Inicia Sesión o registrate.',
+        'error_message': error_message,
+        'success_message': success_message,
+        'form_user': form_user,
     }
     return render(request, template, context)
 
