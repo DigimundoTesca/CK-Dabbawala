@@ -17,6 +17,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 PAGE_TITLE = 'Dabbawala - Desayunos Ya!'
 
+DEBUG = True
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('DABBANET_SECRET_KEY')
 
@@ -47,6 +49,7 @@ USER_APPS = [
     'kitchen.apps.KitchenConfig',
     'diners.apps.DinersConfig',
     'api.apps.ApiConfig',
+    'webpack_loader'
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_APPS + USER_APPS
@@ -131,6 +134,17 @@ USE_TZ = True
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'CACHE': not DEBUG,
+        'BUNDLE_DIR_NAME': '../static/',  # must end with slash
+        'STATS_FILE': os.path.join(BASE_DIR, '../webpack-stats.json'),
+        'POLL_INTERVAL': 0.1,
+        'TIMEOUT': None,
+        'IGNORE': ['.+\.hot-update.js', '.+\.map']
+    }
+}
 
 STATIC_URL = '/static/'
 

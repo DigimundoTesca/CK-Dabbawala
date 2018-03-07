@@ -1,7 +1,9 @@
 require('../scss/app.scss');
 import 'bootstrap';
-const $ = require('jquery');
+import 'chart.js';
+
 $(function() {
+  console.log("hola");
   /**  Resalta el nombre de los enlaces del navbar de acuerdo a la ubicacion en donde se encuentre */
   let path = $(location).attr('pathname');
   if (path == '/sales/') {

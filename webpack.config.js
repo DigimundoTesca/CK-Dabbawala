@@ -1,12 +1,14 @@
 const path = require('path');
+const webpack = require('webpack');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin');
+const BundleTracker = require('webpack-bundle-tracker');
 
 module.exports = {
   entry: './src/js/app.js',
   output: {
-    path: path.resolve(__dirname, 'cloudkitchen/static/js'),
-    filename: "bundle.js"
+    path: path.resolve(__dirname, 'cloudkitchen/static/'),
+    filename: "[name]-[hash].js"
   },
   module: {
     rules: [
@@ -39,11 +41,13 @@ module.exports = {
     ]
   },
   plugins: [
-    new ExtractTextWebpackPlugin({
-      filename: '../css/style.css',
-      disable: false,
-      allChunks: false
-    }),
+    new ExtractTextWebpackPlugin(
+      {
+        filename: '[name]-[hash].css',
+        disable: false,
+        allChunks: false
+      }
+    ),
     new BrowserSyncPlugin(
       {
         proxy: 'http://localhost:8000/',
@@ -52,6 +56,20 @@ module.exports = {
       },
       {
         reload: true
+      }
+    ),
+    // Where webpack stores data about bundles.
+    new BundleTracker(
+      {
+        filename: './webpack-stats.json'
+      }
+    ),
+    // Makes jQuery available in every module.
+    new webpack.ProvidePlugin(
+      {
+        $: 'jquery',
+        jQuery: 'jquery',
+        'window.jQuery': 'jquery'
       }
     )
   ],
