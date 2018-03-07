@@ -3,7 +3,7 @@
 {% load render_bundle from webpack_loader %}
 
 {% block style %}
-  {% render_bundle 'main' 'css' %}
+  {% render_bundle 'main' 'css' 'CSS' %}
 {% endblock %}
 
 {% block page_title %}
@@ -179,7 +179,7 @@
 {% endblock content %}
 
 {% block javascript %}
-  {% render_bundle 'main' 'js' %}
+  {% render_bundle 'main' 'js' 'JS'%}
 
   <script>
     $(function() {

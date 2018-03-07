@@ -7,7 +7,7 @@ const BundleTracker = require('webpack-bundle-tracker');
 module.exports = {
   entry: './src/js/app.js',
   output: {
-    path: path.resolve(__dirname, 'cloudkitchen/static/'),
+    path: path.resolve(__dirname, 'cloudkitchen/static/js/'),
     filename: "[name]-[hash].js"
   },
   module: {
@@ -43,7 +43,7 @@ module.exports = {
   plugins: [
     new ExtractTextWebpackPlugin(
       {
-        filename: '[name]-[hash].css',
+        filename: '../css/[name]-[hash].css',
         disable: false,
         allChunks: false
       }

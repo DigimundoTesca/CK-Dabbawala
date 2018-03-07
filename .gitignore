@@ -156,3 +156,8 @@ media/
 # SASS Files
 /**/.sass-cache/*
 node_modules/
+
+# Webpack bundle files
+/**/static/**/*.css
+/**/static/**/*.js
+/**/static/**/*.map
