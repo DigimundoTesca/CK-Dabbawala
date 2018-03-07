@@ -12,7 +12,7 @@
   <!-- Container -->
   <div class="container-fluid container-sales">
     <div class="row">
-      <div class="col-xs-12 col-lg-3 group-sales">
+      <div class="col-12 col-lg-3 group-sales">
         <div class="card col-sm-12 card-outline-info">
           <div class="info-sale">
             <span class="text-total left">Total: </span>
@@ -29,7 +29,7 @@
         <div class="card col-sm-12 card-scroll-orders card-scroll card-outline-info">
           <div class="card-block products-block">
             <div class="row">
-              <div class="col-xs-10 col-lg-9 col-xl-10">
+              <div class="col-10 col-lg-9 col-xl-10">
                 <h4>Ticket</h4>
               </div>
             </div>
@@ -37,15 +37,15 @@
           <ul class="list-group list-group-flush" id="sales-list">
           </ul>
         </div>
-        <button type="button" id="btn-orders-reset" class="btn btn-danger col-xs-12 btn-lg">Cancelar Venta</button>
+        <button type="button" id="btn-orders-reset" class="btn btn-danger col-12 btn-lg">Cancelar Venta</button>
       </div>
-      <div class="group-sales col-xs-12 col-lg-9">
+      <div class="group-sales col-12 col-lg-9">
         <div class="row">
-          <div class="col-xs-12 col-md-4 col-lg-4">
+          <div class="col-12 col-md-4 col-lg-4">
             <div class="card card-block card-product-title card-outline-info">
               <h3>Complementos</h3>
             </div>
-            <div class="card col-xs-12 card-scroll card-outline-info" id="group-complements">
+            <div class="card col-12 card-scroll card-outline-info" id="group-complements">
               <div class="card-block products-block">
                 {% for cartridge in cartridges %}
                 {% if cartridge.is_active %}
@@ -70,11 +70,11 @@
               </div>
             </div>
           </div>
-          <div class="col-xs-12 col-md-4 col-lg-4">
+          <div class="col-12 col-md-4 col-lg-4">
             <div class="card card-block card-product-title card-outline-info">
               <h3>Platillos</h3>
             </div>
-            <div class="card col-xs-12 card-scroll card-outline-info" id="group-dishes">
+            <div class="card col-12 card-scroll card-outline-info" id="group-dishes">
               <div class="card-block products-block">
                 {% for cartridge in cartridges %}
                 {% if cartridge.is_active %}
@@ -99,11 +99,11 @@
               </div>
             </div>
           </div>
-          <div class="col-xs-12 col-md-4 col-lg-4">
+          <div class="col-12 col-md-4 col-lg-4">
           <div class="row">
-            <div class=" col-xs-12">
-              <button type="button" id="btn-order" class="btn btn-success col-xs-12 btn-lg" data-toggle="modal" data-target="#modal-order">Realizar venta</button>
-              <div class="card col-xs-12 card-scroll card-outline-warning" id="group-promos">
+            <div class=" col-12">
+              <button type="button" id="btn-order" class="btn btn-success col-12 btn-lg" data-toggle="modal" data-target="#modal-order">Realizar venta</button>
+              <div class="card col-12 card-scroll card-outline-warning" id="group-promos">
                 <div class="card-block card-block">
                   <h4>Promos</h4>
                   <div class="card-block product-container package-container" >
@@ -134,60 +134,62 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="myModalLabel">Realizar venta</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
         <div class="modal-body">
           <div class="container-fluid">
-            <div class="card card-scroll col-xs-4" id="printer-container">
-              <div id="printer" style="margin: 0 auto">
-                <figure class="content-img">
-                  <img src="{% static 'images/dabbawala_black.jpg' %}" alt="logo">
-                </figure>
-                <div class="ticket-order-container text-xs-center">
-                  <span>ORDEN</span>
-                  <span id="ticket-order"></span>
-                </div>
-                <div class="ticket-address">
-                  <p class="text-xs-center">
-                    Calle Hidalgo #78, San Lucas Tepetlaco. 54055 Tlalnepantla, Méx
-                  </p>
-                </div>
-                <div class="container ticket-datetime-container">
-                  <div class="row">
-                    <div class="col-xs-6 ticket-datetime">
-                      <span id="ticket-time"></span>
-                    </div>
-                    <div class="col-xs-6 ticket-datetime">
-                      <span id="ticket-date"></span>
+            <div class="row">
+              <div class="card card-scroll col-5" id="printer-container">
+                <div id="printer" style="margin: 0 auto">
+                  <figure class="content-img">
+                    <img src="{% static 'images/dabbawala_black.jpg' %}" alt="logo">
+                  </figure>
+                  <div class="ticket-order-container text-xs-center">
+                    <span>ORDEN</span>
+                    <span id="ticket-order"></span>
+                  </div>
+                  <div class="ticket-address">
+                    <p class="text-xs-center">
+                      Calle Hidalgo #78, San Lucas Tepetlaco. 54055 Tlalnepantla, Méx
+                    </p>
+                  </div>
+                  <div class="container ticket-datetime-container">
+                    <div class="row">
+                      <div class="col-6 ticket-datetime">
+                        <span id="ticket-time"></span>
+                      </div>
+                      <div class="col-6 ticket-datetime">
+                        <span id="ticket-date"></span>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <ul class="list-group list-group-flush" id="sales-list-modal">
-                </ul>
-                <div class="ticket-id-container">
-                  <span>ID: </span><span id="ticket-id"></span>
-                </div>
-                <div class="ticket-contact">
-                  <p class="text-xs-center">
-                    <span>Whatsapp: 55 8107 4807</span>
-                  </p>
-                  <p class="text-xs-center mt-1">
-                    <strong>¡GRACIAS POR SONREIR! <span class="smile">😊</span></strong> <br>
-                  </p>
+                  <ul class="list-group list-group-flush" id="sales-list-modal">
+                  </ul>
+                  <div class="ticket-id-container">
+                    <span>ID: </span><span id="ticket-id"></span>
+                  </div>
+                  <div class="ticket-contact">
+                    <p class="text-xs-center">
+                      <span>Whatsapp: 55 8107 4807</span>
+                    </p>
+                    <p class="text-xs-center mt-1">
+                      <strong>¡GRACIAS POR SONREIR! <span class="smile">😊</span></strong> <br>
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="card card-scroll" id="ticket-description">
-              <h3>No olvides recordarle al cliente las promociones</h3>
+              <div class="card card-scroll col-7" id="ticket-description">
+                <h3>No olvides recordarle al cliente las promociones</h3>
+              </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <div class="container">
             <div class="row">
-              <button type="submit" id="btn-pago-tarjeta" class="btn btn-primary col-xs-4 push-xs-3 btn-printer">Pago con tarjeta</button>
-              <button type="submit" id="btn-pago-efectivo" class="btn btn-success col-xs-4 push-xs-4 btn-printer">Pago con efectivo</button>
+              <button type="submit" id="btn-pago-tarjeta" class="btn btn-primary col-4 push-xs-3 btn-printer">Pago con tarjeta</button>
+              <button type="submit" id="btn-pago-efectivo" class="btn btn-success col-4 push-xs-4 btn-printer">Pago con efectivo</button>
             </div>
           </div>
         </div>
@@ -201,56 +203,60 @@
       <div class="modal-content">
         <div class="modal-header">
           <div class="container-fluid">
-            <div class="card col-xs-4">
-              <span id="modal-prod-head-1" class="modal-head-prod-name"></span>
-            </div>
-            <div class="card col-xs-4">
-              <span id="modal-prod-head-2" class="modal-head-prod-name"></span>
-            </div>
-            <div class="card col-xs-4">
-              <span id="modal-prod-head-3" class="modal-head-prod-name"></span>
+            <div class="row">
+              <div class="card col-4">
+                <span id="modal-prod-head-1" class="modal-head-prod-name"></span>
+              </div>
+              <div class="card col-4">
+                <span id="modal-prod-head-2" class="modal-head-prod-name"></span>
+              </div>
+              <div class="card col-4">
+                <span id="modal-prod-head-3" class="modal-head-prod-name"></span>
+              </div>
             </div>
           </div>
         </div>
         <div class="modal-body">
           <div class="container-fluid">
-            <div class="card card-scroll col-xs-4 ">
-              {% for cartridge in cartridges %}
-                {% if cartridge.category == 'FD' %}
-                  <div class="modal-prod-container product-container" id="modal-prod-cont-1">
-                    <h5 class="modal-prod-name">{{ cartridge.name }}</h5>
-                    <img src="{{ cartridge.image.url }}" alt="product image" id="modal-img-1-{{ cartridge.pk }}" class="modal-product-img">
-                  </div>
-                {% endif %}
-              {% endfor %}
-            </div>
-            <div class="card card-scroll col-xs-4 ">
-              {% for cartridge in cartridges %}
-                {% if cartridge.subcategory == 'FR' or cartridge.subcategory == 'JU' or cartridge.subcategory == 'WA' %}
-                  <div class="modal-prod-container product-container" id="modal-prod-cont-2">
-                    <h5 class="modal-prod-name">{{ cartridge.name }}</h5>
-                    <img src="{{ cartridge.image.url }}" alt="product image" id="modal-img-2-{{ cartridge.pk }}" class="modal-product-img">
-                  </div>
-                {% endif %}
-              {% endfor %}
-            </div>
-            <div class="card card-scroll col-xs-4 ">
-              {% for cartridge in cartridges %}
-                {% if cartridge.subcategory == 'FR' or cartridge.subcategory == 'JU' or cartridge.subcategory == 'WA' %}
-                  <div class="modal-prod-container product-container" id="modal-prod-cont-3">
-                    <h5 class="modal-prod-name">{{ cartridge.name }}</h5>
-                    <img src="{{ cartridge.image.url }}" alt="product image" id="modal-img-3-{{ cartridge.pk }}" class="modal-product-img">
-                  </div>
-                {% endif %}
-              {% endfor %}
+            <div class="row">
+              <div class="card card-scroll col-4 ">
+                {% for cartridge in cartridges %}
+                  {% if cartridge.category == 'FD' %}
+                    <div class="modal-prod-container product-container" id="modal-prod-cont-1">
+                      <h5 class="modal-prod-name">{{ cartridge.name }}</h5>
+                      <img src="{{ cartridge.image.url }}" alt="product image" id="modal-img-1-{{ cartridge.pk }}" class="modal-product-img">
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+              <div class="card card-scroll col-4 ">
+                {% for cartridge in cartridges %}
+                  {% if cartridge.subcategory == 'FR' or cartridge.subcategory == 'JU' or cartridge.subcategory == 'WA' %}
+                    <div class="modal-prod-container product-container" id="modal-prod-cont-2">
+                      <h5 class="modal-prod-name">{{ cartridge.name }}</h5>
+                      <img src="{{ cartridge.image.url }}" alt="product image" id="modal-img-2-{{ cartridge.pk }}" class="modal-product-img">
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+              <div class="card card-scroll col-4 ">
+                {% for cartridge in cartridges %}
+                  {% if cartridge.subcategory == 'FR' or cartridge.subcategory == 'JU' or cartridge.subcategory == 'WA' %}
+                    <div class="modal-prod-container product-container" id="modal-prod-cont-3">
+                      <h5 class="modal-prod-name">{{ cartridge.name }}</h5>
+                      <img src="{{ cartridge.image.url }}" alt="product image" id="modal-img-3-{{ cartridge.pk }}" class="modal-product-img">
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <div class="container">
             <div class="row">
-              <button type="button" class="btn btn-secondary col-xs-3 push-xs-2" data-dismiss="modal" id="btn-close-dabba-modal">Close</button>
-              <button id="btn-add-dabba" data-dismiss="modal" type="button" class="btn btn-success col-xs-4 push-xs-3">¡Listo!</button>
+              <button type="button" class="btn btn-secondary col-3 push-xs-2" data-dismiss="modal" id="btn-close-dabba-modal">Close</button>
+              <button id="btn-add-dabba" data-dismiss="modal" type="button" class="btn btn-success col-4 push-xs-3">¡Listo!</button>
             </div>
           </div>
         </div>
@@ -282,7 +288,7 @@
 
 {% endblock content %}
 {% block javascript %}
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.3.8/sweetalert2.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.3.8/sweetalert2.min.js"></script>  
   <script src="{% static 'js/jquery.PrintArea.js' %}"></script>
   <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
