@@ -1,3 +1,5 @@
+@import "variables";
+
 // Add your base styles here
 body {
   display: flex;
@@ -11,8 +13,12 @@ main {
   flex: 1;
 }
 
+.bg-primary {
+  background-color: $primary !important;
+}
+
 @import "auth/login";
-// // @import "customers/register";
+@import "sales/analytics";
 // // @import "diners/your-opinion";
 // // @import "kitchen/kitchen";
 // // @import "kitchen/shoplist";
