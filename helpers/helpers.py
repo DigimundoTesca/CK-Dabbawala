@@ -100,7 +100,6 @@ class Helper(object):
         """
         final_datetime = datetime.now(self.tz)
         initial_datetime = self.start_datetime(self.get_number_day(final_datetime))
-        print(initial_datetime, final_datetime)
         return initial_datetime, final_datetime
 
     @staticmethod

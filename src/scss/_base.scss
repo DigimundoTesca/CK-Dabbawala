@@ -17,6 +17,13 @@ main {
   background-color: $primary !important;
 }
 
+
+@media (min-width: 992px) {
+  .dropdown-menu {
+  margin-left: -5rem !important;
+}
+}
+
 @import "auth/login";
 @import "sales/analytics";
 // // @import "diners/your-opinion";

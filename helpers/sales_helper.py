@@ -108,9 +108,9 @@ class TicketPOSHelper(object):
         if initial_date is None and final_date is None:
             tickets_pos = self.tickets_pos.order_by('-ticket__created_at')
         else:
-
             tickets_pos = self.tickets_pos.filter(
                 ticket__created_at__range=(initial_date, final_date)).order_by('-ticket__created_at')
+        print(initial_date, final_date)
         helper = Helper()
         cartridges_tickets_details = self.get_cartridges_tickets_details()
         packages_tickets_details = self.get_packages_tickets_details()
@@ -160,7 +160,7 @@ class TicketPOSHelper(object):
 
         return tickets_list
 
-    def get_dates_range_json(self):
+    def get_dates_range(self):
         """
         Returns a JSON with a years list.
         The years list contains years objects that contains a weeks list
@@ -234,7 +234,7 @@ class TicketPOSHelper(object):
             years_list.append(year_object)
             max_year -= 1
         # End while
-        return json.dumps(years_list)
+        return {'data': years_list}
 
     def get_sales_list(self, start_dt, final_dt):
         """
@@ -317,7 +317,7 @@ class TicketPOSHelper(object):
             total_earnings = 0
             start_date_number += 1
 
-        return json.dumps(week_sales_list)
+        return {'data': week_sales_list}
 
     def get_new_order_number(self):
         if self.__tickets_pos is None:

@@ -133,6 +133,9 @@ def sales(request):
     helper = Helper()
 
     if request.method == 'POST':
+        if request.POST['type'] == 'dates_range':
+            dates_range = sales_helper.get_dates_range()
+            return JsonResponse(dates_range)
         if request.POST['type'] == 'sales_day':
             """
             Returns a list with objects:
@@ -257,6 +260,10 @@ def sales(request):
             }
             return JsonResponse(data)
 
+        if request.POST['type'] == 'sales_actual_week':
+            sales_actual_week = sales_helper.get_sales_actual_week()
+            return JsonResponse(sales_actual_week)
+
     # Any other request method:
     template = 'sales/sales.html'
     title = 'Registro de Ventas'
@@ -267,12 +274,10 @@ def sales(request):
         'title': PAGE_TITLE + ' | ' + title,
         'page_title': title,
         'actual_year': datetime.now().year,
-        'sales_week': sales_helper.get_sales_actual_week(),
         'today_name': helper.get_name_day(datetime.now()),
         'today_number': helper.get_number_day(datetime.now()),
         'week_number': helper.get_week_number(date.today()),
         'tickets': sales_helper.get_tickets_list(initial_date, final_date),
-        'dates_range': sales_helper.get_dates_range_json(),
     }
 
     return render(request, template, context)
