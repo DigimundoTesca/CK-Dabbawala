@@ -161,3 +161,4 @@ node_modules/
 /**/static/**/*.css
 /**/static/**/*.js
 /**/static/**/*.map
+webpack-stats.json
