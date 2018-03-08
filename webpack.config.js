@@ -20,7 +20,7 @@ module.exports = {
             loader: "css-loader", // translate CSS into CommonJS modules
             options: {
               url: false,
-              minimize: true
+              minimize: false
             }
           }, {
             loader: 'postcss-loader', // Run post css actions
