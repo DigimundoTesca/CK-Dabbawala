@@ -1,30 +1,35 @@
 # -*- encoding: utf-8 -*-
 from __future__ import unicode_literals
+import json
 
 from django.shortcuts import get_object_or_404, render, redirect
-
+from datetime import timedelta, datetime, date
 from django.contrib.auth.decorators import login_required
-
 from branchoffices.models import Supplier
 from cloudkitchen.settings.base import PAGE_TITLE
 from products.forms import SupplyForm, SuppliesCategoryForm, CartridgeForm
-from products.models import Cartridge, Supply, SuppliesCategory, KitchenAssembly
-from kitchen.models import Presentation, ShopList, ShopListDetail
+from products.models import Cartridge, Supply, SuppliesCategory, KitchenAssembly, PackageCartridge, PackageCartridgeRecipe, Presentation, ShopList, ShopListDetail
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from helpers.products_helper import ProductsHelper
+from helpers.sales_helper import TicketPOSHelper
+from helpers.helpers import Helper
 from django.views.generic import UpdateView
 from django.views.generic import DeleteView
 from django.views.generic import CreateView
 from .forms import PresentationForm
- 
+from django.db.models import Count, Sum
+from sales.models import TicketBase, CartridgeTicketDetail, PackageCartridgeTicketDetail
+from django.db.models.functions import TruncMonth, TruncYear
+from django.http import JsonResponse
+import calendar
+
 
 class Create_Supply(CreateView):
     model = Supply
-    fields = ['name','category','barcode','supplier','storage_required','presentation_unit','presentation_cost',
-        'measurement_quantity','measurement_unit','optimal_duration','optimal_duration_unit','location','image']
-    template_name = 'new_supply.html'
+    fields = ['name','category','barcode','supplier','storage_required','optimal_duration','optimal_duration_unit','location','image']
+    template_name = 'supplies/new_supply.html'
 
     def form_valid(self, form):
         self.object = form.save()
@@ -33,9 +38,8 @@ class Create_Supply(CreateView):
 
 class Update_Supply(UpdateView):
     model = Supply
-    fields = ['name','category','barcode','supplier','storage_required','presentation_unit','presentation_cost',
-        'measurement_quantity','measurement_unit','optimal_duration','optimal_duration_unit','location','image']
-    template_name = 'new_supply.html'
+    fields = ['name','category','barcode','supplier','storage_required','optimal_duration','optimal_duration_unit','location','image']
+    template_name = 'supplies/new_supply.html'
 
     def form_valid(self, form):
         self.object = form.save()
@@ -44,7 +48,7 @@ class Update_Supply(UpdateView):
 
 class Delete_Supply(DeleteView):
     model = Supply
-    template_name = 'delete_supply.html'
+    template_name = 'supplies/delete_supply.html'
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -55,7 +59,7 @@ class Delete_Supply(DeleteView):
 class Create_Cartridge(CreateView):
     model = Cartridge
     fields = ['name', 'price', 'category', 'image']
-    template_name = 'new_cartridge.html'
+    template_name = 'cartridges/new_cartridge.html'
 
     def form_valid(self, form):
         self.object = form.save()
@@ -65,7 +69,7 @@ class Create_Cartridge(CreateView):
 class Update_Cartridge(UpdateView):
     model = Cartridge
     fields = ['name', 'price', 'category', 'image']
-    template_name = 'new_cartridge.html'
+    template_name = 'cartridges/new_cartridge.html'
 
     def form_valid(self, form):
         self.object = form.save()
@@ -74,12 +78,50 @@ class Update_Cartridge(UpdateView):
 
 class Delete_Cartridge(DeleteView):
     model = Cartridge
-    template_name = 'delete_cartridge.html'
+    template_name = 'cartridges/delete_cartridge.html'
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
         self.object.delete()
         return redirect('/cartridges/')
+
+
+class Create_Presentation(CreateView):
+    model = Presentation
+    print(model)
+    fields = [
+        'supply', 'measurement_quantity', 'measurement_unit',
+        'presentation_unit', 'presentation_cost'
+    ]
+    template_name = 'presentations/new_presentation.html'
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return redirect('/supplies/details/'+self.kwargs['suppk'])
+
+
+class Update_Presentation(UpdateView):
+    model = Presentation
+    fields = [
+        'supply', 'measurement_quantity', 'measurement_unit',
+        'presentation_unit', 'presentation_cost'
+    ]
+    template_name = 'presentations/new_presentation.html'
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return redirect('/supplies/details/' + self.kwargs['suppk'])
+
+
+class Delete_Presentation(DeleteView):
+    model = Presentation
+    template_name = 'presentations/delete_presentation.html'
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()
+        return redirect('/supplies/details/' + self.kwargs['suppk'])
+
 
 
 def test(request):
@@ -125,7 +167,6 @@ def suppliers(request):
     }
     return render(request, template, context)
 
-
 # -------------------------------------  Supplies -------------------------------------
 @login_required(login_url='users:login')
 def supplies(request):
@@ -168,9 +209,15 @@ def new_supply(request):
 @login_required(login_url='users:login')
 def supply_detail(request, pk):
     supply = get_object_or_404(Supply, pk=pk)
+    presentations = Presentation.objects.all().filter(supply=supply);
     template = 'supplies/supply_detail.html'
     title = 'DabbaNet - Detalles del insumo'
-    context = {'page_title': PAGE_TITLE, 'supply': supply, 'title': title}
+    context = {
+        'page_title': PAGE_TITLE,
+        'supply': supply,
+        'title': title,
+        'presentations': presentations,
+    }
     return render(request, template, context)
 
 
@@ -347,42 +394,35 @@ def cartridge_modify(request, pk):
     }
     return render(request, template, context)
 
+# -------------------------------------  Warehouse -------------------------------------
 
 @login_required(login_url='users:login')
 def warehouse(request):
     products_helper = ProductsHelper()
-    warehouse_list = products_helper.get_elements_in_warehouse()
+    presentations = Presentation.objects.all()
+    supps = products_helper.get_all_supplies()
 
     if request.method == 'POST':
 
         if request.POST['type'] == 'save_to_assembly':
 
-            quantity = json.loads(request.POST.get('quantity_available'))
-            warehouse_id = json.loads(request.POST.get('warehouse_id'))
+            quantity = json.loads(request.POST.get('quantity'))
+            presentation_pk = json.loads(request.POST.get('presentation_pk'))
 
             # Retirar del almacen
-            selected_warehouse = Warehouse.objects.get(id=warehouse_id)
-            selected_warehouse.quantity -= quantity
-            selected_warehouse.save()
+            presentation = Presentation.objects.get(pk=presentation_pk)
+            presentation.on_warehouse -= quantity
+            presentation.on_assembly += quantity
+            presentation.save()
 
-            # Agregar al almacen
-            try:
-                itemstock = Warehouse.objects.get(
-                    supply=selected_warehouse.supply, status="AS")
-                itemstock.quantity += quantity
-                itemstock.save()
-            except Warehouse.DoesNotExist:
-                itemstock = Warehouse(
-                    supply=selected_warehouse.supply,
-                    status="AS",
-                    quantity=quantity,
-                    measurement_unit=selected_warehouse.measurement_unit)
-                itemstock.save()
+            return JsonResponse({'shop_list': "nothing"})
+
 
     template = 'catering/warehouse.html'
     title = 'Movimientos de Almacen'
     context = {
-        'warehouse_list': warehouse_list,
+        'presentations': presentations,
+        'supps':supps,
         'title': title,
         'page_title': PAGE_TITLE
     }
@@ -403,21 +443,13 @@ def shop_list(request):
 
             for ele_shoplist in list_sl:
                 list_object = {
-                    'id':
-                    ele_shoplist.id,
-                    'nombre':
-                    ele_shoplist.presentation.supply.name,
-                    'cantidad':
-                    ele_shoplist.quantity,
-                    'medida':
-                    ele_shoplist.presentation.measurement_quantity,
-                    'unidad':
-                    ele_shoplist.presentation.measurement_unit,
-                    'costo':
-                    ele_shoplist.presentation.presentation_cost *
-                    ele_shoplist.quantity,
-                    'status':
-                    ele_shoplist.status
+                    'pk':ele_shoplist.pk,
+                    'nombre':ele_shoplist.presentation.supply.name,
+                    'cantidad':ele_shoplist.quantity,
+                    'medida':ele_shoplist.presentation.measurement_quantity,
+                    'unidad':ele_shoplist.presentation.measurement_unit,
+                    'costo':ele_shoplist.presentation.presentation_cost * ele_shoplist.quantity,
+                    'status':ele_shoplist.status
                 }
 
                 shop_list_array.append(list_object)
@@ -426,32 +458,24 @@ def shop_list(request):
             return JsonResponse(list_naive_array)
 
         if request.POST['type'] == 'load_list_detail':
-            element = json.loads(request.POST.get('load_list_detail'))
+            element = json.loads(request.POST.get('ele_pk'))
             list_sl = ShopListDetail.objects.get(id=element)
+
+            pres = Presentation.objects.get(pk=list_sl.presentation.pk)
+            pres.on_warehouse += list_sl.quantity
+            pres.save()
+
             list_sl.status = "DE"
             list_sl.deliver_day = datetime.now()
             list_sl.save()
 
-            try:
-                itemstock = Warehouse.objects.get(
-                    supply=list_sl.presentation.supply, status="ST")
-                itemstock.quantity += list_sl.quantity * list_sl.presentation.measurement_quantity
-                itemstock.save()
-            except Warehouse.DoesNotExist:
-                itemstock = Warehouse(
-                    supply=list_sl.presentation.supply,
-                    status="ST",
-                    quantity=list_sl.quantity *
-                    list_sl.presentation.measurement_quantity,
-                    measurement_unit=list_sl.presentation.measurement_unit)
-                itemstock.save()
 
         if request.POST['type'] == 'load_date':
             element = json.loads(request.POST.get('detail_list_id'))
             list_sl = ShopListDetail.objects.get(id=element)
             date = list_sl.deliver_day
-
-            return HttpResponse(date)
+            j_date = {'date': date}
+            return JsonResponse(j_date)
 
     template = 'catering/shoplist.html'
     title = 'Lista de Compras'
@@ -469,16 +493,11 @@ def new_shoplist(request):
     supps = products_helper.get_all_supplies()
     all_presentations = Presentation.objects.all()
 
-    shop_list = ShopList.objects.all()
-
-    supply_list = []
-
     if request.method == 'POST':
         form = PresentationForm(request.POST, request.FILES)
         if form.is_valid():
             presentation = form.save(commit=False)
             presentation.save()
-            return redirect('/warehouse/new_shoplist')
 
         if request.POST['type'] == 'shop_list':
             shop_l = json.loads(request.POST.get('shop_list'))
@@ -487,40 +506,72 @@ def new_shoplist(request):
             new_shop_list.save()
 
             for item in shop_l:
-                sel_pre = Presentation.objects.get(pk=item['pre_pk'])
+                sel_pre = Presentation.objects.get(pk=item[5])
                 ShopListDetail.objects.create(
                     shop_list=new_shop_list,
                     presentation=sel_pre,
-                    quantity=item['Cantidad'])
+                    quantity=item[6])
 
             return redirect('/warehouse/shoplist')
 
     else:
         form = PresentationForm()
 
-    for sup in supps:
-        print(sup)
-        element_object = {
-            'pk': sup.pk,
-            'name': sup.name,
-            'imagen': sup.image.url,
-        }
-        supp_presentations = all_presentations.filter(supply=sup)
-        supp_pres = []
-
-        for supp_pre in supp_presentations:
-            supp_pres.append(supp_pre)
-
-        element_object['presentations'] = supp_pres
-        supply_list.append(element_object)
-
-    template = 'catering/new_shoplist.html'
+    template = 'catering/new_shoplist_2.html'
     title = 'Lista de Compras'
     context = {
-        'shop_list': shop_list,
         'form': form,
         'title': title,
-        'supply_list': supply_list,
+        'supplies':supps,
+        'presentations':all_presentations,
+        'page_title': PAGE_TITLE,
+    }
+    return render(request, template, context)
+
+
+@login_required(login_url='users:login')
+def warehouse_analytics(request):
+
+    sales_helper = TicketPOSHelper()
+    helper = Helper()
+    products_helper = ProductsHelper()
+    today = datetime.today()
+    current_year = today.year
+    current_month = today.month
+    category = "select"
+
+    resultado = products_helper.get_cartridges_sales_by_date(
+        current_year, current_month, category)
+
+    sales_data = resultado['sales_data']
+    json_sales_data_by_date = resultado['json_sales_data_by_date']
+
+    if request.method == 'POST':
+        if request.POST['type'] == 'load_date':
+            selected_year = request.POST['year']
+            selected_month = request.POST['month']
+            selected_category = request.POST['category']
+
+            resultado = products_helper.get_cartridges_sales_by_date(
+                int(selected_year), int(selected_month), selected_category)
+
+            sales_data = resultado['sales_data']
+            json_sales_data_by_date = resultado['json_sales_data_by_date']
+
+            return JsonResponse({
+                'sales_data':
+                sales_data,
+                'json_sales_data_by_date':
+                json_sales_data_by_date
+            })
+
+    template = 'catering/analytics.html'
+    title = 'Almacen - Analytics'
+    context = {
+        'sales_data_by_date': json_sales_data_by_date,
+        'sales_data': sales_data,
+        'today': today,
+        'title': title,
         'page_title': PAGE_TITLE
     }
     return render(request, template, context)

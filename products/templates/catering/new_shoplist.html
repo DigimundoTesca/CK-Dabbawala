@@ -1,36 +1,43 @@
-{% extends "base/base_nav_footer.html" %} {% load static %} {% block link %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/kitchen/shoplist.css' %}"> {% endblock link %} {% block content %}
+{% extends "base/base_nav_footer.html" %} 
+{% load static %} 
+{% block link %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/kitchen/shoplist.css' %}"> 
+{% endblock link %} 
+{% block content %}
 
 <!--Container of List-->
-<div class="container container_manual_list">
-    <div class="a col-md-12">
+<div class="container-fluid">
+    <div class="row">
         <div class="block_card col-md-6">
             {% for supplies in supply_list %}
-            <div class="card card_element col-sm-12 col-md-12 col-lg-12" id="supplies.supply-{{ supplies.pk }}">
-                <div class="card_image col-sm-4 col-md-4 col-lg-4">
-                    <img class="ele_image" src="{{ supplies.imagen }}" id="supplies.pr.supply-img-{{ supplies.pk }}">
-                </div>
-                <div class="card_ele_info col-sm-8 col-md-8 col-lg-8">
-                    <div class="block_info">
+            <div class="card card_element col-12" id="supplies.supply-{{ supplies.pk }}">
+                <div class="row">
+
+                    <div class="col-md-6 card_image">
                         <span class="product_name" id="supply_name-{{ supplies.name }}">
                             <b>{{ supplies.name }}</b>
-                        </span>
-                        <br>
-                        <small class="provider_unit" id="supplies.quantity-{{ supplies.unidad }},{{ supplies.medida }},{{ supplies.costo }}"> Unidad: {{ supplies.unidad }} {{ supplies.medida }} </small>
-                        <br>
+                        </span><br>
+                        <img class="ele_image" src="{{ supplies.imagen }}" id="supplies.pr.supply-img-{{ supplies.pk }}">
                     </div>
-                    <div class="block_btn">
-                        {% for presentations in supplies.presentations %}
-                        <div class="pres_btn col-sm-4 col-md-4 col-lg-4">
-                            <small class="btn_pres material-icons">lens</small>
-                            <br>
-                            <small class="info_pres" id="{{ presentations.pk }},{{ presentations.measurement_quantity }},{{ presentations.measurement_unit }},{{ presentations.presentation_cost }}">
-                            {{ presentations.measurement_quantity }} {{ presentations.measurement_unit }}</small>
-                        </div>
-                        {% endfor %} {% if supplies.presentations|length
-                        <=2 %} <div class="add_btn col-sm-4 col-md-4 col-lg-4">
-                            <span class="btn_add material-icons">add</span>
-                    </div>                    
+                    <div class="col-md-6 card_ele_info">                                               
+                        <div class="block_btn">
+                            <div class="row">                                
+                                {% for presentations in supplies.presentations %}
+                                <div>
+-                                    <button type="button" class="pres_btn btn btn-primary" id="{{ presentations.pk }},{{ presentations.measurement_quantity }},{{ presentations.measurement_unit }},{{ presentations.presentation_cost}}">
+                                         {{ presentations.measurement_quantity }} {{ presentations.measurement_unit }}
+                                    </button>                                                                                                            
+                                </div>
+                                {% endfor %}                         
+                            </div>
+                            {% if supplies.presentations|length <= 2 %} 
+                            <div class="row add_btn">
+                                <button type="button" class="btn_add btn btn-primary">
+                                    Agregar Presentacion
+                                </button>                            
+                            </div>    
+                            {% endif %}  
+                    </div>
                 </div>
             </div>
         </div>
@@ -64,7 +71,8 @@
             </div>
             <div class="modal-body ">
                 <form method="POST" enctype="multipart/form-data">
-                    {% csrf_token %} {{ form.as_p }}
+                    {% csrf_token %} 
+                    {{ form.as_p }}
                     <button type="submit"> Guardar </button>
                 </form>
             </div>
@@ -80,7 +88,8 @@
 </div>
 
 
-{% endblock content %} {% block javascript %}
+{% endblock content %} 
+{% block javascript %}
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function () {
 

@@ -3,52 +3,54 @@
 {% block content %}
 <div class="container-fluid analytics-container">
   <div class="row">
-    <div class="col-xs-12">
-      <div class="text-xs-right mb-2">
+    <div class="col-12 col-md-4 offset-md-8"> 
+      <div class="text-xs-right">
         <form class="form-inline" id="dates-range-form">
-          <select class="custom-select" id="dt-year" title="dt-year"></select>
-          <select class="custom-select" id="dt-week" title="dt-week"></select>
+          <select class="mr-1 col-3 custom-select" id="dt-year" title="dt-year"></select>
+          <select class="col-8 custom-select" id="dt-week" title="dt-week"></select>
         </form>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-12 charts-container">
-      <div class="col-xs-12">
-        <div class="col-xs-12 col-lg-6 col-xl-5 mb-3 week-suggestions-chart">
-          <div class="canvas-holder">
-            <canvas id="canvas-week-reactions"></canvas>
-          </div>
-          <div class="canvas-holder">
-            <canvas id="canvas-week-suggestions"></canvas>
-          </div>
-        </div>
-        <div class="col-xs-12 col-lg-6 col-xl-7 mb-3 elements-analytics-container">
-          <div class="row">
-            <div class="col-xs-12">
-              <h3>Reacciones de clientes</h3>
+    <div class="col-12 charts-container">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-12 col-lg-6 col-xl-5 mb-3 p-1 week-suggestions-chart">          
+            <div class="canvas-holder">
+              <canvas id="canvas-week-reactions"></canvas>
+            </div>
+            <div class="canvas-holder">
+              <canvas id="canvas-week-suggestions"></canvas>
             </div>
           </div>
-          <div class="row elements-header">
-            <div class="col-xs-6 col-lg-3  element-name-cont">
-              <span class="element-name element-red">Enojado</span>
-            </div>
-            <div class="col-xs-6 col-lg-3 element-name-cont">
-              <span class="element-name element-yellow">Triste</span>
-            </div>
-            <div class="col-xs-6 col-lg-3 element-name-cont">
-              <span class="element-name element-blue">Alegre</span>
-            </div>
-            <div class="col-xs-6 col-lg-3 element-name-cont">
-              <span class="element-name element-green">Encantado</span>
-            </div>
-          </div>
-          <div class="charts-container row mt-2">
-            {% for element in elements %}
-              <div class="canvas-holder doughnut-chart col-xs-12 col-sm-6 col-md-4 col-xl-3 mb-3">
-                <canvas id="canvas-element-{{element.id}}"></canvas>
+          <div class="col-12 col-lg-6 col-xl-7 mb-3 p-1 elements-analytics-container">
+            <div class="row">
+              <div class="col-12">
+                <h3>Reacciones de clientes</h3>
               </div>
-            {% endfor %}
+            </div>
+            <div class="row elements-header">
+              <div class="col-6 col-lg-3  element-name-cont">
+                <span class="element-name element-red">Enojado</span>
+              </div>
+              <div class="col-6 col-lg-3 element-name-cont">
+                <span class="element-name element-yellow">Triste</span>
+              </div>
+              <div class="col-6 col-lg-3 element-name-cont">
+                <span class="element-name element-blue">Alegre</span>
+              </div>
+              <div class="col-6 col-lg-3 element-name-cont">
+                <span class="element-name element-green">Encantado</span>
+              </div>
+            </div>
+            <div class="charts-container row">
+              {% for element in elements %}
+                <div class="canvas-holder doughnut-chart col-12 col-sm-6 col-md-4 col-xl-3 mb-2">
+                  <canvas id="canvas-element-{{element.id}}"></canvas>
+                </div>
+              {% endfor %}
+            </div>
           </div>
         </div>
       </div>
