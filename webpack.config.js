@@ -5,7 +5,9 @@ const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin');
 const BundleTracker = require('webpack-bundle-tracker');
 
 module.exports = {
-  entry: './src/js/app.js',
+  entry: {
+    app: './src/js/app.js'
+  },
   output: {
     path: path.resolve(__dirname, 'cloudkitchen/static/js/'),
     filename: "[name]-[hash].js"
@@ -71,7 +73,16 @@ module.exports = {
         jQuery: 'jquery',
         'window.jQuery': 'jquery'
       }
-    )
+    ),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: "vendor",
+      // filename: "vendor.js"
+      // (Give the chunk a different name)
+
+      minChunks: Infinity,
+      // (with more entries, this ensures that no other module
+      //  goes into the vendor chunk)
+    })
   ],
   devtool: '#source-map'
 };

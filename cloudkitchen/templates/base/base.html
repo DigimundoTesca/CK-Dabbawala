@@ -1,4 +1,5 @@
 {% load static %}
+{% load render_bundle from webpack_loader %}
 <!doctype html>
 <html lang="es">
 <head>
@@ -25,7 +26,7 @@
 
     {% block footer %}
     {% endblock %}
-
+    {% render_bundle 'vendor' 'js' 'JS'%}
     {% block javascript %}
     {% endblock javascript %}
 </body>

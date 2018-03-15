@@ -3,7 +3,7 @@
 {% load render_bundle from webpack_loader %}
 
 {% block style %}
-  {% render_bundle 'main' 'css' 'CSS' %}
+  {% render_bundle 'app' 'css' 'CSS' %}
 {% endblock %}
 
 {% block page_title %}
@@ -17,7 +17,7 @@
 {% block content %}
   <div class="container-fluid">
     <div class="d-flex flex-row mt-2">
-      <form class="form-row col" id="dates-range-form">
+      <form class="form-row col-auto" id="dates-range-form">
         <div class="form-group mr-1">
           <label for="dt-year" hidden></label>
           <select class="custom-select" id="dt-year"></select>
@@ -26,22 +26,14 @@
           <select class="custom-select" id="dt-week"  title="dt-week"></select>
         </div>
       </form>
-      <div class="col">
-        <div class="text-center">
-          <p>Ventas de la semana <span id="week-number">{{ week_number }}</span>:
-            <span class="font-weight-bold">$</span>
-            <span id="total-earnings-text" class="font-weight-bold"></span></p>
-        </div>
+      <div class="col d-flex justify-content-center">
+        <p>Ventas semana <span id="week-number">{{ week_number }}</span>:
+          <span class="font-weight-bold">$</span>
+          <span id="total-earnings-text" class="font-weight-bold"></span>
+        </p>
       </div>
-      <div class="col">
-        <div class="row">
-          <div class="col-6">
-            <p class="float-xs-right">Hoy es: <span class="font-weight-bold">{{ today_name }}</span></p>
-          </div>
-          <div class="col-6">
-            <p class="float-xs-right">Semana Actual: <span class="font-weight-bold">{{ week_number }}</span></p>
-          </div>
-        </div>
+      <div class="col d-flex justify-content-center">
+        <p>Semana Actual: <span class="font-weight-bold">{{ week_number }}</span></p>
       </div>
       <div class="col-auto">
         <a id="save-reports" href="{% url 'sales:sales_report' %}" class="btn btn-outline-primary" download>
@@ -174,5 +166,5 @@
 {% endblock content %}
 
 {% block javascript %}
-  {% render_bundle 'main' 'js' 'JS'%}
+  {% render_bundle 'app' 'js' 'JS'%}
 {% endblock javascript %}

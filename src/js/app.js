@@ -1,8 +1,8 @@
 require('../scss/app.scss');
 require('./utils/jquery.printarea.js');
+import swal from 'sweetalert2';
 import 'bootstrap';
 import 'chart.js';
-import swal from 'sweetalert2'
 
 const PATH = $(location).attr('pathname');
 
@@ -36,33 +36,26 @@ $(function() {
   else if (PATH === '/diners/' || PATH === '/diners/logs/') {
     $('#link-diners').addClass('active');
   }
-});
 
-/**
- * Obtencion de Cookies
- */
-function getCookie(name) {
-  let cookieValue = null;
-  if (document.cookie && document.cookie !== '') {
-    let cookies = document.cookie.split(';');
-    for (let i = 0; i < cookies.length; i++) {
-      let cookie = jQuery.trim(cookies[i]);
-      // Does this cookie string begin with the name we want?
-      if (cookie.substring(0, name.length + 1) === (name + '=')) {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-        break;
+  /**
+   * Obtención de Cookies
+   */
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      let cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        let cookie = jQuery.trim(cookies[i]);
+        // Does this cookie string begin with the name we want?
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
       }
     }
+    return cookieValue;
   }
-  return cookieValue;
-}
 
-/**
- * Módulo ventas
- *
- */
-
-$(function() {
   let csrftoken = getCookie('csrftoken');
   let ctx_week = document.getElementById("canvas-week-sales"),
     ctx_day = document.getElementById("canvas-day-sales"),
@@ -76,7 +69,7 @@ $(function() {
    * Función que se encarga de disparar las peticiones ajax para
    * la carga de las fechas y datos de las ventas
    */
-  function init() {
+  (function init() {
     /**
      * Método AJAX que carga los campos de rangos de fechas
      */
@@ -92,10 +85,10 @@ $(function() {
       },
       success: function(result) {
         dates_range = result.data;
-        fill_dates_range_form();
+        fillDatesRangeFilter();
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
-        console.log("error");
+        console.log(XMLHttpRequest, textStatus);
       }
     });
 
@@ -115,179 +108,17 @@ $(function() {
       success: function(result) {
         sales_week = result.data;
         drawCharts();
-        set_total_earnings();
+        setSalesDayChart(today_date);
+        setTotalEarnings();
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
         console.log("error");
       }
     });
+  })
+  ([]);
 
-  }
-
-  /**
-   * Regresa una lista con la ganancia de cada dia de la semana
-   * utilizando la variable sales_week
-   */
-  function get_earnings_week_list() {
-    let earnings_list = [],
-      count = 0;
-    while (count < sales_week.length) {
-      earnings_list.push(parseFloat(sales_week[count].earnings));
-      count++;
-    }
-    return earnings_list;
-  }
-
-  /**
-   * Retorna una lista con las ganancias respectivas a cada día de  la semana
-   * utilizando la lista de objetos sales_list como argumento
-   */
-  function get_earnings_week_range(sales_list) {
-    let week_list = [0, 0, 0, 0, 0, 0, 0,];
-    for (let i = 0; i < 7; i++) {
-      for (let j = 0; j < sales_list.length; j++) {
-        if (sales_list[j].number_day === i) {
-          week_list[i] = sales_list[j]['earnings']
-        }
-      }
-    }
-    return week_list;
-  }
-
-  /**
-   * Receives an hour in 24-hour format and returns the same hour but
-   * converted into minutes.
-   * The string must have to have the following format: hh:mm
-   */
-  function hours_to_minutes(original_time) {
-    let hours,
-      minutes;
-    hours = parseInt(original_time.split(':')[0])*60;
-    minutes = parseInt(original_time.split(':')[1]);
-    return parseInt(hours + minutes);
-  }
-
-  /**
-   * Receives an hour in minutes format and returns the same hour but
-   * converted into 24-hour format.
-   * The string returned have the next format: hh:mm
-   */
-  function minutes_to_hours(original_time) {
-    let hours = parseInt(original_time / 60),
-      minutes = parseInt(original_time % 60);
-    if (hours.toString().length < 2) {
-      hours = "0"+hours;
-    }
-    if (minutes.toString().length < 2) {
-      minutes = "0"+minutes;
-    }
-    return hours + ':' + minutes;
-  }
-
-  /**
-   * Receives an hour and verifies if it't is in the offered time range.
-   * The hours received must have the following format: hh:mm
-   * Returns true if the condition is met. Otherwise returns false.
-   */
-  function is_time_in_range(hour, start_hour, end_hour) {
-    let hour_in_minutes = hours_to_minutes(hour),
-      start_hour_in_minutes = hours_to_minutes(start_hour),
-      end_hour_in_minutes = hours_to_minutes(end_hour);
-    return hour_in_minutes >= start_hour_in_minutes && hour_in_minutes < end_hour_in_minutes;
-  }
-
-  /**
-   * Receives a datetime with format from python.
-   * Returns an hour converted into 24-hours format: hh:mm ith Timezone +06:00
-   */
-  function convert_datetime_to_hour(original_datetime){
-    return original_datetime.split('T')[1].split('.')[0].substr(0, 5);
-  }
-
-  /**
-   * Returns a list with the earnings of each time range
-   */
-  function get_sales_day_list(initial_hour, final_hour, separation_time, sales_list) {
-    let initial_hour_minutes,
-      final_hour_minutes;
-    let list_formatted = [],
-      elements_ok = [],
-      earnings = 0;
-    initial_hour_minutes = hours_to_minutes(initial_hour);
-    final_hour_minutes = hours_to_minutes(final_hour);
-    while(initial_hour_minutes < final_hour_minutes) {
-      let start_hour_f = minutes_to_hours(initial_hour_minutes),
-        end_hour_f = minutes_to_hours(initial_hour_minutes + separation_time);
-      for (let i = 0; i < sales_list.length; i++) {
-        let hour_sale = convert_datetime_to_hour(sales_list[i].datetime);
-        if(is_time_in_range(hour_sale, start_hour_f, end_hour_f)) {
-          earnings += parseFloat(sales_list[i].earnings);
-          elements_ok.push(sales_list[i]);
-        }
-      }
-      list_formatted.push(earnings);
-      initial_hour_minutes += separation_time;
-      earnings = 0;
-    }
-    // Searches the times outside the time range
-    for(let i = 0; i < sales_list.length; i++) {
-      if(elements_ok.indexOf(sales_list[i]) === -1) {
-        earnings += parseFloat(sales_list[i].earnings);
-      }
-    }
-    list_formatted.push(earnings);
-    return list_formatted.reverse();
-  }
-
-  /*
-   * Get's the earnings of the selected day in week chart and
-   * show the results in sales day chart
-   */
-  function set_sales_day_chart(date) {
-    let earnings_list = [];
-    $.ajax({
-      url: PATH,
-      type: 'POST',
-      data: {
-        csrfmiddlewaretoken: csrftoken,
-        'date': date,
-        'type': 'sales_day',
-      },
-      traditional: true,
-      dataType : 'json',
-      beforeSend: function(){
-        swal({
-          title: "Generando gráficas",
-          text: "Espere mientras se calculan los datos",
-        });
-        swal.enableLoading();
-      },
-      success: function(result) {
-        let sales_day_earnings_list;
-        let initial_hour = '06:00',
-          final_hour = '16:00',
-          separation_time = 60; // In minutes
-        let sales_day_object_list = result['sales_day_list'];
-        sales_day_earnings_list = get_sales_day_list(initial_hour, final_hour, separation_time, sales_day_object_list);
-        earnings_day_chart.data.datasets[0].data = sales_day_earnings_list;
-        earnings_day_chart.update();
-        swal({
-          title: "Éxito",
-          text: "Gráfica generada",
-          type: "success",
-          timer: 600,
-          showConfirmButton: false
-        }).then(
-          function(){},
-          function(dismiss){}
-        );
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        console.log(jqXHR);
-      },
-    });
-  }
-  function convert_date_to_str(date) {
+  function convertDateToString(date) {
     let months = {
       1: 'Ene', 2: 'Feb', 3: 'Mar', 4: 'Abr', 5: 'May', 6: 'Jun',
       7: 'Jul', 8: 'Ago', 9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dic',
@@ -295,22 +126,29 @@ $(function() {
     date = date.split('-');
     return date[0] + " " + months[parseInt(date[1])] + " " + date[2];
   }
-  function fill_dates_range_form() {
+
+  /**
+   * Rellena el filtro de fechas
+   */
+  function fillDatesRangeFilter() {
     let selected_year;
+
     $.each(dates_range, function(index, item) {
       $('#dates-range-form').find('#dt-year').append(
         "<option value=" + item.year + ">" + item.year + "</option>"
       );
     });
+
     selected_year = parseInt($('#dates-range-form').find('#dt-year').val());
+
     $.each(dates_range, function(index, item) {
       if (dates_range[index].year ===  selected_year) {
         $.each(dates_range[index].weeks_list, function(index, item) {
           $('#dates-range-form').find('#dt-week').append(
             "<option value=" + item.start_date + "," + item.end_date + ">" +
-            "Semana " + item.week_number + ": " +
-            convert_date_to_str(item.start_date) +
-            " - " + convert_date_to_str(item.end_date) +
+            "S-" + item.week_number + ": " +
+            convertDateToString(item.start_date) +
+            " - " + convertDateToString(item.end_date) +
             "</option>"
           );
         });
@@ -318,9 +156,11 @@ $(function() {
       }
     });
     today_date = $('#dt-week').val().split(',')[1];
-    set_sales_day_chart(today_date);
   }
 
+  /**
+   * Dibuja las gráficas de ChartJS
+   */
   function drawCharts() {
     /**
      * Draws the chart of sales of the week
@@ -331,7 +171,7 @@ $(function() {
         labels: ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado", "Domingo"],
         datasets: [{
           label: 'Ventas del día',
-          data: get_earnings_week_list(),
+          data: getEarningsWeekList(),
           backgroundColor: [
             'rgba(0,123,255,0.7)',
             'rgba(0,123,255,0.7)',
@@ -359,7 +199,7 @@ $(function() {
             let selected_day = legendItem[0]._index;
             for (let i = 0; i < sales_week.length; i++) {
               if (sales_week[i].number_day === selected_day) {
-                set_sales_day_chart(sales_week[i].date);
+                setSalesDayChart(sales_week[i].date);
               }
             }
           } catch (error) {
@@ -429,9 +269,36 @@ $(function() {
   }
 
   /**
-   * Receives a number and returns it with currency format
+   * Calcula el total de ventas de la semana actual y lo imprime en el template
    */
-  function set_number_format(amount, decimals) {
+  function setTotalEarnings() {
+    let total_earnings = 0;
+    let earnings_list = getEarningsWeekList();
+    for (let i = 0; i < earnings_list.length; i++) {
+      total_earnings += earnings_list[i];
+    }
+    total_earnings = setDecimalFormat(total_earnings, 2);
+    $('#total-earnings-text').append(total_earnings);
+  }
+
+  /**
+   * Regresa una lista con la ganancia de cada dia de la semana
+   * utilizando la variable sales_week
+   */
+  function getEarningsWeekList() {
+    let earnings_list = [],
+      count = 0;
+    while (count < sales_week.length) {
+      earnings_list.push(parseFloat(sales_week[count].earnings));
+      count++;
+    }
+    return earnings_list;
+  }
+
+  /**
+   * Recibe un valor número y lo retorna un número con decimales (String)
+   */
+  function setDecimalFormat(amount, decimals) {
     let amount_parts,
       regexp = /(\d+)(\d{3})/;
     amount += '';
@@ -447,16 +314,152 @@ $(function() {
   }
 
   /**
-   * Calculates total earnings in the actual week and print it
+   * Retorna una lista con las ganancias respectivas a cada día de  la semana
+   * utilizando la lista de objetos sales_list como argumento
    */
-  function set_total_earnings() {
-    let total_earnings = 0;
-    let earnings_list = get_earnings_week_list();
-    for (let i = 0; i < earnings_list.length; i++) {
-      total_earnings += earnings_list[i];
+  function getEarningsWeekRange(sales_list) {
+    let week_list = [0, 0, 0, 0, 0, 0, 0,];
+    for (let i = 0; i < 7; i++) {
+      for (let j = 0; j < sales_list.length; j++) {
+        if (sales_list[j].number_day === i) {
+          week_list[i] = sales_list[j]['earnings']
+        }
+      }
     }
-    total_earnings = set_number_format(total_earnings, 2);
-    $('#total-earnings-text').append(total_earnings);
+    return week_list;
+  }
+
+  /**
+   * Receives an hour in 24-hour format and returns the same hour but
+   * converted into minutes.
+   * The string must have to have the following format: hh:mm
+   */
+  function convertHoursToMinutes(original_time) {
+    let hours,
+      minutes;
+    hours = parseInt(original_time.split(':')[0])*60;
+    minutes = parseInt(original_time.split(':')[1]);
+    return parseInt(hours + minutes);
+  }
+
+  /**
+   * Receives an hour in minutes format and returns the same hour but
+   * converted into 24-hour format.
+   * The string returned have the next format: hh:mm
+   */
+  function convertMinutesToHours(original_time) {
+    let hours = parseInt(original_time / 60),
+      minutes = parseInt(original_time % 60);
+    if (hours.toString().length < 2) {
+      hours = "0"+hours;
+    }
+    if (minutes.toString().length < 2) {
+      minutes = "0"+minutes;
+    }
+    return hours + ':' + minutes;
+  }
+
+  /**
+   * Receives an hour and verifies if it't is in the offered time range.
+   * The hours received must have the following format: hh:mm
+   * Returns true if the condition is met. Otherwise returns false.
+   */
+  function isHourInRange(hour, start_hour, end_hour) {
+    let hour_in_minutes = convertHoursToMinutes(hour),
+      start_hour_in_minutes = convertHoursToMinutes(start_hour),
+      end_hour_in_minutes = convertHoursToMinutes(end_hour);
+    return hour_in_minutes >= start_hour_in_minutes && hour_in_minutes < end_hour_in_minutes;
+  }
+
+  /**
+   * Receives a datetime with format from python.
+   * Returns an hour converted into 24-hours format: hh:mm ith Timezone +06:00
+   */
+  function convertPythonDatetimeFormatToHour(original_datetime){
+    return original_datetime.split('T')[1].split('.')[0].substr(0, 5);
+  }
+
+  /**
+   * Returns a list with the earnings of each time range
+   */
+  function getSalesDayList(initial_hour, final_hour, separation_time, sales_list) {
+    let initial_hour_minutes,
+      final_hour_minutes;
+    let list_formatted = [],
+      elements_ok = [],
+      earnings = 0;
+    initial_hour_minutes = convertHoursToMinutes(initial_hour);
+    final_hour_minutes = convertHoursToMinutes(final_hour);
+    while(initial_hour_minutes < final_hour_minutes) {
+      let start_hour_f = convertMinutesToHours(initial_hour_minutes),
+        end_hour_f = convertMinutesToHours(initial_hour_minutes + separation_time);
+      for (let i = 0; i < sales_list.length; i++) {
+        let hour_sale = convertPythonDatetimeFormatToHour(sales_list[i].datetime);
+        if(isHourInRange(hour_sale, start_hour_f, end_hour_f)) {
+          earnings += parseFloat(sales_list[i].earnings);
+          elements_ok.push(sales_list[i]);
+        }
+      }
+      list_formatted.push(earnings);
+      initial_hour_minutes += separation_time;
+      earnings = 0;
+    }
+    // Searches the times outside the time range
+    for(let i = 0; i < sales_list.length; i++) {
+      if(elements_ok.indexOf(sales_list[i]) === -1) {
+        earnings += parseFloat(sales_list[i].earnings);
+      }
+    }
+    list_formatted.push(earnings);
+    return list_formatted.reverse();
+  }
+
+  /*
+   * Get's the earnings of the selected day in week chart and
+   * show the results in sales day chart
+   */
+  function setSalesDayChart(date) {
+    $.ajax({
+      url: PATH,
+      type: 'POST',
+      data: {
+        csrfmiddlewaretoken: csrftoken,
+        'date': date,
+        'type': 'sales_day',
+      },
+      traditional: true,
+      dataType : 'json',
+      beforeSend: function(){
+        swal({
+          title: "Generando gráficas",
+          text: "Espere mientras se calculan los datos",
+        });
+        swal.enableLoading();
+      },
+      success: function(result) {
+        let sales_day_earnings_list;
+        let initial_hour = '06:00',
+          final_hour = '16:00',
+          separation_time = 60; // In minutes
+        let sales_day_object_list = result['sales_day_list'];
+        sales_day_earnings_list = getSalesDayList(initial_hour, final_hour, separation_time, sales_day_object_list);
+        earnings_day_chart.data.datasets[0].data = sales_day_earnings_list;
+        earnings_day_chart.update();
+        swal({
+          title: "Éxito",
+          text: "Gráfica generada",
+          type: "success",
+          timer: 600,
+          showConfirmButton: false
+        }).then(
+          function(){},
+          function(dismiss){}
+        );
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log(jqXHR);
+      },
+    });
   }
 
   /**
@@ -546,7 +549,7 @@ $(function() {
             "</tr>" +
             "");
         }
-        earnings_week_chart.data.datasets[0].data = get_earnings_week_range(sales_week);
+        earnings_week_chart.data.datasets[0].data = getEarningsWeekRange(sales_week);
         earnings_week_chart.update();
         $('#total-earnings-text').text(week_earnings.toFixed(2));
         $('#week-number').text(week_number);
@@ -649,7 +652,7 @@ $(function() {
      * Draws the ticket details and activates btn-ptinter onClick listener
      */
     $.ajax({
-      url: "{% url 'sales:sales' %}",
+      url: PATH,
       method: 'POST',
       traditional: true,
       dataType: 'json',
@@ -747,8 +750,4 @@ $(function() {
       function(dismiss){});
   });
 
-  /*
-  * Manda a llamar a la función principal
-  */
-  init();
 });
