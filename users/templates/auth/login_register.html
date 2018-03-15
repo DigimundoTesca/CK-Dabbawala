@@ -1,13 +1,14 @@
 {% extends "base/base.html" %}
 
 {% load static %}
+{% load render_bundle from webpack_loader %}
 
 {% block page_title %}
   {{ page_title }}
 {% endblock page_title %}
 
 {% block style %}
-  <link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}">
+  {% render_bundle 'main' 'css' 'CSS' %}
 {% endblock %}
 
 {% block content %}
@@ -91,11 +92,13 @@
             </form>
           </div>
         </div>
-        <div class="col-12 mt-3">
-          <p class="text-left text-white">
-            ¿Ya tienes cuenta?
-            <a class="badge badge-pill badge-primary" href="{% url 'users:login' %}">¡Inicia sesión aquí!</a>
-          </p>
+        <div class="col-12 d-flex justify-content-center mt-3">
+          <div class="col-lg-8 col-xl-6 push-lg-2 push-xl-3 pt-3">
+            <p class="text-left text-white">
+              ¿Ya tienes cuenta?
+              <a class="badge badge-pill badge-primary" href="{% url 'users:login' %}">¡Inicia sesión aquí!</a>
+            </p>
+          </div>
         </div>
       </div>
     </div>
