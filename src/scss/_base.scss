@@ -20,12 +20,12 @@ main {
 
 @media (min-width: 992px) {
   .dropdown-menu {
-  margin-left: -5rem !important;
-}
+    margin-left: -5rem !important;
+  }
 }
 
 @import "auth/login";
-@import "sales/analytics";
+@import "sales/base";
 // // @import "diners/your-opinion";
 // // @import "kitchen/kitchen";
 // // @import "kitchen/shoplist";

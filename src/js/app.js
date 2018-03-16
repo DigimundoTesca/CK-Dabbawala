@@ -1,17 +1,15 @@
-require('../scss/app.scss');
-require('./utils/jquery.printarea.js');
 import swal from 'sweetalert2';
 import 'bootstrap';
 import 'chart.js';
-
+import 'jsPDF';
+require('../scss/app.scss');
 const PATH = $(location).attr('pathname');
 
 $(function() {
   /**
-   * Resalta el nombre de los enlaces del navbar de acuerdo a la ubicacion en donde se encuentre
+   * Resalta el nombre de los enlaces del navbar de acuerdo a la ubicación en donde se encuentre
    *
    */
-
   if (PATH === '/ventas/') {
     $('#link-sales').addClass('active');
   }
@@ -59,8 +57,8 @@ $(function() {
   let csrftoken = getCookie('csrftoken');
   let ctx_week = document.getElementById("canvas-week-sales"),
     ctx_day = document.getElementById("canvas-day-sales"),
-    earnings_week_chart,
-    earnings_day_chart,
+    earningsDayChart,
+    earningsHourChart,
     today_date,
     sales_week,
     dates_range;
@@ -165,7 +163,7 @@ $(function() {
     /**
      * Draws the chart of sales of the week
      */
-    earnings_week_chart = new Chart(ctx_week, {
+    earningsDayChart = new Chart(ctx_week, {
       type: 'bar',
       data: {
         labels: ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado", "Domingo"],
@@ -219,7 +217,7 @@ $(function() {
     /**
      * Draws the chart of sales of the day
      */
-    earnings_day_chart = new Chart(ctx_day, {
+    earningsHourChart = new Chart(ctx_day, {
       type: 'horizontalBar',
       data: {
         labels: [
@@ -282,14 +280,13 @@ $(function() {
   }
 
   /**
-   * Regresa una lista con la ganancia de cada dia de la semana
-   * utilizando la variable sales_week
+   * Regresa una lista con la ganancia de cada dia de la semana utilizando la variable sales_week
    */
   function getEarningsWeekList() {
     let earnings_list = [],
       count = 0;
     while (count < sales_week.length) {
-      earnings_list.push(parseFloat(sales_week[count].earnings));
+      earnings_list.push(parseFloat(sales_week[count]['earnings']));
       count++;
     }
     return earnings_list;
@@ -314,7 +311,7 @@ $(function() {
   }
 
   /**
-   * Retorna una lista con las ganancias respectivas a cada día de  la semana
+   * Retorna una lista con las ganancias respectivas a cada día de la semana
    * utilizando la lista de objetos sales_list como argumento
    */
   function getEarningsWeekRange(sales_list) {
@@ -330,9 +327,8 @@ $(function() {
   }
 
   /**
-   * Receives an hour in 24-hour format and returns the same hour but
-   * converted into minutes.
-   * The string must have to have the following format: hh:mm
+   * Recibe una hora en formato de 24 hrs y la regresa en formateada en minutos
+   * El String debe tener el siguiente formato: hh:mm
    */
   function convertHoursToMinutes(original_time) {
     let hours,
@@ -343,9 +339,8 @@ $(function() {
   }
 
   /**
-   * Receives an hour in minutes format and returns the same hour but
-   * converted into 24-hour format.
-   * The string returned have the next format: hh:mm
+   * Recibe una hora en enteros (minutos) y la regresa en formato de 24 hrs
+   * El String debe tener el siguiente formato: hh:mm
    */
   function convertMinutesToHours(original_time) {
     let hours = parseInt(original_time / 60),
@@ -360,9 +355,9 @@ $(function() {
   }
 
   /**
-   * Receives an hour and verifies if it't is in the offered time range.
-   * The hours received must have the following format: hh:mm
-   * Returns true if the condition is met. Otherwise returns false.
+   * Recibe una hora y verifica si ésta, se encuentra dentro del rango de horas brindada
+   * La hora recibida debe tener el siguiente formato: hh:mm
+   * Si la condición se cumple retorna true, sino, retorna falso
    */
   function isHourInRange(hour, start_hour, end_hour) {
     let hour_in_minutes = convertHoursToMinutes(hour),
@@ -372,15 +367,15 @@ $(function() {
   }
 
   /**
-   * Receives a datetime with format from python.
-   * Returns an hour converted into 24-hours format: hh:mm ith Timezone +06:00
+   * Recibe un datetime con formato brindado por Python
+   * Regresa el datetime convertido en formato de 24 hrs: hh:mm con Timezone +06:00
    */
   function convertPythonDatetimeFormatToHour(original_datetime){
     return original_datetime.split('T')[1].split('.')[0].substr(0, 5);
   }
 
   /**
-   * Returns a list with the earnings of each time range
+   * Regresa una lista con las ganancias por cada rango de fechas
    */
   function getSalesDayList(initial_hour, final_hour, separation_time, sales_list) {
     let initial_hour_minutes,
@@ -414,9 +409,9 @@ $(function() {
     return list_formatted.reverse();
   }
 
-  /*
-   * Get's the earnings of the selected day in week chart and
-   * show the results in sales day chart
+  /**
+   * Obtiene las ganancias del día específico de la gráfica de ganancias diarias
+   * después, muestra los resultados en la gráfica de ganancias por hora
    */
   function setSalesDayChart(date) {
     $.ajax({
@@ -442,28 +437,22 @@ $(function() {
           final_hour = '16:00',
           separation_time = 60; // In minutes
         let sales_day_object_list = result['sales_day_list'];
+
         sales_day_earnings_list = getSalesDayList(initial_hour, final_hour, separation_time, sales_day_object_list);
-        earnings_day_chart.data.datasets[0].data = sales_day_earnings_list;
-        earnings_day_chart.update();
-        swal({
-          title: "Éxito",
-          text: "Gráfica generada",
-          type: "success",
-          timer: 600,
-          showConfirmButton: false
-        }).then(
-          function(){},
-          function(dismiss){}
-        );
+
+        earningsHourChart.data.datasets[0].data = sales_day_earnings_list;
+        earningsHourChart.update();
+        swal.close();
       },
       error: function(jqXHR, textStatus, errorThrown) {
-        console.log(jqXHR);
+        console.error(textStatus, errorThrown);
+        console.error(jqXHR);
       },
     });
   }
 
   /**
-   * Refresh the page with de dates of the year and week selected
+   * Refresca los datos de las gráficas y tabla con la semana y el año elegido
    */
   $('#dt-week').change(function(event) {
     let dt_year = $('#dt-year').val(),
@@ -536,11 +525,11 @@ $(function() {
           sales_details_table.append("" +
             "<tr>" +
             "<th class='header-id'>" + tickets_objects[i].id + "</th>" +
-            "<th>" + tickets_objects[i].order_number + "</th>" +
+            "<th class='header-order'>" + tickets_objects[i].order_number + "</th>" +
             "<td class='header-date'>" + tickets_objects[i].created_at + "</td>" +
             "<td class='header-products'>" + cartridges_list + "</td>" +
             "<td class='header-packages'>" + packages_list + "</td>" +
-            "<td>" + tickets_objects[i].cashier + "</td>" +
+            "<td class='header-seller'>" + tickets_objects[i].cashier + "</td>" +
             "<td class='td-total'>" + tickets_objects[i].total + "</td>" +
             "<td class='header-actions'>" +
             "<span class='sales-actions delete-ticket'><i class='material-icons text-muted'>delete</i></span>" +
@@ -549,8 +538,8 @@ $(function() {
             "</tr>" +
             "");
         }
-        earnings_week_chart.data.datasets[0].data = getEarningsWeekRange(sales_week);
-        earnings_week_chart.update();
+        earningsDayChart.data.datasets[0].data = getEarningsWeekRange(sales_week);
+        earningsDayChart.update();
         $('#total-earnings-text').text(week_earnings.toFixed(2));
         $('#week-number').text(week_number);
       },
@@ -562,16 +551,80 @@ $(function() {
   });
 
   /**
-   * Get's the ticket id for printer-icon selected
+   * Obtiene la información del ticket específico y la muestra para impresión
    * TODO: Make an iframe to print the ticket
    */
   $(this).on('click', '.print-ticket', function(event) {
     let id_element = $(this).parent().siblings('.header-id').text();
     let btn_printer = $('.btn-printer');
-    let ticket_details;
     let sales_list_modal = $('#sales-list-modal');
     let total = $(this).parent().siblings('.td-total').text();
-    function show_modal(dataResponse) {
+
+    function iterate_cartridges(element, index, array) {
+      let name = element.name;
+      let cost_base = parseFloat(element.total) / element.quantity;
+      let total = parseFloat(element.total);
+      let quantity = element.quantity;
+      let new_li;
+
+      // Formats the cost_base and total
+      if (cost_base % 2 !== 0) {
+        cost_base = cost_base.toFixed(2);
+      } else
+        cost_base += '.00';
+      if (total % 2 !== 0) {
+        total = total.toFixed(2);
+      } else
+        total += '.00';
+
+      // Adds the list to tickets
+      new_li = $("" +
+        "<li class='list-group-item'>" +
+        "<span class='name-li-modal text-uppercase'>" + name + "</span> " +
+        "<span class='cost-li-modal'>" + '$ ' + cost_base + "</span>" +
+        "<span class='quantity-li-modal'>" + quantity + "</span>" +
+        "<span class='total-li-modal'>" + '$ ' + total + "</span> " +
+        "</li>");
+
+      sales_list_modal.append(new_li);
+    }
+
+    function iterate_packages(element, index, array) {
+      let cartridges_list = array[index].cartridges;
+      let name = '';
+      let cost_base = parseFloat(element.total) / element.quantity;
+      let total = parseFloat(element.total);
+      let quantity = element.quantity;
+      let new_li;
+
+      // Formats the names
+      $.each(cartridges_list, function(index, item) {
+        name += item.substring(0, 3) + ' ';
+      });
+
+      // Formats the cost_base and total
+      if (cost_base % 2 !== 0) {
+        cost_base = cost_base.toFixed(2);
+      } else
+        cost_base += '.00';
+      if (total % 2 !== 0) {
+        total = total.toFixed(2);
+      } else
+        total += '.00';
+
+      // Adds the list to tickets
+      new_li = $("" +
+        "<li class='list-group-item'>" +
+        "<span class='name-li-modal text-uppercase'>" + name + "</span> " +
+        "<span class='cost-li-modal'>" + '$ ' + cost_base + "</span>" +
+        "<span class='quantity-li-modal'>" + quantity + "</span>" +
+        "<span class='total-li-modal'>" + '$ ' + total + "</span> " +
+        "</li>");
+
+      sales_list_modal.append(new_li);
+    }
+
+    function show_modal(ticket_details) {
       let new_li;
       // First reset the ticket
       sales_list_modal.empty();
@@ -583,59 +636,7 @@ $(function() {
         "<span class='total-li-title-modal'>Total</span> " +
         "</li>");
       sales_list_modal.append(new_li);
-      function iterate_cartridges(element, index, array) {
-        let name = element.name;
-        let cost_base = parseFloat(element.total) / element.quantity;
-        let total = parseFloat(element.total);
-        let quantity = element.quantity;
-        // Formats the cost_base and total
-        if (cost_base % 2 !== 0) {
-          cost_base = cost_base.toFixed(2);
-        } else
-          cost_base += '.00';
-        if (total % 2 !== 0) {
-          total = total.toFixed(2);
-        } else
-          total += '.00';
-        // Adds the list to tickets
-        new_li = $("" +
-          "<li class='list-group-item'>" +
-          "<span class='name-li-modal text-uppercase'>" + name + "</span> " +
-          "<span class='cost-li-modal'>" + '$ ' + cost_base + "</span>" +
-          "<span class='quantity-li-modal'>" + quantity + "</span>" +
-          "<span class='total-li-modal'>" + '$ ' + total + "</span> " +
-          "</li>");
-        sales_list_modal.append(new_li);
-      }
-      function iterate_packages(element, index, array) {
-        let cartridges_list = array[index].cartridges;
-        let name = '';
-        let cost_base = parseFloat(element.total) / element.quantity;
-        let total = parseFloat(element.total);
-        let quantity = element.quantity;
-        // Formats the names
-        $.each(cartridges_list, function(index, item) {
-          name += item.substring(0, 3) + ' ';
-        });
-        // Formarts the cost_base and total
-        if (cost_base % 2 !== 0) {
-          cost_base = cost_base.toFixed(2);
-        } else
-          cost_base += '.00';
-        if (total % 2 !== 0) {
-          total = total.toFixed(2);
-        } else
-          total += '.00';
-        // Adds the list to tickets
-        new_li = $("" +
-          "<li class='list-group-item'>" +
-          "<span class='name-li-modal text-uppercase'>" + name + "</span> " +
-          "<span class='cost-li-modal'>" + '$ ' + cost_base + "</span>" +
-          "<span class='quantity-li-modal'>" + quantity + "</span>" +
-          "<span class='total-li-modal'>" + '$ ' + total + "</span> " +
-          "</li>");
-        sales_list_modal.append(new_li);
-      }
+
       ticket_details.cartridges.forEach(iterate_cartridges);
       ticket_details.packages.forEach(iterate_packages);
       $("#ticket-id").text(id_element);
@@ -648,44 +649,37 @@ $(function() {
       sales_list_modal.append(nuevo_li);
       $('#modal-ticket').modal('show');
     }
+
     /**
-     * Draws the ticket details and activates btn-ptinter onClick listener
+     * Dibuja el ticket en el modal y activa el onClic() listener del botón .btn-printer
      */
     $.ajax({
       url: PATH,
       method: 'POST',
       traditional: true,
       dataType: 'json',
+      async: true,
       data: {
         csrfmiddlewaretoken: csrftoken,
         'ticket_id': id_element,
         'type': 'ticket_details',
       },
-      beforeSend: function(){
+      beforeSend: function(xhr){
         swal({
           title: "Obteniendo datos del ticket",
           text: "Espere mientras obtenemos toda la información",
         });
         swal.enableLoading();
-      },
-      success: function(result, status, XHR) {
-        swal({
-          title: "Éxito",
-          text: "Datos obtenidos",
-          type: "info",
-          timer: 750,
-          showConfirmButton: false
-        }).then(
-          function(){},
-          function(dismiss){}
-        );
-      },
-      complete: function(result){
-        ticket_details = result.responseJSON.ticket_details;
+      }
+    })
+      .done(function(data) {
+        swal.close();
+        console.log(data);
+        let ticket_details = data.ticket_details;
         $('.ticket-order-container').find('#ticket-order').text(ticket_details.ticket_order);
         setTimeout(function() {
           show_modal(ticket_details)
-        }, 750);
+        }, 500);
         btn_printer.on('click', function(){
           let options = {
             mode: 'iframe',
@@ -693,12 +687,11 @@ $(function() {
           };
           $("#printer").printArea(options);
         });
-      }
-    });
+      });
   });
 
   /**
-   * Get's the ticket id for delete-icon selected
+   * Obtiene el id del ticket específico y realiza la petición para eliminarlo
    * TODO: Make a view for delete the ticket from backend
    */
   $(this).on('click', '.delete-ticket', function(event) {
