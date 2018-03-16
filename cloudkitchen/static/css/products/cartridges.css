@@ -13,15 +13,17 @@ a.material-icons{
 }
 
 .img-c{        
-    border-radius: 50%; 
     overflow: hidden;    
-    height: 38rem;
+    height: 38rem;    
 }
 
-img{            
+img{    
     display: block;
-    margin:auto;       
-    height:100%;        
+    margin:auto;  
+    border-radius: 40px;     
+    margin-top: 90px;
+    height:400px;  
+    max-width: 100%;      
 }
 
 

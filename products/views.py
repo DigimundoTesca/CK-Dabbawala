@@ -320,13 +320,13 @@ def categories_supplies(request, categ):
 # -------------------------------------  Cartridges -------------------------------------
 @login_required(login_url='users:login')
 def cartridges(request):
-    cartridges_list = Cartridge.objects.order_by('id')
+    cartridges_list = Cartridge.objects.order_by('category','name')
     template = 'cartridges/cartridges.html'
     title = 'Cartuchos'
     context = {
         'cartridges': cartridges_list,
         'title': title,
-        'page_title': PAGE_TITLE
+        'page_title': PAGE_TITLE 
     }
     return render(request, template, context)
 

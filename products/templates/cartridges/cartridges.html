@@ -8,34 +8,55 @@
   <div class="row">
     <div class="col-md-4 col-sm-12">
       <div class="list-group" id="list-tab" role="tablist">
-        {% for cartridge in cartridges %} {% if cartridge == cartridges|first %}
-        <a class="list-group-item list-group-item-action active" id="list-{{cartridge.pk}}-list" data-toggle="list" href="#{{cartridge.pk}}-home"
-          role="tab" aria-controls="{{cartridge.pk}}">
+        {% for cartridge in cartridges %} 
+         {% ifchanged cartridge.category %}         
+          <a href="">
+            <button type="button" class="c-{{cartridge.category}} btn btn-dark col-12">{{cartridge.get_category_display}}</button>            
+          </a>                               
+         {% endifchanged %}
+          {% if cartridge == cartridges|first %}
+          <a class="{{cartridge.category}} list-group-item list-group-item-action active" id="list-{{cartridge.pk}}-list" data-toggle="list" href="#{{cartridge.pk}}-home" role="tab" aria-controls="{{cartridge.pk}}">
           {% else %}
-          <a class="list-group-item list-group-item-action" id="list-{{cartridge.pk}}-list" data-toggle="list" href="#{{cartridge.pk}}-home"
-            role="tab" aria-controls="{{cartridge.pk}}">
-            {% endif %} {{cartridge.name}}
-          </a>
-          {% endfor %}
+          <a class="{{cartridge.category}} list-group-item list-group-item-action" id="list-{{cartridge.pk}}-list" data-toggle="list" href="#{{cartridge.pk}}-home" role="tab" aria-controls="{{cartridge.pk}}">
+          {% endif %} 
+          {{cartridge.name}}
+          </a>                                
+        {% endfor %}
       </div>
     </div>
     <div class="col-md-8 col-sm-12">
       <div class="tab-content" id="nav-tabContent">
-        {% for cartridge in cartridges %} {% if cartridge == cartridges|first %}
-        <div class="tab-pane fade show active" id="{{cartridge.pk}}-home" role="tabpanel" aria-labelledby="list-{{cartridge.pk}}-list">
+        {% for cartridge in cartridges %} 
+          {% if cartridge == cartridges|first %}
+          <div class="tab-pane fade show active" id="{{cartridge.pk}}-home" role="tabpanel" aria-labelledby="list-{{cartridge.pk}}-list">
           {% else %}
           <div class="tab-pane fade" id="{{cartridge.pk}}-home" role="tabpanel" aria-labelledby="list-{{cartridge.pk}}-list">
-            {% endif %}
-            <p class="text-center">{{cartridge.name}}</p>
-            <div class="img-c row">
-              <div class="col-md-12">
-                <img src="{{cartridge.image.url}}" alt="No img">
-              </div>
-            </div>
+          {% endif %}
             <div class="row">
-              <a title="Detalles" class="col-4 material-icons text-center" href="{% url 'products:cartridge_detail' cartridge.pk %}">dehaze</a>
-              <a title="Modificar" class="col-4 material-icons text-center" href="{% url 'products:cartridge_modify' cartridge.pk %}">create</a>
-              <a title="Eliminar" class="col-4 material-icons text-center" href="{% url 'products:cartridge_delete' cartridge.pk %}">delete</a>
+              <div class="col-md-6">
+                <p class="text-center">{{cartridge.name}}</p>
+                <div class="img-c row">
+                  <div class="col-md-12">
+                    <img src="{{cartridge.image.url}}" alt="No img">
+                  </div>
+                </div>
+                <div class="row">                  
+                  <a title="Modificar" class="col-6 material-icons text-center" href="{% url 'products:cartridge_modify' cartridge.pk %}">create</a>
+                  <a title="Eliminar" class="col-6 material-icons text-center" href="{% url 'products:cartridge_delete' cartridge.pk %}">delete</a>
+                </div>            
+              </div>
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-12">
+                    Detalles
+                    Categoria: {{cartridge.get_category_display}} <br>
+                    Precio: {{cartridge.price}}
+                  </div>
+                  <div class="col-12">
+                    
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           {% endfor %}
@@ -58,6 +79,17 @@
     $('#fab-add-cartridge').click(function(event) {
       location.href = '/cartridges/new/';
     });
+
+    $('.c-CO').click(function(e){      
+      e.preventDefault();
+      $('.CO').fadeToggle();
+    });
+
+    $('.c-FD').click(function (e) {
+      e.preventDefault();
+      $('.FD').fadeToggle();
+    });
+
   });
 </script>
 {% endblock javascript %}
