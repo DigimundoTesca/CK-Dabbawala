@@ -1,10 +1,10 @@
 .list-group{
-    height: 45rem;
+    height: 80vh;
     overflow-y: auto;
 }
 
 .tab-content{
-    height: 45rem;
+    height: 80vh;
     overflow: hidden;
 }
 
@@ -13,17 +13,14 @@ a.material-icons{
 }
 
 .img-c{        
-    overflow: hidden;    
-    height: 38rem;    
+    overflow: hidden;            
 }
 
 img{    
     display: block;
     margin:auto;  
-    border-radius: 40px;     
-    margin-top: 90px;
-    height:400px;  
-    max-width: 100%;      
+    border-radius: 40px;    
+    width: 80%;    
 }
 
 

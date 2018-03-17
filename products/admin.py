@@ -24,7 +24,7 @@ class AdminSupplyLocation(admin.ModelAdmin):
 
 @admin.register(Supply)
 class AdminSupply(admin.ModelAdmin):
-    list_display = ('id', 'name', 'category', 'supplier',)
+    list_display = ('id', 'name', 'category',)
     list_display_links = ('id', 'name')
     ordering = ['name']
 

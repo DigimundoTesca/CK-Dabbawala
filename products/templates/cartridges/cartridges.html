@@ -12,12 +12,17 @@
          {% ifchanged cartridge.category %}         
           <a href="">
             <button type="button" class="c-{{cartridge.category}} btn btn-dark col-12">{{cartridge.get_category_display}}</button>            
-          </a>                               
+          </a> 
+         {% endifchanged %}
+         {% ifchanged cartridge.subcategory %}         
+          <a href="">
+            <button type="button" class="c-{{cartridge.subcategory}} btn btn-warning col-12">{{cartridge.get_subcategory_display}}</button>            
+          </a> 
          {% endifchanged %}
           {% if cartridge == cartridges|first %}
-          <a class="{{cartridge.category}} list-group-item list-group-item-action active" id="list-{{cartridge.pk}}-list" data-toggle="list" href="#{{cartridge.pk}}-home" role="tab" aria-controls="{{cartridge.pk}}">
+          <a class="{{cartridge.category}} {{cartridge.subcategory}} list-group-item list-group-item-action active" id="list-{{cartridge.pk}}-list" data-toggle="list" href="#{{cartridge.pk}}-home" role="tab" aria-controls="{{cartridge.pk}}">
           {% else %}
-          <a class="{{cartridge.category}} list-group-item list-group-item-action" id="list-{{cartridge.pk}}-list" data-toggle="list" href="#{{cartridge.pk}}-home" role="tab" aria-controls="{{cartridge.pk}}">
+          <a class="{{cartridge.category}} {{cartridge.subcategory}} list-group-item list-group-item-action" id="list-{{cartridge.pk}}-list" data-toggle="list" href="#{{cartridge.pk}}-home" role="tab" aria-controls="{{cartridge.pk}}">
           {% endif %} 
           {{cartridge.name}}
           </a>                                
@@ -37,7 +42,7 @@
                 <p class="text-center">{{cartridge.name}}</p>
                 <div class="img-c row">
                   <div class="col-md-12">
-                    <img src="{{cartridge.image.url}}" alt="No img">
+                    <img src="{% static 'images/platillo.jpg' %}" alt="No img">
                   </div>
                 </div>
                 <div class="row">                  
@@ -48,8 +53,9 @@
               <div class="col-md-6">
                 <div class="row">
                   <div class="col-12">
-                    Detalles
+                    Detalles <br>
                     Categoria: {{cartridge.get_category_display}} <br>
+                    Subcategoria: {{cartridge.get_subcategory_display}} <br>
                     Precio: {{cartridge.price}}
                   </div>
                   <div class="col-12">
@@ -80,6 +86,8 @@
       location.href = '/cartridges/new/';
     });
 
+    // Categorias
+
     $('.c-CO').click(function(e){      
       e.preventDefault();
       $('.CO').fadeToggle();
@@ -88,6 +96,33 @@
     $('.c-FD').click(function (e) {
       e.preventDefault();
       $('.FD').fadeToggle();
+    });
+
+    // Subcategorias
+
+    $('.c-CO').click(function(e){      
+      e.preventDefault();
+      $('.CO').fadeToggle();
+    });
+
+    $('.c-CO').click(function(e){      
+      e.preventDefault();
+      $('.CO').fadeToggle();
+    });
+
+    $('.c-CO').click(function(e){      
+      e.preventDefault();
+      $('.CO').fadeToggle();
+    });
+
+    $('.c-CO').click(function(e){      
+      e.preventDefault();
+      $('.CO').fadeToggle();
+    });
+
+    $('.c-CO').click(function(e){      
+      e.preventDefault();
+      $('.CO').fadeToggle();
     });
 
   });

@@ -36,58 +36,12 @@ class SupplyLocation(models.Model):
 
 
 class Supply(models.Model):
-    # storage requirement
-    DRY_ENVIRONMENT = 'DR'
-    REFRIGERATION = 'RE'
-    FREEZING = 'FR'
-    STORAGE_REQUIREMENTS = (
-        (DRY_ENVIRONMENT, 'Ambiente Seco'),
-        (REFRIGERATION, 'Refrigeración'),
-        (FREEZING, 'Congelación'),
-    )
-
-    # optimal duration
-    DAYS = 'DA'
-    MONTHS = 'MO'
-    YEARS = 'YE'
-    OPTIMAL_DURATION = (
-        (DAYS, 'Dias'),
-        (MONTHS, 'Meses'),
-        (YEARS, 'Años'),
-    )
-
-    # presentation unit
-    PACKAGE = 'PA'
-    BOX = 'BO'
-    PIECE = 'PI'
-    PRESENTATION_UNIT = ((PACKAGE, 'Paquete'), (BOX, 'Caja'), (PIECE, 'Pieza'))
-
-    # metrics
-    GRAM = 'GR'
-    MILLILITER = 'MI'
-    PIECE = 'PI'
-
-    METRICS = (
-        (GRAM, 'gramo'),
-        (MILLILITER, 'mililitro'),
-        (PIECE, 'pieza'),
-    )
-
+    
     name = models.CharField(
         validators=[MinLengthValidator(2)], max_length=125, unique=True)
     created_at = models.DateTimeField(editable=False, auto_now=True)
     category = models.ForeignKey(
-        SuppliesCategory, default=1, on_delete=models.CASCADE)
-    barcode = models.BigIntegerField(
-        help_text='(Código de barras de 13 dígitos)',
-        validators=[MaxValueValidator(9999999999999)],
-        blank=True,
-        null=True)
-    storage_required = models.CharField(choices=STORAGE_REQUIREMENTS, default=DRY_ENVIRONMENT, max_length=2)
-    supplier = models.ForeignKey(Supplier, default=1, on_delete=models.CASCADE)
-    optimal_duration = models.IntegerField(default=0)
-    optimal_duration_unit = models.CharField(choices=OPTIMAL_DURATION, max_length=2, default=DAYS)
-    location = models.ForeignKey(SupplyLocation, default=1, on_delete=models.CASCADE)
+        SuppliesCategory, default=1, on_delete=models.CASCADE)    
     image = models.ImageField(blank=False, upload_to='supplies')
 
     def __str__(self):
@@ -271,6 +225,27 @@ class Brand(models.Model):
 
 class Presentation(models.Model):
 
+    # storage requirement
+    DRY_ENVIRONMENT = 'DR'
+    REFRIGERATION = 'RE'
+    FREEZING = 'FR'
+    STORAGE_REQUIREMENTS = (
+        (DRY_ENVIRONMENT, 'Ambiente Seco'),
+        (REFRIGERATION, 'Refrigeración'),
+        (FREEZING, 'Congelación'),
+    )
+
+    # optimal duration
+    DAYS = 'DA'
+    MONTHS = 'MO'
+    YEARS = 'YE'
+    OPTIMAL_DURATION = (
+        (DAYS, 'Dias'),
+        (MONTHS, 'Meses'),
+        (YEARS, 'Años'),
+    )
+
+    # presentation unit
     PACKAGE = 'PA'
     BOX = 'BO'
     PIECE = 'PZ'
@@ -284,9 +259,11 @@ class Presentation(models.Model):
                          (CARTON, 'Carton'),
                          (BAG, 'Bolsa'))
 
+
+    # metrics
     GRAM = 'GR'
     MILLILITER = 'MI'
-    PIECE = 'PZ'
+    PIECE = 'PI'
 
     METRICS = (
         (GRAM, 'gramo'),
@@ -294,13 +271,25 @@ class Presentation(models.Model):
         (PIECE, 'pieza'),
     )
 
-    supply = models.ForeignKey(Supply, default=1, on_delete=models.CASCADE)
+    supply = models.ForeignKey(Supply, default=1, on_delete=models.CASCADE)    
+    brand = models.ForeignKey(Brand, default=1, on_delete=models.CASCADE)    
     presentation_unit = models.CharField(max_length=10, choices=PRESENTATION_UNIT, default=PACKAGE)
     presentation_cost = models.FloatField(default=0)
     measurement_unit = models.CharField(max_length=10, choices=METRICS, default=PACKAGE)
-    measurement_quantity = models.FloatField(default=0)
+    measurement_quantity = models.FloatField(default=0)    
+    label = models.CharField(max_length=30,default="")
     on_warehouse = models.IntegerField(default=0)
     on_assembly = models.IntegerField(default=0)
+    barcode = models.BigIntegerField(
+        help_text='(Código de barras de 13 dígitos)',
+        validators=[MaxValueValidator(9999999999999)],
+        blank=True,
+        null=True)
+    storage_required = models.CharField(choices=STORAGE_REQUIREMENTS, default=DRY_ENVIRONMENT, max_length=2)
+    supplier = models.ForeignKey(Supplier, default=1, on_delete=models.CASCADE)
+    optimal_duration = models.IntegerField(default=0)
+    optimal_duration_unit = models.CharField(choices=OPTIMAL_DURATION, max_length=2, default=DAYS)
+    location = models.ForeignKey(SupplyLocation, default=1, on_delete=models.CASCADE)
 
     def __str__(self):
         return '%s %s %s' % (self.supply, self.measurement_quantity,

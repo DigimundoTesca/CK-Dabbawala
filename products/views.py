@@ -170,7 +170,7 @@ def suppliers(request):
 # -------------------------------------  Supplies -------------------------------------
 @login_required(login_url='users:login')
 def supplies(request):
-    supplies_objects = Supply.objects.order_by('id')
+    supplies_objects = Supply.objects.order_by('name').order_by('category')
     template = 'supplies/supplies.html'
     title = 'Insumos'
     context = {
@@ -320,7 +320,7 @@ def categories_supplies(request, categ):
 # -------------------------------------  Cartridges -------------------------------------
 @login_required(login_url='users:login')
 def cartridges(request):
-    cartridges_list = Cartridge.objects.order_by('category','name')
+    cartridges_list = Cartridge.objects.order_by('category','subcategory','name')
     template = 'cartridges/cartridges.html'
     title = 'Cartuchos'
     context = {

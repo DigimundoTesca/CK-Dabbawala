@@ -7,18 +7,21 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-4 col-sm-12">
-      <div class="list-group" id="list-tab" role="tablist">
-        {% for sp in supplies %}
+      <div class="list-group" id="list-tab" role="tablist">        
+        {% for sp in supplies %} 
+         {% ifchanged sp.category %}         
+          <a href="">
+            <button type="button" class="c-{{sp.category}} btn btn-dark col-12">{{sp.category}}</button>
+          </a>                               
+         {% endifchanged %}
           {% if sp == supplies|first %}
-          <a class="list-group-item list-group-item-action active" id="list-{{sp.pk}}-list" data-toggle="list" href="#{{sp.pk}}-home"
-            role="tab" aria-controls="{{sp.pk}}">
+          <a class="{{sp.category}} list-group-item list-group-item-action active" id="list-{{sp.pk}}-list" data-toggle="list" href="#{{sp.pk}}-home" role="tab" aria-controls="{{sp.pk}}">
           {% else %}
-          <a class="list-group-item list-group-item-action" id="list-{{sp.pk}}-list" data-toggle="list" href="#{{sp.pk}}-home"
-            role="tab" aria-controls="{{sp.pk}}">
-          {% endif %}          
-            {{sp.name}}
-          </a>
-        {% endfor %}        
+          <a class="{{sp.category}} list-group-item list-group-item-action" id="list-{{sp.pk}}-list" data-toggle="list" href="#{{sp.pk}}-home" role="tab" aria-controls="{{sp.pk}}">
+          {% endif %} 
+          {{sp.name}}
+          </a>                                
+        {% endfor %}      
       </div>
     </div>
     <div class="col-md-8 col-sm-12">
@@ -29,16 +32,32 @@
         {% else %}
           <div class="tab-pane fade" id="{{sp.pk}}-home" role="tabpanel" aria-labelledby="list-{{sp.pk}}-list">
         {% endif %}        
-          <p class="text-center">{{sp.name}}</p>
-          <div class="row">  
-            <div class="img-c col-md-12">
-              <img src="{{sp.image.url}}" alt="No img" >              
-            </div>          
-          </div>
           <div class="row">
-            <a title="Detalles" class="col-4 material-icons text-center" href="{% url 'products:supply_detail' sp.pk %}">dehaze</a>
-            <a title="Eliminar" class="col-4 material-icons text-center" href="{% url 'products:supply_delete' sp.pk %}">delete</a>
-            <a title="Modificar" class="col-4 material-icons text-center" href="{% url 'products:supply_modify' sp.pk %}">create</a>          
+            <div class="col-md-6">
+              <p class="text-center">{{sp.name}}</p>
+              <div class="img-c row">
+                <div class="col-md-12">                  
+                  <img src="{% static 'images/platillo.jpg' %}" alt="No img">
+                </div>
+              </div>
+              <div class="row">                  
+                <a title="Modificar" class="col-6 material-icons text-center" href="{% url 'products:supply_modify' sp.pk %}">create</a>
+                <a title="Eliminar" class="col-6 material-icons text-center" href="{% url 'products:supply_delete' sp.pk %}">delete</a>
+              </div>            
+            </div>
+            <div class="col-md-6">
+              <div class="row">
+                <div class="col-12">
+                  
+                </div>
+                <div class="col-12">
+                    Detalles <br>
+                    Categoria: {{sp.category}} <br>                  
+                    Proveedor: {{sp.supplier}} <br>
+                    Almacenamiento: {{sp.get_storage_required_display}} <br>                  
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         {% endfor %}        
@@ -59,6 +78,17 @@
     $('#fab-add-supply').click(function(event) {
       location.href = '/supplies/new/';
     });
+
+    $('.c-Ingrediente').click(function(e){      
+      e.preventDefault();
+      $('.Ingrediente').fadeToggle();
+    });
+
+    $('.c-FD').click(function (e) {
+      e.preventDefault();
+      $('.FD').fadeToggle();
+    });
+
   });
 </script>
 {% endblock javascript %}
