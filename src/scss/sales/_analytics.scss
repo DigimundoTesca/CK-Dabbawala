@@ -1,5 +1,21 @@
 .table {
   .material-icons {
     cursor: pointer;
+    font-size: 2rem;
+  }
+  .header-actions {
+    width: 10rem;
+  }
+}
+
+.sales-actions {
+  &:hover {
+    opacity: 1;
+  }
+  transition: all .3s ease;
+  opacity: 0.8;
+  padding: {
+    left: .5rem;
+    right: .5rem;
   }
 }
