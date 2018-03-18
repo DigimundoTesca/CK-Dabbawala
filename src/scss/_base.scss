@@ -24,6 +24,18 @@ main {
   }
 }
 
+.swal2-container {
+  position: relative;
+  &::before {
+    content: url("https://media.giphy.com/media/X6H1iK43XHPnuEkvhG/giphy.gif");
+    position: absolute;
+    z-index: 1;
+    margin: {
+      top: -8.4rem;
+    }
+  }
+}
+
 @import "auth/login";
 @import "sales/base";
 // // @import "diners/your-opinion";
