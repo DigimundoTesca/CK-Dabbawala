@@ -1,6 +1,3 @@
-# -*- encoding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.shortcuts import get_object_or_404, render, redirect
 
 from django.contrib.auth.decorators import login_required
@@ -10,17 +7,14 @@ from cloudkitchen.settings.base import PAGE_TITLE
 from products.forms import SupplyForm, SuppliesCategoryForm, CartridgeForm
 from products.models import Cartridge, Supply, SuppliesCategory, KitchenAssembly
 from kitchen.models import Presentation, ShopList, ShopListDetail
-from django.urls import reverse
-from django.http import HttpResponseRedirect
-from django.urls import reverse_lazy
 from helpers.products_helper import ProductsHelper
 from django.views.generic import UpdateView
 from django.views.generic import DeleteView
 from django.views.generic import CreateView
 from .forms import PresentationForm
- 
 
-class Create_Supply(CreateView):
+
+class CreateSupply(CreateView):
     model = Supply
     fields = ['name','category','barcode','supplier','storage_required','presentation_unit','presentation_cost',
         'measurement_quantity','measurement_unit','optimal_duration','optimal_duration_unit','location','image']
@@ -52,7 +46,7 @@ class Delete_Supply(DeleteView):
         return redirect('/supplies/')
 
 
-class Create_Cartridge(CreateView):
+class CreateCartridge(CreateView):
     model = Cartridge
     fields = ['name', 'price', 'category', 'image']
     template_name = 'new_cartridge.html'
@@ -62,7 +56,7 @@ class Create_Cartridge(CreateView):
         return redirect('/cartridges/')
 
 
-class Update_Cartridge(UpdateView):
+class UpdateCartridge(UpdateView):
     model = Cartridge
     fields = ['name', 'price', 'category', 'image']
     template_name = 'new_cartridge.html'
@@ -72,7 +66,7 @@ class Update_Cartridge(UpdateView):
         return redirect('/cartridges/')
 
 
-class Delete_Cartridge(DeleteView):
+class DeleteCartridge(DeleteView):
     model = Cartridge
     template_name = 'delete_cartridge.html'
 

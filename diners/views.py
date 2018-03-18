@@ -1,5 +1,3 @@
-# -*- encoding: utf-8 -*-
-from __future__ import unicode_literals
 import json
 from datetime import date, datetime, timedelta
 from django.conf import settings
@@ -15,6 +13,7 @@ from .models import AccessLog, Diner, ElementToEvaluate, SatisfactionRating
 from cloudkitchen.settings.base import PAGE_TITLE
 from helpers.diners_helper import DinersHelper, RatesHelper
 from helpers.helpers import Helper
+
 
 def diners_paginator(request, queryset, num_pages):
     result_list = Paginator(queryset, num_pages)
@@ -44,6 +43,7 @@ def diners_paginator(request, queryset, num_pages):
             'first_page': 1,
         }
     return context
+
 
 # ------------------------- Django Views ----------------------------- #
 @csrf_exempt
@@ -226,20 +226,21 @@ def diners_logs(request):
             try:
                 min_year = all_diners_objects.aggregate(Min('access_to_room'))['access_to_room__min'].year
                 max_year = all_diners_objects.aggregate(Max('access_to_room'))['access_to_room__max'].year
-                years_list = [] # [2015:object, 2016:object, 2017:object, ...]
+                years_list = []  # [2015:object, 2016:object, 2017:object, ...]
             except Exception as e:
                 if settings.DEBUG:
-                    print('Error:' , e)
+                    print('Error:', e)
                 return HttpResponse('No hay registros')
 
             while max_year >= min_year:
-                year_object = { # 2015:object or 2016:object or 2017:object ...
+                year_object = {  # 2015:object or 2016:object or 2017:object ...
                     'year': max_year,
                     'weeks_list': []
                 }
 
                 diners_per_year = all_diners_objects.filter(
-                    access_to_room__range=[helper.naive_to_datetime(date(max_year, 1, 1)), helper.naive_to_datetime(date(max_year,12,31))])
+                    access_to_room__range=[helper.naive_to_datetime(date(max_year, 1, 1)),
+                                           helper.naive_to_datetime(date(max_year, 12, 31))])
 
                 for diner in diners_per_year:
                     if len(year_object['weeks_list']) == 0:
@@ -267,10 +268,12 @@ def diners_logs(request):
                             if week_object['week_number'] == diner.access_to_room.isocalendar()[1]:
                                 # There's a same week number
                                 existing_week = True
-                                if datetime.strptime(week_object['start_date'], "%d-%m-%Y").date() > diner.access_to_room.date():
+                                if datetime.strptime(week_object['start_date'],
+                                                     "%d-%m-%Y").date() > diner.access_to_room.date():
                                     exists = True
                                     week_object['start_date'] = diner.access_to_room.date().strftime("%d-%m-%Y")
-                                elif datetime.strptime(week_object['end_date'], "%d-%m-%Y").date() < diner.access_to_room.date():
+                                elif datetime.strptime(week_object['end_date'],
+                                                       "%d-%m-%Y").date() < diner.access_to_room.date():
                                     week_object['end_date'] = diner.access_to_room.date().strftime("%d-%m-%Y")
                                 existing_week = True
                                 break
@@ -284,7 +287,7 @@ def diners_logs(request):
                             }
                             year_object['weeks_list'].append(week_object)
 
-                        #End else
+                        # End else
                 years_list.append(year_object)
                 max_year -= 1
             # End while
@@ -295,7 +298,7 @@ def diners_logs(request):
         title = 'Registro de comensales'
         page_title = PAGE_TITLE
 
-        context={
+        context = {
             'title': PAGE_TITLE + ' | ' + title,
             'page_title': title,
             'diners': pag['queryset'],
@@ -371,7 +374,7 @@ def analytics(request):
                 for suggestion in today_suggestions:
                     for element_in_suggestion in suggestion.elements.all():
                         if element_in_suggestion == element_to_evaluate:
-                            element_object['reactions'][suggestion.satisfaction_rating-1]['quantity'] += 1
+                            element_object['reactions'][suggestion.satisfaction_rating - 1]['quantity'] += 1
 
                 reactions_list.append(element_object)
             return JsonResponse(reactions_list, safe=False)
