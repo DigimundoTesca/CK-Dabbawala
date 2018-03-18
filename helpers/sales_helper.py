@@ -110,7 +110,6 @@ class TicketPOSHelper(object):
         else:
             tickets_pos = self.tickets_pos.filter(
                 ticket__created_at__range=(initial_date, final_date)).order_by('-ticket__created_at')
-        print(initial_date, final_date)
         helper = Helper()
         cartridges_tickets_details = self.get_cartridges_tickets_details()
         packages_tickets_details = self.get_packages_tickets_details()
@@ -280,11 +279,12 @@ class TicketPOSHelper(object):
     def get_sales_actual_week(self):
         """
         Gets the following properties for each week's day: Name, Date and Earnings
+            Returns number_day with 1 - 7 range, following the ISO 8601 date values
         """
         helper = Helper()
         week_sales_list = []
         total_earnings = 0
-        days_to_count = helper.get_number_day(datetime.now())
+        days_to_count = int(datetime.now().strftime("%u")) - 1
         day_limit = days_to_count
         start_date_number = 0
 
@@ -293,7 +293,7 @@ class TicketPOSHelper(object):
                 'date': str(helper.start_datetime(days_to_count).date().strftime('%d-%m-%Y')),
                 'day_name': None,
                 'earnings': None,
-                'number_day': helper.get_number_day(helper.start_datetime(days_to_count).date()),
+                'number_day': helper.start_datetime(days_to_count).strftime("%u")
             }
 
             day_tickets = self.tickets_pos.filter(
@@ -308,7 +308,7 @@ class TicketPOSHelper(object):
                         total_earnings += ticket_package_detail_item.price
 
             day_object['earnings'] = str(total_earnings)
-            day_object['day_name'] = helper.get_name_day(helper.start_datetime(days_to_count).date())
+            day_object['day_name'] = helper.start_datetime(days_to_count).strftime("%A")
 
             week_sales_list.append(day_object)
 

@@ -1,4 +1,5 @@
 import json
+import locale
 from datetime import datetime, date, timedelta
 
 from django.contrib.auth.decorators import login_required, permission_required
@@ -98,7 +99,7 @@ class SalesReport(TemplateView):
             # Fill cartridge rows
             packages = products_helper.get_packages_cartridges_recipes().filter(
                 package_cartridge=package_ticket_detail.package_cartridge)
-
+                
             for package in packages:
                 subcategory = package.cartridge.subcategory
                 cartridge_name = package.cartridge.name
@@ -117,18 +118,19 @@ class SalesReport(TemplateView):
             ws1.cell(row=count, column=18, value=package_ticket_detail.price * package_ticket_detail.quantity)
 
             count += 1
-
-        file_name = 'Reporte_General_De_Ventas_{0}.xlsx'.format(datetime.now().strftime("%I-%M%p_%d-%m-%Y"))
+        
+        locale.setlocale(locale.LC_ALL, '')
+        file_name = 'ReporteGralVentas-{0}.xlsx'.format(datetime.now().strftime("%Y%m%d%H%M%S"))
         response = HttpResponse(content_type='application/ms-excel')
-        content = 'attachment; filename={0}'.format(file_name)
-        response['Content-Disposition'] = content
+        content = 'attachment; filename="{0}"'.format(file_name)
+        response['content-disposition'] = content
         workbook.save(response)
-
         return response
 
 
 @permission_required('users.can_see_sales')
 def sales(request):
+    locale.setlocale(locale.LC_ALL, '')
     sales_helper = TicketPOSHelper()
     helper = Helper()
 
@@ -144,6 +146,7 @@ def sales(request):
             sales_day_list = []
             start_day = helper.naive_to_datetime(datetime.strptime(request.POST['date'], '%d-%m-%Y').date())
             end_date = helper.naive_to_datetime(start_day + timedelta(days=1))
+            
             tickets_objects = sales_helper.tickets_pos.filter(ticket__created_at__range=[start_day, end_date])
 
             for ticket_pos in tickets_objects:
@@ -274,8 +277,8 @@ def sales(request):
         'title': PAGE_TITLE + ' | ' + title,
         'page_title': title,
         'actual_year': datetime.now().year,
-        'today_name': helper.get_name_day(datetime.now()),
-        'today_number': helper.get_number_day(datetime.now()),
+        'today_name': datetime.now().strftime("%A"),
+        'today_number': datetime.now().strftime("%w"),
         'week_number': helper.get_week_number(date.today()),
         'tickets': sales_helper.get_tickets_list(initial_date, final_date),
     }

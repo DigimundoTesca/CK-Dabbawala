@@ -5,24 +5,6 @@ from datetime import datetime, date, timedelta, time
 class Helper(object):
     def __init__(self):
         self.tz = timezone('America/Mexico_City')
-        self.days_dict = {
-            'MONDAY': 'Lunes',
-            'TUESDAY': 'Martes',
-            'WEDNESDAY': 'Miércoles',
-            'THURSDAY': 'Jueves',
-            'FRIDAY': 'Viernes',
-            'SATURDAY': 'Sábado',
-            'SUNDAY': 'Domingo'
-        }
-        self.number_days_dict = {
-            'Lunes': 0,
-            'Martes': 1,
-            'Miércoles': 2,
-            'Jueves': 3,
-            'Viernes': 4,
-            'Sábado': 5,
-            'Domingo': 6,
-        }
         super(Helper, self).__init__()
 
     def naive_to_datetime(self, nd):
@@ -38,29 +20,13 @@ class Helper(object):
             new_date = datetime.combine(d, t)
             return self.tz.localize(new_date)
 
-    def get_name_day(self, datetime_now):
-        """
-        :param datetime_now: the datetime to get its name
-        :type datetime_now: datetime, date
-        :return: datetime name
-        :rtype: str
-        """
-        if type(datetime_now) == datetime:
-            date_now = date(datetime_now.year, datetime_now.month, datetime_now.day)
-            return self.days_dict[date_now.strftime('%A').upper()]
-        else:
-            return self.days_dict[datetime_now.strftime('%A').upper()]
-
-    def get_number_day(self, dt):
-        return self.number_days_dict[self.get_name_day(dt)]
-
     def start_datetime(self, back_days):
         """
         :param back_days: int
         :return: obtained datetime
         :rtype: datetime
         """
-        start_date = date.today() - timedelta(days=back_days)
+        start_date = date.today() - timedelta(days=int(back_days))
         return self.naive_to_datetime(start_date)
 
     def end_datetime(self, back_days):
@@ -99,7 +65,7 @@ class Helper(object):
         :returns: returns the monday datetime and today datetime in actual week
         """
         final_datetime = datetime.now(self.tz)
-        initial_datetime = self.start_datetime(self.get_number_day(final_datetime))
+        initial_datetime = self.start_datetime(int(final_datetime.strftime("%u")) - 1)
         return initial_datetime, final_datetime
 
     @staticmethod

@@ -2,36 +2,40 @@ import swal from 'sweetalert2';
 import 'bootstrap';
 import 'chart.js';
 import 'jsPDF';
+import 'download.js'
+import {
+  downloadBlob
+} from 'download.js';
+
 require('../scss/app.scss');
 const PATH = $(location).attr('pathname');
 
-$(function() {
+/**
+ * Declaración de botones
+ */
+
+const btnDownloadSalesReport = document.getElementById('btn-save-reports');
+
+$(function () {
   /**
    * Resalta el nombre de los enlaces del navbar de acuerdo a la ubicación en donde se encuentre
    *
    */
   if (PATH === '/ventas/') {
     $('#link-sales').addClass('active');
-  }
-  else if (PATH === '/sales/new/breakfast/') {
+  } else if (PATH === '/sales/new/breakfast/') {
     $('#link-new-breakfast').addClass('active');
-  }
-  else if (PATH === '/sales/new/food/') {
+  } else if (PATH === '/sales/new/food/') {
     $('#link-new-food').addClass('active');
-  }
-  else if (PATH === '/supplies/' || PATH === '/supplies/new/') {
+  } else if (PATH === '/supplies/' || PATH === '/supplies/new/') {
     $('#link-warehouse').addClass('active');
-  }
-  else if (PATH === '/cartridges/' || PATH === '/cartridges/new/') {
+  } else if (PATH === '/cartridges/' || PATH === '/cartridges/new/') {
     $('#link-warehouse').addClass('active');
-  }
-  else if (PATH === '/customers/register/list/') {
+  } else if (PATH === '/customers/register/list/') {
     $('#link-customers').addClass('active');
-  }
-  else if (PATH === '/kitchen/' || PATH === '/kitchen/assembly/' ) {
+  } else if (PATH === '/kitchen/' || PATH === '/kitchen/assembly/') {
     $('#link-kitchen').addClass('active');
-  }
-  else if (PATH === '/diners/' || PATH === '/diners/logs/') {
+  } else if (PATH === '/diners/' || PATH === '/diners/logs/') {
     $('#link-diners').addClass('active');
   }
 
@@ -74,52 +78,68 @@ $(function() {
     $.ajax({
       method: 'post',
       url: PATH,
-      dataType : 'json',
+      dataType: 'json',
       traditional: true,
       async: true,
       data: {
         csrfmiddlewaretoken: csrftoken,
         type: 'dates_range'
       },
-      success: function(result) {
+      success: function (result) {
         dates_range = result.data;
         fillDatesRangeFilter();
+        setSalesData();
       },
-      error: function(XMLHttpRequest, textStatus, errorThrown) {
+      error: function (XMLHttpRequest, textStatus, errorThrown) {
         console.log(XMLHttpRequest, textStatus);
       }
     });
 
+
     /**
      * Método AJAX que solicita los datos de las ventas de la semana actual
      */
-    $.ajax({
-      method: 'post',
-      url: PATH,
-      type: 'json',
-      traditional: true,
-      async: true,
-      data: {
-        csrfmiddlewaretoken: csrftoken,
-        type: 'sales_actual_week'
-      },
-      success: function(result) {
-        sales_week = result.data;
-        drawCharts();
-        setSalesDayChart(today_date);
-        setTotalEarnings();
-      },
-      error: function(XMLHttpRequest, textStatus, errorThrown) {
-        console.log("error");
-      }
-    });
+    function setSalesData() {
+      $.ajax({
+        method: 'post',
+        url: PATH,
+        type: 'json',
+        traditional: true,
+        async: true,
+        data: {
+          csrfmiddlewaretoken: csrftoken,
+          type: 'sales_actual_week'
+        },
+        success: function (result) {
+          sales_week = result.data;
+          drawCharts();
+
+          setSalesDayChart(today_date);
+          setTotalEarnings();
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+          console.log(XMLHttpRequest, textStatus, errorThrown);
+        }
+      });
+
+    }
   })
   ([]);
 
   function convertDateToString(date) {
     let months = {
-      1: 'Ene', 2: 'Feb', 3: 'Mar', 4: 'Abr', 5: 'May', 6: 'Jun',
-      7: 'Jul', 8: 'Ago', 9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dic',
+      1: 'Ene',
+      2: 'Feb',
+      3: 'Mar',
+      4: 'Abr',
+      5: 'May',
+      6: 'Jun',
+      7: 'Jul',
+      8: 'Ago',
+      9: 'Sep',
+      10: 'Oct',
+      11: 'Nov',
+      12: 'Dic',
     };
     date = date.split('-');
     return date[0] + " " + months[parseInt(date[1])] + " " + date[2];
@@ -131,7 +151,7 @@ $(function() {
   function fillDatesRangeFilter() {
     let selected_year;
 
-    $.each(dates_range, function(index, item) {
+    $.each(dates_range, function (index, item) {
       $('#dates-range-form').find('#dt-year').append(
         "<option value=" + item.year + ">" + item.year + "</option>"
       );
@@ -139,9 +159,9 @@ $(function() {
 
     selected_year = parseInt($('#dates-range-form').find('#dt-year').val());
 
-    $.each(dates_range, function(index, item) {
-      if (dates_range[index].year ===  selected_year) {
-        $.each(dates_range[index].weeks_list, function(index, item) {
+    $.each(dates_range, function (index, item) {
+      if (dates_range[index].year === selected_year) {
+        $.each(dates_range[index].weeks_list, function (index, item) {
           $('#dates-range-form').find('#dt-week').append(
             "<option value=" + item.start_date + "," + item.end_date + ">" +
             "S-" + item.week_number + ": " +
@@ -192,11 +212,13 @@ $(function() {
       },
       options: {
         responsive: true,
-        onClick: function(event, legendItem) {
+        onClick: function (event, legendItem) {
           try {
-            let selected_day = legendItem[0]._index;
+            // Actualiza la gráfica de ventas por hora dependiendo del día elegido
+            let selected_day = parseInt(legendItem[0]._index + 1);
             for (let i = 0; i < sales_week.length; i++) {
-              if (sales_week[i].number_day === selected_day) {
+              let number_day = parseInt(sales_week[i].number_day);
+              if (number_day === selected_day) {
                 setSalesDayChart(sales_week[i].date);
               }
             }
@@ -246,11 +268,10 @@ $(function() {
       },
       options: {
         responsive: true,
-        onClick: function(event, legendItem) {
+        onClick: function (event, legendItem) {
           try {
             console.log(legendItem[0]._index);
-          }
-          catch(error) {
+          } catch (error) {
             console.log(error.message);
           }
         },
@@ -299,14 +320,21 @@ $(function() {
     let amount_parts,
       regexp = /(\d+)(\d{3})/;
     amount += '';
+
     amount = parseFloat(amount.replace(/[^0-9.]/g, ''));
     decimals = decimals || 0;
-    if (isNaN(amount) || amount === 0)
+
+    if (isNaN(amount) || amount === 0) {
       return parseFloat(0).toFixed(decimals);
+    }
+
     amount = '' + amount.toFixed(decimals);
     amount_parts = amount.split('.');
-    while (regexp.test(amount_parts[0]))
+
+    while (regexp.test(amount_parts[0])) {
       amount_parts[0] = amount_parts[0].replace(regexp, '$1' + ' ' + '$2');
+    }
+
     return amount_parts.join('.');
   }
 
@@ -315,7 +343,7 @@ $(function() {
    * utilizando la lista de objetos sales_list como argumento
    */
   function getEarningsWeekRange(sales_list) {
-    let week_list = [0, 0, 0, 0, 0, 0, 0,];
+    let week_list = [0, 0, 0, 0, 0, 0, 0, ];
     for (let i = 0; i < 7; i++) {
       for (let j = 0; j < sales_list.length; j++) {
         if (sales_list[j].number_day === i) {
@@ -331,10 +359,8 @@ $(function() {
    * El String debe tener el siguiente formato: hh:mm
    */
   function convertHoursToMinutes(original_time) {
-    let hours,
-      minutes;
-    hours = parseInt(original_time.split(':')[0])*60;
-    minutes = parseInt(original_time.split(':')[1]);
+    let hours = parseInt(original_time.split(':')[0]) * 60,
+      minutes = parseInt(original_time.split(':')[1]);
     return parseInt(hours + minutes);
   }
 
@@ -346,10 +372,10 @@ $(function() {
     let hours = parseInt(original_time / 60),
       minutes = parseInt(original_time % 60);
     if (hours.toString().length < 2) {
-      hours = "0"+hours;
+      hours = "0" + hours;
     }
     if (minutes.toString().length < 2) {
-      minutes = "0"+minutes;
+      minutes = "0" + minutes;
     }
     return hours + ':' + minutes;
   }
@@ -370,7 +396,7 @@ $(function() {
    * Recibe un datetime con formato brindado por Python
    * Regresa el datetime convertido en formato de 24 hrs: hh:mm con Timezone +06:00
    */
-  function convertPythonDatetimeFormatToHour(original_datetime){
+  function convertPythonDatetimeFormatToHour(original_datetime) {
     return original_datetime.split('T')[1].split('.')[0].substr(0, 5);
   }
 
@@ -385,12 +411,12 @@ $(function() {
       earnings = 0;
     initial_hour_minutes = convertHoursToMinutes(initial_hour);
     final_hour_minutes = convertHoursToMinutes(final_hour);
-    while(initial_hour_minutes < final_hour_minutes) {
+    while (initial_hour_minutes < final_hour_minutes) {
       let start_hour_f = convertMinutesToHours(initial_hour_minutes),
         end_hour_f = convertMinutesToHours(initial_hour_minutes + separation_time);
       for (let i = 0; i < sales_list.length; i++) {
         let hour_sale = convertPythonDatetimeFormatToHour(sales_list[i].datetime);
-        if(isHourInRange(hour_sale, start_hour_f, end_hour_f)) {
+        if (isHourInRange(hour_sale, start_hour_f, end_hour_f)) {
           earnings += parseFloat(sales_list[i].earnings);
           elements_ok.push(sales_list[i]);
         }
@@ -400,8 +426,8 @@ $(function() {
       earnings = 0;
     }
     // Searches the times outside the time range
-    for(let i = 0; i < sales_list.length; i++) {
-      if(elements_ok.indexOf(sales_list[i]) === -1) {
+    for (let i = 0; i < sales_list.length; i++) {
+      if (elements_ok.indexOf(sales_list[i]) === -1) {
         earnings += parseFloat(sales_list[i].earnings);
       }
     }
@@ -420,18 +446,18 @@ $(function() {
       data: {
         csrfmiddlewaretoken: csrftoken,
         'date': date,
-        'type': 'sales_day',
+        'type': 'sales_day'
       },
       traditional: true,
-      dataType : 'json',
-      beforeSend: function(){
+      dataType: 'json',
+      beforeSend: function () {
         swal({
           title: "Generando gráficas",
           text: "Espere mientras se calculan los datos",
         });
         swal.enableLoading();
       },
-      success: function(result) {
+      success: function (result) {
         let sales_day_earnings_list;
         let initial_hour = '06:00',
           final_hour = '16:00',
@@ -444,7 +470,7 @@ $(function() {
         earningsHourChart.update();
         swal.close();
       },
-      error: function(jqXHR, textStatus, errorThrown) {
+      error: function (jqXHR, textStatus, errorThrown) {
         console.error(textStatus, errorThrown);
         console.error(jqXHR);
       },
@@ -454,7 +480,7 @@ $(function() {
   /**
    * Refresca los datos de las gráficas y tabla con la semana y el año elegido
    */
-  $('#dt-week').change(function(event) {
+  $('#dt-week').change(function (event) {
     let dt_year = $('#dt-year').val(),
       dt_week = $('#dt-week').val();
     $.ajax({
@@ -467,15 +493,15 @@ $(function() {
         'type': 'sales_week',
       },
       traditional: true,
-      dataType : 'json',
-      beforeSend: function(){
+      dataType: 'json',
+      beforeSend: function () {
         swal({
           title: "Obteniendo registros",
           text: "Espere mientras obtenemos toda la información",
         });
         swal.enableLoading();
       },
-      success: function(result, status, XHR) {
+      success: function (result, status, XHR) {
         let tickets_objects = result['tickets'],
           sales_week = result['sales'],
           week_number = result['week_number'],
@@ -489,8 +515,8 @@ $(function() {
           timer: 750,
           showConfirmButton: false
         }).then(
-          function(){},
-          function(dismiss){});
+          function () {},
+          function (dismiss) {});
         /**
          * Filling the sales table
          */
@@ -543,10 +569,10 @@ $(function() {
         $('#total-earnings-text').text(week_earnings.toFixed(2));
         $('#week-number').text(week_number);
       },
-      error: function(jqXHR, textStatus, errorThrown) {
+      error: function (jqXHR, textStatus, errorThrown) {
         console.log(jqXHR);
       },
-      complete: function(result){}
+      complete: function (result) {}
     });
   });
 
@@ -554,7 +580,7 @@ $(function() {
    * Obtiene la información del ticket específico y la muestra para impresión
    * TODO: Make an iframe to print the ticket
    */
-  $(this).on('click', '.print-ticket', function(event) {
+  $(this).on('click', '.print-ticket', function (event) {
     let id_element = $(this).parent().siblings('.header-id').text();
     let btn_printer = $('.btn-printer');
     let sales_list_modal = $('#sales-list-modal');
@@ -598,7 +624,7 @@ $(function() {
       let new_li;
 
       // Formats the names
-      $.each(cartridges_list, function(index, item) {
+      $.each(cartridges_list, function (index, item) {
         name += item.substring(0, 3) + ' ';
       });
 
@@ -643,7 +669,7 @@ $(function() {
       let nuevo_li = $("" +
         "<li class='total-ticket-container mt-1'>" +
         " <span id='total-ticket'>$ <span class='total-ticket-cant'> " +
-        " " + total +"</span></span> " +
+        " " + total + "</span></span> " +
         "</li>" +
         "");
       sales_list_modal.append(nuevo_li);
@@ -654,33 +680,32 @@ $(function() {
      * Dibuja el ticket en el modal y activa el onClic() listener del botón .btn-printer
      */
     $.ajax({
-      url: PATH,
-      method: 'POST',
-      traditional: true,
-      dataType: 'json',
-      async: true,
-      data: {
-        csrfmiddlewaretoken: csrftoken,
-        'ticket_id': id_element,
-        'type': 'ticket_details',
-      },
-      beforeSend: function(xhr){
-        swal({
-          title: "Obteniendo datos del ticket",
-          text: "Espere mientras obtenemos toda la información",
-        });
-        swal.enableLoading();
-      }
-    })
-      .done(function(data) {
+        url: PATH,
+        method: 'POST',
+        traditional: true,
+        dataType: 'json',
+        async: true,
+        data: {
+          csrfmiddlewaretoken: csrftoken,
+          'ticket_id': id_element,
+          'type': 'ticket_details',
+        },
+        beforeSend: function (xhr) {
+          swal({
+            title: "Obteniendo datos del ticket",
+            text: "Espere mientras obtenemos toda la información",
+          });
+          swal.enableLoading();
+        }
+      })
+      .done(function (data) {
         swal.close();
-        console.log(data);
         let ticket_details = data.ticket_details;
         $('.ticket-order-container').find('#ticket-order').text(ticket_details.ticket_order);
-        setTimeout(function() {
+        setTimeout(function () {
           show_modal(ticket_details)
         }, 500);
-        btn_printer.on('click', function(){
+        btn_printer.on('click', function () {
           let options = {
             mode: 'iframe',
             popClose: true,
@@ -694,8 +719,9 @@ $(function() {
    * Obtiene el id del ticket específico y realiza la petición para eliminarlo
    * TODO: Make a view for delete the ticket from backend
    */
-  $(this).on('click', '.delete-ticket', function(event) {
+  $(this).on('click', '.delete-ticket', function (event) {
     let id_element = $(this).parent().siblings('.header-id').text();
+
     function delete_ticket() {
       $.ajax({
         url: PATH,
@@ -705,15 +731,15 @@ $(function() {
           'ticket_id': id_element,
         },
         traditional: true,
-        dataType : 'json',
-        beforeSend: function(){
+        dataType: 'json',
+        beforeSend: function () {
           swal({
             title: "Eliminando ticket",
             text: "Espere mientras se realiza la petición",
           });
           swal.enableLoading();
         },
-        success: function(result) {
+        success: function (result) {
           swal({
             title: "Éxito",
             text: "Ticket Eliminando",
@@ -721,8 +747,8 @@ $(function() {
             timer: 1000,
             showConfirmButton: false
           }).then(
-            function(){},
-            function(dismiss){
+            function () {},
+            function (dismiss) {
               location.reload();
             }
           );
@@ -740,7 +766,45 @@ $(function() {
     }).then(function () {
         delete_ticket();
       },
-      function(dismiss){});
+      function (dismiss) {});
+  });
+
+  /**
+   * Descarga el reporte de ventas
+   */
+  btnDownloadSalesReport.addEventListener('click', (event) => {
+    let urlFile = '/ventas/reporte/';
+    let sFileName;
+    swal({
+      title: "Generando reporte",
+      text: "Espere mientras se generan los datos",
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      allowEnterKey: false
+    });
+    swal.enableLoading();
+
+    return fetch(urlFile, {
+        method: 'GET'
+      })
+      .then((response) => {
+        // Obtiene el nombre del archivo desde el header['content-disposition']
+        sFileName = response.headers.get('content-disposition');
+        sFileName = sFileName.split(';')[1].trim().split('=')[1];
+        sFileName = sFileName.replace(/"/g, '');
+        // Retorna el callback para el archivo blob
+        return response.blob()
+      })
+      .then((blob) => {
+        swal({
+          title: "Éxito",
+          text: "Reporte generado",
+          type: "info",
+          timer: 1000,
+          showConfirmButton: false
+        }).then(() => downloadBlob(sFileName, blob));
+      })
+
   });
 
 });
