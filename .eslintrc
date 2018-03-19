@@ -3,7 +3,14 @@
         "ecmaVersion": 6,
         "sourceType": "module"
     },
+    "extends": "eslint:recommended",
+    "root": true,
     "rules": {
-        "semi": 2
+        "camelcase": 1,
+        "space-infix-ops": 1,
+        "no-unused-vars": 1
+    },
+    "env": {
+        "browser": true
     }
 }
