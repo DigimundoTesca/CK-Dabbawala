@@ -8,7 +8,7 @@
 {% endblock page_title %}
 
 {% block style %}
-  {% render_bundle 'app' 'css' 'CSS' %}
+  {% render_bundle 'auth' 'css' 'CSS' %}
 {% endblock %}
 
 {% block content %}
@@ -21,11 +21,13 @@
         <div class="col-12 d-flex justify-content-center mt-3 mb-3">
           <p class="h4 text-light">Registrate aquí</p>
         </div>
-        {% if success_message %}
-          <div class="alert alert-success col" role="alert">
+        <div class="col-12 d-flex justify-content-center">
+          {% if success_message %}
+          <div class="col-lg-8 col-xl-6 push-lg-2 push-xl-3 alert alert-success" role="alert">
             {{ success_message }}
           </div>
-        {% endif %}
+          {% endif %} 
+        </div>
         <div class="col-12 d-flex justify-content-center mt-3 mb-3">
           <div class="card col-lg-8 col-xl-6 push-lg-2 push-xl-3 pt-3">
             <form method="POST" action="">
