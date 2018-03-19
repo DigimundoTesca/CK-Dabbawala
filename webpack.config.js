@@ -6,7 +6,8 @@ const BundleTracker = require('webpack-bundle-tracker');
 
 module.exports = {
   entry: {
-    app: './src/js/app.js'
+    auth: './src/js/auth/auth.js',
+    sales: './src/js/sales/sales.js'
   },
   output: {
     path: path.resolve(__dirname, 'cloudkitchen/static/js/'),
