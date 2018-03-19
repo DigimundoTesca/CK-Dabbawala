@@ -6,7 +6,10 @@ from django.db.models import Min, Max
 from django.utils.timezone import utc
 
 from helpers.helpers import Helper
-from sales.models import TicketPOS, CartridgeTicketDetail, PackageCartridgeTicketDetail, TicketExtraIngredient
+from sales.models import TicketPOS
+from sales.models import CartridgeTicketDetail
+from sales.models import PackageCartridgeTicketDetail
+from sales.models import TicketExtraIngredient
 
 
 class TicketPOSHelper(object):

@@ -1,7 +1,9 @@
 from django.db import models
 from django.utils import timezone
 
-from products.models import Cartridge, PackageCartridge, ExtraIngredient
+from products.models import Cartridge
+from products.models import PackageCartridge
+from products.models import ExtraIngredient
 from users.models.users import User as UserProfile
 from users.models.customers import CustomerProfile
 

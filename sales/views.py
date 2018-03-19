@@ -2,17 +2,24 @@ import json
 import locale
 from datetime import datetime, date, timedelta
 
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.views.generic import TemplateView
+
 from openpyxl import Workbook
 from openpyxl.styles import Alignment
 
 from cloudkitchen.settings.base import PAGE_TITLE
-from products.models import Cartridge, PackageCartridge, PackageCartridgeRecipe
-from sales.models import TicketBase, TicketPOS, CartridgeTicketDetail, PackageCartridgeTicketDetail
+from products.models import Cartridge
+from products.models import PackageCartridge
+from products.models import PackageCartridgeRecipe
+from sales.models import TicketBase
+from sales.models import TicketPOS
+from sales.models import CartridgeTicketDetail
+from sales.models import PackageCartridgeTicketDetail
 from users.models.users import User as UserProfile
 from helpers.sales_helper import TicketPOSHelper
 from helpers.products_helper import ProductsHelper
