@@ -3,7 +3,7 @@
 {% load render_bundle from webpack_loader %}
 
 {% block style %}
-  {% render_bundle 'app' 'css' 'CSS' %}
+  {% render_bundle 'sales' 'css' 'CSS' %}
 {% endblock %}
 
 {% block page_title %}
@@ -166,5 +166,5 @@
 {% endblock content %}
 
 {% block javascript %}
-  {% render_bundle 'app' 'js' 'JS'%}
+  {% render_bundle 'sales' 'js' 'JS'%}
 {% endblock javascript %}
