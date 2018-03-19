@@ -8,9 +8,12 @@
     "rules": {
         "camelcase": 1,
         "space-infix-ops": 1,
-        "no-unused-vars": 1
+        "no-unused-vars": 1,
+        "no-console": "off"
     },
     "env": {
-        "browser": true
+        "browser": true,
+        "amd": true,
+        "jquery": true
     }
 }

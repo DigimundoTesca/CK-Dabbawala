@@ -1,14 +1,9 @@
 import swal from 'sweetalert2';
 import 'bootstrap';
-import 'chart.js';
+import { Chart } from 'chart.js';
 import 'jsPDF';
-import {
-  downloadBlob
-} from 'download.js';
-import {
-  loadPathname,
-  getCookie
-} from '../app.js';
+import { downloadBlob } from 'download.js';
+import { loadPathname, getCookie } from '../app.js';
 
 require('../../scss/app.scss');
 
@@ -20,13 +15,13 @@ window.onload = function () {
   const btnDownloadSalesReport = document.getElementById('btn-save-reports');
 
   let csrftoken = getCookie('csrftoken');
-  let ctx_week = document.getElementById("canvas-week-sales"),
-    ctx_day = document.getElementById("canvas-day-sales"),
+  let ctxWeek = document.getElementById("canvas-week-sales"),
+    ctxDay = document.getElementById("canvas-day-sales"),
     earningsDayChart,
     earningsHourChart,
-    today_date,
-    sales_week,
-    dates_range;
+    todayDate,
+    salesWeek,
+    datesRange;
 
   /**
    * Función que se encarga de disparar las peticiones ajax para
@@ -48,7 +43,7 @@ window.onload = function () {
         type: 'dates_range'
       },
       success: function (result) {
-        dates_range = result.data;
+        datesRange = result.data;
         fillDatesRangeFilter();
         setSalesData();
       },
@@ -56,7 +51,6 @@ window.onload = function () {
         console.log(XMLHttpRequest, textStatus);
       }
     });
-
 
     /**
      * Método AJAX que solicita los datos de las ventas de la semana actual
@@ -73,10 +67,10 @@ window.onload = function () {
           type: 'sales_actual_week'
         },
         success: function (result) {
-          sales_week = result.data;
+          salesWeek = result.data;
           drawCharts();
 
-          setSalesDayChart(today_date);
+          setSalesDayChart(todayDate);
           setTotalEarnings();
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -85,8 +79,7 @@ window.onload = function () {
       });
 
     }
-  })
-  ([]);
+  })([]);
 
   function convertDateToString(date) {
     let months = {
@@ -111,19 +104,19 @@ window.onload = function () {
    * Rellena el filtro de fechas
    */
   function fillDatesRangeFilter() {
-    let selected_year;
+    let selectedYear;
 
-    $.each(dates_range, function (index, item) {
+    $.each(datesRange, function (index, item) {
       $('#dates-range-form').find('#dt-year').append(
         "<option value=" + item.year + ">" + item.year + "</option>"
       );
     });
 
-    selected_year = parseInt($('#dates-range-form').find('#dt-year').val());
+    selectedYear = parseInt($('#dates-range-form').find('#dt-year').val());
 
-    $.each(dates_range, function (index, item) {
-      if (dates_range[index].year === selected_year) {
-        $.each(dates_range[index].weeks_list, function (index, item) {
+    $.each(datesRange, function (index, item) {
+      if (datesRange[index].year === selectedYear) {
+        $.each(datesRange[index].weeks_list, function (index, item) {
           $('#dates-range-form').find('#dt-week').append(
             "<option value=" + item.start_date + "," + item.end_date + ">" +
             "S-" + item.week_number + ": " +
@@ -135,7 +128,7 @@ window.onload = function () {
         return false;
       }
     });
-    today_date = $('#dt-week').val().split(',')[1];
+    todayDate = $('#dt-week').val().split(',')[1];
   }
 
   /**
@@ -145,7 +138,7 @@ window.onload = function () {
     /**
      * Draws the chart of sales of the week
      */
-    earningsDayChart = new Chart(ctx_week, {
+    earningsDayChart = new Chart(ctxWeek, {
       type: 'bar',
       data: {
         labels: ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado", "Domingo"],
@@ -177,11 +170,11 @@ window.onload = function () {
         onClick: function (event, legendItem) {
           try {
             // Actualiza la gráfica de ventas por hora dependiendo del día elegido
-            let selected_day = parseInt(legendItem[0]._index + 1);
-            for (let i = 0; i < sales_week.length; i++) {
-              let number_day = parseInt(sales_week[i].number_day);
-              if (number_day === selected_day) {
-                setSalesDayChart(sales_week[i].date);
+            let selectedDay = parseInt(legendItem[0]._index + 1);
+            for (let i = 0; i < salesWeek.length; i++) {
+              let numberDay = parseInt(salesWeek[i].number_day);
+              if (numberDay === selectedDay) {
+                setSalesDayChart(salesWeek[i].date);
               }
             }
           } catch (error) {
@@ -201,14 +194,12 @@ window.onload = function () {
     /**
      * Draws the chart of sales of the day
      */
-    earningsHourChart = new Chart(ctx_day, {
+    earningsHourChart = new Chart(ctxDay, {
       type: 'horizontalBar',
       data: {
         labels: [
-          "Out", "15:00 - 16:00", "14:00 - 15:00", "13:00 - 14:00",
-          "12:00 - 13:00", "11:00 - 12:00", "10:00 - 11:00", "09:00 - 10:00",
-          "08:00 - 09:00", "07:00 - 08:00", "06:00 - 07:00"
-        ],
+          "Out", "15:00 - 16:00", "14:00 - 15:00", "13:00 - 14:00", "12:00 - 13:00", "11:00 - 12:00", "10:00 - 11:00", "09:00 - 10:00",
+          "08:00 - 09:00", "07:00 - 08:00", "06:00 - 07:00"],
         datasets: [{
           label: 'Ventas en este horario',
           data: [],
@@ -253,33 +244,33 @@ window.onload = function () {
    * Calcula el total de ventas de la semana actual y lo imprime en el template
    */
   function setTotalEarnings() {
-    let total_earnings = 0;
-    let earnings_list = getEarningsWeekList();
-    for (let i = 0; i < earnings_list.length; i++) {
-      total_earnings += earnings_list[i];
+    let totalEarnings = 0;
+    let earningsList = getEarningsWeekList();
+    for (let i = 0; i < earningsList.length; i++) {
+      totalEarnings += earningsList[i];
     }
-    total_earnings = setDecimalFormat(total_earnings, 2);
-    $('#total-earnings-text').append(total_earnings);
+    totalEarnings = setDecimalFormat(totalEarnings, 2);
+    $('#total-earnings-text').append(totalEarnings);
   }
 
   /**
-   * Regresa una lista con la ganancia de cada dia de la semana utilizando la variable sales_week
+   * Regresa una lista con la ganancia de cada dia de la semana utilizando la variable salesWeek
    */
   function getEarningsWeekList() {
-    let earnings_list = [],
+    let earningsList = [],
       count = 0;
-    while (count < sales_week.length) {
-      earnings_list.push(parseFloat(sales_week[count]['earnings']));
+    while (count < salesWeek.length) {
+      earningsList.push(parseFloat(salesWeek[count]['earnings']));
       count++;
     }
-    return earnings_list;
+    return earningsList;
   }
 
   /**
    * Recibe un valor número y lo retorna un número con decimales (String)
    */
   function setDecimalFormat(amount, decimals) {
-    let amount_parts,
+    let amountParts,
       regexp = /(\d+)(\d{3})/;
     amount += '';
 
@@ -291,38 +282,38 @@ window.onload = function () {
     }
 
     amount = '' + amount.toFixed(decimals);
-    amount_parts = amount.split('.');
+    amountParts = amount.split('.');
 
-    while (regexp.test(amount_parts[0])) {
-      amount_parts[0] = amount_parts[0].replace(regexp, '$1' + ' ' + '$2');
+    while (regexp.test(amountParts[0])) {
+      amountParts[0] = amountParts[0].replace(regexp, '$1' + ' ' + '$2');
     }
 
-    return amount_parts.join('.');
+    return amountParts.join('.');
   }
 
   /**
    * Retorna una lista con las ganancias respectivas a cada día de la semana
    * utilizando la lista de objetos sales_list como argumento
    */
-  function getEarningsWeekRange(sales_list) {
-    let week_list = [0, 0, 0, 0, 0, 0, 0, ];
+  function getEarningsWeekRange(salesList) {
+    let weekList = [0, 0, 0, 0, 0, 0, 0,];
     for (let i = 0; i < 7; i++) {
-      for (let j = 0; j < sales_list.length; j++) {
-        if (sales_list[j].number_day === i) {
-          week_list[i] = sales_list[j]['earnings'];
+      for (let j = 0; j < salesList.length; j++) {
+        if (salesList[j].number_day === i) {
+          weekList[i] = salesList[j]['earnings'];
         }
       }
     }
-    return week_list;
+    return weekList;
   }
 
   /**
    * Recibe una hora en formato de 24 hrs y la regresa en formateada en minutos
    * El String debe tener el siguiente formato: hh:mm
    */
-  function convertHoursToMinutes(original_time) {
-    let hours = parseInt(original_time.split(':')[0]) * 60,
-      minutes = parseInt(original_time.split(':')[1]);
+  function convertHoursToMinutes(originalTime) {
+    let hours = parseInt(originalTime.split(':')[0]) * 60,
+      minutes = parseInt(originalTime.split(':')[1]);
     return parseInt(hours + minutes);
   }
 
@@ -330,9 +321,9 @@ window.onload = function () {
    * Recibe una hora en enteros (minutos) y la regresa en formato de 24 hrs
    * El String debe tener el siguiente formato: hh:mm
    */
-  function convertMinutesToHours(original_time) {
-    let hours = parseInt(original_time / 60),
-      minutes = parseInt(original_time % 60);
+  function convertMinutesToHours(originalTime) {
+    let hours = parseInt(originalTime / 60),
+      minutes = parseInt(originalTime % 60);
     if (hours.toString().length < 2) {
       hours = "0" + hours;
     }
@@ -347,54 +338,54 @@ window.onload = function () {
    * La hora recibida debe tener el siguiente formato: hh:mm
    * Si la condición se cumple retorna true, sino, retorna falso
    */
-  function isHourInRange(hour, start_hour, end_hour) {
-    let hour_in_minutes = convertHoursToMinutes(hour),
-      start_hour_in_minutes = convertHoursToMinutes(start_hour),
-      end_hour_in_minutes = convertHoursToMinutes(end_hour);
-    return hour_in_minutes >= start_hour_in_minutes && hour_in_minutes < end_hour_in_minutes;
+  function isHourInRange(hour, startHour, endHour) {
+    let hourMinutes = convertHoursToMinutes(hour),
+      startHourMinutes = convertHoursToMinutes(startHour),
+      endHourMinutes = convertHoursToMinutes(endHour);
+    return hourMinutes >= startHourMinutes && hourMinutes < endHourMinutes;
   }
 
   /**
    * Recibe un datetime con formato brindado por Python
    * Regresa el datetime convertido en formato de 24 hrs: hh:mm con Timezone +06:00
    */
-  function convertPythonDatetimeFormatToHour(original_datetime) {
-    return original_datetime.split('T')[1].split('.')[0].substr(0, 5);
+  function convertPythonDatetimeFormatToHour(originalDatetime) {
+    return originalDatetime.split('T')[1].split('.')[0].substr(0, 5);
   }
 
   /**
    * Regresa una lista con las ganancias por cada rango de fechas
    */
-  function getSalesDayList(initial_hour, final_hour, separation_time, sales_list) {
-    let initial_hour_minutes,
-      final_hour_minutes;
-    let list_formatted = [],
-      elements_ok = [],
+  function getSalesDayList(initialHour, finalHour, separationTime, salesList) {
+    let initialHourMinutes,
+      finalHourMinutes;
+    let listFormatted = [],
+      elementsOk = [],
       earnings = 0;
-    initial_hour_minutes = convertHoursToMinutes(initial_hour);
-    final_hour_minutes = convertHoursToMinutes(final_hour);
-    while (initial_hour_minutes < final_hour_minutes) {
-      let start_hour_f = convertMinutesToHours(initial_hour_minutes),
-        end_hour_f = convertMinutesToHours(initial_hour_minutes + separation_time);
-      for (let i = 0; i < sales_list.length; i++) {
-        let hour_sale = convertPythonDatetimeFormatToHour(sales_list[i].datetime);
-        if (isHourInRange(hour_sale, start_hour_f, end_hour_f)) {
-          earnings += parseFloat(sales_list[i].earnings);
-          elements_ok.push(sales_list[i]);
+    initialHourMinutes = convertHoursToMinutes(initialHour);
+    finalHourMinutes = convertHoursToMinutes(finalHour);
+    while (initialHourMinutes < finalHourMinutes) {
+      let startHourFormatted = convertMinutesToHours(initialHourMinutes),
+        endHourHFormatted = convertMinutesToHours(initialHourMinutes + separationTime);
+      for (let i = 0; i < salesList.length; i++) {
+        let hourSale = convertPythonDatetimeFormatToHour(salesList[i].datetime);
+        if (isHourInRange(hourSale, startHourFormatted, endHourHFormatted)) {
+          earnings += parseFloat(salesList[i].earnings);
+          elementsOk.push(salesList[i]);
         }
       }
-      list_formatted.push(earnings);
-      initial_hour_minutes += separation_time;
+      listFormatted.push(earnings);
+      initialHourMinutes += separationTime;
       earnings = 0;
     }
     // Searches the times outside the time range
-    for (let i = 0; i < sales_list.length; i++) {
-      if (elements_ok.indexOf(sales_list[i]) === -1) {
-        earnings += parseFloat(sales_list[i].earnings);
+    for (let i = 0; i < salesList.length; i++) {
+      if (elementsOk.indexOf(salesList[i]) === -1) {
+        earnings += parseFloat(salesList[i].earnings);
       }
     }
-    list_formatted.push(earnings);
-    return list_formatted.reverse();
+    listFormatted.push(earnings);
+    return listFormatted.reverse();
   }
 
   /**
@@ -420,15 +411,15 @@ window.onload = function () {
         swal.enableLoading();
       },
       success: function (result) {
-        let sales_day_earnings_list;
-        let initial_hour = '06:00',
-          final_hour = '16:00',
-          separation_time = 60; // In minutes
-        let sales_day_object_list = result['sales_day_list'];
+        let salesDayEarningsList;
+        let initialHour = '06:00',
+          finalHour = '16:00',
+          separationTime = 60; // In minutes
+        let salesDayObjectList = result['sales_day_list'];
 
-        sales_day_earnings_list = getSalesDayList(initial_hour, final_hour, separation_time, sales_day_object_list);
+        salesDayEarningsList = getSalesDayList(initialHour, finalHour, separationTime, salesDayObjectList);
 
-        earningsHourChart.data.datasets[0].data = sales_day_earnings_list;
+        earningsHourChart.data.datasets[0].data = salesDayEarningsList;
         earningsHourChart.update();
         swal.close();
       },
@@ -443,15 +434,15 @@ window.onload = function () {
    * Refresca los datos de las gráficas y tabla con la semana y el año elegido
    */
   $('#dt-week').change(function (event) {
-    let dt_year = $('#dt-year').val(),
-      dt_week = $('#dt-week').val();
+    let dtYear = $('#dt-year').val(),
+      dtWweek = $('#dt-week').val();
     $.ajax({
       url: PATH,
       method: 'POST',
       data: {
         csrfmiddlewaretoken: csrftoken,
-        'dt_year': dt_year,
-        'dt_week': dt_week,
+        'dt_year': dtYear,
+        'dt_week': dtWweek,
         'type': 'sales_week',
       },
       traditional: true,
@@ -464,12 +455,12 @@ window.onload = function () {
         swal.enableLoading();
       },
       success: function (result, status, XHR) {
-        let tickets_objects = result['tickets'],
-          sales_week = result['sales'],
-          week_number = result['week_number'],
-          sales_details_table = $('#sales-details-table').find('tbody'),
-          week_earnings = 0;
-        sales_details_table.empty();
+        let ticketsObjects = result['tickets'],
+          salesWeek = result['sales'],
+          weekNumber = result['week_number'],
+          salesDetailsTable = $('#sales-details-table').find('tbody'),
+          weekEarnings = 0;
+        salesDetailsTable.empty();
         swal({
           title: "Éxito",
           text: "Datos obtenidos",
@@ -477,48 +468,48 @@ window.onload = function () {
           timer: 750,
           showConfirmButton: false
         }).then(
-          function () {},
-          function (dismiss) {});
+          function () { },
+          function (dismiss) { });
         /**
          * Filling the sales table
          */
-        for (let i = 0; i < tickets_objects.length; i++) {
-          week_earnings += parseFloat(tickets_objects[i].total);
-          let cartridges_list = "";
-          let packages_list = "";
-          for (let j = 0; j < tickets_objects[i]['cartridges'].length; j++) {
-            cartridges_list += "" +
+        for (let i = 0; i < ticketsObjects.length; i++) {
+          weekEarnings += parseFloat(ticketsObjects[i].total);
+          let cartridgesList = "";
+          let packagesList = "";
+          for (let j = 0; j < ticketsObjects[i]['cartridges'].length; j++) {
+            cartridgesList += "" +
               "<span class='badge badge-success'>" +
               "<span class='badge badge-info'>" +
-              tickets_objects[i]['cartridges'][j].quantity +
+              ticketsObjects[i]['cartridges'][j].quantity +
               "</span>" +
               "<span class='badge badge-success'>" +
-              tickets_objects[i]['cartridges'][j].name +
+              ticketsObjects[i]['cartridges'][j].name +
               "</span>" +
               "</span>" +
               "";
           }
-          for (let j = 0; j < tickets_objects[i]['packages'].length; j++) {
-            packages_list += "" +
+          for (let j = 0; j < ticketsObjects[i]['packages'].length; j++) {
+            packagesList += "" +
               "<span class='badge badge-primary'>" +
               "<span class='badge badge-info'>" +
-              tickets_objects[i]['packages'][j].quantity +
+              ticketsObjects[i]['packages'][j].quantity +
               "</span>" +
               "<span class='badge badge-primary'>" +
-              tickets_objects[i]['packages'][j].name +
+              ticketsObjects[i]['packages'][j].name +
               "</span>" +
               "</span>" +
               "";
           }
-          sales_details_table.append("" +
+          salesDetailsTable.append("" +
             "<tr>" +
-            "<th class='header-id'>" + tickets_objects[i].id + "</th>" +
-            "<th class='header-order'>" + tickets_objects[i].order_number + "</th>" +
-            "<td class='header-date'>" + tickets_objects[i].created_at + "</td>" +
-            "<td class='header-products'>" + cartridges_list + "</td>" +
-            "<td class='header-packages'>" + packages_list + "</td>" +
-            "<td class='header-seller'>" + tickets_objects[i].cashier + "</td>" +
-            "<td class='td-total'>" + tickets_objects[i].total + "</td>" +
+            "<th class='header-id'>" + ticketsObjects[i].id + "</th>" +
+            "<th class='header-order'>" + ticketsObjects[i].order_number + "</th>" +
+            "<td class='header-date'>" + ticketsObjects[i].created_at + "</td>" +
+            "<td class='header-products'>" + cartridgesList + "</td>" +
+            "<td class='header-packages'>" + packagesList + "</td>" +
+            "<td class='header-seller'>" + ticketsObjects[i].cashier + "</td>" +
+            "<td class='td-total'>" + ticketsObjects[i].total + "</td>" +
             "<td class='header-actions'>" +
             "<span class='sales-actions delete-ticket'><i class='material-icons text-muted'>delete</i></span>" +
             "<span class='sales-actions print-ticket'><i class='material-icons text-primary'>local_printshop</i></span>" +
@@ -526,15 +517,15 @@ window.onload = function () {
             "</tr>" +
             "");
         }
-        earningsDayChart.data.datasets[0].data = getEarningsWeekRange(sales_week);
+        earningsDayChart.data.datasets[0].data = getEarningsWeekRange(salesWeek);
         earningsDayChart.update();
-        $('#total-earnings-text').text(week_earnings.toFixed(2));
-        $('#week-number').text(week_number);
+        $('#total-earnings-text').text(weekEarnings.toFixed(2));
+        $('#week-number').text(weekNumber);
       },
       error: function (jqXHR, textStatus, errorThrown) {
         console.log(jqXHR);
       },
-      complete: function (result) {}
+      complete: function (result) { }
     });
   });
 
@@ -543,98 +534,102 @@ window.onload = function () {
    * TODO: Make an iframe to print the ticket
    */
   $(this).on('click', '.print-ticket', function (event) {
-    let id_element = $(this).parent().siblings('.header-id').text();
-    let btn_printer = $('.btn-printer');
-    let sales_list_modal = $('#sales-list-modal');
+    let idElement = $(this).parent().siblings('.header-id').text();
+    let btnPrinter = $('.btn-printer');
+    let salesListModal = $('#sales-list-modal');
     let total = $(this).parent().siblings('.td-total').text();
 
-    function iterate_cartridges(element, index, array) {
+    function iterateCartridges(element, index, array) {
       let name = element.name;
-      let cost_base = parseFloat(element.total) / element.quantity;
+      let costBase = parseFloat(element.total) / element.quantity;
       let total = parseFloat(element.total);
       let quantity = element.quantity;
-      let new_li;
+      let newListElement;
 
       // Formats the cost_base and total
-      if (cost_base % 2 !== 0) {
-        cost_base = cost_base.toFixed(2);
+      if (costBase % 2 !== 0) {
+        costBase = costBase.toFixed(2);
       } else
-        cost_base += '.00';
+        costBase += '.00';
       if (total % 2 !== 0) {
         total = total.toFixed(2);
       } else
         total += '.00';
 
       // Adds the list to tickets
-      new_li = $("" +
+      newListElement = $("" +
         "<li class='list-group-item'>" +
         "<span class='name-li-modal text-uppercase'>" + name + "</span> " +
-        "<span class='cost-li-modal'>" + '$ ' + cost_base + "</span>" +
+        "<span class='cost-li-modal'>" + '$ ' + costBase + "</span>" +
         "<span class='quantity-li-modal'>" + quantity + "</span>" +
         "<span class='total-li-modal'>" + '$ ' + total + "</span> " +
         "</li>");
 
-      sales_list_modal.append(new_li);
+      salesListModal.append(newListElement);
     }
 
-    function iterate_packages(element, index, array) {
-      let cartridges_list = array[index].cartridges;
+    function iteratePackages(element, index, array) {
+      let cartridgesList = array[index].cartridges;
       let name = '';
-      let cost_base = parseFloat(element.total) / element.quantity;
+      let costBase = parseFloat(element.total) / element.quantity;
       let total = parseFloat(element.total);
       let quantity = element.quantity;
-      let new_li;
+      let newListElement;
 
       // Formats the names
-      $.each(cartridges_list, function (index, item) {
+      $.each(cartridgesList, function (index, item) {
         name += item.substring(0, 3) + ' ';
       });
 
       // Formats the cost_base and total
-      if (cost_base % 2 !== 0) {
-        cost_base = cost_base.toFixed(2);
+      if (costBase % 2 !== 0) {
+        costBase = costBase.toFixed(2);
       } else
-        cost_base += '.00';
+        costBase += '.00';
       if (total % 2 !== 0) {
         total = total.toFixed(2);
       } else
         total += '.00';
 
       // Adds the list to tickets
-      new_li = $("" +
+      newListElement = $("" +
         "<li class='list-group-item'>" +
         "<span class='name-li-modal text-uppercase'>" + name + "</span> " +
-        "<span class='cost-li-modal'>" + '$ ' + cost_base + "</span>" +
+        "<span class='cost-li-modal'>" + '$ ' + costBase + "</span>" +
         "<span class='quantity-li-modal'>" + quantity + "</span>" +
         "<span class='total-li-modal'>" + '$ ' + total + "</span> " +
         "</li>");
 
-      sales_list_modal.append(new_li);
+      salesListModal.append(newListElement);
     }
 
-    function show_modal(ticket_details) {
-      let new_li;
+    function showModal(ticketDetails) {
+      let newListElement;
+
       // First reset the ticket
-      sales_list_modal.empty();
-      new_li = ("" +
+      salesListModal.empty();
+      newListElement = ("" +
         "<li>" +
         "<span class='name-li-title-modal'>Nombre</span> " +
         "<span class='cost-li-title-modal'>Cost</span>" +
         "<span class='quantity-li-title-modal'>Cant</span>" +
         "<span class='total-li-title-modal'>Total</span> " +
         "</li>");
-      sales_list_modal.append(new_li);
+      salesListModal.append(newListElement);
 
-      ticket_details.cartridges.forEach(iterate_cartridges);
-      ticket_details.packages.forEach(iterate_packages);
-      $("#ticket-id").text(id_element);
-      let nuevo_li = $("" +
+      ticketDetails.cartridges.forEach(iterateCartridges);
+      ticketDetails.packages.forEach(iteratePackages);
+
+      $("#ticket-id").text(idElement);
+
+      newListElement = $("" +
         "<li class='total-ticket-container mt-1'>" +
         " <span id='total-ticket'>$ <span class='total-ticket-cant'> " +
         " " + total + "</span></span> " +
         "</li>" +
         "");
-      sales_list_modal.append(nuevo_li);
+      salesListModal.append(newListElement);
+
       $('#modal-ticket').modal('show');
     }
 
@@ -642,32 +637,32 @@ window.onload = function () {
      * Dibuja el ticket en el modal y activa el onClic() listener del botón .btn-printer
      */
     $.ajax({
-        url: PATH,
-        method: 'POST',
-        traditional: true,
-        dataType: 'json',
-        async: true,
-        data: {
-          csrfmiddlewaretoken: csrftoken,
-          'ticket_id': id_element,
-          'type': 'ticket_details',
-        },
-        beforeSend: function (xhr) {
-          swal({
-            title: "Obteniendo datos del ticket",
-            text: "Espere mientras obtenemos toda la información",
-          });
-          swal.enableLoading();
-        }
-      })
+      url: PATH,
+      method: 'POST',
+      traditional: true,
+      dataType: 'json',
+      async: true,
+      data: {
+        csrfmiddlewaretoken: csrftoken,
+        'ticket_id': idElement,
+        'type': 'ticket_details',
+      },
+      beforeSend: function (xhr) {
+        swal({
+          title: "Obteniendo datos del ticket",
+          text: "Espere mientras obtenemos toda la información",
+        });
+        swal.enableLoading();
+      }
+    })
       .done(function (data) {
         swal.close();
-        let ticket_details = data.ticket_details;
-        $('.ticket-order-container').find('#ticket-order').text(ticket_details.ticket_order);
+        let ticketDetails = data.ticket_details;
+        $('.ticket-order-container').find('#ticket-order').text(ticketDetails.ticket_order);
         setTimeout(function () {
-          show_modal(ticket_details);
+          showModal(ticketDetails);
         }, 500);
-        btn_printer.on('click', function () {
+        btnPrinter.on('click', function () {
           let options = {
             mode: 'iframe',
             popClose: true,
@@ -682,15 +677,15 @@ window.onload = function () {
    * TODO: Make a view for delete the ticket from backend
    */
   $(this).on('click', '.delete-ticket', function (event) {
-    let id_element = $(this).parent().siblings('.header-id').text();
+    let idElement = $(this).parent().siblings('.header-id').text();
 
-    function delete_ticket() {
+    function deleteTicket() {
       $.ajax({
         url: PATH,
         method: 'POST',
         data: {
           csrfmiddlewaretoken: csrftoken,
-          'ticket_id': id_element,
+          'ticket_id': idElement,
         },
         traditional: true,
         dataType: 'json',
@@ -709,7 +704,7 @@ window.onload = function () {
             timer: 1000,
             showConfirmButton: false
           }).then(
-            function () {},
+            function () { },
             function (dismiss) {
               location.reload();
             }
@@ -726,9 +721,9 @@ window.onload = function () {
       confirmButtonColor: '#d33',
       confirmButtonText: 'Sí, eliminar ticket!'
     }).then(function () {
-        delete_ticket();
-      },
-      function (dismiss) {});
+      deleteTicket();
+    },
+      function (dismiss) { });
   });
 
   /**
@@ -747,8 +742,8 @@ window.onload = function () {
     swal.enableLoading();
 
     return fetch(urlFile, {
-        method: 'GET'
-      })
+      method: 'GET'
+    })
       .then((response) => {
         // Obtiene el nombre del archivo desde el header['content-disposition']
         sFileName = response.headers.get('content-disposition');
