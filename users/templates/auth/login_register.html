@@ -1,109 +1,134 @@
 {% extends "base/base.html" %}
-
 {% load static %}
 {% load render_bundle from webpack_loader %}
-
 {% block page_title %}
-  {{ page_title }}
+    {{ page_title }}
 {% endblock page_title %}
-
 {% block style %}
-  {% render_bundle 'auth' 'css' 'CSS' %}
+    {% render_bundle 'auth' 'css' 'CSS' %}
 {% endblock %}
-
 {% block content %}
-  <main class="login-bg d-flex align-items-center">
-    <div class="container mt-3">
-      <div class="row">
-        <div class="col-12 d-flex justify-content-center mb-3">
-          <img class="img-logo" src="{% static 'images/login/logo_white.png' %}" alt="Logo Dabbawala">
-        </div>
-        <div class="col-12 d-flex justify-content-center mt-3 mb-3">
-          <p class="h4 text-light">Registrate aquí</p>
-        </div>
-        <div class="col-12 d-flex justify-content-center">
-          {% if success_message %}
-          <div class="col-lg-8 col-xl-6 push-lg-2 push-xl-3 alert alert-success" role="alert">
-            {{ success_message }}
-          </div>
-          {% endif %} 
-        </div>
-        <div class="col-12 d-flex justify-content-center mt-3 mb-3">
-          <div class="card col-lg-8 col-xl-6 push-lg-2 push-xl-3 pt-3">
-            <form method="POST" action="">
-              {% csrf_token %}
-              <div class="form-group">
-                <label for="usernameRegister" class="text-muted">
-                  <small>Usuario</small>
-                </label>
-                <input
-                    name="{{ form_user.username.name }}" type="text" class="form-control" id="usernameRegister"
-                    placeholder="Ingresa un usuario fácil de recordar"
-                    {% if form_user.username.value is not None %}
-                    value='{{ form_user.username.value }}'
+    <main class="login-bg d-flex align-items-center">
+        <div class="container mt-3">
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center mb-3">
+                    <img
+                        class="img-logo"
+                        src="{% static 'images/login/logo_white.png' %}"
+                        alt="Logo Dabbawala">
+                </div>
+                <div class="col-12 d-flex justify-content-center mt-3 mb-3">
+                    <p class="h4 text-light">Registrate aquí</p>
+                </div>
+                <div class="col-12 d-flex justify-content-center">
+                    {% if success_message %}
+                        <div
+                            class="col-lg-8 col-xl-6 push-lg-2 push-xl-3 alert alert-success"
+                            role="alert">
+                            {{ success_message }}
+                        </div>
                     {% endif %}
-                    required/>
-                {% if form_user.username.errors %}
-                  <div class="bg-white text-danger rounded">
-                    {%  for error in form_user.username.errors %}
-                      <small class="form-control-feedback">{{ error|escape }}</small>
-                    {% endfor %}
-                  </div>
-                {% endif %}
-              </div>
-              <div class="form-group">
-                <label for="emailRegister" class="text-muted">
-                  <small>
-                    Email
-                  </small>
-                </label>
-                <input name="{{ form_user.email.name }}" type="email" class="form-control" id="emailRegister"
-                    {% if form_user.email.value is not None %}
-                       value='{{ form_user.email.value }}'
-                    {% endif %}
-                       placeholder="tucorreo@ejemplo.com" required />
-                {% if form_user.email.errors %}
-                  <div class="bg-white text-danger rounded">
-                    {%  for error in form_user.email.errors %}
-                      <small class="form-control-feedback">{{ error|escape }}</small>
-                    {% endfor %}
-                  </div>
-                {% endif %}
-              </div>
-              <div class="form-group">
-                <small id="passwordHelp" class="form-text text-muted">
-                  Utiliza una contraseña diferente a las que usas en otras páginas
-                </small>
-                <input name="password" type="password" class="form-control form-control" id="passwordRegister" placeholder="Contraseña" required />
-              </div>
-              <div class="form-group">
-                <input name="password_confirm" type="password" class="form-control form-control" id="colFormLabelLg" placeholder="Repite tu contraseña" required />
-                {% if form_user.password_confirm.errors %}
-                  <div class="bg-light text-danger rounded">
-                    {%  for error in form_user.password_confirm.errors %}
-                      <small class="form-control-feedback">
-                        {{ error|escape }}
-                      </small>
-                    {% endfor %}
-                  </div>
-                {% endif %}
-              </div>
-              <div class="d-flex justify-content-end mb-3">
-                <input class="btn btn-primary" type="submit" value="Terminar Registro" required/>
-              </div>
-            </form>
-          </div>
+                </div>
+                <div class="col-12 d-flex justify-content-center mt-3 mb-3">
+                    <div class="card col-lg-8 col-xl-6 push-lg-2 push-xl-3 pt-3">
+                        <form method="POST" action="">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="usernameRegister" class="text-muted">
+                                    <small>Usuario</small>
+                                </label>
+                                <input
+                                    name="{{ form_user.username.name }}"
+                                    type="text"
+                                    class="form-control"
+                                    id="usernameRegister"
+                                    placeholder="Ingresa un usuario fácil de recordar"
+                                    {% if form_user.username.value is not None %}
+                                    value='{{ form_user.username.value }}'
+                                    {% endif %}
+                                    required="required"/>
+                                {% if form_user.username.errors %}
+                                    <div class="bg-white text-danger rounded">
+                                        {% for error in form_user.username.errors %}
+                                            <small class="form-control-feedback">{{ error|escape }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label for="emailRegister" class="text-muted">
+                                    <small>
+                                        Email
+                                    </small>
+                                </label>
+                                <input
+                                    name="{{ form_user.email.name }}"
+                                    type="email"
+                                    class="form-control"
+                                    id="emailRegister"
+                                    {% if form_user.email.value is not None %}
+                                    value='{{ form_user.email.value }}'
+                                    {% endif %}
+                                    placeholder="tucorreo@ejemplo.com"
+                                    required="required"/>
+                                {% if form_user.email.errors %}
+                                    <div class="bg-white text-danger rounded">
+                                        {% for error in form_user.email.errors %}
+                                            <small class="form-control-feedback">{{ error|escape }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <small id="passwordHelp" class="form-text text-muted">
+                                    Utiliza una contraseña diferente a las que usas en otras páginas
+                                </small>
+                                <input
+                                    name="password"
+                                    type="password"
+                                    class="form-control form-control"
+                                    id="passwordRegister"
+                                    placeholder="Contraseña"
+                                    required="required"/>
+                            </div>
+                            <div class="form-group">
+                                <input
+                                    name="password_confirm"
+                                    type="password"
+                                    class="form-control form-control"
+                                    id="colFormLabelLg"
+                                    placeholder="Repite tu contraseña"
+                                    required="required"/>
+                                {% if form_user.password_confirm.errors %}
+                                    <div class="bg-light text-danger rounded">
+                                        {% for error in form_user.password_confirm.errors %}
+                                            <small class="form-control-feedback">
+                                                {{ error|escape }}
+                                            </small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="d-flex justify-content-end mb-3">
+                                <input
+                                    class="btn btn-primary"
+                                    type="submit"
+                                    value="Terminar Registro"
+                                    required="required"/>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-center mt-3">
+                    <div class="col-lg-8 col-xl-6 push-lg-2 push-xl-3 pt-3">
+                        <p class="text-left text-white">
+                            ¿Ya tienes cuenta?
+                            <a class="badge badge-pill badge-primary" href="{% url 'users:login' %}">¡Inicia sesión aquí!</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-12 d-flex justify-content-center mt-3">
-          <div class="col-lg-8 col-xl-6 push-lg-2 push-xl-3 pt-3">
-            <p class="text-left text-white">
-              ¿Ya tienes cuenta?
-              <a class="badge badge-pill badge-primary" href="{% url 'users:login' %}">¡Inicia sesión aquí!</a>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
+    </main>
 
 {% endblock %}
