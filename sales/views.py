@@ -180,7 +180,7 @@ def sales(request):
             return JsonResponse({'sales_day_list': sales_day_list})
 
         if request.POST['type'] == 'ticket_details':
-            ticket_id = int(request.POST['ticket_id'])
+            ticket_id = int(request.POST['ticketId'])
             ticket_object = {
                 'ticket_id': ticket_id,
                 'ticket_order': '',

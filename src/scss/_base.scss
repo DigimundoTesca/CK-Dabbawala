@@ -24,12 +24,10 @@ main {
   }
 }
 
-.swal2-container {
-  position: relative;
+.nyan-cat {
   &::before {
     content: url("https://media.giphy.com/media/X6H1iK43XHPnuEkvhG/giphy.gif");
-    position: absolute;
-    z-index: 1;
+    position: fixed;
     margin: {
       top: -8.4rem;
     }

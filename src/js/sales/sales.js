@@ -3,35 +3,41 @@ import 'bootstrap';
 import { Chart } from 'chart.js';
 import 'jsPDF';
 import { downloadBlob } from 'download.js';
-import { loadPathname, getCookie } from '../app.js';
+import {
+  loadPathname,
+  getCookie,
+  findParentBySelector
+} from '../app.js';
 
 require('../../scss/app.scss');
 
 window.onload = function () {
-
-  const PATH = loadPathname();
+  const PATH = window.location.pathname;
 
   // Declaración de botones
   const btnDownloadSalesReport = document.getElementById('btn-save-reports');
 
-  let csrftoken = getCookie('csrftoken');
-  let ctxWeek = document.getElementById("canvas-week-sales"),
-    ctxDay = document.getElementById("canvas-day-sales"),
-    earningsDayChart,
-    earningsHourChart,
+  let csrfToken = getCookie('csrftoken');
+  let canvasChartWeek = document.getElementById("canvas-week-sales"),
+    canvasChartDay = document.getElementById("canvas-day-sales"),
+    earningsPerDayChart,
+    earningsPerHourChart,
     todayDate,
     salesWeek,
     datesRange;
+
+  loadPathname(PATH);
 
   /**
    * Función que se encarga de disparar las peticiones ajax para
    * la carga de las fechas y datos de las ventas
    */
   (function init() {
+    // Asigna la fecha de hoy dd-mm-YYYY
+    todayDate = new Date();
+    todayDate = todayDate.getDate() + '-' + (todayDate.getMonth() + 1) + '-' + todayDate.getFullYear();
 
-    /**
-     * Método AJAX que carga los campos de rangos de fechas
-     */
+    // Método AJAX que carga los campos de rangos de fechas
     $.ajax({
       method: 'post',
       url: PATH,
@@ -39,7 +45,7 @@ window.onload = function () {
       traditional: true,
       async: true,
       data: {
-        csrfmiddlewaretoken: csrftoken,
+        csrfmiddlewaretoken: csrfToken,
         type: 'dates_range'
       },
       success: function (result) {
@@ -52,9 +58,7 @@ window.onload = function () {
       }
     });
 
-    /**
-     * Método AJAX que solicita los datos de las ventas de la semana actual
-     */
+    // Método AJAX que solicita los datos de las ventas de la semana actual
     function setSalesData() {
       $.ajax({
         method: 'post',
@@ -63,7 +67,7 @@ window.onload = function () {
         traditional: true,
         async: true,
         data: {
-          csrfmiddlewaretoken: csrftoken,
+          csrfmiddlewaretoken: csrfToken,
           type: 'sales_actual_week'
         },
         success: function (result) {
@@ -128,7 +132,7 @@ window.onload = function () {
         return false;
       }
     });
-    todayDate = $('#dt-week').val().split(',')[1];
+
   }
 
   /**
@@ -136,9 +140,9 @@ window.onload = function () {
    */
   function drawCharts() {
     /**
-     * Draws the chart of sales of the week
+     * Dibuja la gráfica de ganancias de la semana
      */
-    earningsDayChart = new Chart(ctxWeek, {
+    earningsPerDayChart = new Chart(canvasChartWeek, {
       type: 'bar',
       data: {
         labels: ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado", "Domingo"],
@@ -192,9 +196,9 @@ window.onload = function () {
     });
 
     /**
-     * Draws the chart of sales of the day
+     * Dibuja la gráfica de ganancias de día
      */
-    earningsHourChart = new Chart(ctxDay, {
+    earningsPerHourChart = new Chart(canvasChartDay, {
       type: 'horizontalBar',
       data: {
         labels: [
@@ -204,17 +208,17 @@ window.onload = function () {
           label: 'Ventas en este horario',
           data: [],
           backgroundColor: [
-            'rgba(247,202,24,0.7)',
-            'rgba(247,202,24,0.7)',
-            'rgba(247,202,24,0.7)',
-            'rgba(247,202,24,0.7)',
-            'rgba(247,202,24,0.7)',
-            'rgba(46,204,113,0.7)',
-            'rgba(46,204,113,0.7)',
-            'rgba(46,204,113,0.7)',
-            'rgba(46,204,113,0.7)',
-            'rgba(46,204,113,0.7)',
-            'rgba(46,204,113,0.7)',
+            'rgba(255,235,59,0.7)',
+            'rgba(255,235,59,0.7)',
+            'rgba(255,235,59,0.7)',
+            'rgba(255,235,59,0.7)',
+            'rgba(255,235,59,0.7)',
+            'rgba(77,208,225,0.7)',
+            'rgba(77,208,225,0.7)',
+            'rgba(77,208,225,0.7)',
+            'rgba(77,208,225,0.7)',
+            'rgba(77,208,225,0.7)',
+            'rgba(77,208,225,0.7)'
           ],
           borderWidth: 0
         }]
@@ -299,7 +303,7 @@ window.onload = function () {
     let weekList = [0, 0, 0, 0, 0, 0, 0,];
     for (let i = 0; i < 7; i++) {
       for (let j = 0; j < salesList.length; j++) {
-        if (salesList[j].number_day === i) {
+        if (parseInt(salesList[j].number_day) === i + 1) {
           weekList[i] = salesList[j]['earnings'];
         }
       }
@@ -397,7 +401,7 @@ window.onload = function () {
       url: PATH,
       type: 'POST',
       data: {
-        csrfmiddlewaretoken: csrftoken,
+        csrfmiddlewaretoken: csrfToken,
         'date': date,
         'type': 'sales_day'
       },
@@ -419,8 +423,8 @@ window.onload = function () {
 
         salesDayEarningsList = getSalesDayList(initialHour, finalHour, separationTime, salesDayObjectList);
 
-        earningsHourChart.data.datasets[0].data = salesDayEarningsList;
-        earningsHourChart.update();
+        earningsPerHourChart.data.datasets[0].data = salesDayEarningsList;
+        earningsPerHourChart.update();
         swal.close();
       },
       error: function (jqXHR, textStatus, errorThrown) {
@@ -436,11 +440,12 @@ window.onload = function () {
   $('#dt-week').change(function (event) {
     let dtYear = $('#dt-year').val(),
       dtWweek = $('#dt-week').val();
+
     $.ajax({
       url: PATH,
       method: 'POST',
       data: {
-        csrfmiddlewaretoken: csrftoken,
+        csrfmiddlewaretoken: csrfToken,
         'dt_year': dtYear,
         'dt_week': dtWweek,
         'type': 'sales_week',
@@ -456,27 +461,29 @@ window.onload = function () {
       },
       success: function (result, status, XHR) {
         let ticketsObjects = result['tickets'],
-          salesWeek = result['sales'],
           weekNumber = result['week_number'],
-          salesDetailsTable = $('#sales-details-table').find('tbody'),
+          salesDetailsTable = document.getElementById('sales-details-table').getElementsByTagName('tbody')[0],
           weekEarnings = 0;
-        salesDetailsTable.empty();
-        swal({
-          title: "Éxito",
-          text: "Datos obtenidos",
-          type: "info",
-          timer: 750,
-          showConfirmButton: false
-        }).then(
-          function () { },
-          function (dismiss) { });
-        /**
-         * Filling the sales table
-         */
+
+        salesWeek = result['sales'];
+
+
+        // Limpia la tabla de filas anteriores
+        while (salesDetailsTable.firstChild) {
+          salesDetailsTable.removeChild(salesDetailsTable.firstChild);
+        }
+
+        // Rellena las filas de la tabla
         for (let i = 0; i < ticketsObjects.length; i++) {
           weekEarnings += parseFloat(ticketsObjects[i].total);
-          let cartridgesList = "";
-          let packagesList = "";
+          let cartridgesList = "",
+            packagesList = "";
+
+          let rowTable,
+            cellTable,
+            iconContainer,
+            iconAction;
+
           for (let j = 0; j < ticketsObjects[i]['cartridges'].length; j++) {
             cartridgesList += "" +
               "<span class='badge badge-success'>" +
@@ -489,6 +496,7 @@ window.onload = function () {
               "</span>" +
               "";
           }
+
           for (let j = 0; j < ticketsObjects[i]['packages'].length; j++) {
             packagesList += "" +
               "<span class='badge badge-primary'>" +
@@ -501,26 +509,73 @@ window.onload = function () {
               "</span>" +
               "";
           }
-          salesDetailsTable.append("" +
-            "<tr>" +
-            "<th class='header-id'>" + ticketsObjects[i].id + "</th>" +
-            "<th class='header-order'>" + ticketsObjects[i].order_number + "</th>" +
-            "<td class='header-date'>" + ticketsObjects[i].created_at + "</td>" +
-            "<td class='header-products'>" + cartridgesList + "</td>" +
-            "<td class='header-packages'>" + packagesList + "</td>" +
-            "<td class='header-seller'>" + ticketsObjects[i].cashier + "</td>" +
-            "<td class='td-total'>" + ticketsObjects[i].total + "</td>" +
-            "<td class='header-actions'>" +
-            "<span class='sales-actions delete-ticket'><i class='material-icons text-muted'>delete</i></span>" +
-            "<span class='sales-actions print-ticket'><i class='material-icons text-primary'>local_printshop</i></span>" +
-            "</td>" +
-            "</tr>" +
-            "");
+
+          rowTable = salesDetailsTable.appendChild(document.createElement('tr'));
+          // Ticket id
+          rowTable.className = 'table-row';
+          cellTable = rowTable.appendChild(document.createElement('th'));
+          cellTable.className = 'table-row-id';
+          cellTable.innerHTML = ticketsObjects[i].id;
+          // Número de orden
+          cellTable = rowTable.appendChild(document.createElement('th'));
+          cellTable.className = 'table-row-order';
+          cellTable.innerHTML = ticketsObjects[i].order_number;
+          // Fecha
+          cellTable = rowTable.appendChild(document.createElement('td'));
+          cellTable.className = 'table-row-date';
+          cellTable.innerHTML = ticketsObjects[i].created_at;
+          // Productos
+          cellTable = rowTable.appendChild(document.createElement('td'));
+          cellTable.className = 'table-row-products';
+          cellTable.innerHTML = cartridgesList;
+          // Paquetes
+          cellTable = rowTable.appendChild(document.createElement('td'));
+          cellTable.className = 'table-row-packages';
+          cellTable.innerHTML = packagesList;
+          // Vendedor
+          cellTable = rowTable.appendChild(document.createElement('td'));
+          cellTable.className = 'table-row-seller';
+          cellTable.innerHTML = ticketsObjects[i].cashier;
+          // Total
+          cellTable = rowTable.appendChild(document.createElement('td'));
+          cellTable.className = 'table-row-total';
+          cellTable.innerHTML = ticketsObjects[i].total;
+          // Acciones
+          cellTable = rowTable.appendChild(document.createElement('td'));
+          cellTable.className = 'table-row-actions';
+          // Acciones -> boton eliminar
+          iconContainer = document.createElement('span');
+          iconContainer.className = 'delete-ticket sales-actions';
+          iconAction = iconContainer.appendChild(document.createElement('i'));
+          iconAction.innerHTML = 'delete';
+          iconAction.className = 'material-icons text-muted';
+          cellTable.appendChild(iconContainer);
+          // Acciones -> Botón imprimir
+          iconContainer = document.createElement('span');
+          iconContainer.className = 'delete-ticket print-ticket';
+          iconAction = iconContainer.appendChild(document.createElement('i'));
+          iconAction.innerHTML = 'local_printshop';
+          iconAction.className = 'material-icons text-primary';
+          cellTable.appendChild(iconContainer);
+
+          document.addEventListener('click', printTicketListener(iconAction));
         }
-        earningsDayChart.data.datasets[0].data = getEarningsWeekRange(salesWeek);
-        earningsDayChart.update();
+
+        earningsPerDayChart.data.datasets[0].data = getEarningsWeekRange(salesWeek);
+        earningsPerDayChart.update();
+
         $('#total-earnings-text').text(weekEarnings.toFixed(2));
-        $('#week-number').text(weekNumber);
+        $('#week-number').text(weekNumber);       
+
+        swal({
+          title: "Éxito",
+          text: "Datos obtenidos",
+          type: "info",
+          timer: 750,
+          showConfirmButton: false
+        }).then(
+          function () { },
+          function (dismiss) { });
       },
       error: function (jqXHR, textStatus, errorThrown) {
         console.log(jqXHR);
@@ -530,147 +585,92 @@ window.onload = function () {
   });
 
   /**
-   * Obtiene la información del ticket específico y la muestra para impresión
-   * TODO: Make an iframe to print the ticket
+   * Agregar a un elemento .print-ticket un listener para la impresión de tickets
    */
-  $(this).on('click', '.print-ticket', function (event) {
-    let idElement = $(this).parent().siblings('.header-id').text();
-    let btnPrinter = $('.btn-printer');
-    let salesListModal = $('#sales-list-modal');
-    let total = $(this).parent().siblings('.td-total').text();
+  function printTicketListener(el) {
+    el.addEventListener('click', printTicket);
+  }
 
-    function iterateCartridges(element, index, array) {
-      let name = element.name;
-      let costBase = parseFloat(element.total) / element.quantity;
-      let total = parseFloat(element.total);
-      let quantity = element.quantity;
-      let newListElement;
+  /**
+   * Obtiene la información del ticket específico y la muestra para impresión
+   *    TODO: Make an iframe to print the ticket
+   */
+  function printTicket(event) {
+    let target = event.target;
+    let idElement = findParentBySelector(target, '.table-row').querySelector('.table-row-order').textContent;
+    let data = new FormData();
 
-      // Formats the cost_base and total
-      if (costBase % 2 !== 0) {
-        costBase = costBase.toFixed(2);
-      } else
-        costBase += '.00';
-      if (total % 2 !== 0) {
-        total = total.toFixed(2);
-      } else
-        total += '.00';
 
-      // Adds the list to tickets
-      newListElement = $("" +
-        "<li class='list-group-item'>" +
-        "<span class='name-li-modal text-uppercase'>" + name + "</span> " +
-        "<span class='cost-li-modal'>" + '$ ' + costBase + "</span>" +
-        "<span class='quantity-li-modal'>" + quantity + "</span>" +
-        "<span class='total-li-modal'>" + '$ ' + total + "</span> " +
-        "</li>");
+    // Petición para obtener detalles del ticket seleccionado
+    data.append('csrfmiddlewaretoken', csrfToken);
+    data.append('ticketId', idElement);
+    data.append('type', 'ticket_details');
 
-      salesListModal.append(newListElement);
-    }
+    swal({
+      title: "Obteniendo datos del ticket",
+      text: "Espere mientras obtenemos toda la información",
+      customClass: 'nyan-cat'
+    });
+    swal.enableLoading();
 
-    function iteratePackages(element, index, array) {
-      let cartridgesList = array[index].cartridges;
-      let name = '';
-      let costBase = parseFloat(element.total) / element.quantity;
-      let total = parseFloat(element.total);
-      let quantity = element.quantity;
-      let newListElement;
-
-      // Formats the names
-      $.each(cartridgesList, function (index, item) {
-        name += item.substring(0, 3) + ' ';
-      });
-
-      // Formats the cost_base and total
-      if (costBase % 2 !== 0) {
-        costBase = costBase.toFixed(2);
-      } else
-        costBase += '.00';
-      if (total % 2 !== 0) {
-        total = total.toFixed(2);
-      } else
-        total += '.00';
-
-      // Adds the list to tickets
-      newListElement = $("" +
-        "<li class='list-group-item'>" +
-        "<span class='name-li-modal text-uppercase'>" + name + "</span> " +
-        "<span class='cost-li-modal'>" + '$ ' + costBase + "</span>" +
-        "<span class='quantity-li-modal'>" + quantity + "</span>" +
-        "<span class='total-li-modal'>" + '$ ' + total + "</span> " +
-        "</li>");
-
-      salesListModal.append(newListElement);
-    }
-
-    function showModal(ticketDetails) {
-      let newListElement;
-
-      // First reset the ticket
-      salesListModal.empty();
-      newListElement = ("" +
-        "<li>" +
-        "<span class='name-li-title-modal'>Nombre</span> " +
-        "<span class='cost-li-title-modal'>Cost</span>" +
-        "<span class='quantity-li-title-modal'>Cant</span>" +
-        "<span class='total-li-title-modal'>Total</span> " +
-        "</li>");
-      salesListModal.append(newListElement);
-
-      ticketDetails.cartridges.forEach(iterateCartridges);
-      ticketDetails.packages.forEach(iteratePackages);
-
-      $("#ticket-id").text(idElement);
-
-      newListElement = $("" +
-        "<li class='total-ticket-container mt-1'>" +
-        " <span id='total-ticket'>$ <span class='total-ticket-cant'> " +
-        " " + total + "</span></span> " +
-        "</li>" +
-        "");
-      salesListModal.append(newListElement);
-
-      $('#modal-ticket').modal('show');
-    }
-
-    /**
-     * Dibuja el ticket en el modal y activa el onClic() listener del botón .btn-printer
-     */
-    $.ajax({
-      url: PATH,
+    fetch(PATH, {
       method: 'POST',
-      traditional: true,
-      dataType: 'json',
-      async: true,
-      data: {
-        csrfmiddlewaretoken: csrftoken,
-        'ticket_id': idElement,
-        'type': 'ticket_details',
-      },
-      beforeSend: function (xhr) {
-        swal({
-          title: "Obteniendo datos del ticket",
-          text: "Espere mientras obtenemos toda la información",
-        });
-        swal.enableLoading();
-      }
+      body: data,
+      credentials: 'same-origin',
     })
-      .done(function (data) {
+      .then(res => res.json())
+      .then(response => {
+        console.log(response);
         swal.close();
-        let ticketDetails = data.ticket_details;
-        $('.ticket-order-container').find('#ticket-order').text(ticketDetails.ticket_order);
-        setTimeout(function () {
-          showModal(ticketDetails);
-        }, 500);
-        btnPrinter.on('click', function () {
-          let options = {
-            mode: 'iframe',
-            popClose: true,
-          };
-          $("#printer").printArea(options);
-        });
+      })
+      .catch(err => {
+        console.error(err);
+        swal({
+          type: 'error',
+          title: 'Oops...',
+          text: 'Falló la consulta del ticket',
+          footer: 'Avisa a Soporte!',
+        })
       });
-  });
+
+
+
+    // Dibuja el ticket en el modal y activa el onClic() listener del botón .btn-printer
+    /*     $.ajax({
+          url: PATH,
+          method: 'POST',
+          traditional: true,
+          dataType: 'json',
+          async: true,
+          data: {
+            csrfmiddlewaretoken: csrftoken,
+            'ticket_id': idElement,
+            'type': 'ticket_details',
+          },
+          beforeSend: function (xhr) {
+            swal({
+              title: "Obteniendo datos del ticket",
+              text: "Espere mientras obtenemos toda la información",
+            });
+            swal.enableLoading();
+          }
+        })
+          .done(function (data) {
+            swal.close();
+            let ticketDetails = data.ticket_details;
+            document.getElementById('ticket-order').textContent = ticketDetails.ticket_order;
+            setTimeout(function () {
+              showModal(ticketDetails);
+            0);
+             = document.getElementById(');btnPrinter.on('click', function () {
+              let options = {
+                mode: 'iframe',
+                popClose: true,
+              };
+            });
+          }); */
+
+  }
 
   /**
    * Obtiene el id del ticket específico y realiza la petición para eliminarlo
@@ -684,7 +684,7 @@ window.onload = function () {
         url: PATH,
         method: 'POST',
         data: {
-          csrfmiddlewaretoken: csrftoken,
+          csrfmiddlewaretoken: csrfToken,
           'ticket_id': idElement,
         },
         traditional: true,
@@ -735,6 +735,7 @@ window.onload = function () {
     swal({
       title: "Generando reporte",
       text: "Espere mientras se generan los datos",
+      customClass: 'nyan-cat',
       allowOutsideClick: false,
       allowEscapeKey: false,
       allowEnterKey: false

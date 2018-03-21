@@ -3,7 +3,10 @@
     cursor: pointer;
     font-size: 2rem;
   }
-  .header-actions {
+  &-row-date {
+    width: 20rem;
+  }
+  &-row-actions {
     width: 10rem;
   }
 }

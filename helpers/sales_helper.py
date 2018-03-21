@@ -255,7 +255,7 @@ class TicketPOSHelper(object):
                 'date': str(start_dt.date().strftime('%d-%m-%Y')),
                 'day_name': None,
                 'earnings': None,
-                'number_day': helper.get_number_day(start_dt),
+                'number_day': start_dt.strftime("%u"),
             }
 
             for ticket_item in day_tickets:
@@ -266,7 +266,7 @@ class TicketPOSHelper(object):
                     if ticket_package_detail_item.ticket_base == ticket_item.ticket:
                         total_earnings += ticket_package_detail_item.price
 
-            day_object['day_name'] = helper.get_name_day(start_dt.date())
+            day_object['day_name'] = start_dt.date().strftime("%A")
             day_object['earnings'] = str(total_earnings)
 
             week_sales_list.append(day_object)
