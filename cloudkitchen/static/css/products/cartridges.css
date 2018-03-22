@@ -3,8 +3,7 @@
     overflow-y: auto;
 }
 
-.tab-content{
-    height: 80vh;
+.tab-content{    
     overflow: hidden;
 }
 
@@ -12,16 +11,21 @@ a.material-icons{
     font-size: 50px;
 }
 
-.img-c{        
-    overflow: hidden;            
+.img-c{                
+    overflow: hidden;    
+    display: block;
 }
 
-img{    
-    display: block;
-    margin:auto;  
-    border-radius: 40px;    
-    width: 80%;    
+.car_img{    
+    margin-top: 80px;
+    width: 100%;
+    max-height: 500px;
+    border-radius: 80px;
 }
+
+
+
+
 
 
 

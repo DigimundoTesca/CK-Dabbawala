@@ -127,6 +127,11 @@ class Cartridge(models.Model):
 
         """ % self.image.url
 
+    def as_dict(self):
+        return{
+            "pk":self.pk
+        }
+
     get_image.allow_tags = True
     get_image.short_description = 'Foto'
 

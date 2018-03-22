@@ -321,12 +321,26 @@ def categories_supplies(request, categ):
 @login_required(login_url='users:login')
 def cartridges(request):
     cartridges_list = Cartridge.objects.order_by('category','subcategory','name')
+    products_helper = ProductsHelper()
+    today = datetime.today()
+    current_year = today.year
+    current_month = today.month
+    category = "select"
+    resultado = products_helper.get_cartridges_sales_by_date(
+        current_year, current_month, category)
+    cartridge_dates = resultado['json_sales_data_by_date']    
+
     template = 'cartridges/cartridges.html'
     title = 'Cartuchos'
+    dictionaries = [ cart.as_dict() for cart in cartridges_list ]
+    cartridges_json = json.dumps({"data": dictionaries})
+
     context = {
         'cartridges': cartridges_list,
+        'cartridges_json': cartridges_json,
+        'sales_data_by_date': cartridge_dates,
         'title': title,
-        'page_title': PAGE_TITLE 
+        'page_title': PAGE_TITLE
     }
     return render(request, template, context)
 
@@ -532,8 +546,6 @@ def new_shoplist(request):
 @login_required(login_url='users:login')
 def warehouse_analytics(request):
 
-    sales_helper = TicketPOSHelper()
-    helper = Helper()
     products_helper = ProductsHelper()
     today = datetime.today()
     current_year = today.year
