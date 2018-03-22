@@ -83,7 +83,44 @@ class ProductsHelper(object):
             self.set_cartridges_sales()
         return self.__cartridges_sales_by
 
-    def get_cartridges_sales_by_date(self,year,month,category):
+    def set_supplies(self):
+        self.__supplies = Supply.objects. \
+            select_related('category'). \
+            select_related('supplier'). \
+            select_related('location').order_by('name')
+
+    def set_cartridges(self):
+        self.__cartridges = Cartridge.objects.order_by('subcategory', 'name')
+
+    def set_packages_cartridges(self):
+        self.__packages_cartridges = PackageCartridge.objects.all()
+
+    def set_cartridges_recipes(self):
+        self.__all_cartridges_recipes = CartridgeRecipe.objects. \
+            select_related('cartridge'). \
+            select_related('supply'). \
+            all()
+
+    def set_package_cartridges_recipes(self):
+        self.__all_packages_cartridges_recipes = PackageCartridgeRecipe.objects. \
+            select_related('package_cartridge'). \
+            select_related('cartridge'). \
+            all()
+
+    def set_extra_ingredients(self):
+        self.__extra_ingredients = ExtraIngredient.objects. \
+            select_related('ingredient'). \
+            select_related('cartridge'). \
+            all()
+
+    def set_elements_in_warehouse(self):
+        self.__elements_in_warehouse = Warehouse.objects.select_related('supply').all().order_by('supply__name')
+
+    def set_cartridges_sales(self):
+        self.__elements_in_warehouse = Cartridge.objects.select_related('supply').all().order_by('supply__name')
+
+
+    def get_cartridges_sales_by_date(self, year, month, category):
 
         names = []
         tick_sales = []
@@ -137,10 +174,10 @@ class ProductsHelper(object):
 
         sales_data = json.dumps(obj)
 
-        range_day = calendar.monthrange(year, month)
+        range_day = calendar.monthrange(year, month)        
 
         sales_data_by_date = []
-        for i in range(range_day[0] + 1, range_day[1] + 1):
+        for i in range(1, range_day[1]+1):
             name_d = []
             num_d = []
 
@@ -230,40 +267,3 @@ class ProductsHelper(object):
         }
 
         return final_data
-
-
-    def set_supplies(self):
-        self.__supplies = Supply.objects. \
-            select_related('category'). \
-            select_related('supplier'). \
-            select_related('location').order_by('name')
-
-    def set_cartridges(self):
-        self.__cartridges = Cartridge.objects.order_by('subcategory', 'name')
-
-    def set_packages_cartridges(self):
-        self.__packages_cartridges = PackageCartridge.objects.all()
-
-    def set_cartridges_recipes(self):
-        self.__all_cartridges_recipes = CartridgeRecipe.objects. \
-            select_related('cartridge'). \
-            select_related('supply'). \
-            all()
-
-    def set_package_cartridges_recipes(self):
-        self.__all_packages_cartridges_recipes = PackageCartridgeRecipe.objects. \
-            select_related('package_cartridge'). \
-            select_related('cartridge'). \
-            all()
-
-    def set_extra_ingredients(self):
-        self.__extra_ingredients = ExtraIngredient.objects. \
-            select_related('ingredient'). \
-            select_related('cartridge'). \
-            all()
-
-    def set_elements_in_warehouse(self):
-        self.__elements_in_warehouse = Warehouse.objects.select_related('supply').all().order_by('supply__name')
-
-    def set_cartridges_sales(self):
-        self.__elements_in_warehouse = Cartridge.objects.select_related('supply').all().order_by('supply__name')
