@@ -1,4 +1,4 @@
-from cloudkitchen.settings.develop import *
+from cloudkitchen.settings.dev import *
 
 DATABASES = {
     'default': {

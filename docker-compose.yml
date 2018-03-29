@@ -1,0 +1,13 @@
+version: '3.0'
+
+services:
+  db:
+    image: postgres:9.6
+    env_file: .env
+    volumes:
+      - db_data:/var/lib/postgresql/data/pgdata
+
+  web:
+    build:
+      context: .
+    env_file: .env
