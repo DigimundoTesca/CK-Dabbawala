@@ -1,7 +1,7 @@
 import swal from 'sweetalert2';
 import 'bootstrap';
 import { Chart } from 'chart.js';
-import 'jsPDF';
+import 'jspdf';
 import { downloadBlob } from 'download.js';
 import {
   loadPathname,
