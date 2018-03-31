@@ -14,7 +14,10 @@ GRAPH_MODELS = {
   'group_models': True,
 }
 
-INTERNAL_IPS = ('127.0.0.1',)
+INTERNAL_IPS = ['127.0.0.1', 'localhost']
+
+if os.getenv('DJANGO_TOOLBAR_IP'):
+    INTERNAL_IPS += [os.getenv('DJANGO_TOOLBAR_IP')]
 
 INSTALLED_APPS += (
     'django_extensions',
