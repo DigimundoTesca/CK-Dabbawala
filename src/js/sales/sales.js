@@ -1,7 +1,7 @@
 import swal from 'sweetalert2';
 import 'bootstrap';
 import { Chart } from 'chart.js';
-import 'jspdf';
+import jsPDF from 'jspdf';
 import { downloadBlob } from 'download.js';
 import {
   loadPathname,
@@ -14,8 +14,10 @@ require('../../scss/app.scss');
 window.onload = function () {
   const PATH = window.location.pathname;
 
-  // Declaración de botones
-  const btnDownloadSalesReport = document.getElementById('btn-save-reports');
+  // Declaración de elementos
+  const btnDownloadSalesReport = document.getElementById('btn-save-reports'),
+    selectOptionWeek = document.getElementById('dt-week'),
+    selectOptionYear = document.getElementById('dt-year');
 
   let csrfToken = getCookie('csrftoken');
   let canvasChartWeek = document.getElementById("canvas-week-sales"),
@@ -23,8 +25,7 @@ window.onload = function () {
     earningsPerDayChart,
     earningsPerHourChart,
     todayDate,
-    salesWeek,
-    datesRange;
+    salesWeek;
 
   loadPathname(PATH);
 
@@ -33,59 +34,85 @@ window.onload = function () {
    * la carga de las fechas y datos de las ventas
    */
   (function init() {
+    let data = new FormData();
+
     // Asigna la fecha de hoy dd-mm-YYYY
     todayDate = new Date();
     todayDate = todayDate.getDate() + '-' + (todayDate.getMonth() + 1) + '-' + todayDate.getFullYear();
 
-    // Método AJAX que carga los campos de rangos de fechas
-    $.ajax({
-      method: 'post',
-      url: PATH,
-      dataType: 'json',
-      traditional: true,
-      async: true,
-      data: {
-        csrfmiddlewaretoken: csrfToken,
-        type: 'dates_range'
-      },
-      success: function (result) {
-        datesRange = result.data;
-        fillDatesRangeFilter();
-        setSalesData();
-      },
-      error: function (XMLHttpRequest, textStatus, errorThrown) {
-        console.log(XMLHttpRequest, textStatus);
-      }
+    // Petición al servidor para la carga los campos de rangos de fechas
+    data.append('csrfmiddlewaretoken', csrfToken);
+    data.append('type', 'dates_range');
+
+    swal({
+      title: 'Obteniendo ventas',
+      text: 'Espere mientras obtenemos toda la información',
+      customClass: 'nyan-cat',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      allowEnterKey: false
     });
+    swal.enableLoading();
 
-    // Método AJAX que solicita los datos de las ventas de la semana actual
-    function setSalesData() {
-      $.ajax({
-        method: 'post',
-        url: PATH,
-        type: 'json',
-        traditional: true,
-        async: true,
-        data: {
-          csrfmiddlewaretoken: csrfToken,
-          type: 'sales_actual_week'
-        },
-        success: function (result) {
-          salesWeek = result.data;
-          drawCharts();
-
-          setSalesDayChart(todayDate);
-          setTotalEarnings();
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-          console.log(XMLHttpRequest, textStatus, errorThrown);
-        }
+    fetch(PATH, {
+      method: 'POST',
+      body: data,
+      credentials: 'same-origin',
+    })
+      .then(res => res.json())
+      .then(response => {
+        let datesRange = response.data;
+        fillDatesRangeFilter(datesRange);
+        setSalesData();
+      })
+      .catch(err => {
+        console.error(err);
+        swal({
+          type: 'error',
+          title: 'Oops...',
+          text: 'Falló la consulta de las fechas',
+          footer: 'Avisa a Soporte!',
+        })
       });
+
+    // Petición al servidor para la carga la información de ventas de la semana actual
+    function setSalesData() {
+      let data = new FormData();
+      data.append('csrfmiddlewaretoken', csrfToken);
+      data.append('type', 'sales_actual_week');
+
+      fetch(PATH, {
+        method: 'POST',
+        body: data,
+        credentials: 'same-origin',
+      })
+        .then(res => res.json())
+        .then(response => {
+          salesWeek = response.data;
+          drawCharts();
+          setTotalEarnings();
+          setSalesTable();
+        })
+        .catch(err => {
+          console.error(err);
+          swal({
+            type: 'error',
+            title: 'Oops...',
+            text: 'Falló la consulta para obtener las ventas',
+            footer: 'Avisa a Soporte!',
+          })
+        });
+
 
     }
   })([]);
 
-  function convertDateToString(date) {
+  /**
+   * Función que permite formatear una fecha del formato dd-mm-yyyy a un string con mes corto
+   * @param sDate - Parámetro con la fechaa convertir
+   * @returns {string} - String con la fecha formateada
+   */
+  function convertDateToString(sDate) {
     let months = {
       1: 'Ene',
       2: 'Feb',
@@ -100,38 +127,56 @@ window.onload = function () {
       11: 'Nov',
       12: 'Dic',
     };
-    date = date.split('-');
-    return date[0] + " " + months[parseInt(date[1])] + " " + date[2];
+    sDate = sDate.split('-');
+    return sDate[0] + " " + months[parseInt(sDate[1])] + " " + sDate[2];
   }
 
   /**
    * Rellena el filtro de fechas
    */
-  function fillDatesRangeFilter() {
-    let selectedYear;
+  function fillDatesRangeFilter(datesRange) {
+    let selectYear = document.getElementsByName('select-year')[0],
+      selectWeek = document.getElementsByName('select-week')[0];
 
-    $.each(datesRange, function (index, item) {
-      $('#dates-range-form').find('#dt-year').append(
-        "<option value=" + item.year + ">" + item.year + "</option>"
-      );
-    });
-
-    selectedYear = parseInt($('#dates-range-form').find('#dt-year').val());
-
-    $.each(datesRange, function (index, item) {
-      if (datesRange[index].year === selectedYear) {
-        $.each(datesRange[index].weeks_list, function (index, item) {
-          $('#dates-range-form').find('#dt-week').append(
-            "<option value=" + item.start_date + "," + item.end_date + ">" +
-            "S-" + item.week_number + ": " +
-            convertDateToString(item.start_date) +
-            " - " + convertDateToString(item.end_date) +
-            "</option>"
-          );
-        });
-        return false;
+    // Carga la lista de años con registros en el select list
+    for (let index in datesRange) {
+      if (datesRange.hasOwnProperty(index)) {
+        let option = document.createElement("option");
+        option.text = datesRange[index].year;
+        selectYear.add(option);
       }
-    });
+    }
+
+    // Obtiene el último año cargado - Año actual
+    setYearsSelect(parseInt(selectYear.value));
+
+    function setYearsSelect(selectYearValue) {
+      for (let index in datesRange) {
+        if (datesRange.hasOwnProperty(index)) {
+          if (datesRange[index].year === selectYearValue) {
+            let weeksList = datesRange[index]['weeks_list'];
+            setWeeksSelect(weeksList);
+          }
+        }
+      }
+    }
+
+    function setWeeksSelect(weeksList) {
+      for (let index in weeksList) {
+        if (weeksList.hasOwnProperty(index)) {
+          let option = document.createElement("option");
+          let weekNumber = weeksList[index].week_number,
+            startDate = weeksList[index].start_date,
+            endDate = weeksList[index].end_date,
+            fStartDate = convertDateToString(weeksList[index].start_date),
+            fEndDate = convertDateToString(weeksList[index].end_date);
+
+          option.text = `S-${weekNumber}: ${fStartDate}-${fEndDate}`;
+          option.value = `${startDate},${endDate}`;
+          selectWeek.add(option);
+        }
+      }
+    }
 
   }
 
@@ -254,7 +299,7 @@ window.onload = function () {
       totalEarnings += earningsList[i];
     }
     totalEarnings = setDecimalFormat(totalEarnings, 2);
-    $('#total-earnings-text').append(totalEarnings);
+    document.getElementById('total-earnings-text').textContent = totalEarnings;
   }
 
   /**
@@ -396,199 +441,50 @@ window.onload = function () {
    * Obtiene las ganancias del día específico de la gráfica de ganancias diarias
    * después, muestra los resultados en la gráfica de ganancias por hora
    */
-  function setSalesDayChart(date) {
-    $.ajax({
-      url: PATH,
-      type: 'POST',
-      data: {
-        csrfmiddlewaretoken: csrfToken,
-        'date': date,
-        'type': 'sales_day'
-      },
-      traditional: true,
-      dataType: 'json',
-      beforeSend: function () {
-        swal({
-          title: "Generando gráficas",
-          text: "Espere mientras se calculan los datos",
-        });
-        swal.enableLoading();
-      },
-      success: function (result) {
+  function setSalesDayChart(sDate) {
+    let data = new FormData();
+
+    // Petición para obtener detalles del ticket seleccionado
+    data.append('csrfmiddlewaretoken', csrfToken);
+    data.append('date', sDate);
+    data.append('type', 'sales_day');
+
+    swal({
+      title: "Generando gráficas del día",
+      text: "Espere mientras se calculan los datos",
+      customClass: 'nyan-cat'
+    });
+    swal.enableLoading();
+
+    fetch(PATH, {
+      method: 'POST',
+      body: data,
+      credentials: 'same-origin',
+    })
+      .then(res => res.json())
+      .then(response => {
         let salesDayEarningsList;
         let initialHour = '06:00',
           finalHour = '16:00',
           separationTime = 60; // In minutes
-        let salesDayObjectList = result['sales_day_list'];
+        let salesDayObjectList = response['sales_day_list'];
 
         salesDayEarningsList = getSalesDayList(initialHour, finalHour, separationTime, salesDayObjectList);
 
         earningsPerHourChart.data.datasets[0].data = salesDayEarningsList;
         earningsPerHourChart.update();
         swal.close();
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-        console.error(textStatus, errorThrown);
-        console.error(jqXHR);
-      },
-    });
-  }
-
-  /**
-   * Refresca los datos de las gráficas y tabla con la semana y el año elegido
-   */
-  $('#dt-week').change(function (event) {
-    let dtYear = $('#dt-year').val(),
-      dtWweek = $('#dt-week').val();
-
-    $.ajax({
-      url: PATH,
-      method: 'POST',
-      data: {
-        csrfmiddlewaretoken: csrfToken,
-        'dt_year': dtYear,
-        'dt_week': dtWweek,
-        'type': 'sales_week',
-      },
-      traditional: true,
-      dataType: 'json',
-      beforeSend: function () {
+      })
+      .catch(err => {
+        console.error(err);
         swal({
-          title: "Obteniendo registros",
-          text: "Espere mientras obtenemos toda la información",
-        });
-        swal.enableLoading();
-      },
-      success: function (result, status, XHR) {
-        let ticketsObjects = result['tickets'],
-          weekNumber = result['week_number'],
-          salesDetailsTable = document.getElementById('sales-details-table').getElementsByTagName('tbody')[0],
-          weekEarnings = 0;
+          type: 'error',
+          title: 'Oops...',
+          text: 'Falló la consulta del ticket',
+          footer: 'Avisa a Soporte!',
+        })
+      });
 
-        salesWeek = result['sales'];
-
-
-        // Limpia la tabla de filas anteriores
-        while (salesDetailsTable.firstChild) {
-          salesDetailsTable.removeChild(salesDetailsTable.firstChild);
-        }
-
-        // Rellena las filas de la tabla
-        for (let i = 0; i < ticketsObjects.length; i++) {
-          weekEarnings += parseFloat(ticketsObjects[i].total);
-          let cartridgesList = "",
-            packagesList = "";
-
-          let rowTable,
-            cellTable,
-            iconContainer,
-            iconAction;
-
-          for (let j = 0; j < ticketsObjects[i]['cartridges'].length; j++) {
-            cartridgesList += "" +
-              "<span class='badge badge-success'>" +
-              "<span class='badge badge-info'>" +
-              ticketsObjects[i]['cartridges'][j].quantity +
-              "</span>" +
-              "<span class='badge badge-success'>" +
-              ticketsObjects[i]['cartridges'][j].name +
-              "</span>" +
-              "</span>" +
-              "";
-          }
-
-          for (let j = 0; j < ticketsObjects[i]['packages'].length; j++) {
-            packagesList += "" +
-              "<span class='badge badge-primary'>" +
-              "<span class='badge badge-info'>" +
-              ticketsObjects[i]['packages'][j].quantity +
-              "</span>" +
-              "<span class='badge badge-primary'>" +
-              ticketsObjects[i]['packages'][j].name +
-              "</span>" +
-              "</span>" +
-              "";
-          }
-
-          rowTable = salesDetailsTable.appendChild(document.createElement('tr'));
-          // Ticket id
-          rowTable.className = 'table-row';
-          cellTable = rowTable.appendChild(document.createElement('th'));
-          cellTable.className = 'table-row-id';
-          cellTable.innerHTML = ticketsObjects[i].id;
-          // Número de orden
-          cellTable = rowTable.appendChild(document.createElement('th'));
-          cellTable.className = 'table-row-order';
-          cellTable.innerHTML = ticketsObjects[i].order_number;
-          // Fecha
-          cellTable = rowTable.appendChild(document.createElement('td'));
-          cellTable.className = 'table-row-date';
-          cellTable.innerHTML = ticketsObjects[i].created_at;
-          // Productos
-          cellTable = rowTable.appendChild(document.createElement('td'));
-          cellTable.className = 'table-row-products';
-          cellTable.innerHTML = cartridgesList;
-          // Paquetes
-          cellTable = rowTable.appendChild(document.createElement('td'));
-          cellTable.className = 'table-row-packages';
-          cellTable.innerHTML = packagesList;
-          // Vendedor
-          cellTable = rowTable.appendChild(document.createElement('td'));
-          cellTable.className = 'table-row-seller';
-          cellTable.innerHTML = ticketsObjects[i].cashier;
-          // Total
-          cellTable = rowTable.appendChild(document.createElement('td'));
-          cellTable.className = 'table-row-total';
-          cellTable.innerHTML = ticketsObjects[i].total;
-          // Acciones
-          cellTable = rowTable.appendChild(document.createElement('td'));
-          cellTable.className = 'table-row-actions';
-          // Acciones -> boton eliminar
-          iconContainer = document.createElement('span');
-          iconContainer.className = 'delete-ticket sales-actions';
-          iconAction = iconContainer.appendChild(document.createElement('i'));
-          iconAction.innerHTML = 'delete';
-          iconAction.className = 'material-icons text-muted';
-          cellTable.appendChild(iconContainer);
-          // Acciones -> Botón imprimir
-          iconContainer = document.createElement('span');
-          iconContainer.className = 'delete-ticket print-ticket';
-          iconAction = iconContainer.appendChild(document.createElement('i'));
-          iconAction.innerHTML = 'local_printshop';
-          iconAction.className = 'material-icons text-primary';
-          cellTable.appendChild(iconContainer);
-
-          document.addEventListener('click', printTicketListener(iconAction));
-        }
-
-        earningsPerDayChart.data.datasets[0].data = getEarningsWeekRange(salesWeek);
-        earningsPerDayChart.update();
-
-        $('#total-earnings-text').text(weekEarnings.toFixed(2));
-        $('#week-number').text(weekNumber);       
-
-        swal({
-          title: "Éxito",
-          text: "Datos obtenidos",
-          type: "info",
-          timer: 750,
-          showConfirmButton: false
-        }).then(
-          function () { },
-          function (dismiss) { });
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-        console.log(jqXHR);
-      },
-      complete: function (result) { }
-    });
-  });
-
-  /**
-   * Agregar a un elemento .print-ticket un listener para la impresión de tickets
-   */
-  function printTicketListener(el) {
-    el.addEventListener('click', printTicket);
   }
 
   /**
@@ -597,9 +493,8 @@ window.onload = function () {
    */
   function printTicket(event) {
     let target = event.target;
-    let idElement = findParentBySelector(target, '.table-row').querySelector('.table-row-order').textContent;
+    let idElement = findParentBySelector(target, '.table-row').querySelector('.table-row-id').textContent;
     let data = new FormData();
-
 
     // Petición para obtener detalles del ticket seleccionado
     data.append('csrfmiddlewaretoken', csrfToken);
@@ -619,7 +514,19 @@ window.onload = function () {
       credentials: 'same-origin',
     })
       .then(res => res.json())
-      .then(response => {
+      .then((response) => {
+        // Default export is a4 paper, portrait, using milimeters for units
+        let doc = new jsPDF();
+
+        doc.text('Hello world!', 10, 10);
+
+        let link = doc.output('datauristring'),
+          ticketFrame =document.getElementById('ticket-modal-frame');
+        ticketFrame.setAttribute("src", link);
+
+        $('#modal-ticket').modal('show');
+
+        // doc.save('a4.pdf');
         console.log(response);
         swal.close();
       })
@@ -632,86 +539,239 @@ window.onload = function () {
           footer: 'Avisa a Soporte!',
         })
       });
+  }
 
+  /**
+   * Función que permite cargar la información de las ventas en la tabla de ventas
+   */
+  function setSalesTable() {
+    // Get the option values
+    let dtYearOption = selectOptionYear.options[selectOptionYear.selectedIndex].value,
+      dtWeekOption = selectOptionWeek.options[selectOptionWeek.selectedIndex].value;
 
+    let data = new FormData();
 
-    // Dibuja el ticket en el modal y activa el onClic() listener del botón .btn-printer
-    /*     $.ajax({
-          url: PATH,
-          method: 'POST',
-          traditional: true,
-          dataType: 'json',
-          async: true,
-          data: {
-            csrfmiddlewaretoken: csrftoken,
-            'ticket_id': idElement,
-            'type': 'ticket_details',
-          },
-          beforeSend: function (xhr) {
-            swal({
-              title: "Obteniendo datos del ticket",
-              text: "Espere mientras obtenemos toda la información",
-            });
-            swal.enableLoading();
-          }
+    // Petición para obtener detalles del ticket seleccionado
+    data.append('csrfmiddlewaretoken', csrfToken);
+    data.append('dt_year', dtYearOption);
+    data.append('dt_week', dtWeekOption);
+    data.append('type', 'sales_week');
+
+    if (!swal.isVisible()) {
+      swal({
+        title: 'Obteniendo ventas',
+        text: 'Espere mientras obtenemos toda la información',
+        customClass: 'nyan-cat',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        allowEnterKey: false
+      });
+      swal.enableLoading();
+    }
+    fetch(PATH, {
+      method: 'POST',
+      body: data,
+      credentials: 'same-origin',
+    })
+      .then(res => res.json())
+      .then(response => {
+        let ticketsObjects = response['tickets'],
+          weekNumber = response['week_number'];
+
+        // Crea la lista de objetos para las ventas
+        salesWeek = response['sales'];
+
+        // Envía el objeto de tickets a la función para la creación de las filas de la tabla de ventas
+        updateSalesTableRows(ticketsObjects);
+
+        // Actualiza las gráficas de ventas
+        earningsPerDayChart.data.datasets[0].data = getEarningsWeekRange(salesWeek);
+        earningsPerDayChart.update();
+
+        document.getElementById('week-number').textContent = weekNumber;
+
+        swal({
+          title: "Éxito",
+          text: "Ventas obtenidss",
+          type: "info",
+          timer: 750,
+          showConfirmButton: false
+        }).then(
+          function () { },
+          function (dismiss) { });
+      })
+      .catch(err => {
+        console.log(err);
+        swal({
+          type: 'error',
+          title: 'Oops...',
+          text: 'Falló la consulta del los datos',
+          footer: 'Avisa a Soporte!',
         })
-          .done(function (data) {
-            swal.close();
-            let ticketDetails = data.ticket_details;
-            document.getElementById('ticket-order').textContent = ticketDetails.ticket_order;
-            setTimeout(function () {
-              showModal(ticketDetails);
-            0);
-             = document.getElementById(');btnPrinter.on('click', function () {
-              let options = {
-                mode: 'iframe',
-                popClose: true,
-              };
-            });
-          }); */
+      });
+
+    // Rellena las filas de la tabla
+    function updateSalesTableRows(ticketsObjects) {
+      let salesDetailsTable = document.getElementById('sales-details-table').getElementsByTagName('tbody')[0],
+        weekEarnings = 0;
+
+      // Limpia la tabla de filas anteriores
+      while (salesDetailsTable.firstChild) {
+        salesDetailsTable.removeChild(salesDetailsTable.firstChild);
+      }
+
+      // Ingresa una a una las nuevas filas
+      for (let i = 0; i < ticketsObjects.length; i++) {
+        weekEarnings += parseFloat(ticketsObjects[i].total);
+        let cartridgesList = "",
+          packagesList = "";
+
+        let rowTable,
+          cellTable,
+          iconContainer,
+          iconAction;
+
+        for (let j = 0; j < ticketsObjects[i]['cartridges'].length; j++) {
+          cartridgesList += "" +
+            "<span class='badge badge-success'>" +
+            "<span class='badge badge-info'>" +
+            ticketsObjects[i]['cartridges'][j].quantity +
+            "</span>" +
+            "<span class='badge badge-success'>" +
+            ticketsObjects[i]['cartridges'][j].name +
+            "</span>" +
+            "</span>" +
+            "";
+        }
+
+        for (let j = 0; j < ticketsObjects[i]['packages'].length; j++) {
+          packagesList += "" +
+            "<span class='badge badge-primary'>" +
+            "<span class='badge badge-info'>" +
+            ticketsObjects[i]['packages'][j].quantity +
+            "</span>" +
+            "<span class='badge badge-primary'>" +
+            ticketsObjects[i]['packages'][j].name +
+            "</span>" +
+            "</span>" +
+            "";
+        }
+
+        rowTable = salesDetailsTable.appendChild(document.createElement('tr'));
+        // Ticket id
+        rowTable.className = 'table-row';
+        cellTable = rowTable.appendChild(document.createElement('th'));
+        cellTable.className = 'table-row-id';
+        cellTable.innerHTML = ticketsObjects[i].id;
+        // Número de orden
+        cellTable = rowTable.appendChild(document.createElement('th'));
+        cellTable.className = 'table-row-order';
+        cellTable.innerHTML = ticketsObjects[i].order_number;
+        // Fecha
+        cellTable = rowTable.appendChild(document.createElement('td'));
+        cellTable.className = 'table-row-date';
+        cellTable.innerHTML = ticketsObjects[i].created_at;
+        // Productos
+        cellTable = rowTable.appendChild(document.createElement('td'));
+        cellTable.className = 'table-row-products';
+        cellTable.innerHTML = cartridgesList;
+        // Paquetes
+        cellTable = rowTable.appendChild(document.createElement('td'));
+        cellTable.className = 'table-row-packages';
+        cellTable.innerHTML = packagesList;
+        // Vendedor
+        cellTable = rowTable.appendChild(document.createElement('td'));
+        cellTable.className = 'table-row-seller';
+        cellTable.innerHTML = ticketsObjects[i].cashier;
+        // Total
+        cellTable = rowTable.appendChild(document.createElement('td'));
+        cellTable.className = 'table-row-total';
+        cellTable.innerHTML = ticketsObjects[i].total;
+        // Acciones
+        cellTable = rowTable.appendChild(document.createElement('td'));
+        cellTable.className = 'table-row-actions';
+        // Acciones -> boton eliminar
+        iconContainer = document.createElement('span');
+        iconContainer.className = 'delete-ticket sales-actions';
+        iconAction = iconContainer.appendChild(document.createElement('i'));
+        iconAction.innerHTML = 'delete';
+        iconAction.className = 'material-icons text-muted';
+        cellTable.appendChild(iconContainer);
+
+        // Agrega el listener al botón de eliminar creado
+        document.addEventListener('click', deleteTicketListener(iconAction));
+
+        // Acciones -> Botón imprimir
+        iconContainer = document.createElement('span');
+        iconContainer.className = 'delete-ticket print-ticket';
+        iconAction = iconContainer.appendChild(document.createElement('i'));
+        iconAction.innerHTML = 'local_printshop';
+        iconAction.className = 'material-icons text-primary';
+        cellTable.appendChild(iconContainer);
+        // Agrega el listener al botón de impresión creado
+        document.addEventListener('click', printTicketListener(iconAction));
+      }
+
+      // Actualiza la etiqueta de ventas de la semana
+      document.getElementById('total-earnings-text').textContent = weekEarnings.toFixed(2);
+
+    }
 
   }
 
   /**
-   * Obtiene el id del ticket específico y realiza la petición para eliminarlo
-   * TODO: Make a view for delete the ticket from backend
+   * Función encargada de realizar la eliminación del ticket
    */
-  $(this).on('click', '.delete-ticket', function (event) {
-    let idElement = $(this).parent().siblings('.header-id').text();
+  function deleteTicket(idTicket) {
+    let data = new FormData();
 
-    function deleteTicket() {
-      $.ajax({
-        url: PATH,
-        method: 'POST',
-        data: {
-          csrfmiddlewaretoken: csrfToken,
-          'ticket_id': idElement,
-        },
-        traditional: true,
-        dataType: 'json',
-        beforeSend: function () {
-          swal({
-            title: "Eliminando ticket",
-            text: "Espere mientras se realiza la petición",
+    // Petición para obtener detalles del ticket seleccionado
+    data.append('csrfmiddlewaretoken', csrfToken);
+    data.append('ticketId', idTicket);
+
+    swal({
+      title: "Eliminando ticket",
+      text: "Espere mientras se realiza la petición",
+      customClass: 'nyan-cat'
+    });
+    swal.enableLoading();
+
+    fetch(PATH + 'eliminar/', {
+      method: 'POST',
+      body: data,
+      credentials: 'same-origin',
+    })
+      .then(res => res.json())
+      .then(response => {
+        swal({
+          title: "Éxito",
+          text: "Ticket Eliminando",
+          type: "warning",
+          timer: 2000,
+          showConfirmButton: false
+        })
+          .then((result) => {
+            location.reload();
           });
-          swal.enableLoading();
-        },
-        success: function (result) {
-          swal({
-            title: "Éxito",
-            text: "Ticket Eliminando",
-            type: "warning",
-            timer: 1000,
-            showConfirmButton: false
-          }).then(
-            function () { },
-            function (dismiss) {
-              location.reload();
-            }
-          );
-        }
+      })
+      .catch(err => {
+        console.error(err);
+        swal({
+          type: 'error',
+          title: 'Oops...',
+          text: 'Falló la eliminación del ticket',
+          footer: 'Avisa a Soporte!',
+        })
       });
-    }
+  }
+
+  /**
+   * Función encargada de solicitar confirmación para eliminar el ticket
+   */
+  function deleteTicketConfirm(event) {
+    let target = event.target;
+    let idElement = findParentBySelector(target, '.table-row').querySelector('.table-row-id').textContent;
+
     swal({
       title: '¿Estás seguro?',
       text: "No podras recuperar el ticket!",
@@ -720,11 +780,32 @@ window.onload = function () {
       cancelButtonColor: '#3085d6',
       confirmButtonColor: '#d33',
       confirmButtonText: 'Sí, eliminar ticket!'
-    }).then(function () {
-      deleteTicket();
-    },
-      function (dismiss) { });
-  });
+    })
+      .then((result) => {
+        if (result.value) {
+          deleteTicket(idElement);
+        }
+      });
+  }
+
+  /**
+   * LISTENERS
+   *
+   */
+
+  /**
+   * Agrega a un eemento .delete-ticket un listener para la eliminación de tickets
+   */
+  function deleteTicketListener(el) {
+    el.addEventListener('click', deleteTicketConfirm);
+  }
+
+  /**
+   * Agregar a un elemento .print-ticket un listener para la impresión de tickets
+   */
+  function printTicketListener(el) {
+    el.addEventListener('click', printTicket);
+  }
 
   /**
    * Descarga el reporte de ventas
@@ -764,4 +845,9 @@ window.onload = function () {
       });
 
   });
+
+  /**
+   * Refresca los datos de las gráficas y tabla con la semana y el año elegido
+   */
+  selectOptionWeek.addEventListener('click', setSalesTable);
 };

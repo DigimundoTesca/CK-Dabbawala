@@ -17,13 +17,6 @@ main {
   background-color: $primary !important;
 }
 
-
-@media (min-width: 992px) {
-  .dropdown-menu {
-    margin-left: -5rem !important;
-  }
-}
-
 .nyan-cat {
   &::before {
     content: url("https://media.giphy.com/media/X6H1iK43XHPnuEkvhG/giphy.gif");
@@ -33,6 +26,13 @@ main {
     }
   }
 }
+
+@media (min-width: 992px) {
+  .dropdown-menu {
+    margin-left: -5rem !important;
+  }
+}
+
 
 @import "auth/login";
 @import "sales/base";

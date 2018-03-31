@@ -296,9 +296,9 @@ def sales(request):
 @login_required(login_url='users:login')
 def delete_sale(request):
     if request.method == 'POST':
-        ticket_id = request.POST['ticket_id']
+        ticket_id = request.POST['ticketId']
         ticket = TicketBase.objects.get(id=ticket_id)
-        ticket.delete()
+        # ticket.delete()
         return JsonResponse({'result': 'success'})
 
 
