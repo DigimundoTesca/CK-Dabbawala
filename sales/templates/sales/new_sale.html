@@ -191,8 +191,9 @@
         <div class="modal-footer">
           <div class="container">
             <div class="row">
-              <button type="submit" id="btn-pago-tarjeta" class="btn btn-primary col-xs-4 push-xs-3 btn-printer">Pago con tarjeta</button>
-              <button type="submit" id="btn-pago-efectivo" class="btn btn-success col-xs-4 push-xs-4 btn-printer">Pago con efectivo</button>
+              <button type="submit" id="btn-pago-tarjeta" class="btn btn-primary col-xs-4 push-xs-0 btn-printer">Pago con tarjeta</button>
+              <button type="submit" id="btn-pago-efectivo" class="btn btn-success col-xs-4 push-xs-1 btn-printer">Pago con efectivo</button>
+              <button type="submit" id="btn-pago-ubereats" class="btn btn-success col-xs-1 push-xs-2 btn-dark btn-printer "><img src="{% static 'images/Uber.png' %}" id="Uber" alt="Uber_Eats" class="push-xs-4 push-xs-3" height="42" width="42"></button>
             </div>
           </div>
         </div>
@@ -1185,6 +1186,9 @@
 
         if (payment_type == 'btn-pago-efectivo') {
           Ticket['payment_type'] = 'CA';  // Cash Payment
+          make_a_sale();
+        }else if(payment_type == 'btn-pago-ubereats'){
+          Ticket['payment_type'] = 'CA';
           make_a_sale();
         } else {
           Ticket['payment_type'] = 'CR'; // Credit Payment
