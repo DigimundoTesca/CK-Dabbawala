@@ -191,16 +191,24 @@
         <div class="modal-footer">
           <div class="container">
             <div class="row">
-              <button type="submit" id="btn-pago-tarjeta" class="btn btn-primary col-xs-4 push-xs-0 btn-printer">Pago con tarjeta</button>
-              <button type="submit" id="btn-pago-efectivo" class="btn btn-success col-xs-4 push-xs-1 btn-printer">Pago con efectivo</button>
-              <button type="submit" id="btn-pago-ubereats" class="btn btn-success col-xs-1 push-xs-2 btn-dark btn-printer "><img src="{% static 'images/Uber.png' %}" id="Uber" alt="Uber_Eats" class="push-xs-4 push-xs-3" height="42" width="42"></button>
+              <button type="submit" id="btn-pago-tarjeta" class="btn btn-primary col-xs-4 btn-printer">Pago con Tarjeta</button>
+              <button type="submit" id="btn-pago-efectivo" class="btn btn-success col-xs-3 btn-printer push-xs-1">Efectivo<span class="caret"></span></button>
+                <div class="btn-group dropup  push-xs-2">
+                  <button id="btn-pago-plataformas"aria-haspopup="true" aria-expanded="false"  data-toggle="dropdown" class="btn btn-danger btn-printer dropdown-toggle "data-toggle="modal" data-target="#modal-plataforms">Plataforma</button>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <button type="submit" id="btn-pago-ubereats" class="btn btn-dark btn-sm btn-printer btn-block"><img src="{% static 'images/Uber.png' %}" alt="Uber_Eats" class="push-xs-4 push-xs-3" height="20" width="20" > Ubereats</button>
+                        <button type="submit" id="btn-pago-sindelantal" class="btn btn-danger btn-sm btn-printer btn-block"><img src="{% static 'images/SIn_Delantal.png' %}" alt="Sin_Delantal" class="push-xs-4 push-xs-3" height="20" width="20" > SinDelantal</button>
+                        <a class="small dropdown-item" href="#">Pago en Efectivo</a>
+                        <a class="small dropdown-item" href="#">Pago con Tarjeta</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Separated link</a>                    </div>
+                  </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
   <!-- Dabba Modal -->
   <div class="modal fade" id="modal-package" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -209,7 +217,7 @@
           <div class="container-fluid">
             <div class="card col-xs-4">
               <span id="modal-prod-head-1" class="modal-head-prod-name"></span>
-            </div>
+             </div>
             <div class="card col-xs-4">
               <span id="modal-prod-head-2" class="modal-head-prod-name"></span>
             </div>
@@ -1187,12 +1195,13 @@
         if (payment_type == 'btn-pago-efectivo') {
           Ticket['payment_type'] = 'CA';  // Cash Payment
           make_a_sale();
-        }else if(payment_type == 'btn-pago-ubereats'){
-          Ticket['payment_type'] = 'CA';
+        }
+        else if (payment_type == 'btn-pago-ubereats') {
+          Ticket['payment_type'] = 'CA';  // Cash Payment
           make_a_sale();
-        } else {
+        }
+        else if (payment_type == 'btn-pago-tarjeta') {
           Ticket['payment_type'] = 'CR'; // Credit Payment
-
           var creedit_sale = new Promise(function (resolve) {
             setTimeout(function () {
               make_a_sale();
@@ -1236,6 +1245,8 @@
                 });
                 $('#btn-pago-efectivo').attr('disabled', 'true');
                 $('#btn-pago-tarjeta').attr('disabled', 'true');
+                $('#btn-pago-plataformas').attr('disabled', 'true');
+                $('#btn-pago-ubereats').attr('disabled', 'true');
                 $('.ticket-id-container').find('span#ticket-id').text(result.ticket_id);
                 $('.ticket-order-container').find('#ticket-order').text(result.ticket_order);
                 var options = {
