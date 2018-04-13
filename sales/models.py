@@ -10,10 +10,20 @@ class TicketBase(models.Model):
     # Payment Type
     CASH = 'CA'
     CREDIT = 'CR'
+    UBER = 'UB'
+    RAPPIDIGITAL = 'RD'
+    RAPPITARJETA = 'RT'
+    SINDELANTALEFECTIVO = 'SE'
+    SINDELANTALTARJETA = 'ST'
 
     PAYMENT_TYPE = (
         (CASH, 'Efectivo'),
         (CREDIT, 'Crédito'),
+        (UBER, 'UBER'),
+        (RAPPIDIGITAL,'Rappi Digital'),
+        (RAPPITARJETA, 'Rappi Tarjeta'),
+        (SINDELANTALEFECTIVO, 'SinDelantal Efectivo'),
+        (SINDELANTALTARJETA, 'SinDelantal Tarjeta'),
     )
 
     order_number = models.IntegerField(default=1)
