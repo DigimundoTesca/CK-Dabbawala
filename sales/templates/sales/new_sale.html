@@ -188,6 +188,7 @@
             </div>
           </div>
         </div>
+        <!--Modal sell methods-->
         <div class="modal-footer">
           <div class="container">
             <div class="row">
@@ -221,7 +222,7 @@
   
                   <div class="collapse" id="expandmethod">
                     <div class="card card-body">
-                      <a class="small dropdown-item" href="#">Pago en Efectivo</a>
+                      <a class="small dropdown-item" id="btn-pago-sindelantal-efectivo-info" data-toggle="modal" data-target="#exampleModalCenter" href="#">Pago en Efectivo</a>
                       <a class="small dropdown-item btn-printer" id="btn-pago-sindelantal-tarjeta" href="#">Pago con Tarjeta</a>                    </div>
                   </div>
                 </div>
@@ -232,6 +233,30 @@
       </div>
      </div>
    </div>
+
+   <!-- Modal SinDelantal Efectivo -->
+
+<div class="modal fade py-3" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <form>
+          <div class="modal-body">
+              <div class="form-group">
+                  <div id="Total_Sell"></div> 
+                  <label for="recipient-name" class="col-form-label">Cuota SinDelantal: </label>
+                  <input type="text" onkeyup="Total_SinDelantal()" class="form-control" id="Total_Cost">
+                  <p>Total: <span id="Cuota"></span></p>
+                </div>
+          </div>
+        </form>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="submit " id="btn-pago-sindelantal-efectivo" class="btn btn-primary btn-printer">Realizar Venta</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Dabba Modal -->
   <div class="modal fade" id="modal-package" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -1187,12 +1212,18 @@
         });
 
         let total_ticket = $('#total-price').text();
-
+        if(Ticket.payment_type!='SE'){
+          console.log(Ticket.payment_type);  
         $nuevo_li = $("" +
           "<li class='total-ticket-container'>" +
-          "<span id='total-ticket'>" + "$ " + total_ticket + "</span> " +
+          "<span id='total-ticket'>" + "$ " + total_ticket + "" + "</span> " +
           "</li>");
-
+          }else{
+            $nuevo_li = $("" +
+          "<li class='total-ticket-container'>" +
+          "<span id='total-ticket'>" + "$ " + total_ticket + "Hi" + "</span> " +
+          "</li>");
+          }
         $nuevo_li.appendTo('#sales-list-modal');
 
         function setButtonStatus(length) {
@@ -1207,6 +1238,18 @@
         setButtonStatus(size_tickets);
       });
 
+
+      $(this).on('click', '#btn-pago-sindelantal-efectivo-info', function(event) {
+        var total_sell=0;        
+        for(let pack of Ticket.packages){
+          total_sell=total_sell+parseFloat(pack.price);
+        }
+        for(let products of Ticket.cartridges){
+          total_sell=total_sell+parseFloat(products.price);
+          document.getElementById('Total_Sell').value =total_sell;
+        }
+      });
+      
       /**
        * Sends the new sale and prints the ticket
        */
@@ -1220,19 +1263,19 @@
           make_a_sale();
         }
         else if (payment_type == 'btn-pago-ubereats') {
-          Ticket['payment_type'] = 'UB';  // Cash Payment
+          Ticket['payment_type'] = 'UB';  // Digital Payment Ubereats
           make_a_sale();
         }        else if (payment_type == 'btn-pago-rappi-virtual') {
-          Ticket['payment_type'] = 'RD';  // Cash Payment
+          Ticket['payment_type'] = 'RD';  // Digital Payment Rappi
           make_a_sale();
         }        else if (payment_type == 'btn-pago-rappi-tarjeta') {
-          Ticket['payment_type'] = 'RT';  // Cash Payment
+          Ticket['payment_type'] = 'RT';  // Credit Payment Rappi
           make_a_sale();
         }        else if (payment_type == 'btn-pago-sindelantal-efectivo') {
-          Ticket['payment_type'] = 'SE';  // Cash Payment
+          Ticket['payment_type'] = 'SE';  // Cash Payment Sindelantal
           make_a_sale();
         }        else if (payment_type == 'btn-pago-sindelantal-tarjeta') {
-          Ticket['payment_type'] = 'ST';  // Cash Payment
+          Ticket['payment_type'] = 'ST';  // Credit Payment SIndelantal
           make_a_sale();
         }
         else if (payment_type == 'btn-pago-tarjeta') {
@@ -1342,6 +1385,12 @@ $(document).ready(function(){
     $('#expandmethodrappi').toggle();
   });
 });
+
+      function Total_SinDelantal(){
+        var x = document.getElementById("Total_Sell").value;
+        var y = document.getElementById("Total_Cost").value;
+        document.getElementById("Cuota").innerHTML = +x + +y;
+      }
 
   </script>
 
