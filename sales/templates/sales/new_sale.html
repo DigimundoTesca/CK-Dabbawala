@@ -48,60 +48,164 @@
           <div class="row">
             <div class="col-xs-12 col-md-4 col-lg-4">
               <div class="card card-block card-product-title card-outline-info">
-                <h3>Complementos</h3>
+                <h3>Categoria</h3>
               </div>
-              <div class="card col-xs-12 card-scroll card-outline-info" id="group-complements">
-                <div class="card-block products-block">
-                  {% for cartridge in cartridges %}
-                    {% if cartridge.is_active %}
-                      {% if cartridge.category == 'CO' %}
-                        <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
-                          <h6 class="product-name">{{ cartridge.name }}</h6>
-                          <img src="{{ cartridge.image.url }}" id="cartridge-img-{{ cartridge.pk }}" class="product-img" alt="Nombre de la bebida">
-                          <div class="text-xs-right content-price">
-                            <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ cartridge.price }}</span>
-                          </div>
-                          {% for extra in extra_ingredients_products_list %}
-                            {% if extra.name == cartridge.name %}
-                              <div class="extra-ingredients-cont">
-                                <button id="btn-extra-ing-{{ cartridge.id }}" class="btn btn-outline-primary btn-extra-ing" data-toggle="modal" data-target="#extra-ingredient-modal">Ingrediente Extra</button>
-                              </div>
-                            {% endif %}
-                          {% endfor %}
-                        </div>
-                      {% endif %}
-                    {% endif %}
-                  {% endfor %}
-                </div>
-              </div>
+              <button type="button" id="Rotti" class="btn btn-outline-danger btn-lg btn-block" data-toggle="collapse" data-target="#RO">Rotti</button>
+              <button type="button" id="Ensalada" class="btn btn-outline-danger btn-lg btn-block" data-toggle="collapse" data-target="#SA">Ensalada</button>
+              <button type="button" id="Fruta" class="btn btn-outline-danger btn-lg btn-block" data-toggle="collapse" data-target="#FR">Fruta</button>
+              <button type="button" id="Jugo" class="btn btn-outline-danger btn-lg btn-block" data-toggle="collapse" data-target="#JU">Jugo</button>
+              <button type="button" id="Licuado" class="btn btn-outline-danger btn-lg btn-block" data-toggle="collapse" data-target="#SM">Licuado</button>
+              <button type="button" id="Agua" class="btn btn-outline-danger btn-lg btn-block" data-toggle="collapse" data-target="#WA">Agua</button>
             </div>
             <div class="col-xs-12 col-md-4 col-lg-4">
               <div class="card card-block card-product-title card-outline-info">
                 <h3>Platillos</h3>
               </div>
               <div class="card col-xs-12 card-scroll card-outline-info" id="group-dishes">
-                <div class="card-block products-block">
-                  {% for cartridge in cartridges %}
-                    {% if cartridge.is_active %}
-                      {% if cartridge.category == 'FD' %}
-                        <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
-                          <h6 class="product-name">{{ cartridge.name }}</h6>
-                          <img src="{{ cartridge.image.url }}" id="cartridge-img-{{ cartridge.pk }}" class="product-img" alt="Nombre de la bebida">
-                          <div class="text-xs-right content-price">
-                            <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ cartridge.price }}</span>
-                          </div>
-                          {% for extra in extra_ingredients_products_list %}
-                            {% if extra.name == cartridge.name %}
-                              <div class="extra-ingredients-cont">
-                                <button id="btn-extra-ing-{{ cartridge.id }}" class="btn btn-outline-primary btn-extra-ing" data-toggle="modal" data-target="#extra-ingredient-modal">Ingrediente Extra</button>
+                  <div class="card-block products-block collapse"  id="FR">
+                      {% for cartridge in cartridges %}
+                        {% if cartridge.is_active %}
+                          {% if cartridge.category == 'CO' %}
+                            {% if cartridge.subcategory == 'FR' %}
+                              <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
+                                <h6 class="product-name">{{ cartridge.name }}</h6>
+                                <img src="{{ cartridge.image.url }}" id="cartridge-img-{{ cartridge.pk }}" class="product-img" alt="Nombre de la bebida">
+                                <div class="text-xs-right content-price">
+                                  <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ cartridge.price }}</span>
+                                </div>
+                                {% for extra in extra_ingredients_products_list %}
+                                  {% if extra.name == cartridge.name %}
+                                    <div class="extra-ingredients-cont">
+                                      <button id="btn-extra-ing-{{ cartridge.id }}" class="btn btn-outline-primary btn-extra-ing" data-toggle="modal" data-target="#extra-ingredient-modal">Ingrediente Extra</button>
+                                    </div>
+                                  {% endif %}
+                                {% endfor %}
                               </div>
                             {% endif %}
-                          {% endfor %}
-                        </div>
-                      {% endif %}
-                    {% endif %}
-                  {% endfor %}
-                </div>
+                          {% endif %}
+                        {% endif %}
+                      {% endfor %}
+                    </div>
+                    <div class="card-block products-block collapse"  id="JU">
+                        {% for cartridge in cartridges %}
+                          {% if cartridge.is_active %}
+                            {% if cartridge.category == 'CO' %}
+                              {% if cartridge.subcategory == 'JU' %}
+                                <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
+                                  <h6 class="product-name">{{ cartridge.name }}</h6>
+                                  <img src="{{ cartridge.image.url }}" id="cartridge-img-{{ cartridge.pk }}" class="product-img" alt="Nombre de la bebida">
+                                  <div class="text-xs-right content-price">
+                                    <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ cartridge.price }}</span>
+                                  </div>
+                                  {% for extra in extra_ingredients_products_list %}
+                                    {% if extra.name == cartridge.name %}
+                                      <div class="extra-ingredients-cont">
+                                        <button id="btn-extra-ing-{{ cartridge.id }}" class="btn btn-outline-primary btn-extra-ing" data-toggle="modal" data-target="#extra-ingredient-modal">Ingrediente Extra</button>
+                                      </div>
+                                    {% endif %}
+                                  {% endfor %}
+                                </div>
+                              {% endif %}
+                            {% endif %}
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+                        <div class="card-block products-block collapse"  id="SM">
+                            {% for cartridge in cartridges %}
+                              {% if cartridge.is_active %}
+                                {% if cartridge.category == 'CO' %}
+                                  {% if cartridge.subcategory == 'SM' %}
+                                    <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
+                                      <h6 class="product-name">{{ cartridge.name }}</h6>
+                                      <img src="{{ cartridge.image.url }}" id="cartridge-img-{{ cartridge.pk }}" class="product-img" alt="Nombre de la bebida">
+                                      <div class="text-xs-right content-price">
+                                        <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ cartridge.price }}</span>
+                                      </div>
+                                      {% for extra in extra_ingredients_products_list %}
+                                        {% if extra.name == cartridge.name %}
+                                          <div class="extra-ingredients-cont">
+                                            <button id="btn-extra-ing-{{ cartridge.id }}" class="btn btn-outline-primary btn-extra-ing" data-toggle="modal" data-target="#extra-ingredient-modal">Ingrediente Extra</button>
+                                          </div>
+                                        {% endif %}
+                                      {% endfor %}
+                                    </div>
+                                  {% endif %}
+                                {% endif %}
+                              {% endif %}
+                            {% endfor %}
+                          </div>
+                          <div class="card-block products-block collapse"  id="WA">
+                              {% for cartridge in cartridges %}
+                                {% if cartridge.is_active %}
+                                  {% if cartridge.category == 'CO' %}
+                                    {% if cartridge.subcategory == 'WA' %}
+                                      <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
+                                        <h6 class="product-name">{{ cartridge.name }}</h6>
+                                        <img src="{{ cartridge.image.url }}" id="cartridge-img-{{ cartridge.pk }}" class="product-img" alt="Nombre de la bebida">
+                                        <div class="text-xs-right content-price">
+                                          <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ cartridge.price }}</span>
+                                        </div>
+                                        {% for extra in extra_ingredients_products_list %}
+                                          {% if extra.name == cartridge.name %}
+                                            <div class="extra-ingredients-cont">
+                                              <button id="btn-extra-ing-{{ cartridge.id }}" class="btn btn-outline-primary btn-extra-ing" data-toggle="modal" data-target="#extra-ingredient-modal">Ingrediente Extra</button>
+                                            </div>
+                                          {% endif %}
+                                        {% endfor %}
+                                      </div>
+                                    {% endif %}
+                                  {% endif %}
+                                {% endif %}
+                              {% endfor %}
+                            </div>
+                            <div class="card-block products-block collapse"  id="RO">
+                                {% for cartridge in cartridges %}
+                                  {% if cartridge.is_active %}
+                                    {% if cartridge.category == 'FD' %}
+                                      {% if cartridge.subcategory == 'RO' %}
+                                        <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
+                                          <h6 class="product-name">{{ cartridge.name }}</h6>
+                                          <img src="{{ cartridge.image.url }}" id="cartridge-img-{{ cartridge.pk }}" class="product-img" alt="Nombre de la bebida">
+                                          <div class="text-xs-right content-price">
+                                            <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ cartridge.price }}</span>
+                                          </div>
+                                          {% for extra in extra_ingredients_products_list %}
+                                            {% if extra.name == cartridge.name %}
+                                              <div class="extra-ingredients-cont">
+                                                <button id="btn-extra-ing-{{ cartridge.id }}" class="btn btn-outline-primary btn-extra-ing" data-toggle="modal" data-target="#extra-ingredient-modal">Ingrediente Extra</button>
+                                              </div>
+                                            {% endif %}
+                                          {% endfor %}
+                                        </div>
+                                      {% endif %}
+                                    {% endif %}
+                                  {% endif %}
+                                {% endfor %}
+                              </div>
+                              <div class="card-block products-block collapse"  id="SA">
+                                  {% for cartridge in cartridges %}
+                                    {% if cartridge.is_active %}
+                                      {% if cartridge.category == 'FD' %}
+                                        {% if cartridge.subcategory == 'SA' %}
+                                          <div class="card-block product-container" id="cartridge-{{ cartridge.pk }}">
+                                            <h6 class="product-name">{{ cartridge.name }}</h6>
+                                            <img src="{{ cartridge.image.url }}" id="cartridge-img-{{ cartridge.pk }}" class="product-img" alt="Nombre de la bebida">
+                                            <div class="text-xs-right content-price">
+                                              <span class="font-weight-bold">$ </span><span class="product-cost font-weight-bold">{{ cartridge.price }}</span>
+                                            </div>
+                                            {% for extra in extra_ingredients_products_list %}
+                                              {% if extra.name == cartridge.name %}
+                                                <div class="extra-ingredients-cont">
+                                                  <button id="btn-extra-ing-{{ cartridge.id }}" class="btn btn-outline-primary btn-extra-ing" data-toggle="modal" data-target="#extra-ingredient-modal">Ingrediente Extra</button>
+                                                </div>
+                                              {% endif %}
+                                            {% endfor %}
+                                          </div>
+                                        {% endif %}
+                                      {% endif %}
+                                    {% endif %}
+                                  {% endfor %}
+                                </div>
               </div>
             </div>
             <div class="col-xs-12 col-md-4 col-lg-4">
@@ -210,8 +314,8 @@
 
                   <div class="collapse" id="expandmethodrappi">
                       <div class="card card-body">
-                        <a class="small dropdown-item btn-printer" id="btn-pago-rappi-virtual" href="#">Pago Digital</a>
-                        <a class="small dropdown-item btn-printer" id="btn-pago-rappi-tarjeta" href="#">Pago con Tarjeta</a>                    </div>
+                        <a class="small dropdown-item btn-printer" id="btn-pago-rappi-tarjeta" href="#">Pago en Efectivo</a>  
+                        <a class="small dropdown-item btn-printer" id="btn-pago-rappi-virtual" href="#">Pago Virtual</a></div>
                     </div>
 
                   <div class="dropdown-divider"></div>
@@ -223,7 +327,7 @@
                   <div class="collapse" id="expandmethod">
                     <div class="card card-body">
                       <a class="small dropdown-item" id="btn-pago-sindelantal-efectivo-info" data-toggle="modal" data-target="#exampleModalCenter" href="#">Pago en Efectivo</a>
-                      <a class="small dropdown-item btn-printer" id="btn-pago-sindelantal-tarjeta" href="#">Pago con Tarjeta</a>                    </div>
+                      <a class="small dropdown-item btn-printer" id="btn-pago-sindelantal-tarjeta" href="#">Pago Virtual</a>                    </div>
                   </div>
                 </div>
               </div>
@@ -236,7 +340,7 @@
 
    <!-- Modal SinDelantal Efectivo -->
 
-<div class="modal fade py-3" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
       <div class="modal-content">
         <form>
@@ -428,6 +532,7 @@
           var new_total_ticket = $(this).text();
           total += parseFloat(new_total_ticket);
         });
+        
         var total_arrya = total.toFixed(2).split('.');
         $('#total-price').html("" +
           "<span class='text-price align-top' id='int-total-price'>" + total_arrya[0] + "</span>" +
@@ -984,7 +1089,6 @@
         let total_ticket_container = element.siblings('span.int-total-price');
         let id_cartridge = element.parent().attr('id').substring(13);
         let id_package = element.parent().attr('id').substring(11);
-        //let id_package = 1;
         let large_type_id = element.parent().attr('id').toString()
 
         function set_total_li(new_total) {
@@ -1212,18 +1316,10 @@
         });
 
         let total_ticket = $('#total-price').text();
-        if(Ticket.payment_type!='SE'){
-          console.log(Ticket.payment_type);  
         $nuevo_li = $("" +
           "<li class='total-ticket-container'>" +
           "<span id='total-ticket'>" + "$ " + total_ticket + "" + "</span> " +
           "</li>");
-          }else{
-            $nuevo_li = $("" +
-          "<li class='total-ticket-container'>" +
-          "<span id='total-ticket'>" + "$ " + total_ticket + "Hi" + "</span> " +
-          "</li>");
-          }
         $nuevo_li.appendTo('#sales-list-modal');
 
         function setButtonStatus(length) {
@@ -1250,6 +1346,10 @@
         }
       });
       
+      $(this).on('click', '#btn-pago-sindelantal-efectivo', function(event) {
+        set_total_ticket_cash();
+      });
+
       /**
        * Sends the new sale and prints the ticket
        */
@@ -1389,8 +1489,23 @@ $(document).ready(function(){
       function Total_SinDelantal(){
         var x = document.getElementById("Total_Sell").value;
         var y = document.getElementById("Total_Cost").value;
-        document.getElementById("Cuota").innerHTML = +x + +y;
+        var z = document.getElementById("Cuota").innerHTML = +x + +y;
       }
+      
+function set_total_ticket_cash(){
+  let plus = document.getElementById("Total_Cost").value;
+  let total_ticket = document.getElementById("Cuota").textContent;
+
+  $nuevo_li = $("" +
+    "<li class='total-ticket-container'>" +
+    "<span id='total-ticket'>" + "+ SinDelantal: $ " + plus + "" + "</span> " +
+    "</li>"+
+    "<li class='total-ticket-container'>" +
+      "<span id='total-ticket'>" + "Total Neto: $ " + total_ticket + "" + "</span> " +
+    "</li>");
+
+  $nuevo_li.appendTo('#sales-list-modal');
+}
 
   </script>
 
