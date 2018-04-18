@@ -421,3 +421,8 @@ def test_sales_update(request):
     template = 'sales/test.html'
 
     return render(request, template)
+#--------------------------------- Test Cash URL ------------------------------
+@permission_required('users.can_see_sales')
+def cash(request):
+    template = 'sales/cash_report.html'
+    return render(request,template)

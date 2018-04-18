@@ -1024,6 +1024,14 @@ small {
 #printer .ticket-contact .smile {
   font-size: 1.2rem;
 }
+
+h4#myModalLabel{
+ text-align: center;
+}
+.card.card-body{
+  text-align: center;
+}
+
 @media (min-width: 1024px) {
   .container-new-customers table {
     display: table;

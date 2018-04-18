@@ -11,7 +11,8 @@ urlpatterns = [
     url(r'^sales/$', views.sales, name='sales'),
     url(r'^sales/new/$', views.new_sale, name='sales_new'),
     url(r'^sales/delete/$', views.delete_sale, name='sales_delete'),
-    url(r'^sales/report/$', SalesReport.as_view(), name='sales_report')
+    url(r'^sales/report/$', SalesReport.as_view(), name='sales_report'),
+    url(r'^sales/cash/$', views.cash, name='sales_report_cash')
 ]
 
 if settings.DEBUG:

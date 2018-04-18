@@ -4,7 +4,7 @@
     Su compañia tiene un adeudo con nosotros. Favor de ponerse al corriente :'v
   </marquee>
 </nav>
--->
+Other nav-->
 <nav class="navbar navbar-expand-md navbar-dark navbar-base">
   <a class="navbar-brand" href="{% url 'users:login' %}">
     <h3>{{ page_title }}</h3>
@@ -20,6 +20,7 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <a class="dropdown-item" href="{% url 'sales:sales_new' %}">POS</a>
           <a class="dropdown-item" href="{% url 'sales:sales' %}">Analytics</a>
+          <a class="dropdown-item" href="{% url 'sales:sales_report_cash' %}">Caja</a>
         </div>
       </li>
       <li class="nav-item dropdown" id="link-kitchen">
