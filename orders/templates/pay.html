@@ -49,11 +49,11 @@
         <span class="btn-text" >Cancelar pedido</span>
       </a>
         {% if request.user.is_authenticated %}
-        <a class="btn" id="btn-login-pay" href="{% url 'orders:pay' %}">
+        <a class="btn" id="btn-login-pay" href="{% url 'orders:new_order' %}">
           <span class="btn-text">Ordenar</span>
         </a>
         {% else %}
-        <a class="btn" id="btn-login-pay" href="{% url 'users:login_customer' %}">
+        <a class="btn" id="btn-login-pay" href="{% url 'orders:new_order' %}">
           <span class="btn-text">Ordenar</span>
         </a>
         {% endif %}

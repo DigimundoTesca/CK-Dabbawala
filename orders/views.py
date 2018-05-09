@@ -14,9 +14,11 @@ from helpers.sales_helper import TicketPOSHelper
 @ensure_csrf_cookie
 def new_order(request):
     if not settings.DEBUG:
-        return redirect('users:index')
-    if request.session.has_key('cart'):
-        return redirect('orders:pay')
+        # return redirect('users:index')
+        pass
+    if 'cart' in request.session:
+        # return redirect('orders:pay')
+        pass
     sales_helper = TicketPOSHelper()
     template = 'new_order.html'
     all_products = Cartridge.objects.all()
@@ -66,7 +68,7 @@ def new_order(request):
 
 @ensure_csrf_cookie
 def pay(request):
-    if not request.session.has_key('cart'):
+    if 'cart' not in request.session:
         return redirect('orders:new_order')
 
     if request.method == 'POST':
