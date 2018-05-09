@@ -80,26 +80,23 @@
   </div>
 
   <!-- Ticket Modal -->
-  <div class="modal fade" id="modal-ticket" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <h5 class="modal-title" id="myModalLabel">Imprimir</h5>
-        </div>
-        <div class="modal-body">
-          <div class="printer-container">
-            <iframe id="ticket-modal-frame" src="" frameborder="0"></iframe>
+  <div class="modal fade" id="modal-ticket" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content modal-ticket">
+      <div class="modal-header">
+        <h5 class="modal-title">Imprimir Ticket</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="printer-container">
+            <iframe id="ticket-modal-frame" class="iframe-ticket" src="" frameborder="0"></iframe>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary btn-printer">Imprimir</button>
-        </div>
       </div>
     </div>
   </div>
+</div>
 {% endblock content %}
 {% block javascript %}
   {% render_bundle 'sales' 'js' 'JS'%}

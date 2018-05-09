@@ -516,9 +516,13 @@ window.onload = function () {
       .then(res => res.json())
       .then((response) => {
         // Default export is a4 paper, portrait, using milimeters for units
-        let doc = new jsPDF();
+        let doc = new jsPDF({
+          unit: 'mm',
+          format: [58, 240]
+        });
 
         doc.text('Hello world!', 10, 10);
+        doc.setDisplayMode(4, 'continuous','FullScreen');
 
         let link = doc.output('datauristring'),
           ticketFrame =document.getElementById('ticket-modal-frame');
