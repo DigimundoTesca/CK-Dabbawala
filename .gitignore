@@ -162,3 +162,5 @@ node_modules/
 /**/static/**/*.js
 /**/static/**/*.map
 webpack-stats.json
+
+.directory
