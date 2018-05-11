@@ -7,7 +7,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-4 col-sm-12">
-      <div class="list-group" id="list-tab" role="tablist">        
+      <div class="list-group" id="list-tab" role="tablist">             
         {% for sp in supplies %} 
          {% ifchanged sp.category %}         
           <a href="">
@@ -34,30 +34,56 @@
         {% endif %}        
           <div class="row">
             <div class="col-md-6">
-              <p class="text-center">{{sp.name}}</p>
+              <h1 class="text-center">{{sp.name}}</h1>
               <div class="img-c row">
-                <div class="col-md-12">                  
-                  <img src="{% static 'images/platillo.jpg' %}" alt="No img">
+                <div class="col-md-12">
+                  <img src="{{sp.image.url}}">
                 </div>
               </div>
-              <div class="row">                  
+              <div class="row">
                 <a title="Modificar" class="col-6 material-icons text-center" href="{% url 'products:supply_modify' sp.pk %}">create</a>
                 <a title="Eliminar" class="col-6 material-icons text-center" href="{% url 'products:supply_delete' sp.pk %}">delete</a>
-              </div>            
-            </div>
-            <div class="col-md-6">
+              </div>
               <div class="row">
-                <div class="col-12">
-                  
-                </div>
-                <div class="col-12">
-                    Detalles <br>
-                    Categoria: {{sp.category}} <br>                  
-                    Proveedor: {{sp.supplier}} <br>
-                    Almacenamiento: {{sp.get_storage_required_display}} <br>                  
+                <div class="col-md-12">
+                  <h1 class="text-center">Presentaciones</h1>
+                  <button type="button" class="btn btn-primary col-12" data-toggle="modal" data-target="#PresentationModal">
+                    Nueva Presentacion
+                  </button>                  
+                  <ul class="list-group">
+                  {% for presentation in presentations %}
+                      {% if sp == presentation.supply %}
+                        <li class="list-group-item">
+                            {{presentation}}
+                        </li>
+                      {% endif %}
+                  {% endfor %}                  
+                  </ul>                  
                 </div>
               </div>
             </div>
+            <div class="col-md-6">
+                <div class="row">
+                  <div class="col-12">
+                      <h1 class="text-center">Detalles</h1>
+                  </div>
+                  <div class="col-12">
+                      <div class="row">
+                          <div class="col-6">
+                              <dt class="text-right">Categoria:</dt>
+                          </div>
+                          <div class="col-6">
+                              {{sp.category}}
+                          </div>                                                                              
+                      </div>
+                  </div>
+                  <div class="col-12">
+                    <h1 class="text-center">Grafica</h1>
+                    <!--Chart-->
+                    <canvas id="myChart-{{sp.pk}}" class="{{sp.name}}" width="400" height="400"></canvas>
+                  </div>
+                </div>
+              </div>
           </div>
         </div>
         {% endfor %}        
@@ -70,11 +96,34 @@
     <i class="material-icons">add</i>
   </div>
 </div>
+
+<!-- Presentation Modal -->
+<div class="modal fade" id="PresentationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock content %}
 
 {% block javascript %}
 <script type="text/javascript">
   $(function() {
+    
     $('#fab-add-supply').click(function(event) {
       location.href = '/supplies/new/';
     });
@@ -88,6 +137,44 @@
       e.preventDefault();
       $('.FD').fadeToggle();
     });
+
+    $('#new_presentation').click(function(){
+
+      swal()
+
+
+      // $.ajax({
+      //     url: '{% url "products:supplies" %}',
+      //     type: 'POST',
+      //     data: {
+      //         'type': 'shop_list',
+      //         'shop_list': JSONSale,
+      //         csrfmiddlewaretoken: csrf_token,
+      //     },
+      //     traditional: true,
+      //     datatype: 'jsonp',
+      //     success: function (result) {
+      //         swal({
+      //             title: "Éxito",
+      //             text: "Lista Guardada",
+      //             type: "success",
+      //             showConfirmButton: false,
+      //         });
+      //         location.replace('{% url "products:shoplist" %}');
+      //     },
+      //     error: function (result, jqXHR, textStatus, errorThrown) {
+      //         swal({
+      //             title: "Lista no Guardada!",
+      //             text: 'Contacte a soporte!\n ' + 'Errores: ' + textStatus + ', ' + jqXHR,
+      //             type: "error",
+      //             showConfirmButton: false
+      //         });
+      //         setTimeout(rel, 30000);
+      //     },
+      // });
+    }):
+
+
 
   });
 </script>

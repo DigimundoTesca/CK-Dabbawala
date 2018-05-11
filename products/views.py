@@ -28,7 +28,7 @@ import calendar
 
 class Create_Supply(CreateView):
     model = Supply
-    fields = ['name','category','barcode','supplier','storage_required','optimal_duration','optimal_duration_unit','location','image']
+    fields = ['name', 'category', 'image']
     template_name = 'supplies/new_supply.html'
 
     def form_valid(self, form):
@@ -38,7 +38,7 @@ class Create_Supply(CreateView):
 
 class Update_Supply(UpdateView):
     model = Supply
-    fields = ['name','category','barcode','supplier','storage_required','optimal_duration','optimal_duration_unit','location','image']
+    fields = ['name', 'category', 'barcode', 'supplier', 'storage_required', 'optimal_duration', 'optimal_duration_unit', 'location', 'image']
     template_name = 'supplies/new_supply.html'
 
     def form_valid(self, form):
@@ -122,8 +122,6 @@ class Delete_Presentation(DeleteView):
         self.object.delete()
         return redirect('/supplies/details/' + self.kwargs['suppk'])
 
-
-
 def test(request):
     template = 'cartridges_test/test.html'
     cartridges = Cartridge.objects.all()
@@ -170,11 +168,14 @@ def suppliers(request):
 # -------------------------------------  Supplies -------------------------------------
 @login_required(login_url='users:login')
 def supplies(request):
-    supplies_objects = Supply.objects.order_by('name').order_by('category')
+    supplies_objects = Supply.objects.order_by('category').order_by('name').select_related('category')
+    presentations = Presentation.objects.all().select_related('supply')
+
     template = 'supplies/supplies.html'
     title = 'Insumos'
     context = {
         'supplies': supplies_objects,
+        'presentations': presentations,
         'title': title,
         'page_title': PAGE_TITLE
     }
@@ -320,7 +321,7 @@ def categories_supplies(request, categ):
 # -------------------------------------  Cartridges -------------------------------------
 @login_required(login_url='users:login')
 def cartridges(request):
-    cartridges_list = Cartridge.objects.order_by('category','subcategory','name')
+    cartridges_list = Cartridge.objects.order_by('category', 'subcategory', 'name')
     products_helper = ProductsHelper()
     today = datetime.today()
     current_year = today.year
@@ -332,7 +333,7 @@ def cartridges(request):
 
     template = 'cartridges/cartridges.html'
     title = 'Cartuchos'
-    dictionaries = [ cart.as_dict() for cart in cartridges_list ]
+    dictionaries = [cart.as_dict() for cart in cartridges_list]
     cartridges_json = json.dumps({"data": dictionaries})
 
     context = {

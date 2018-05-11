@@ -43,14 +43,14 @@
             <div class="row">
               <div class="col-md-6">
                 <h1 class="text-center">{{cartridge.name}}</h1>
-                <div class="img-c row">
-                  <div class="col-md-12">
-                    <img class="car_img" src="{{cartridge.image.url}}" alt="No img">
+                  <div class="row">
+                      <a title="Modificar" class="col-6 material-icons text-center" href="{% url 'products:cartridge_modify' cartridge.pk %}">create</a>
+                      <a title="Eliminar" class="col-6 material-icons text-center" href="{% url 'products:cartridge_delete' cartridge.pk %}">delete</a>
                   </div>
-                </div>
-                <div class="row">
-                  <a title="Modificar" class="col-6 material-icons text-center" href="{% url 'products:cartridge_modify' cartridge.pk %}">create</a>
-                  <a title="Eliminar" class="col-6 material-icons text-center" href="{% url 'products:cartridge_delete' cartridge.pk %}">delete</a>
+                  <div class="img-c row">
+                      <div class="col-md-12">
+                      <img class="car_img img-fluid" src="{{cartridge.image.url}}" alt="No img">
+                  </div>
                 </div>
               </div>
               <div class="col-md-6">
@@ -159,27 +159,24 @@
 <script src="{% static 'js/Chart.bundle.min.js' %}"></script>
 <script type="text/javascript" charset="utf-8">  
   
-  var test = JSON.parse('{{ sales_data_by_date | safe}}')
-  console.log(test)
-
+  var test = JSON.parse('{{ sales_data_by_date | safe}}');
   var lenghtmonth = Object.keys(test.final_dates[0]).length;
-
-  var data_cart = JSON.parse('{{cartridges_json|safe}}').data   
+  var data_cart = JSON.parse('{{cartridges_json|safe}}').data;
   var count = Object.keys(data_cart).length;  
 
   function getLabels(){
-    labels=[]
-    for (var x=1;x<=lenghtmonth;x++)[
-      labels.push(x.toString())
-    ]
+    var labels=[];
+    for (var x=1;x<=lenghtmonth;x++){
+        labels.push(x.toString());
+    }
     return labels;
   }
 
   function getDataset(name) {
 
-    var data = []
+    var data = [];
     for (var p = 0; p < test.final_name.length; p++) {
-      if(name==test.final_name[p]){
+      if(name===test.final_name[p]){
         data = test.final_dates[p].slice();    
         console.log(data);        
       }else{       
@@ -190,22 +187,28 @@
       }      
     }
     var x = [{
-      label: "Ventas por dia",
+      label: "Dia",
       data: data,
-    }]
+        backgroundColor: [
+        '#D44027','#D44027','#D44027','#D44027','#D44027','#D44027','#D44027','#D44027','#D44027','#D44027',
+        '#D44027','#D44027','#D44027','#D44027','#D44027','#D44027','#D44027','#D44027','#D44027','#D44027',
+        '#D44027','#D44027','#D44027','#D44027','#D44027','#D44027','#D44027','#D44027','#D44027','#D44027','#D44027'
+      ]
+    }];
     return x;
   }
   
   for (var x=0;x<count;x++){        
-    var a = data_cart[x]['pk']    
-    var chart = $("#myChart-" + a)
+    var a = data_cart[x]['pk'];
+    var chart = $("#myChart-" + a);
     var name = chart.attr('class');        
     var myChart = new Chart(chart, {
-      type: 'line',      
+      type: 'bar',
       data: {
         labels: getLabels(),
-        datasets:getDataset(name), 
-      }, 
+        datasets:getDataset(name)
+      }
+
     });
   }
 

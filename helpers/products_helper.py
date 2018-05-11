@@ -85,9 +85,7 @@ class ProductsHelper(object):
 
     def set_supplies(self):
         self.__supplies = Supply.objects. \
-            select_related('category'). \
-            select_related('supplier'). \
-            select_related('location').order_by('name')
+            select_related('category').order_by('name')
 
     def set_cartridges(self):
         self.__cartridges = Cartridge.objects.order_by('subcategory', 'name')
@@ -146,11 +144,10 @@ class ProductsHelper(object):
                                                                              packagecartridgeticketdetail__ticket_base__created_at__month=month) \
                                             .annotate(num_sales=Sum('packagecartridgeticketdetail__quantity')).order_by('name')
 
-        recipes = PackageCartridgeRecipe.objects.select_related(
-            'cartridge').select_related('package_cartridge')
+        recipes = PackageCartridgeRecipe.objects.all()
 
         for tick_pack in all_cartridges_pack_ticket_details:
-            cartridges_in_pack = recipes.filter(package_cartridge=tick_pack)
+            cartridges_in_pack = recipes.filter(package_cartridge=tick_pack).select_related('cartridge').select_related('package_cartridge')
             for cart in cartridges_in_pack:
                 if cart.cartridge.name in names:
                     tick_sales[names.index(
