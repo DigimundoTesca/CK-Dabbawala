@@ -3728,13 +3728,14 @@ jsonpointer@^4.0.0:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/jsonpointer/-/jsonpointer-4.0.1.tgz#4fd92cb34e0e9db3c89c8622ecf51f9b978c6cb9"
 
-jspdf@^1.3.5:
-  version "1.3.5"
-  resolved "https://registry.yarnpkg.com/jspdf/-/jspdf-1.3.5.tgz#e8c9d96fe1c1f152fce430f41d5ec66f17e10f19"
+jspdf-customfonts@^0.0.3-rc.7:
+  version "0.0.3-rc.7"
+  resolved "https://registry.yarnpkg.com/jspdf-customfonts/-/jspdf-customfonts-0.0.3-rc.7.tgz#4d07de9dfdbeebe7526e2d9deb0fb719ea3404db"
   dependencies:
     adler32cs "0.0.1"
     cf-blob.js "0.0.1"
     file-saver "1.3.3"
+    minimist latest
 
 jsprim@^1.2.2:
   version "1.4.1"
@@ -4168,7 +4169,7 @@ minimist@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-0.1.0.tgz#99df657a52574c21c9057497df742790b2b4c0de"
 
-minimist@^1.1.3, minimist@^1.2.0:
+minimist@^1.1.3, minimist@^1.2.0, minimist@latest:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.0.tgz#a35008b20f41383eec1fb914f4cd5df79a264284"
 
