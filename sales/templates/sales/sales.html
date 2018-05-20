@@ -546,7 +546,7 @@
               ticketDetails,
               totalCartridges,
               totalPackages, leftMargin,
-              heightDoc,
+              initialHeightDoc,
               widthDoc,
               textSize,
               textFormatSize;
@@ -557,8 +557,7 @@
           ticketDetails = response['ticket_details'];
           totalCartridges = ticketDetails['cartridges'].length;
           totalPackages = ticketDetails['packages'].length;
-          tableTop =  firstTextMarginTop + 18;
-          heightDoc = 70;
+          initialHeightDoc = 80;
           leftMargin = 0;
           widthDoc = 58;
           textSize = 24;
@@ -571,18 +570,18 @@
           for (let i = 0; i < totalCartridges; i++) {
             let text = ticketDetails['cartridges'][i]['name'],
               lines = formatTicketText(text, textFormatSize);
-            heightDoc += (2 * lines.length) + 1;
+            initialHeightDoc += (2 * lines.length) + 1;
           }
           for (let i = 0; i < totalPackages; i++) {
             let text = ticketDetails['packages'][i]['cartridges'];
             let lines = 'DABBA - ' + text[0] + ', ' + text[1] + ', ' + text[2];
             lines = formatTicketText(lines, textFormatSize);
-            heightDoc += (2 * lines.length) + 1;
+            initialHeightDoc += (2 * lines.length) + 1;
           }
 
           doc = new jsPDF({
             unit: 'mm',
-            format: [widthDoc, heightDoc]
+            format: [widthDoc, initialHeightDoc]
           });
 
           // Agrega imagen de encabezado
@@ -600,15 +599,21 @@
           doc.setFont('Dosis', 'bold');
           doc.text('ORDEN ' + ticketDetails['ticket_order'], widthDoc / 2, firstTextMarginTop, null, null, 'center');
           doc.setFont('Dosis', 'normal');
-          doc.setFontSize(6);
-          doc.text('Calle Hidalgo #78, San Lucas Tepetlaco,', widthDoc / 2, firstTextMarginTop + 5, null, null, 'center');
-          doc.text('54055, Tlalnepantla, Méx', widthDoc / 2, firstTextMarginTop + 8 , null, null, 'center');
+          doc.setFontSize(7);
+          firstTextMarginTop += 5;
+          doc.text('Sucursal Satélite,', widthDoc / 2, firstTextMarginTop, null, null, 'center');
+          firstTextMarginTop += 5;
+          doc.text('Calle Hidalgo #78, San Lucas Tepetlaco,', widthDoc / 2, firstTextMarginTop, null, null, 'center');
+          firstTextMarginTop += 3;
+          doc.text('54055, Tlalnepantla, Méx', widthDoc / 2, firstTextMarginTop , null, null, 'center');
           doc.setFont('Camingo', 'bold');
           doc.setFontSize(7);
-          doc.text('NOMBRE \t\tCOST   CANT   TOTAL', leftMargin, firstTextMarginTop + 15, null);
+          firstTextMarginTop += 5;
+          doc.text('NOMBRE \t\tCOST   CANT   TOTAL', leftMargin, firstTextMarginTop, null);
           doc.setFont('Camingo', 'normal');
           doc.setFontSize(6);
 
+          tableTop = firstTextMarginTop + 3;
           // Obtiene la información del ticket para imprimirla
           for (let i = 0; i < totalCartridges; i++) {
             let quantity = ticketDetails['cartridges'][i]['quantity'],
@@ -641,13 +646,15 @@
             totalTicket += parseFloat(total);
           }
 
+
+
           // Añade Total del ticket
           doc.setFont('Camingo', 'bold');
           doc.text(textSize + 34, tableTop, '$ ' + numberFormat(totalTicket, 2), null, null, 'right');
 
           doc.setFont('Dosis', 'bold');
           doc.setFontSize(6);
-          doc.text('ID: ' + ticketDetails['ticket_id'],leftMargin, tableTop + 4, null);
+          doc.text('ID: ' + ticketDetails['ticket_id'], leftMargin, tableTop + 4, null);
           doc.text('Whatsapp: 55 8107 4807', widthDoc / 2, tableTop + 7, null, null, 'center');
           doc.setFont('Dosis', 'bold');
           doc.setFontSize(8);
@@ -870,6 +877,23 @@
       return amount_parts.join('.');
     }
 
+    function formatWordsTicket(text) {
+      switch (text) {
+        case "JUGO":
+            return "JUG";
+        case "ROTI":
+          return "R";
+        case "AGUA":
+          return "AG";
+        case "ENSALADA":
+          return "E";
+        case "LICUADO":
+          return "LIC";
+        case "ALFALFA":
+          return "A";
+      }
+      return text;
+    }
     /**
      * Functions to initialize the graphs
      */
