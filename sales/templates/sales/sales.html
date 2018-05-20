@@ -560,8 +560,8 @@
           tableTop =  firstTextMarginTop + 18;
           heightDoc = 70;
           leftMargin = 0;
-          widthDoc = 60;
-          textSize = 26;
+          widthDoc = 58;
+          textSize = 24;
           textFormatSize = textSize - 2;
 
           docAux = new jsPDF();
@@ -605,7 +605,7 @@
           doc.text('54055, Tlalnepantla, Méx', widthDoc / 2, firstTextMarginTop + 8 , null, null, 'center');
           doc.setFont('Camingo', 'bold');
           doc.setFontSize(7);
-          doc.text('NOMBRE \t\t COST   CANT   TOTAL', leftMargin, firstTextMarginTop + 15, null);
+          doc.text('NOMBRE \t\tCOST   CANT   TOTAL', leftMargin, firstTextMarginTop + 15, null);
           doc.setFont('Camingo', 'normal');
           doc.setFontSize(6);
 
@@ -619,7 +619,7 @@
 
             doc.text(leftMargin, tableTop, lines, null, null, null);
             doc.text(textSize + 14, tableTop, '$ ' + cost, null, null, 'right');
-            doc.text(textSize + 20, tableTop, quantity.toString(), null, null, 'center');
+            doc.text(textSize + 19, tableTop, quantity.toString(), null, null, 'center');
             doc.text(textSize + 34, tableTop, '$ ' + total, null, null, 'right');
             tableTop += (2 * lines.length) + 1;
             totalTicket += parseFloat(total);
@@ -635,7 +635,7 @@
             lines = formatTicketText(lines, textFormatSize);
             doc.text(leftMargin, tableTop, lines, null, null, null);
             doc.text(textSize + 14, tableTop, '$ ' + cost, null, null, 'right');
-            doc.text(textSize + 20, tableTop, quantity.toString(), null, null, 'center');
+            doc.text(textSize + 19, tableTop, quantity.toString(), null, null, 'center');
             doc.text(textSize + 34, tableTop, '$ ' + total, null, null, 'right');
             tableTop += (2 * lines.length) + 1;
             totalTicket += parseFloat(total);
