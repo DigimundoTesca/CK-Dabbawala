@@ -665,15 +665,14 @@
           doc.addImage(imgData, 'JPEG', widthDoc / 2.5 , tableTop + 14 , widthDoc / 5, widthDoc / 5);
 
           doc.autoPrint();
-          window.open(doc.output('bloburl'), '_blank');
+          //window.open(doc.output('bloburl'), '_blank');
           
-           // link = doc.output('datauristring', null);
-          // ticketFrame = document.getElementById('ticket-modal-frame');
-          // ticketFrame.setAttribute("src", link);
+          link = doc.output('datauristring', null);
+          ticketFrame = document.getElementById('ticket-modal-frame');
+          ticketFrame.setAttribute("src", link);
 
-          // $('#modal-ticket').modal('show');
+          $('#modal-ticket').modal('show');
 
-          // doc.save('a4.pdf');
           swal.close();
         })
         .catch(err => {
