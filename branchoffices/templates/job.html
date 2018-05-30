@@ -14,9 +14,9 @@
       <h2>Solicitamos</h2>
       <h6>Da click en el puesto de tu interés</h6>
       <ul id="empleo">
-        <li><a class="puesto" href="#point"> Cocinero(a) <i class="fa fa-file"></i></a></li>
-        <li><a class="puesto" href="#point"> Atudante barra repartidor <i class="fa fa-file"></i></a></li>
-        <li><a class="puesto" href="#point"> Cajero <i class="fa fa-file"></i></a></li>
+        <li><a class="puesto" href="#point" onclick="get_puesto(1)"> Cocinero(a)<i class="fa fa-file"></i></a></li>
+        <li><a class="puesto" href="#point" onclick="get_puesto(2)"> Ayudante barra repartidor <i class="fa fa-file"></i></a></li>
+        <li><a class="puesto" href="#point" onclick="get_puesto(3)"> Cajero <i class="fa fa-file"></i></a></li>
       </ul>
       <h4>¡Se parte de nuestro equipo Dabbawala!</h4>
       <div class="col" id="team_image">
@@ -50,11 +50,13 @@
               <input type="text" name="email" id="email" placeholder="Correo" />
               <label for="message">¿Por qué quieres formar parte del equipo Dabba? </label>
               <textarea name="message" placeholder="Mensaje" id="message"></textarea>
+              <br>
               <input class="button" type="submit" name="submit" value="ENVIAR" />
             </div>
           </div>
         </div>
         </form>
+      <br>
       </div>
 
     </div>

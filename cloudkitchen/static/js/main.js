@@ -381,18 +381,6 @@
   var imagenes = ['fondo.jpg', 'fondo1.jpg', 'fondo2.jpg', 'fondo3.png',];
   $('.main').css({'background-image': 'url(../images/image/' + imagenes[Math.floor(Math.random() * imagenes.length)] + "'"});
 });
-$(document).ready(function(){
-	var puesto = $(".puesto");
-	var x = 0;
-	for(x==0; x<=2; x++){
-		console.log(puesto[x]);
-
-	if(puesto[x] == puesto[0]){
-		console.log(puesto[0]);
-		$("#solicitud").text('Solicitud de cocinero(a)');
-		}
-	}
-});
 
 $(document).ready(function(){
 	var puesto = $(".puesto");
@@ -409,3 +397,15 @@ $(document).ready(function(){
 });
 
 })(jQuery);
+
+function get_puesto(puesto) {
+    if (puesto==1) {
+		$("#solicitud").text('Solicitud de cocinero(a)');
+    }
+    else if (puesto==2) {
+		$("#solicitud").text('Ayudante barra repartidor');
+    }
+    else if (puesto==3){
+		$("#solicitud").text('Cajero');
+    }
+}
