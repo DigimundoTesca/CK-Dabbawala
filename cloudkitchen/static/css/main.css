@@ -4437,17 +4437,18 @@
     width: 150px;
   }
   .menu > #main #main2 div.col1{
-    width: 250px;
-  }
-  .menu > #main #main2 div.col2{
-    width: 250px;
-  }
-  .menu > #main #fruta,.menu > #main #drink{
     width: 230px;
   }
-  .menu > #main #main2 .cols p.large{
-    line-height: 27px;
-}
+  .menu > #main #main2 div.col2{
+    width: 320px;
+  }
+
+  .menu > #main #fruta,.menu > #main #drink{
+    width: 210px;
+  }
+ #licuado_content {
+   justify-content: center !important;
+ }
   .menu > #main h2.platillo{
     color: #fff;
     background-image: url("https://userscontent2.emaze.com/images/f1ac707b-ad3b-4d41-83f4-f1ac790ed997/00d48e24-6423-4744-a8b6-ea8fc2fcb88bimage5.png");
@@ -4463,6 +4464,7 @@
     padding: inherit;
     height: 220px;
     margin: 0 auto;
+    margin-top: 2em;
     margin-bottom: 2em;
     width: 100%;
   }
@@ -5151,7 +5153,7 @@
     font-family:'Conv_Futura',Sans-Serif;
     float: right;
     text-align: right;
-    font-size: 30pt;
+    font-size: 20pt;
     font-weight: 900;
     letter-spacing: 0.1em;
   }
