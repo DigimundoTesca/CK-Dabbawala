@@ -10,6 +10,8 @@
 <img class="bord2" src="/static/images/image/reverse.png" alt="Borde">
 <div class="login-customer-container">
   <form id="form-login" class="form-login-customer" action="" method="POST">
+    <div class="login_form_back">
+    <h1 id="icon_user"><i class="fa fa-user" aria-hidden="true"></i></h1>
     <h2 class="login-text">Inicia Sesión</h2>
     {% csrf_token %}
     <div class="form-group">
@@ -40,15 +42,17 @@
         required
       />
     </div>
-    <button id="btn-login-customer" type="submit" name="login" class="button"><span>Inicia Sesión</span></button>
+    <button id="btn-login-customer" type="submit" name="login" class="button btn btn-block"><span>Inicia Sesión</span></button>
     <div class="form-footer">
       <span>¿No tienes Cuenta?</span>
       <span>
         <a id="register-customer" class="strong" href="{% url 'users:register' %}">REGÍSTRATE AQUÍ</a>
-        y obten 2x1 en tu proximo desayuno
       </span>
     </div>
-  </form>
+  </div>
+    </form>
+
+
 </div>
 </div>
 {% endblock %}

@@ -9,14 +9,41 @@
 }
 #form-login {
   padding: 2rem;
+  position: relative;
   background: #fdfdfd;
-  border-radius: 5px;
+  border-radius: 20px;
   box-shadow: 0px 0px 7px 0px #fcd8b6;
+  background-image: url('../../images/fondo_login.jpg');
+  background-position: center;
+  background-size: cover;
+  box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   transition: all .3s ease;
-
+}
+#form-login::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  background-color: rgba(255,255,255,0.25);
+  height: 100%;
+  width: 100%;
+}
+.login_form_back {
+  position: relative;
+  z-index: 1000;
 }
 #form-login:hover {
   box-shadow: 0px 0px 8px 1px #fbc189;
+}
+#form-login input {
+  background-color: rgba(255,255,255,0.35);
+}
+#form-login input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #000000c4;
+}
+.login_form_back label {
+  font-size: 1.2rem !important;
 }
 #form-login .form-footer {
   margin-top: 2rem;
@@ -25,6 +52,7 @@
 }
 #form-login h2.login-text {
   margin-bottom: 1.5rem;
+  margin-top: 0 !important;
 }
 #form-login .strong {
   color: #f75b1f;
@@ -33,7 +61,7 @@
 #form-login input {
   box-shadow: none;
   border: none;
-  border-bottom: 2px solid rgb(252, 209, 158);
+  border-bottom: 2px solid #f19f30;
   transition: all .3s ease;
 }
 #form-login input[type="text"]:focus,

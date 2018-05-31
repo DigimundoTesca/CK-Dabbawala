@@ -4468,10 +4468,16 @@
     margin-bottom: 2em;
     width: 100%;
   }
+
   .menu > #main div.paquete:hover{
     cursor: pointer;
     transform: scale(.98);
     box-shadow: inside 10px solid #000;
+  }
+  #icon_user {
+   font-size: 4em;
+   margin-top: -1.3em !important;
+   margin-bottom: 0 !important;
   }
   .menu > #main div.paquete h3{
     padding-top: 15px;
