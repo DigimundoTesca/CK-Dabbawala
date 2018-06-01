@@ -9,191 +9,153 @@
 {% block content %}
   <div id="main">
     <img class="bord2" src="{% static 'images/image/reverse.png' %}" alt="Borde">
-    <h2>Bienvenido a </h2>
-    <h1>Dabbawala</h1>
+    <h2>Bienvenido a <span class="h1">Dabbawala</span></h2>
     <div class="regis">
       <p>¡Registrate para recibir promociones, sorpresas y más!</p>
     </div>
-    <img class="arr" src="{% static 'images/image/arrow.png' %}" alt="Borde">
-    <div class="form">
-      <form id="form-register" action="" method="POST" class="form-register-customer">
-        <div class="cols colr">
-          <div class="col1 formr">
-            {% csrf_token %}
-            <!-- Username -->
-            <div class="form-group">
-              <label for="{{ form.username.name }}">
-                Nombre del usuario
-              </label>
-              <input id="username"
-                name="{{ form.username.name }}"
-                value="{% if form.username.value != None %}{{ form.username.value }}{% endif %}"
-                placeholder="Nombre de usuario"
-                maxlength="{{ form.username.field.max_length }}"
-                type="text"
-                class="form-control"
-                required autofocus
-                onkeypress="return pulsar(event)"
-              />
-              {% if form.username.errors %}
-              <div class="labels-error">
-                {% for error in form.username.errors %}
-                  <span class="form-feed">{{ error|escape }}</span>
-                {% endfor %}
-              </div>
-              {% endif %}
-            </div>
-            <!-- Password -->
-            <div class="form-group">
-              <label for="{{ form.password.name }}">
-                Contraseña
-              </label>
-              <input id="id_email"
-                name="{{ form.password.name }}"
-                placeholder="Ingresa una contreseña segura"
-                maxlength="{{ form.password.field.max_length }}"
-                type="password"
-                class="form-control"
-                required onkeypress="return pulsar(event)"
-              />
-              {% if form.password.errors %}
-              <div class="labels-error">
-                {% for error in form.password.errors %}
-                  <span class="form-feed">{{ error|escape }}</span>
-                {% endfor %}
-              </div>
-              {% endif %}
-            </div>
-            <!-- Password Validation -->
-            <div class="form-group">
-              <label for="{{ form.password_confirm.name }}">
-                Repita su contraseña
-              </label>
-              <input id="id_phone"
-                name="{{ form.password_confirm.name }}"
-                placeholder="La contraseña debe coincidir"
-                maxlength="{{ form.password_confirm.field.max_length }}"
-                type="password"
-                class="form-control"
-                required onkeypress="return pulsar(event)"
-              />
-              {% if form.password_confirm.errors %}
-              <div class="labels-error">
-                {% for error in form.password_confirm.errors %}
-                  <span class="form-feed">{{ error|escape }}</span>
-                {% endfor %}
-              </div>
-              {% endif %}
-            </div>
-            <!-- Email -->
-            <div class="form-group">
-              <label for="{{ form.email.name }}">
-                Ingrese un email
-              </label>
-              <input id="id_email"
-                name="{{ form.email.name }}"
-                value="{% if form.email.value != None %}{{ form.email.value }}{% endif %}"
-                placeholder="correo@ejemplo.com"
-                maxlength="{{ form.email.field.max_length }}"
-                type="email"
-                class="form-control"
-                required onkeypress="return pulsar(event)"
-              />
-              {% if form.email.errors %}
-              <div class="labels-error">
-                {% for error in form.email.errors %}
-                  <span class="form-feed">{{ error|escape }}</span>
-                {% endfor %}
-              </div>
-              {% endif %}
-            </div>
-            <!-- Phone Number -->
-            <div class="form-group">
-              <label id="{{ form.phone_number.id_for_label }}" for="{{ form.phone_number.name }}">
-                Whatsapp
-              </label>
-              <input id="id_phone_number"
-                name="{{ form.phone_number.name }}"
-                value="{% if form.phone_number.value != None %}{{ form.phone_number.value }}{% endif %}"
-                placeholder="Numero con Whatsapp"
-                maxlength="{{ form.phone_number.field.max_length }}"
-                type="text"
-                class="form-control"
-                required onkeypress="return pulsar(event)"
-              />
-              {% if form.phone_number.errors %}
-              <div class="labels-error">
-                {% for error in form.phone_number.errors %}
-                  <span class="form-feed">{{ error|escape }}</span>
-                {% endfor %}
-              </div>
-              {% endif %}
-            </div>
-            <!-- Latitude -->
-            <input type="hidden" class="form-control" id="id_latitude" name="latitude" value="{{ form.latitude.value }}">
-            <!-- Longitude -->
-            <input type="hidden" class="form-control " id="id_longitude" name="longitude" value="{{ form.longitude.value }}">
-            <!-- Address -->
-            <div class="form-group">
-              <label for="{{ form.address.name }}">
-                Dirección
-              </label>
-              <div class="innerbtn">
-                <input id="id_address"
-                  value="{% if form.address.value != None %}{{ form.address.value }}{% endif %}"
+
+    <div class="form" id="register_container">
+      <div class="container-fluid">
+          <img class="arr mb-4" src="{% static 'images/image/arrow.png' %}" alt="Borde">
+        <form id="form-register" action="" method="POST" class="form-register-customer">
+          <div class="cols colr">
+            <div class="col1 formr">
+              {% csrf_token %}
+              <!-- Username -->
+              <div class="form-group">
+                <label for="{{ form.username.name }}">
+                  Nombre del usuario
+                </label>
+                <input id="username"
+                  name="{{ form.username.name }}"
+                  value="{% if form.username.value != None %}{{ form.username.value }}{% endif %}"
+                  placeholder="Nombre de usuario"
+                  maxlength="{{ form.username.field.max_length }}"
                   type="text"
                   class="form-control"
-                  name="address"
-                  placeholder="Dirección donde llevaremos tu comida"
-                  maxlength="255"
-                  onkeypress="return search(event)"
-                  required=""
+                  required autofocus
+                  onkeypress="return pulsar(event)"
                 />
-                <a class="icon alt fa-search" type="" id="btn-search"></a>
-                {%  if form.address.errors %}
-                <div class="has-danger">
-                  {%  for error in form.address.errors %}
-                  <small class="form-control-feedback">{{ error|escape }}
-                  </small>
+                {% if form.username.errors %}
+                <div class="labels-error">
+                  {% for error in form.username.errors %}
+                    <span class="form-feed">{{ error|escape }}</span>
                   {% endfor %}
                 </div>
                 {% endif %}
-                <div id="container-msj-alert" class="form-group container-hidden">
-                  <div class="alert alert-warning" role="alert">
-                    <strong>Oops! </strong><span id="msj-alert">mensaje</span>
+              </div>
+              <!-- Password -->
+
+              <!-- Email -->
+              <div class="form-group">
+                <label for="{{ form.email.name }}">
+                  Ingrese un email
+                </label>
+                <input id="id_email"
+                  name="{{ form.email.name }}"
+                  value="{% if form.email.value != None %}{{ form.email.value }}{% endif %}"
+                  placeholder="correo@ejemplo.com"
+                  maxlength="{{ form.email.field.max_length }}"
+                  type="email"
+                  class="form-control"
+                  required onkeypress="return pulsar(event)"
+                />
+                {% if form.email.errors %}
+                <div class="labels-error">
+                  {% for error in form.email.errors %}
+                    <span class="form-feed">{{ error|escape }}</span>
+                  {% endfor %}
+                </div>
+                {% endif %}
+              </div>
+              <!-- Phone Number -->
+              <div class="form-group">
+                <label id="{{ form.phone_number.id_for_label }}" for="{{ form.phone_number.name }}">
+                  Whatsapp
+                </label>
+                <input id="id_phone_number"
+                  name="{{ form.phone_number.name }}"
+                  value="{% if form.phone_number.value != None %}{{ form.phone_number.value }}{% endif %}"
+                  placeholder="Numero con Whatsapp"
+                  maxlength="{{ form.phone_number.field.max_length }}"
+                  type="text"
+                  class="form-control"
+                  required onkeypress="return pulsar(event)"
+                />
+                {% if form.phone_number.errors %}
+                <div class="labels-error">
+                  {% for error in form.phone_number.errors %}
+                    <span class="form-feed">{{ error|escape }}</span>
+                  {% endfor %}
+                </div>
+                {% endif %}
+              </div>
+              <!-- Latitude -->
+              <input type="hidden" class="form-control" id="id_latitude" name="latitude" value="{{ form.latitude.value }}">
+              <!-- Longitude -->
+              <input type="hidden" class="form-control " id="id_longitude" name="longitude" value="{{ form.longitude.value }}">
+              <!-- Address -->
+              <div class="form-group">
+                <label for="{{ form.address.name }}">
+                  Dirección
+                </label>
+                <div class="innerbtn">
+                  <input id="id_address"
+                    value="{% if form.address.value != None %}{{ form.address.value }}{% endif %}"
+                    type="text"
+                    class="form-control"
+                    name="address"
+                    placeholder="Dirección donde llevaremos tu comida"
+                    maxlength="255"
+                    onkeypress="return search(event)"
+                    required=""
+                  />
+                  <a class="icon alt fa-search" type="" id="btn-search"></a>
+                  {%  if form.address.errors %}
+                  <div class="has-danger">
+                    {%  for error in form.address.errors %}
+                    <small class="form-control-feedback">{{ error|escape }}
+                    </small>
+                    {% endfor %}
+                  </div>
+                  {% endif %}
+                  <div id="container-msj-alert" class="form-group container-hidden">
+                    <div class="alert alert-warning" role="alert">
+                      <strong>Oops! </strong><span id="msj-alert">mensaje</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <!-- Google Map -->
-          <div class="col2 mapr map-container">
-            <div id="overmap" class="container-hidden">
-              <div class="alert alert-warning" role="alert">
-                <span id="msj-alert" class="alertmap">Arrastra el marcador a tu posición exacta.</span>
+            <!-- Google Map -->
+            <div class="col2 mapr map-container">
+              <div id="overmap" class="container-hidden">
+                <div class="alert alert-warning" role="alert">
+                  <span id="msj-alert" class="alertmap">Arrastra el marcador a tu posición exacta.</span>
+                </div>
+              </div>
+              <div id="map" class=""></div>
+              <div class="formr">
+                <div class="form-group swaladdress">
+                  <label for="{{ form.references.name }}">
+                    Referencias extra a tu dirección de entrega.
+                  </label>
+                  <textarea id="id_reference"
+                    rows="3"
+                    type="text"
+                    class="form-control areainput"
+                    name="{{ form.references.name }}"
+                    placeholder="No. 29 Zaguán blanco, enfrente de una tienda de abarrotes"
+                  >{% if form.references.value != None %}{{ form.references.value }}{% endif %}</textarea>
+                </div>
+                <button id="btn-register" type="submit" class="btn-success fit button" >Registrate</button>
               </div>
             </div>
-            <div id="map" class=""></div>
-            <div class="formr">
-              <div class="form-group swaladdress">
-                <label for="{{ form.references.name }}">
-                  Referencias extra a tu dirección de entrega.
-                </label>
-                <textarea id="id_reference"
-                  rows="3"
-                  type="text"
-                  class="form-control areainput"
-                  name="{{ form.references.name }}"
-                  placeholder="No. 29 Zaguán blanco, enfrente de una tienda de abarrotes"
-                >{% if form.references.value != None %}{{ form.references.value }}{% endif %}</textarea>
-              </div>
-              <button id="btn-register" type="submit" class="btn-success fit button" disabled="disabled">Registrate</button>
-            </div>
           </div>
-        </div>
-      </form>
+        </form>
+        <a href="https://www.facebook.com/dabbawaladesayunosya/"><span class="facebook">Dale like a nuestra página de facebook <i id="facebook"class="fa fa-facebook-f"></i></span></a>
+      </div>
     </div>
-    <a href="https://www.facebook.com/dabbawaladesayunosya/"><h4 class="facebook">Dale like a nuestra página de facebook <i id="facebook"class="fa fa-facebook-f"></i></h4></a>
   </div>
 
 {% endblock content %}

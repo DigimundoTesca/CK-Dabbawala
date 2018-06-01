@@ -25,7 +25,7 @@
   left: 0;
   top: 0;
   z-index: 100;
-  background-color: rgba(255,255,255,0.25);
+  background-color: rgba(255,255,255,0.35);
   height: 100%;
   width: 100%;
 }
@@ -37,7 +37,7 @@
   box-shadow: 0px 0px 8px 1px #fbc189;
 }
 #form-login input {
-  background-color: rgba(255,255,255,0.35);
+  background-color: rgba(255,255,255,0.15);
 }
 #form-login input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: #000000c4;

@@ -4512,7 +4512,52 @@
     padding-top: 1.5em;
     color:black;
   }
-
+  #register_container {
+    padding-top: 0 !important;
+    padding-bottom: 1em;
+    position: relative;
+    background-image: url('../images/register.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+  #register_container::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    /*background: rgba(211,72,24,.22);*/
+    background: rgba(0,0,0,0.45)
+  }
+  #register_container > div {
+    position: relative;
+    z-index: 100;
+  }
+  #form-register {
+    margin-top: 1.5em;
+  }
+  #form-register .formr:first-child {
+    padding: 1em;
+    background: rgba(211,72,24,.21852);
+      box-shadow:0 8px 16px 0 rgba(255, 255, 255, 0.2), 0 12px 40px 0 rgba(255, 255, 255, 0.19);
+  }
+  #form-register .formr input {
+    background: rgba(0,0,0,0.35);
+  }
+  #form-register .formr input::placeholder {
+    color: #FFF;
+  }
+  #form-register .formr label {
+    color: #fff !important;
+    font-size: 1.25rem;
+    font-weight: 900;
+  }
+  span.facebook {
+    color: #FFF;
+    font-weight: bold;
+  }
 
   #main .form iframe, #main1 .form iframe, #main2 .form iframe, #main3 .form iframe, #main4 .form iframe {
     padding-top: 2em;
