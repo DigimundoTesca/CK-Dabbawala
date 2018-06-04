@@ -1,3 +1,25 @@
+.loginBackground {
+  position: relative;
+  background-image: url('../../images/loginBack-min.jpg') !important;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+.loginBackground::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  background-color: rgba(255,255,255,0.25);
+  height: 100%;
+  width: 100%;
+}
+.loginBackground .bord2 {
+  z-index: 100;
+  position: relative;
+  background: linear-gradient(180deg, #D34818 50%, transparent 50%);
+}
 .login-customer-container {
   width: 100%;
   margin: 1rem auto;
@@ -10,25 +32,14 @@
 #form-login {
   padding: 2rem;
   position: relative;
-  background: #fdfdfd;
+
   border-radius: 20px;
   box-shadow: 0px 0px 7px 0px #fcd8b6;
-  background-image: url('../../images/fondo_login.jpg');
-  background-position: center;
-  background-size: cover;
   box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background: rgba(255,255,255,0.15);
   transition: all .3s ease;
 }
-#form-login::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 100;
-  background-color: rgba(255,255,255,0.35);
-  height: 100%;
-  width: 100%;
-}
+
 .login_form_back {
   position: relative;
   z-index: 1000;
@@ -37,10 +48,10 @@
   box-shadow: 0px 0px 8px 1px #fbc189;
 }
 #form-login input {
-  background-color: rgba(255,255,255,0.15);
+  background-color: rgba(0,0,0,0.15);
 }
 #form-login input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: #000000c4;
+    color: #fff;
 }
 .login_form_back label {
   font-size: 1.2rem !important;
