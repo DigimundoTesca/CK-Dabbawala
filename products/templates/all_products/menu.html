@@ -1,36 +1,88 @@
 {% extends "dabbawala/base_nav_footer.html" %}
+
 {% load static %}
 {% load custom_filters %}
 {% block content %}
+	<script type="text/javascript" src="{% static 'js/modernizr.custom.79639.js' %}"></script>
 <div class="menu">
-  <div id="main">
-    <img class="bord2" src="{% static 'images/image/reverse.png' %}" alt="Borde">
-    <div class="cols">
-      <div class="col1">
-        <h2>Menú </h2>
+    <div id="main" class="menu_back licuado_content">
+      <div id="menu-banner">
+        <div class="">
+          <h2>Menú </h2>
+          <div class="col2">
+            <section class="main">
+
+          <ul class="ch-grid">
+            <li>
+              <div class="ch-item">
+                <div class="ch-info">
+                  <h4> 1Roti + 2 complementos<br>(Agua, jugo o fruta) </h4>
+                  <p><a href="{% url 'orders:new_order' %}">¡Arma tu Dabba!</a></p>
+                </div>
+                <div class="ch-thumb ch-img-1">
+                  <div class="">
+                    <h3>¡Arma tu dabba!</h3>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </section>
+          </div>
+          <div class="col1">
+            <h2>¡Dabbawala desayunos ya!</h2>
+            <p>Frases motivadoras del día o algo parecido, igual y promoción del roti del mes esto puede ir cambiando </p>
+
+          </div>
+
+        </div>
+
       </div>
+    <img class="bord2 menu_borde" id="bord-transparent" src="{% static 'images/image/reverse.png' %}" alt="Borde">
+    <div class="cols menu_img_background">
+      <img id="fondoRoti" class="img-fluid rounded-circle" src="{% static 'images/image/roti2.png' %}" alt="Roti">
+      <div class="col1"></div>
       <div class="col2">
         <div id="whatsappdiv"class="align-self-right whatsapp mt-5">
           <a href="https://api.whatsapp.com/send?phone=525576112053" id="whats_cont" class="rounded-circle"><img id="whats" src="{% static 'images/whats.png' %}" alt="whats"></a>
         </div>
-      </div>
+
     </div>
     <div class="cols">
+      <br><br>
       <div class="col1">
         <h2 class="platillo">Roti</h2>
-        {% for product in products %}
-          {% if product.subcategory == 'RO' %}
-            <p class="product-name">{{ product.name }}<span class="price">${{ product.price|to_int }}</span></p>
-            <p class="ref description">{{ product.description }}</p>
-          {% endif %}
-        {% endfor %}
+        <div id="rotiList">
+          {% for product in products %}
+            {% if product.subcategory == 'RO' %}
+              <p class="product-name">{{ product.name }}<span class="price">${{ product.price|to_int }}</span></p>
+              <p class="ref description">{{ product.description }}</p>
+            {% endif %}
+          {% endfor %}
+        </div>
+        <h2 class="complemento">Ensalada</h2>
+        <div id="main2">
+          <div id="salad" class="cols">
+            <div class="col1">
+              <img id="salad_img" src="{% static 'images/image/salad.jpg' %}" alt="Fruta"> <br>
+            </div>
+            <div class="col2">
+              {% for product in products %}
+                {% if product.subcategory == 'SA' %}
+                  <p class="product-name">{{ product.name }}<span class="price">${{ product.price|to_int }}</span></p>
+                  <p class="ref description">{{ product.description }}</p>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
       </div>
       <div class="col2">
         <h2 class="complemento">Fruta</h2>
         <div id="main2">
-          <div class="cols">
+          <div id="fruit" class="cols">
             <div class="col1">
-              <img id="fruta"src="{% static 'images/image/fruta.png' %}" alt="Fruta"> <br>
+              <img id="fruta"src="{% static 'images/image/frutad.png' %}" alt="Fruta"> <br>
             </div>
             <div class="col2">
               {% for product in products %}
@@ -42,11 +94,14 @@
             </div>
           </div>
         </div>
+
         <h2 class="complemento">Jugo</h2>
-        <div id="main2">
-          <div class="cols">
+        <div id="main2" class="large">
+          <div id="juice" class="cols">
             <div class="col1">
-              <br>
+              <img id="Jugos"src="{% static 'images/image/jugos.png' %}" alt="Jugos"> <br>
+            </div>
+            <div class="col2">
               {% for product in products %}
                 {% if product.subcategory == 'JU' %}
                   <p class="product-name">{{ product.name }}<span class="price">${{ product.price|to_int}}</span></p>
@@ -54,80 +109,47 @@
                 {% endif %}
               {% endfor %}
             </div>
-            <div class="col2">
-              <img id="drink" src="{% static 'images/image/drink.png' %}" alt="Bebida">
-            </div>
           </div>
         </div>
+
         <h2 class="complemento">Agua</h2>
-        <div id="main2">
-          <div class="cols">
-            <div class="col1">
-              <img id="fruta"src="{% static 'images/image/fruta.png' %}" alt="Fruta"> <br>
-            </div>
-            <div class="col2">
+        <div id="main2" class="large">
+            <div id="agua_fondo" class="col">
+              <div class="">
               {% for product in products %}
-                {% if product.subcategory == 'SA' %}
-                  <p class="product-name large">{{ product.name }}<span class="price">${{ product.price|to_int }}</span></p>
+                {% if product.subcategory == 'WA' %}
+                  <p class="product-name">{{ product.name }}<span class="price">${{ product.price|to_int }}</span></p>
                   <p class="ref description">{{ product.description }}</p>
                 {% endif %}
               {% endfor %}
+              </div>
+
             </div>
+
+        </div>
+
+        <h2 class="complemento">Licuado</h2>
+          <div id="main2" class="large ">
+              <div class="col">
+              {% for product in products %}
+                {% if product.subcategory == 'SM' %}
+                  <p class="product-name">{{ product.name }}<span class="price">${{ product.price|to_int }}</span></p>
+                  <p class="ref description">{{ product.description }}</p>
+                {% endif %}
+              {% endfor %}
+                <img id="liq_img" src="{% static 'images/image/image.jpg' %}" alt="Licuado">
+              </div>
           </div>
-        </div>
-        <div class="col2">
-          {% for product in products %}
-            {% if product.subcategory == 'SM' %}
-              <p class="product-name">{{ product.name }}<span class="price">${{ product.price|to_int }}</span></p>
-              <p class="ref description">{{ product.description }}</p>
-            {% endif %}
-          {% endfor %}
-        </div>
       </div>
     </div>
-    <div class="cols">
-      <div class="col1">
-        <h2 class="complemento">Ensalada</h2>
-        <div id="main2">
-          <div class="cols">
-            <div class="col1">
-              <img id="fruta"src="{% static 'images/image/fruta.png' %}" alt="Fruta"> <br>
-            </div>
-            <div class="col2">
-              {% for product in products %}
-                {% if product.subcategory == 'SA' %}
-                  <p class="product-name">{{ product.name }}<span class="price">${{ product.price|to_int }}</span></p>
-                  <p class="ref description">{{ product.description }}</p>
-                {% endif %}
-              {% endfor %}
-            </div>
-          </div>
-        </div>
-        </div>
-        <div class="col2">
-        <h2 class="complemento">Licuado</h2>
-          <div id="main2">
-            <div class="cols">
-              <div class="col1">
-              <img id="fruta"src="{% static 'images/image/fruta.png' %}" alt="Fruta"> <br>
-              </div>
-              <div class="col2">
-              {% for product in products %}
-                {% if product.subcategory == 'LI' %}
-                  <p class="product-name">{{ product.name }}<span class="price">${{ product.price|to_int }}</span></p>
-                  <p class="ref description">{{ product.description }}</p>
-                {% endif %}
-              {% endfor %}
-              </div>
-            </div>
-          </div>
-        </div>
-    </div>
-    <div class="cols">
+
+
+    <!--<div class="cols mt-5">
       <div class="paquete">
         <a class="paquete"href="{% url 'orders:new_order' %}"><h3>¡Arma tu Dabba! <br> 1 Roti + 2 complementos(Agua, jugo o fruta)</h3></a>
-      </div>
+      </div>-->
   </div>
   </div>
+</div>
 </div>
 {% endblock content %}

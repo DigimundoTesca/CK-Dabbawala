@@ -4437,17 +4437,145 @@
     width: 150px;
   }
   .menu > #main #main2 div.col1{
-    width: 250px;
+    width: 350px;
   }
   .menu > #main #main2 div.col2{
-    width: 250px;
+    max-width: 800px;
   }
-  .menu > #main #fruta,.menu > #main #drink{
-    width: 230px;
+  img.menu_borde {
+    z-index: 100;
+    position: relative;
+    background-image: linear-gradient(180deg, #D34818 50%, transparent 50%);
   }
-  .menu > #main #main2 .cols p.large{
-    line-height: 27px;
-}
+  #bord-transparent {
+    margin-top: -1.85em;
+    background: transparent;
+  }
+  #menu-banner {
+    position: relative;
+    margin-top: -2em;
+    height: 80vh;
+    background-image: url('../images/image/fondoMenu.jpg');
+    background-size: cover;
+    background-position: center bottom;
+    background-attachment: fixed;
+    justify-content: center;
+  }
+  #menu-banner::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.45);
+  }
+  #menu-banner > div {
+    position: relative;
+    z-index: 100;
+  }
+  #menu-banner > div p {
+    color: #FFF;
+    text-align: center;
+    font-size: 1.2em;
+  }
+  #menu-banner h2 {
+    color: #FFF;
+  }
+
+  /*#menu-banner img {
+    width: 100%;
+    height: auto;
+  }*/
+  .menu #salad {
+    margin-bottom: 2em !important;
+  }
+ #salad .col1, #juice .col1, #fruit .col1 {
+   padding-top: 1.5em;
+ }
+  .menu_img_background {
+    margin-top: -3em !important;
+    overflow: hidden;
+    position: relative;
+  }
+  .menu_img_background > div {
+    position: relative;
+  }
+  .menu_img_background > div > h2 {
+    margin-top: 2em !important;
+  }
+  #fondoRoti {
+    border-radius: 50%;
+    position: absolute;
+    left: -4em;
+    box-shadow: 9px 15px 18px #888888;
+    transform: rotate(-20deg);
+    top: -4em;
+    opacity: .74;
+  }
+  #liq_img {
+    border-radius: 50%;
+    position: absolute;
+    bottom: -5em;
+    right: -6em;
+    max-width: 380px;
+    transform: rotate(10deg);
+    box-shadow: 4px 5px 10px 15px #888888;
+    opacity: .74;
+  }
+  #fondoRoti::before, #liq_img::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.5);
+    height: 100%;
+    width: 100%;
+  }
+  #agua_fondo {
+    position: relative;
+    padding: 0 1em;
+    padding-bottom: 1em;
+    background-image: url('../images/image/water1.jpg');
+    background-position: center;
+    background-size: cover;
+  }
+  #agua_fondo > div {
+    position: relative;
+    z-index: 100;
+  }
+  #agua_fondo::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.45);
+  }
+  #agua_fondo .description {
+    background-color: inherit;
+  }
+  .menu > #main #fruta,.menu > #main #salad_img, #Jugos{
+    width: 100%;
+    border-radius: 10%;
+    box-shadow:0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 12px 40px 0 rgba(0, 0, 0, 0.19);
+  }
+  .menu #main > div,
+  .menu #main2 >div, #rotiList {
+    padding: 1em 2em;
+    padding-bottom: 1.5em;
+    border-radius: 10px;
+    box-shadow:0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 12px 40px 0 rgba(0, 0, 0, 0.19);
+  }
+  #rotiList {
+    padding-right: 0 !important;
+  }
+ .licuado_content {
+   position: relative;
+   overflow: hidden ;
+   background: rgba(255, 255, 255, 0.85) !important;
+ }
   .menu > #main h2.platillo{
     color: #fff;
     background-image: url("https://userscontent2.emaze.com/images/f1ac707b-ad3b-4d41-83f4-f1ac790ed997/00d48e24-6423-4744-a8b6-ea8fc2fcb88bimage5.png");
@@ -4463,14 +4591,222 @@
     padding: inherit;
     height: 220px;
     margin: 0 auto;
+    margin-top: 2em;
     margin-bottom: 2em;
     width: 100%;
   }
+
   .menu > #main div.paquete:hover{
     cursor: pointer;
     transform: scale(.98);
     box-shadow: inside 10px solid #000;
   }
+  #icon_user {
+   font-size: 4em;
+   margin-top: -1.3em !important;
+   margin-bottom: 0 !important;
+  }
+  .ch-grid {
+	margin: 20px 0 0 0;
+	padding: 0;
+	list-style: none;
+	display: block;
+	text-align: left;
+	width: 100%;
+}
+
+.ch-grid:after,
+.ch-item:before {
+	content: '';
+    display: table;
+}
+
+.ch-grid:after {
+	clear: both;
+}
+
+.ch-grid li {
+	width: 220px;
+	height: 220px;
+	display: inline-block;
+	margin: 20px;
+}
+.ch-item {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	position: relative;
+	cursor: default;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.ch-thumb {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	overflow: hidden;
+	position: absolute;
+	box-shadow: inset 0 0 0 15px rgba(255,255,255, 0.5);
+
+	-webkit-transform-origin: 95% 40%;
+	-moz-transform-origin: 95% 40%;
+	-o-transform-origin: 95% 40%;
+	-ms-transform-origin: 95% 40%;
+	transform-origin: 90% 7%;
+
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.ch-thumb:after {
+	content: '';
+	width: 8px;
+	height: 8px;
+	position: absolute;
+	border-radius: 50%;
+	top: 40%;
+	left: 95%;
+	margin: -4px 0 0 -4px;
+	background: rgb(14,14,14);
+	background: -moz-radial-gradient(center, ellipse cover, rgba(14,14,14,1) 0%, rgba(125,126,125,1) 100%);
+	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(14,14,14,1)), color-stop(100%,rgba(125,126,125,1)));
+	background: -webkit-radial-gradient(center, ellipse cover, rgba(14,14,14,1) 0%,rgba(125,126,125,1) 100%);
+	background: -o-radial-gradient(center, ellipse cover, rgba(14,14,14,1) 0%,rgba(125,126,125,1) 100%);
+	background: -ms-radial-gradient(center, ellipse cover, rgba(14,14,14,1) 0%,rgba(125,126,125,1) 100%);
+	background: radial-gradient(ellipse at center, rgba(14,14,14,1) 0%,rgba(125,126,125,1) 100%);
+	box-shadow: 0 0 1px rgba(255,255,255,0.9);
+}
+.ch-thumb > div {
+  position: relative;
+  z-index: 100;
+}
+.ch-thumb > div h3 {
+  color: #FFF !important;
+}
+
+.ch-img-1 {
+  position: relative;
+	background-image: url(../images/image/fondo1.jpg);
+  background-position: center;
+  background-size: cover;
+	z-index: 12;
+}
+.ch-img-1::before, .ch-info::before  {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.35);
+
+}
+
+.ch-info {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	overflow: hidden;
+	background: url(../images/image/fondo2.jpg);
+  background-position: center;
+  background-size: cover;
+	box-shadow: inset 0 0 0 5px rgba(0,0,0,0.05);
+  box-shadow: 0 8px 16px 0 rgba(255, 255, 255, 0.2), 0 12px 40px 0 rgba(255, 255, 255, 0.19);
+}
+
+.ch-info h4 {
+	color: #fff !important;
+	text-transform: uppercase;
+	position: relative;
+	letter-spacing: 2px;
+	font-size: 16px;
+	margin: 0px 60px;
+	padding: 35px 0 0 0 !important;
+	font-family: 'Open Sans', Arial, sans-serif;
+	text-shadow:
+		0 0 1px #fff,
+		0 1px 2px rgba(0,0,0,0.3);
+}
+
+.ch-info p {
+	color: #fff;
+	padding: 10px 5px;
+	font-style: italic;
+	margin: 0 30px;
+	font-size: 12px;
+	border-top: 1px solid rgba(255,255,255,0.5);
+}
+
+.ch-info p a {
+	display: block;
+	width: 80px;
+	height: 80px;
+  text-align: center;
+  text-decoration: none;
+	background: rgba(0,0,0,0.5);
+	border-radius: 50%;
+	color: #fff;
+	font-weight: 700;
+	text-transform: uppercase;
+	font-size: 14px;
+	padding-top: 24px;
+	margin: 7px auto 0;
+	font-family: 'Open Sans', Arial, sans-serif;
+
+	-webkit-transition:
+		-webkit-transform 0.3s ease-in-out 0.2s,
+		opacity 0.3s ease-in-out 0.2s,
+		background 0.2s linear 0s;
+	-moz-transition:
+		-moz-transform 0.3s ease-in-out 0.2s,
+		opacity 0.3s ease-in-out 0.2s,
+		background 0.2s linear 0s;
+	-o-transition:
+		-o-transform 0.3s ease-in-out 0.2s,
+		opacity 0.3s ease-in-out 0.2s,
+		background 0.2s linear 0s;
+	-ms-transition:
+		-ms-transform 0.3s ease-in-out 0.2s,
+		opacity 0.3s ease-in-out 0.2s,
+		background 0.2s linear 0s;
+	transition:
+		transform 0.3s ease-in-out 0.2s,
+		opacity 0.3s ease-in-out 0.2s,
+		background 0.2s linear 0s;
+
+	-webkit-transform: translateX(60px) rotate(90deg);
+	-moz-transform: translateX(60px) rotate(90deg);
+	-o-transform: translateX(60px) rotate(90deg);
+	-ms-transform: translateX(60px) rotate(90deg);
+	transform: translateX(60px) rotate(90deg);
+
+	-webkit-backface-visibility: hidden;
+}
+
+.ch-info p a:hover {
+	background: rgba(0,0,0,0.25);
+}
+.ch-item:hover .ch-thumb {
+	box-shadow: inset 0 0 0 15px rgba(255,255,255, 0.5), 0 1px 3px rgba(0,0,0,0.2);
+	-webkit-transform: rotate(-110deg);
+	-moz-transform: rotate(-110deg);
+	-o-transform: rotate(-110deg);
+	-ms-transform: rotate(-110deg);
+	transform: rotate(-110deg);
+}
+.ch-item:hover .ch-info p a{
+	opacity: 1;
+	-webkit-transform: translateX(0px) rotate(0deg);
+	-moz-transform: translateX(0px) rotate(0deg);
+	-o-transform: translateX(0px) rotate(0deg);
+	-ms-transform: translateX(0px) rotate(0deg);
+	transform: translateX(0px) rotate(0deg);
+}
+
   .menu > #main div.paquete h3{
     padding-top: 15px;
     color: #fff;
@@ -4504,7 +4840,52 @@
     padding-top: 1.5em;
     color:black;
   }
-
+  #register_container {
+    padding-top: 0 !important;
+    padding-bottom: 1em;
+    position: relative;
+    background-image: url('../images/register.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+  #register_container::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    /*background: rgba(211,72,24,.22);*/
+    background: rgba(0,0,0,0.45)
+  }
+  #register_container > div {
+    position: relative;
+    z-index: 100;
+  }
+  #form-register {
+    margin-top: 1.5em;
+  }
+  #form-register .formr:first-child {
+    padding: 1em;
+    background: rgba(211,72,24,.21852);
+      box-shadow:0 8px 16px 0 rgba(255, 255, 255, 0.2), 0 12px 40px 0 rgba(255, 255, 255, 0.19);
+  }
+  #form-register .formr input {
+    background: rgba(0,0,0,0.35);
+  }
+  #form-register .formr input::placeholder {
+    color: #FFF;
+  }
+  #form-register .formr label {
+    color: #fff !important;
+    font-size: 1.25rem;
+    font-weight: 900;
+  }
+  span.facebook {
+    color: #FFF;
+    font-weight: bold;
+  }
 
   #main .form iframe, #main1 .form iframe, #main2 .form iframe, #main3 .form iframe, #main4 .form iframe {
     padding-top: 2em;
@@ -5151,7 +5532,7 @@
     font-family:'Conv_Futura',Sans-Serif;
     float: right;
     text-align: right;
-    font-size: 30pt;
+    font-size: 20pt;
     font-weight: 900;
     letter-spacing: 0.1em;
   }
