@@ -13,6 +13,7 @@ from helpers.sales_helper import TicketPOSHelper
 
 @ensure_csrf_cookie
 def new_order(request):
+    return redirect('users:home')
     if not settings.DEBUG:
         # return redirect('users:index')
         pass

@@ -7,10 +7,10 @@ app_name = 'users'
 
 urlpatterns = [
     # temporal-index
-    url(r'^$', views.temporal_index, name='index'),
+    #url(r'^$', views.temporal_index, name='index'),
 
     # home
-    url(r'^home/$', views.home, name='home'),
+    url(r'^$', views.home, name='home'),
 
     # auth
     url(r'^auth/$', views.login, name='login'),
