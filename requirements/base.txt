@@ -1,31 +1,30 @@
 # Base dependencies go here
 
 # Django minimum required
-# -------------------------------------------------------
 Django==2.0.3
 
 # Django Rest Framework
-# -------------------------------------------------------
 djangorestframework==3.7.7
 django-fcm==0.1.1
 
 # Django Admin Template
-# -------------------------------------------------------
 django-jet==1.0.7
 
 # Images
-# -------------------------------------------------------
 Pillow==5.0
 
 # Creates a tablib database from django models ['xls', 'json', 'yaml', 'csv', 'html' ]
-# -------------------------------------------------------
-tablib==0.11.4
+tablib==0.11.5
 
 django-webpack-loader==0.6.0
 
-# World Timezone Detinitions for Python
-# -------------------------------------------------------
+# World Timezone Definitions for Python
 pytz==2017.2
 
 # XLS Files
 openpyxl==2.4.8
+
+# Python-PostgreSQL Database Adapter
+psycopg2>=2.7,<2.8 --no-binary psycopg2
+psycopg2-binary==2.7.4
+sqlparse==0.2.3

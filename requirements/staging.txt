@@ -1,2 +1,2 @@
--r local-unix.txt
+-r local.txt
 -r production.txt

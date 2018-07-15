@@ -3,18 +3,8 @@
 # Server : Ubuntu 16.04
 -r base.txt
 
-# Python-PostgreSQL Database Adapter
-# ------------------------------------------------
-psycopg2>=2.7,<2.8 --no-binary psycopg2
-psycopg2-binary==2.7.4
-
-
 # Python WSGI HTTP Server for UNIX
 gunicorn==19.7.1
-
-# Non-validating SQL parser
-# ------------------------------------------------
-sqlparse==0.2.3
 
 # AWS Storage
 boto==2.48.0
