@@ -2,13 +2,6 @@ from cloudkitchen.settings.base import *
 
 ALLOWED_HOSTS = ['*']
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(os.path.dirname(BASE_DIR), 'db_dabbanet.sqlite3'),
-    }
-}
-
 GRAPH_MODELS = {
   'all_applications': True,
   'group_models': True,

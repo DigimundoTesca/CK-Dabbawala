@@ -13,8 +13,6 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 INSTALLED_APPS += ['storages', ]
 
-
-
 # AWS STATICS
 AWS_HEADERS = {
     'Expires': 'Thu, 15 Apr 2099 20:00:00 GMT',
