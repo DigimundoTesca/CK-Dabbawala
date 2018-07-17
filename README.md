@@ -3,7 +3,7 @@
 To install CloudKitchen, you must to install Docker <3
 
 ## Instructions
- - In process
+ - In process-
 
 
 ### Do you have questions about installing?
